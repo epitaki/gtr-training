@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(npm init:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss init:*)",
+      "Bash(npm run dev:*)",
+      "Bash(taskkill:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(pkill:*)",
+      "WebFetch(domain:docs.google.com)",
+      "WebFetch(domain:www.pndsng.com)",
+      "Bash(npm run build:*)"
+    ],
+    "deny": []
+  }
+}
