@@ -261,61 +261,7 @@ export class GTRDetector {
     
     return 0
   }
-  
-  
-  // 連鎖尾の配置を評価（GTRは1-3列目を使用するため、4列目以降が連鎖尾）
-  private static evaluateChainTail(field: (PuyoColor | null)[][]): number {
-    const height = field.length
-    let score = 0
-    
-    // 4-5列目の使用状況をチェック（GTRの連鎖尾）
-    let col4Height = 0
-    let col5Height = 0
-    let col6Height = 0
-    
-    for (let y = height - 1; y >= 0; y--) {
-      if (field[y][3] !== null && col4Height === 0) {
-        col4Height = height - y
-      }
-      if (field[y][4] !== null && col5Height === 0) {
-        col5Height = height - y
-      }
-      if (field[y][5] !== null && col6Height === 0) {
-        col6Height = height - y
-      }
-    }
-    
-    // 縦積みボーナス（4-5列目が高く積まれている）
-    if (col4Height >= 3 && col5Height >= 3) {
-      // 4列5列目両方が3段以上: 50点
-      score += GTR_SCORING_CONFIG.CHAIN_TAIL.VERTICAL_STACKING.BOTH_HIGH
-      // 高さが揃っているとさらにボーナス
-      if (Math.abs(col4Height - col5Height) <= 1) {
-        // 高さの差が1以下: +30点
-        score += GTR_SCORING_CONFIG.CHAIN_TAIL.VERTICAL_STACKING.HEIGHT_ALIGNED
-      }
-    } else if (col4Height >= 2 || col5Height >= 2) {
-      // どちらか片方が2段以上: 30点
-      score += GTR_SCORING_CONFIG.CHAIN_TAIL.VERTICAL_STACKING.ONE_HIGH
-    }
-    
-    // 階段状ボーナス（段差がある配置）
-    const heightDiff45 = Math.abs(col4Height - col5Height)
-    const heightDiff56 = Math.abs(col5Height - col6Height)
-    if (heightDiff45 === 1 || heightDiff45 === 2 || heightDiff56 === 1) {
-      // 階段状に配置されている: 20点
-      score += GTR_SCORING_CONFIG.CHAIN_TAIL.STAIR_PATTERN
-    }
-    
-    // 6列目まで使用していればボーナス
-    if (col6Height >= 2) {
-      // 6列目に2段以上: 10点
-      score += GTR_SCORING_CONFIG.CHAIN_TAIL.COL6_USAGE
-    }
-    
-    return Math.min(GTR_SCORING_CONFIG.CHAIN_TAIL.MAX_SCORE, score)
-  }
-  
+
   // 連鎖シミュレーション用のヘルパー関数
   private static copyField(field: (PuyoColor | null)[][]): (PuyoColor | null)[][] {
     return field.map(row => [...row])
@@ -679,10 +625,10 @@ export class GTRDetector {
     // 3-6列目の配置パターンを分析
     const height = field.length
 
-    // 各列の高さを取得
+    // 各列の高さを取得（上から下にスキャンし、最初に見つかったぷよの位置から高さを計算）
     let col3Height = 0, col4Height = 0, col5Height = 0, col6Height = 0
 
-    for (let y = height - 1; y >= 0; y--) {
+    for (let y = 0; y < height; y++) {
       if (field[y][2] !== null && col3Height === 0) col3Height = height - y
       if (field[y][3] !== null && col4Height === 0) col4Height = height - y
       if (field[y][4] !== null && col5Height === 0) col5Height = height - y

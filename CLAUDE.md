@@ -65,41 +65,54 @@ gtr-training/
 ├── src/
 │   ├── components/
 │   │   ├── layout/
-│   │   │   ├── Header.tsx         # ヘッダー（ロゴ・アカウント）
-│   │   │   ├── SideMenu.tsx       # サイドメニュー（モード選択）
-│   │   │   └── MainLayout.tsx     # メインレイアウト（ヘッダー+サイドメニュー+コンテンツ）
-│   │   ├── TopMenu.tsx            # TOPページメニュー（旧実装・移行予定）
-│   │   ├── GuidedGame.tsx         # 初心者用ガイド付きGTR練習
-│   │   ├── ScoreAttackGame.tsx    # GTRスコアアタック
-│   │   ├── GameLayout.tsx         # ゲーム全体レイアウト（非使用）
-│   │   └── GameBoard.tsx          # Phaserゲーム表示コンテナ（非使用）
+│   │   │   ├── Header.tsx              # ヘッダー（ロゴ・アカウント）
+│   │   │   ├── SideMenu.tsx            # サイドメニュー（モード選択）
+│   │   │   └── MainLayout.tsx          # メインレイアウト統合
+│   │   ├── TopPage.tsx                 # TOPページ
+│   │   ├── TopMenu.tsx                 # TOPページメニュー（旧実装）
+│   │   ├── GuidedGame.tsx              # 初心者用ガイド付きGTR練習（900px）
+│   │   ├── ScoreAttackGame.tsx         # GTRスコアアタック（640px）
+│   │   ├── GameLayout.tsx              # ゲーム全体レイアウト（非使用）
+│   │   └── GameBoard.tsx               # Phaserゲーム表示コンテナ（非使用）
 │   ├── game/
-│   │   ├── GameManager.ts         # Phaserゲーム設定・管理
-│   │   ├── PuyoGame.ts            # スコアアタック用シーン
-│   │   ├── GameField.ts           # フィールド管理・連鎖処理
-│   │   ├── PuyoPair.ts            # ぷよペア管理・回転処理・2手制約
-│   │   ├── GTRPatterns.ts         # GTR検出・評価システム
-│   │   ├── GTRScoringConfig.ts    # 評価点数設定ファイル
-│   │   ├── GuideManager.ts        # ガイド状態管理
-│   │   ├── GTRGuidePatterns.ts    # GTR完成形サンプル集
-│   │   ├── GameHistory.ts         # ゲーム履歴管理（巻き戻し用）
+│   │   ├── GameManager.ts              # Phaserゲーム設定・管理
+│   │   ├── PuyoGame.ts                 # スコアアタック用シーン
+│   │   ├── GameField.ts                # フィールド管理・連鎖処理
+│   │   ├── PuyoPair.ts                 # ぷよペア管理・回転処理・2手制約
+│   │   ├── PuyoRenderer.ts             # ぷよテクスチャ生成（通常+ゴースト）
+│   │   ├── VisualConfig.ts             # 統一レイアウト・カラー定数
+│   │   ├── GTRPatterns.ts              # GTR検出・評価システム
+│   │   ├── GTRScoringConfig.ts         # 評価点数設定ファイル
+│   │   ├── PlacementAdvisor.ts         # 最適配置推薦アルゴリズム
+│   │   ├── PlacementAdvisorConfig.ts   # 推薦スコアリング定数
+│   │   ├── GuideManager.ts             # ガイド状態管理
+│   │   ├── GTRGuidePatterns.ts         # GTR完成形サンプル集
+│   │   ├── GameHistory.ts              # ゲーム履歴管理（巻き戻し用）
 │   │   ├── scenes/
-│   │   │   ├── MenuScene.ts           # メニューシーン（非使用）
-│   │   │   └── GuidedPracticeScene.ts # ガイド付き練習シーン
-│   │   └── types.ts               # 型定義
+│   │   │   ├── MenuScene.ts            # メニューシーン（非使用）
+│   │   │   └── GuidedPracticeScene.ts  # ガイド付き練習シーン
+│   │   └── types.ts                    # 型定義
 │   ├── lib/
-│   │   ├── supabase.ts            # Supabaseクライアント
-│   │   └── test-connection.ts     # 接続テスト機能
-│   ├── App.tsx                   # メインアプリケーション・SPA構成管理
-│   ├── main.tsx                  # エントリーポイント
-│   └── index.css                 # Tailwind CSS
+│   │   ├── supabase.ts                 # Supabaseクライアント
+│   │   └── test-connection.ts          # 接続テスト機能
+│   ├── App.tsx                         # メインアプリケーション・SPA構成管理
+│   ├── main.tsx                        # エントリーポイント
+│   └── index.css                       # Tailwind CSS
 ├── sql/
-│   └── initial-setup.sql         # データベース初期設定
+│   └── initial-setup.sql               # データベース初期設定
 ├── docs/
-│   ├── layout-design.md          # レイアウト設計書
-│   └── PUYO-GENERATION.md        # 2手制約システム仕様書
-├── public/                       # 静的ファイル
-└── tests/                        # テストコード（未実装）
+│   ├── README.md                       # ドキュメント一覧
+│   ├── GAME-MODES.md                   # ゲームモード仕様書
+│   ├── GTR-PATTERNS.md                 # GTRパターン定義
+│   ├── GTR-SCORING-SYSTEM.md           # GTR評価システム設計
+│   ├── GTR-VISUAL-GUIDE.md             # GTR視覚的ガイド
+│   ├── PUYO-GENERATION.md              # 2手制約システム仕様書
+│   ├── layout-design.md                # レイアウト設計書
+│   └── progress-report.md              # 開発進捗レポート
+├── tasks/                              # アクティブな仕様書
+│   └── archive/                        # 完了仕様書アーカイブ
+├── public/                             # 静的ファイル
+└── tests/                              # テストコード（未実装）
 ```
 
 ## UI構成（SPA設計）
@@ -129,8 +142,11 @@ gtr-training/
 
 ## 開発ガイドライン
 
-### コード規約
+### 言語
+- **応答は必ず日本語で行うこと**
 - 日本語でのコメントを推奨（プロジェクトが日本語中心のため）
+
+### コード規約
 - 関数名・変数名は英語（一般的な命名規則に従う）
 - GTR関連の専門用語は統一した表記を使用
 - TypeScriptの使用を推奨（型安全性のため）
@@ -223,10 +239,22 @@ npm run type-check
   - 設定ファイル分離（GTRScoringConfig.ts）でチューニング容易
   - 評価条件分岐にコメント付き
 
+#### **配置アドバイザー**（PlacementAdvisor）
+- フィールド状態+現在のぷよペアから最適配置を推薦
+- 3フェーズ自動検出（折り返し構築→連鎖尾→完成）
+- 5要素スコアリング（折り返し進捗、連鎖尾、連結、高さ、連鎖シミュ）
+- ゴースト表示（半透明ぷよ+パルスアニメーション）
+- Gキーで ON/OFF 切替
+- 設定ファイル分離（PlacementAdvisorConfig.ts）
+
 #### **UI/UX**
 - **レスポンシブデザイン**
-  - ガイド付きモード：800×800px（ガイド表示エリア付き）
-  - スコアアタック：600×800px（従来サイズ）
+  - ガイド付きモード：900×800px（ガイド表示エリア+ゴースト付き）
+  - スコアアタック：640×800px
+- **ビジュアルシステム**
+  - PuyoRenderer: 目付きぷよテクスチャ（3段グラデーション+光沢+ゴースト）
+  - VisualConfig: 統一レイアウト定数（48pxセル、カラーパレット）
+  - アニメーション：着地バウンス、連鎖消滅+パーティクル、スコアフロート
 - **操作フィードバック**
   - インタラクティブな評価画面（Space/Escキー選択）
   - ポーズ画面表示
@@ -275,6 +303,7 @@ npm run type-check
 - **↑** : 巻き戻し（1手戻る）
 - **P** : ポーズ/再開
 - **F** : 自由落下ON/OFF（画面左上に状態表示）
+- **G** : 配置アドバイザーON/OFF（推薦位置ゴースト表示）
 - **Space** : GTR評価（詳細結果表示）
 - **評価画面**：Space（続ける）/ Esc（TOPへ戻る）
 
@@ -300,8 +329,12 @@ npm run type-check
 - [REQUIREMENT.md](./REQUIREMENT.md) - 詳細な要件定義
 - [ARCHITECTURE.md](./ARCHITECTURE.md) - 技術設計書
 - [TECH_RECOMMENDATION.md](./TECH_RECOMMENDATION.md) - 技術選定の詳細と理由
+- [docs/README.md](./docs/README.md) - ドキュメント一覧
+- [docs/GAME-MODES.md](./docs/GAME-MODES.md) - ゲームモード仕様書
+- [docs/GTR-SCORING-SYSTEM.md](./docs/GTR-SCORING-SYSTEM.md) - GTR評価システム設計
 - [docs/PUYO-GENERATION.md](./docs/PUYO-GENERATION.md) - 2手制約システム仕様書
-- [note.md](./note.md) - ゲームモード仕様とガイドシステム
+- [note.md](./note.md) - UI設計とSPA構成
 - [src/game/GTRScoringConfig.ts](./src/game/GTRScoringConfig.ts) - 評価点数設定ファイル
+- [src/game/PlacementAdvisorConfig.ts](./src/game/PlacementAdvisorConfig.ts) - 推薦スコアリング定数
 - [src/game/GTRGuidePatterns.ts](./src/game/GTRGuidePatterns.ts) - GTR完成形サンプル集
 - ぷよぷよ公式ルール

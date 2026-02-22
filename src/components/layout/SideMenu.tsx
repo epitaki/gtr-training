@@ -51,39 +51,41 @@ const menuItems: MenuItem[] = [
 
 export default function SideMenu({ currentMode, onSelectMode }: SideMenuProps) {
   return (
-    <aside className="w-64 bg-gray-900 text-white fixed left-0 top-16 bottom-0 overflow-y-auto shadow-xl">
+    <aside className="w-64 bg-puyo-dark text-white fixed left-0 top-16 bottom-0 overflow-y-auto shadow-xl font-puyo">
       <nav className="py-4">
         <div className="px-4 mb-6">
-          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+          <h2 className="text-xs font-bold text-puyo-yellow uppercase tracking-wider">
             メニュー
           </h2>
         </div>
 
-        <ul className="space-y-1">
+        <ul className="space-y-1 px-2">
           {menuItems.map((item) => (
             <li key={item.id}>
               <button
                 onClick={() => item.available && onSelectMode(item.id)}
                 disabled={!item.available}
                 className={`
-                  w-full text-left px-4 py-3 flex items-start gap-3 transition-colors
+                  w-full text-left px-3 py-3 flex items-start gap-3 transition-all rounded-xl
                   ${
                     currentMode === item.id
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-puyo-pink text-white shadow-lg shadow-puyo-pink/30'
                       : item.available
-                      ? 'hover:bg-gray-800 text-gray-300'
-                      : 'text-gray-600 cursor-not-allowed'
+                      ? 'hover:bg-puyo-dark-light text-gray-300 hover:text-white'
+                      : 'text-purple-400/40 cursor-not-allowed'
                   }
                 `}
               >
                 <span className="text-2xl">{item.icon}</span>
                 <div className="flex-1">
-                  <div className="font-medium">{item.label}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">
+                  <div className="font-bold">{item.label}</div>
+                  <div className={`text-xs mt-0.5 ${
+                    currentMode === item.id ? 'text-white/70' : 'text-purple-300/60'
+                  }`}>
                     {item.description}
                   </div>
                   {!item.available && (
-                    <span className="text-xs text-red-400 mt-1 inline-block">
+                    <span className="text-xs text-puyo-pink/60 mt-1 inline-block">
                       （未実装）
                     </span>
                   )}
@@ -95,11 +97,11 @@ export default function SideMenu({ currentMode, onSelectMode }: SideMenuProps) {
 
         {/* ユーザー情報エリア（将来実装） */}
         <div className="mt-8 px-4">
-          <div className="border-t border-gray-700 pt-4">
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+          <div className="border-t border-puyo-dark-light pt-4">
+            <h3 className="text-xs font-bold text-puyo-yellow uppercase tracking-wider mb-2">
               ユーザー情報
             </h3>
-            <p className="text-sm text-gray-500">ログインしていません</p>
+            <p className="text-sm text-purple-300/50">ログインしていません</p>
           </div>
         </div>
       </nav>

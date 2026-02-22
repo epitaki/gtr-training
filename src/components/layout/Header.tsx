@@ -15,11 +15,11 @@ export default function Header({ onLogoClick }: HeaderProps) {
   }
 
   return (
-    <header className="h-16 bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-50">
+    <header className="h-16 bg-gradient-to-r from-puyo-red via-puyo-pink to-puyo-yellow shadow-lg flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-50">
       {/* サイトロゴ */}
       <button
         onClick={handleLogoClick}
-        className="text-white text-2xl font-bold hover:text-gray-200 transition-colors"
+        className="font-puyo font-extrabold text-3xl text-white drop-shadow-md tracking-wide hover:scale-105 transition-transform"
       >
         GTR-training
       </button>
@@ -28,7 +28,7 @@ export default function Header({ onLogoClick }: HeaderProps) {
       <div className="relative">
         <button
           onClick={() => setShowAccountMenu(!showAccountMenu)}
-          className="w-10 h-10 rounded-full bg-white text-blue-600 flex items-center justify-center hover:bg-gray-100 transition-colors"
+          className="w-10 h-10 rounded-full bg-white/90 text-puyo-pink flex items-center justify-center hover:bg-white hover:scale-110 transition-all shadow-md"
           aria-label="アカウントメニュー"
         >
           <svg
@@ -48,21 +48,21 @@ export default function Header({ onLogoClick }: HeaderProps) {
 
         {/* アカウントメニュー（ドロップダウン） */}
         {showAccountMenu && (
-          <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2">
-            <div className="px-4 py-2 border-b border-gray-200">
+          <div className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border-2 border-puyo-pink/20 py-2 font-puyo">
+            <div className="px-4 py-2 border-b border-puyo-pink/10">
               <p className="text-sm text-gray-500">ログインしていません</p>
             </div>
-            <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+            <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-puyo-bg transition-colors">
               ログイン
             </button>
-            <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+            <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-puyo-bg transition-colors">
               新規登録
             </button>
-            <div className="border-t border-gray-200 mt-2 pt-2">
-              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+            <div className="border-t border-puyo-pink/10 mt-2 pt-2">
+              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-puyo-bg transition-colors">
                 設定
               </button>
-              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-puyo-bg transition-colors">
                 ヘルプ
               </button>
             </div>

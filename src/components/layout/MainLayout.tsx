@@ -16,7 +16,7 @@ export default function MainLayout({
   children,
 }: MainLayoutProps) {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-puyo-bg">
       {/* ヘッダー：高さ64px、固定、全幅 */}
       <Header onLogoClick={onLogoClick} />
 

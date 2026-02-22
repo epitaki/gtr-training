@@ -56,15 +56,18 @@
 - 実装：[src/components/TopPage.tsx](src/components/TopPage.tsx)
 
 ### 初心者用ガイド付きGTR練習 ✅
-- ゲーム画面サイズ：800×800px
+- ゲーム画面サイズ：900×800px
 - リアルタイムガイド表示
 - 巻き戻し・ポーズ機能付き
-- 詳細評価システム
+- 自由落下ON/OFF（Fキー）
+- 配置アドバイザー・ゴースト表示（Gキー）
+- 詳細評価システム（成功✓/失敗✗の両方を表示）
 - 実装：[src/components/GuidedGame.tsx](src/components/GuidedGame.tsx)
 
 ### GTRスコアアタック ✅
-- ゲーム画面サイズ：600×800px
+- ゲーム画面サイズ：640×800px
 - 5GTR完成を目指す高速プレイモード
+- 自由落下ON/OFF（Fキー）
 - インタラクティブな評価画面
 - 実装：[src/components/ScoreAttackGame.tsx](src/components/ScoreAttackGame.tsx)
 

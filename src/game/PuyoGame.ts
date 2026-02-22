@@ -489,6 +489,16 @@ export default class PuyoGame extends Phaser.Scene {
           })
           // パーティクル
           this.emitParticles(currentSprite.x, currentSprite.y)
+        } else if (color && currentSprite && currentSprite.texture.key !== `puyo-${color}`) {
+          // 重力落下で色が変わった → スプライト差し替え
+          currentSprite.destroy()
+          const sprite = this.add.sprite(
+            this.FIELD_X + x * this.CELL_SIZE + this.CELL_SIZE / 2,
+            this.FIELD_Y + y * this.CELL_SIZE + this.CELL_SIZE / 2,
+            `puyo-${color}`
+          )
+          sprite.setDisplaySize(this.CELL_SIZE - FIELD_CONFIG.CELL_GAP, this.CELL_SIZE - FIELD_CONFIG.CELL_GAP)
+          this.fieldSprites[y][x] = sprite
         }
       }
     }

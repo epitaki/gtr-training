@@ -28,11 +28,11 @@ export default function GuidedGame({ onExit }: GuidedGameProps) {
   }, [onExit])
 
   return (
-    <div className="flex items-center justify-center py-4 min-h-[calc(100vh-6rem)] bg-gray-900">
+    <div className="flex items-center justify-center py-4 min-h-[calc(100vh-6rem)] bg-puyo-dark">
       <div
         ref={containerRef}
         id="phaser-game"
-        className="rounded-lg overflow-hidden shadow-2xl border border-gray-700"
+        className="rounded-2xl overflow-hidden shadow-2xl border-2 border-puyo-green/30"
         style={{ width: 900, height: 800 }}
       />
     </div>

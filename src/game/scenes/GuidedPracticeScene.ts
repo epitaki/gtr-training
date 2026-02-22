@@ -7,6 +7,7 @@ import { GuideManager } from '../GuideManager'
 import { GameHistory } from '../GameHistory'
 import { PuyoRenderer } from '../PuyoRenderer'
 import { FIELD_CONFIG, LAYOUT_GUIDED, NEXT_AREA_CONFIG, TEXT_STYLES, ANIMATION_CONFIG } from '../VisualConfig'
+import { PlacementAdvisor, PlacementAdvice } from '../PlacementAdvisor'
 
 export default class GuidedPracticeScene extends Phaser.Scene {
   private cursors?: Phaser.Types.Input.Keyboard.CursorKeys
@@ -17,6 +18,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
   private pKey?: Phaser.Input.Keyboard.Key
   private upKey?: Phaser.Input.Keyboard.Key
   private fKey?: Phaser.Input.Keyboard.Key
+  private gKey?: Phaser.Input.Keyboard.Key
 
   // ゲーム状態
   private gameField: GameFieldManager
@@ -26,6 +28,8 @@ export default class GuidedPracticeScene extends Phaser.Scene {
   private isPaused: boolean = false
   private isShowingResult: boolean = false
   private isGravityEnabled: boolean = true
+  private isAdvisorEnabled: boolean = true
+  private currentAdvice: PlacementAdvice | null = null
 
   // 描画関連
   private fieldSprites: (Phaser.GameObjects.Sprite | null)[][] = []
@@ -33,9 +37,11 @@ export default class GuidedPracticeScene extends Phaser.Scene {
   private nextPairSprites: { main?: Phaser.GameObjects.Sprite; sub?: Phaser.GameObjects.Sprite } = {}
   private nextNextPairSprites: { main?: Phaser.GameObjects.Sprite; sub?: Phaser.GameObjects.Sprite } = {}
   private guideDisplay?: Phaser.GameObjects.Container
+  private ghostSprites: { main?: Phaser.GameObjects.Sprite; sub?: Phaser.GameObjects.Sprite } = {}
   private pauseOverlay?: Phaser.GameObjects.Rectangle
   private pauseText?: Phaser.GameObjects.Text
   private gravityStatusText?: Phaser.GameObjects.Text
+  private advisorStatusText?: Phaser.GameObjects.Text
 
   // レイアウト設定（VisualConfigから）
   private readonly CELL_SIZE = FIELD_CONFIG.CELL_SIZE
@@ -95,7 +101,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     }).setOrigin(0.5)
 
     // 操作説明（コンパクト表示）
-    this.add.text(canvasW / 2, 60, '← → ↓ 移動 | Z X 回転 | ↑ 巻き戻し | P ポーズ | F 落下 | Space 評価 | Esc 戻る', {
+    this.add.text(canvasW / 2, 60, '← → ↓ 移動 | Z X 回転 | ↑ 巻き戻し | P ポーズ | F 落下 | G アドバイス | Space 評価 | Esc 戻る', {
       ...TEXT_STYLES.subtitle,
       fontSize: '12px',
     }).setOrigin(0.5)
@@ -121,6 +127,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     this.pKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.P)
     this.upKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.UP)
     this.fKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.F)
+    this.gKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.G)
 
     // 自由落下状態表示
     this.gravityStatusText = this.add.text(10, 10, '自由落下: ON', {
@@ -131,6 +138,16 @@ export default class GuidedPracticeScene extends Phaser.Scene {
       strokeThickness: 2
     })
     this.gravityStatusText.setDepth(100)
+
+    // アドバイザー状態表示
+    this.advisorStatusText = this.add.text(10, 32, 'アドバイザー: ON (G)', {
+      fontSize: '16px',
+      color: '#44ddff',
+      fontFamily: TEXT_STYLES.title.fontFamily,
+      stroke: '#000000',
+      strokeThickness: 2
+    })
+    this.advisorStatusText.setDepth(100)
 
     // ゲーム開始
     this.startGame()
@@ -149,6 +166,10 @@ export default class GuidedPracticeScene extends Phaser.Scene {
 
     if (Phaser.Input.Keyboard.JustDown(this.fKey!)) {
       this.toggleGravity()
+    }
+
+    if (Phaser.Input.Keyboard.JustDown(this.gKey!)) {
+      this.toggleAdvisor()
     }
 
     if (this.isPaused || this.gameState.gameOver || this.isShowingResult) return
@@ -201,6 +222,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
       this.guideManager.updateState(this.gameField.getField())
       this.updateGuide()
       this.updateDisplay()
+      this.updateAdvice()
     }
   }
 
@@ -280,6 +302,8 @@ export default class GuidedPracticeScene extends Phaser.Scene {
   private landCurrentPair() {
     if (!this.gameState.currentPair) return
 
+    this.clearGhostSprites()
+
     const pair = this.gameState.currentPair
     const positions = PuyoPairManager.getRotatedPositions(pair)
 
@@ -338,6 +362,8 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     this.gameState.currentPair = this.gameState.nextPair
     this.gameState.nextPair = this.gameState.nextNextPair
     this.gameState.nextNextPair = newTwoHandCombination.pair1
+
+    this.updateAdvice()
   }
 
   private evaluateGTR() {
@@ -531,10 +557,12 @@ export default class GuidedPracticeScene extends Phaser.Scene {
 
   private resetGame() {
     this.gameField.clear()
+    this.clearGhostSprites()
     this.clearAllSprites()
     this.gameState = this.createInitialGameState()
     this.gameHistory.clear()
     this.guideManager.reset()
+    this.currentAdvice = null
     this.lastFallTime = this.time.now
   }
 
@@ -543,6 +571,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     this.guideManager.initialize(this.gameState.currentPair!, this.gameState.nextPair!)
     this.updateGuide()
     this.updateDisplay()
+    this.updateAdvice()
   }
 
   private drawField() {
@@ -754,6 +783,16 @@ export default class GuidedPracticeScene extends Phaser.Scene {
             onComplete: () => currentSprite.destroy(),
           })
           this.emitParticles(currentSprite.x, currentSprite.y)
+        } else if (color && currentSprite && currentSprite.texture.key !== `puyo-${color}`) {
+          // 重力落下で色が変わった → スプライト差し替え
+          currentSprite.destroy()
+          const sprite = this.add.sprite(
+            this.FIELD_X + x * this.CELL_SIZE + this.CELL_SIZE / 2,
+            this.FIELD_Y + y * this.CELL_SIZE + this.CELL_SIZE / 2,
+            `puyo-${color}`
+          )
+          sprite.setDisplaySize(this.CELL_SIZE - FIELD_CONFIG.CELL_GAP, this.CELL_SIZE - FIELD_CONFIG.CELL_GAP)
+          this.fieldSprites[y][x] = sprite
         }
       }
     }
@@ -951,6 +990,87 @@ export default class GuidedPracticeScene extends Phaser.Scene {
         ease: 'Quad.easeOut',
         onComplete: () => particle.destroy(),
       })
+    }
+  }
+
+  // --- アドバイザー機能 ---
+
+  private toggleAdvisor() {
+    this.isAdvisorEnabled = !this.isAdvisorEnabled
+
+    if (this.advisorStatusText) {
+      if (this.isAdvisorEnabled) {
+        this.advisorStatusText.setText('アドバイザー: ON (G)')
+        this.advisorStatusText.setColor('#44ddff')
+        this.updateAdvice()
+      } else {
+        this.advisorStatusText.setText('アドバイザー: OFF (G)')
+        this.advisorStatusText.setColor('#ff4444')
+        this.clearGhostSprites()
+      }
+    }
+  }
+
+  private updateAdvice() {
+    if (!this.isAdvisorEnabled || !this.gameState.currentPair) {
+      this.clearGhostSprites()
+      return
+    }
+
+    const field = this.gameField.getField()
+    this.currentAdvice = PlacementAdvisor.getAdvice(field, this.gameState.currentPair)
+    this.updateGhostDisplay()
+  }
+
+  private updateGhostDisplay() {
+    this.clearGhostSprites()
+
+    if (!this.currentAdvice?.bestPlacement) return
+
+    const best = this.currentAdvice.bestPlacement
+    const landing = best.landing
+    const pair = this.gameState.currentPair
+    if (!pair) return
+
+    // mainゴースト
+    const mainX = this.FIELD_X + landing.mainPos.x * this.CELL_SIZE + this.CELL_SIZE / 2
+    const mainY = this.FIELD_Y + landing.mainPos.y * this.CELL_SIZE + this.CELL_SIZE / 2
+    this.ghostSprites.main = this.add.sprite(mainX, mainY, `puyo-ghost-${pair.main.color}`)
+    this.ghostSprites.main.setDisplaySize(this.CELL_SIZE - FIELD_CONFIG.CELL_GAP, this.CELL_SIZE - FIELD_CONFIG.CELL_GAP)
+    this.ghostSprites.main.setAlpha(0.4)
+    this.ghostSprites.main.setDepth(5)
+
+    // subゴースト
+    const subX = this.FIELD_X + landing.subPos.x * this.CELL_SIZE + this.CELL_SIZE / 2
+    const subY = this.FIELD_Y + landing.subPos.y * this.CELL_SIZE + this.CELL_SIZE / 2
+    this.ghostSprites.sub = this.add.sprite(subX, subY, `puyo-ghost-${pair.sub.color}`)
+    this.ghostSprites.sub.setDisplaySize(this.CELL_SIZE - FIELD_CONFIG.CELL_GAP, this.CELL_SIZE - FIELD_CONFIG.CELL_GAP)
+    this.ghostSprites.sub.setAlpha(0.4)
+    this.ghostSprites.sub.setDepth(5)
+
+    // パルスアニメーション
+    for (const sprite of [this.ghostSprites.main, this.ghostSprites.sub]) {
+      this.tweens.add({
+        targets: sprite,
+        alpha: { from: 0.3, to: 0.5 },
+        duration: 800,
+        ease: 'Sine.easeInOut',
+        yoyo: true,
+        repeat: -1,
+      })
+    }
+  }
+
+  private clearGhostSprites() {
+    if (this.ghostSprites.main) {
+      this.tweens.killTweensOf(this.ghostSprites.main)
+      this.ghostSprites.main.destroy()
+      this.ghostSprites.main = undefined
+    }
+    if (this.ghostSprites.sub) {
+      this.tweens.killTweensOf(this.ghostSprites.sub)
+      this.ghostSprites.sub.destroy()
+      this.ghostSprites.sub = undefined
     }
   }
 

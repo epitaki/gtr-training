@@ -33,22 +33,22 @@ function App() {
         return <ScoreAttackGame onExit={handleExitGame} />
       case 'battle':
         return (
-          <div className="text-center py-12">
+          <div className="text-center py-12 font-puyo">
             <div className="text-6xl mb-4">⚔️</div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            <h2 className="text-2xl font-extrabold text-puyo-dark mb-2">
               対戦モード
             </h2>
-            <p className="text-gray-600">この機能は開発中です</p>
+            <p className="text-puyo-dark/50">この機能は開発中です</p>
           </div>
         )
       case 'stats':
         return (
-          <div className="text-center py-12">
+          <div className="text-center py-12 font-puyo">
             <div className="text-6xl mb-4">📊</div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            <h2 className="text-2xl font-extrabold text-puyo-dark mb-2">
               統計情報
             </h2>
-            <p className="text-gray-600">この機能は開発中です</p>
+            <p className="text-puyo-dark/50">この機能は開発中です</p>
           </div>
         )
       default:
