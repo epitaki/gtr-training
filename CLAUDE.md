@@ -335,6 +335,7 @@ npm run type-check
 - [docs/PUYO-GENERATION.md](./docs/PUYO-GENERATION.md) - 2手制約システム仕様書
 - [note.md](./note.md) - UI設計とSPA構成
 - [src/game/GTRScoringConfig.ts](./src/game/GTRScoringConfig.ts) - 評価点数設定ファイル
+- [docs/PLACEMENT-ADVISOR.md](./docs/PLACEMENT-ADVISOR.md) - 配置推薦システム設計書
 - [src/game/PlacementAdvisorConfig.ts](./src/game/PlacementAdvisorConfig.ts) - 推薦スコアリング定数
 - [src/game/GTRGuidePatterns.ts](./src/game/GTRGuidePatterns.ts) - GTR完成形サンプル集
 - ぷよぷよ公式ルール

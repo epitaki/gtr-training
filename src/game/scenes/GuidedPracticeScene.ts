@@ -1018,7 +1018,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     }
 
     const field = this.gameField.getField()
-    this.currentAdvice = PlacementAdvisor.getAdvice(field, this.gameState.currentPair)
+    this.currentAdvice = PlacementAdvisor.getAdvice(field, this.gameState.currentPair, this.gameState.nextPair ?? undefined)
     this.updateGhostDisplay()
   }
 
