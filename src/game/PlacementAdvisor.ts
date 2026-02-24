@@ -511,6 +511,15 @@ export class PlacementAdvisor {
       score += S.BALANCED_HEIGHT_BONUS
     }
 
+    // 左偏り防止: col3(4列目, x=3)がcol4(5列目)またはcol5(6列目)より
+    // 2段以上高い場合に、col3への追加配置をペナルティ
+    // 理由: 連鎖尾がcol3に偏るとY字が左に1列ズレた形になる
+    const [h3, h4, h5] = heights
+    const placedInCol3 = [landing.mainPos, landing.subPos].some(p => p.x === 3)
+    if (placedInCol3 && (h3 > h4 + 1 || h3 > h5 + 1)) {
+      score += S.LEFT_BIAS_PENALTY
+    }
+
     return score
   }
 

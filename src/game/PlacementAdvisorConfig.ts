@@ -47,6 +47,7 @@ export const ADVISOR_SCORING = {
     SECOND_ROW_BONUS: 3,             // 2段目(h-2)配置ボーナス
     LAYER_BONUS: 5,                  // 列に2色以上のレイヤーがあるボーナス
     BALANCED_HEIGHT_BONUS: 5,        // col3-5の高さ差≤1
+    LEFT_BIAS_PENALTY: -10,          // col3(4列目)がcol4-5より2段以上高い場合のペナルティ（左寄り連鎖尾防止）
   },
   CONNECTIVITY: {
     GROUP_SIZE_2: 10,
