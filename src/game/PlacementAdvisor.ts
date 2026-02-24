@@ -483,6 +483,14 @@ export class PlacementAdvisor {
           }
         }
 
+        // 同色カラムボーナス: 同じ列に既に同色ぷよがあれば縦1色カラム形成（Y字・L字促進）
+        const colBelow = pos.y + 1
+        const colAbove = pos.y - 1
+        if ((colBelow < h && gridAfter[colBelow]?.[pos.x] === color) ||
+            (colAbove >= 0 && gridAfter[colAbove]?.[pos.x] === color)) {
+          score += S.SAME_COLOR_COLUMN_BONUS
+        }
+
         // 底部充填ボーナス
         if (pos.y === h - 1) score += S.BOTTOM_ROW_BONUS
         else if (pos.y === h - 2) score += S.SECOND_ROW_BONUS

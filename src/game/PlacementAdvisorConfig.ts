@@ -32,7 +32,7 @@ export const ADVISOR_SCORING = {
     PRIORITY_3_MATCH: 30,      // 上段（h-3）正解 ※TOO_HIGH(-20)を克服して連鎖尾に勝つ強さ
     PREREQUISITE_PENALTY: 0.3, // 前提未充足時のボーナス倍率（P1→P2→P3の構築順を強制）
     WRONG_COLOR_PENALTY: -50,  // 目標位置に間違った色（P2_MATCH+25を完全に打ち消す強さ）
-    OUTSIDE_FOLD_PENALTY: 0,   // 折り返しエリア外（ペナルティなし: 連鎖尾を積極的に活用）
+    OUTSIDE_FOLD_PENALTY: 0,   // 折り返しエリア外（ペナルティなし: 折り返し構築中のoff-colorぷよを連鎖尾に効率的に配置）
     NON_TARGET_FOLD_PENALTY: -7,  // 折り返しエリア内だがテンプレート外（コンパニオン配置を許容しつつ暴発防止はGROUP_SIZE_3_FOLDに委任）
     STEPPING_STONE_BONUS: 15,  // (2,12)踏み台ボーナス: P1完了後にのみ適用し(2,11)到達を強力促進
     TOO_HIGH_ON_FOLD_SIDE: -20,// col0-2でh-4以上
@@ -46,8 +46,9 @@ export const ADVISOR_SCORING = {
     BOTTOM_ROW_BONUS: 5,             // 最下段(h-1)配置ボーナス
     SECOND_ROW_BONUS: 3,             // 2段目(h-2)配置ボーナス
     LAYER_BONUS: 5,                  // 列に2色以上のレイヤーがあるボーナス
-    BALANCED_HEIGHT_BONUS: 5,        // col3-5の高さ差≤1
+    BALANCED_HEIGHT_BONUS: 10,       // col3-5の高さ差≤1（Y字・座布団への誘導を強化）
     LEFT_BIAS_PENALTY: -10,          // col3(4列目)がcol4-5より2段以上高い場合のペナルティ（左寄り連鎖尾防止）
+    SAME_COLOR_COLUMN_BONUS: 8,      // 同じ列に同色ぷよが既にある場合のボーナス（Y字・L字の縦1色カラム形成）
   },
   CONNECTIVITY: {
     GROUP_SIZE_2: 10,
