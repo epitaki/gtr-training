@@ -316,10 +316,6 @@ export default class GuidedPracticeScene extends Phaser.Scene {
 
     this.processChain()
 
-    // 連鎖処理完了後の状態を履歴に保存
-    this.gameState.field = this.gameField.getField()
-    this.gameHistory.saveState(this.gameState)
-
     this.spawnNextPair()
 
     this.guideManager.updateState(this.gameField.getField())
@@ -362,6 +358,11 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     this.gameState.currentPair = this.gameState.nextPair
     this.gameState.nextPair = this.gameState.nextNextPair
     this.gameState.nextNextPair = newTwoHandCombination.pair1
+
+    // 新ペア生成後に状態を保存: currentPairがトップ位置の新ペアになってから保存することで
+    // 巻き戻し時に「着地済みペアが再着地して連鎖発火」するバグを防ぐ
+    this.gameState.field = this.gameField.getField()
+    this.gameHistory.saveState(this.gameState)
 
     this.updateAdvice()
   }
@@ -569,6 +570,11 @@ export default class GuidedPracticeScene extends Phaser.Scene {
   private startGame() {
     this.lastFallTime = this.time.now
     this.guideManager.initialize(this.gameState.currentPair!, this.gameState.nextPair!)
+
+    // 初期状態を保存（1手目を巻き戻せるようにするため）
+    this.gameState.field = this.gameField.getField()
+    this.gameHistory.saveState(this.gameState)
+
     this.updateGuide()
     this.updateDisplay()
     this.updateAdvice()
