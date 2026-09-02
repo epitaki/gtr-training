@@ -5,7 +5,7 @@ export class GTRGuidePatterns {
     return [
       ['A', 'B', 'C', '_', '_'],
       ['A', 'A', 'B', 'C', 'C'],
-      ['B', 'B', 'C', '_', '_']
+      ['B', 'B', 'C', 'D', 'D']
     ]
   }
   

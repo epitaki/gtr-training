@@ -13,6 +13,7 @@ export interface GuideContent {
   comment: string
   pattern?: string[][]
   description?: string
+  colorMap?: Record<string, PuyoColor>
 }
 
 export class GuideManager {
@@ -28,26 +29,19 @@ export class GuideManager {
     this.currentState = GuideState.INITIAL_TWO_HANDS
   }
   
-  updateState(field: Field) {
+  updateState(field: Field, guidedTargetComplete: boolean) {
     // フィールドの状態を分析して適切なガイド状態に遷移
     const gtrResult = GTRDetector.detectGTR(field.grid)
-    
-    if (this.currentState === GuideState.INITIAL_TWO_HANDS) {
-      // 最初の2手が置かれたかチェック
-      const puyoCount = this.countPuyos(field)
-      if (puyoCount >= 4) {
-        this.currentState = GuideState.BASIC_PATTERN
-      }
-    } else if (this.currentState === GuideState.BASIC_PATTERN) {
-      // 基本形ができたかチェック
-      if (gtrResult.hasBasicPattern) {
-        this.currentState = GuideState.CHAIN_TAIL
-      }
-    } else if (this.currentState === GuideState.CHAIN_TAIL) {
-      // 高さだけの骨格名ではなく、標準発火点から3連鎖することを完成条件にする。
-      if (gtrResult.chainCount >= 3) {
-        this.currentState = GuideState.COMPLETE_GTR
-      }
+
+    // 盤面から毎回再判定し、巻き戻し時にも正しい状態へ戻す。
+    if (this.countPuyos(field) < 4) {
+      this.currentState = GuideState.INITIAL_TWO_HANDS
+    } else if (!gtrResult.hasBasicPattern) {
+      this.currentState = GuideState.BASIC_PATTERN
+    } else if (!gtrResult.isGTR || !guidedTargetComplete) {
+      this.currentState = GuideState.CHAIN_TAIL
+    } else {
+      this.currentState = GuideState.COMPLETE_GTR
     }
   }
   
@@ -113,8 +107,22 @@ export class GuideManager {
     return {
       comment: '最初の2手を置こう!',
       pattern: guidePattern,
-      description: 'GTRの土台となる最初の配置です'
+      description: 'GTRの土台となる最初の配置です',
+      colorMap: this.createInitialColorMap(colors),
     }
+  }
+
+  private createInitialColorMap(colors: PuyoColor[]): Record<string, PuyoColor> {
+    const ordered = [...new Set(colors)]
+    const counts = ordered.map(color => ({
+      color,
+      count: colors.filter(item => item === color).length,
+      first: colors.indexOf(color),
+    })).sort((left, right) => right.count - left.count || left.first - right.first)
+    const symbols = ['A', 'B', 'C', 'D']
+    return Object.fromEntries(
+      symbols.map((symbol, index) => [symbol, counts[index]?.color ?? counts[0]?.color ?? PuyoColor.RED]),
+    )
   }
   
   private getBasicPatternGuide(): GuideContent {
@@ -133,7 +141,7 @@ export class GuideManager {
     return {
       comment: 'まずはY字形の連鎖尾を作ろう!',
       pattern: GTRGuidePatterns.getYPattern(),
-      description: '右側は縦の同色を意識。ゴーストの位置を優先してください。'
+      description: 'Cが3連鎖目、DはCを支えるぷよです。実際の色で表示しています。'
     }
   }
   

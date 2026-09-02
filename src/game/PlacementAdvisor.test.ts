@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { GamePhase, PlacementAdvisor } from './PlacementAdvisor'
+import { GTRDetector } from './GTRPatterns'
 import { PuyoColor, type GameField, type PuyoPair } from './types'
 
 const emptyGrid = () => Array.from(
@@ -105,5 +106,105 @@ describe('PlacementAdvisor', () => {
       PuyoColor.BLUE,
       PuyoColor.GREEN,
     ])
+  })
+
+  it('折り返しだけではGTR完成にしない', () => {
+    const grid = emptyGrid()
+    const A = PuyoColor.BLUE
+    const B = PuyoColor.GREEN
+
+    grid[12][0] = B
+    grid[12][1] = B
+    grid[11][0] = A
+    grid[11][1] = A
+    grid[11][2] = B
+    grid[10][0] = A
+    grid[10][1] = B
+
+    expect(GTRDetector.detectGTR(grid)).toMatchObject({
+      hasBasicPattern: true,
+      isGTR: false,
+      chainCount: 2,
+    })
+    expect(PlacementAdvisor.isGuidedTargetComplete(grid)).toBe(false)
+  })
+
+  it('支持ぷよを含むY字接続で3連鎖になる', () => {
+    const grid = emptyGrid()
+    const A = PuyoColor.BLUE
+    const B = PuyoColor.GREEN
+    const C = PuyoColor.RED
+    const D = PuyoColor.YELLOW
+
+    grid[12][0] = B
+    grid[12][1] = B
+    grid[12][2] = C
+    grid[12][3] = D
+    grid[12][4] = D
+    grid[11][0] = A
+    grid[11][1] = A
+    grid[11][2] = B
+    grid[11][3] = C
+    grid[11][4] = C
+    grid[10][0] = A
+    grid[10][1] = B
+    grid[10][2] = C
+
+    expect(PlacementAdvisor.getYJointPlan(grid)).toMatchObject({
+      colorC: C,
+      colorD: D,
+      missingColors: [],
+      matchedCells: 6,
+    })
+    expect(GTRDetector.detectGTR(grid)).toMatchObject({
+      hasBasicPattern: true,
+      isGTR: true,
+      chainCount: 3,
+    })
+    expect(PlacementAdvisor.isGuidedTargetComplete(grid)).toBe(true)
+  })
+
+  it('最初の2手からトレーニング色を固定する', () => {
+    const opening1 = pair(PuyoColor.BLUE, PuyoColor.BLUE)
+    const opening2 = pair(PuyoColor.RED, PuyoColor.YELLOW)
+
+    expect(PlacementAdvisor.createTrainingPlan(opening1, opening2)).toEqual({
+      colorA: PuyoColor.RED,
+      colorB: PuyoColor.BLUE,
+      colorC: PuyoColor.RED,
+      colorD: PuyoColor.BLUE,
+    })
+  })
+
+  it('Y字が残り1セルなら同色ペアにせず安全な支持色を組み合わせる', () => {
+    const grid = emptyGrid()
+    const A = PuyoColor.RED
+    const B = PuyoColor.BLUE
+    const trainingPlan = { colorA: A, colorB: B, colorC: A, colorD: B }
+
+    grid[12][0] = B
+    grid[12][1] = B
+    grid[12][2] = A
+    grid[12][3] = B
+    grid[12][4] = B
+    grid[11][0] = A
+    grid[11][1] = A
+    grid[11][2] = B
+    grid[11][3] = A
+    // (4,11) のCだけ未完成
+    grid[10][0] = A
+    grid[10][1] = B
+    grid[10][2] = A
+
+    expect(PlacementAdvisor.getGuidedPairColors(
+      grid,
+      PuyoColor.GREEN,
+      PuyoColor.YELLOW,
+      trainingPlan,
+    )).toEqual({
+      mainColor: A,
+      subColor: B,
+      stage: 'y_joint',
+    })
   })
 })

@@ -28,7 +28,7 @@ getAdvice(field, currentPair, nextPair?)
   │   ├─ scoreConnectivity()        ← ③ 同色連結スコア
   │   ├─ scoreHeightPenalty()       ← ④ 高さペナルティ
   │   ├─ scoreChainSimulation()     ← ⑤ 連鎖シミュレーション
-  │   └─ evaluateLookahead()        ← ⑥ ネクスト先読み（nextPairの最善評価）
+  │   └─ evaluateLookahead()        ← ⑥ NEXT/NEXTNEXT先読み（上位候補のビーム探索）
   │
   │   totalScore = Σ(スコア × フェーズ別重み) + lookaheadScore × DISCOUNT
   │
@@ -259,18 +259,21 @@ Y字は初心者向けの参考形として表示するが、列高だけでは�
 
 ---
 
-## 8. ネクスト先読み（evaluateLookahead）
+## 8. NEXT/NEXTNEXT先読み（evaluateLookahead）
 
-currentPairの配置を決定する際に、nextPairの最善スコアも考慮する1手先読みシステム。
+currentPairの配置を決定する際に、NEXTとNEXTNEXTを考慮する2手先読みシステム。
 
 ### 仕組み
 
 ```
 currentPairの各候補配置に対して:
-  1. gridAfterCurrent = 配置後のグリッド
-  2. nextPairの全配置候補を軽量スコアリング（chainSimはスキップ）
-  3. bestNextScore = nextPairの最善スコア
-  4. totalScore += bestNextScore × DISCOUNT(0.4)
+  1. gridAfterCurrent = 配置後に消去・重力を解決した安定グリッド
+  2. 安定グリッドからフェーズを再判定する
+  3. NEXTの全配置候補を軽量スコアリング（chainSimはスキップ）
+  4. 各候補を消去・重力で安定化する
+  5. NEXT上位4候補についてNEXTNEXTの全配置を評価
+  6. bestNextScore = NEXT + NEXTNEXT×0.4 の最大値
+  7. totalScore += bestNextScore × DISCOUNT(0.4)
 ```
 
 ### 設定
@@ -279,11 +282,13 @@ currentPairの各候補配置に対して:
 |------|-----|------|
 | `LOOKAHEAD.ENABLED` | true | 先読みの有効/無効 |
 | `LOOKAHEAD.DISCOUNT` | 0.4 | nextPairスコアの重み（currentの40%） |
+| `LOOKAHEAD.SECOND_DISCOUNT` | 0.4 | NEXTNEXTをNEXT内でさらに減衰 |
+| `LOOKAHEAD.BEAM_WIDTH` | 4 | NEXTNEXTを調べるNEXT上位配置数 |
 
 ### パフォーマンス
 
-- 計算量: ~22候補 × 22候補 = ~484回の軽量評価
-- chainSimをスキップして高速化（floodFill + 重力シミュ不要）
+- 計算量: current各候補につき、NEXT約22候補 + 上位4候補×NEXTNEXT約22候補
+- 先読みの形状評価ではchainSimを省くが、実ゲームと同じ盤面を渡すため各深度で消去・重力は解決する
 - getAdviceはフレーム毎ではなく手駒確定時のみ呼ばれるため許容範囲
 
 ### DISCOUNT値の根拠
@@ -421,6 +426,10 @@ if (!isFinite(bestScore)) {
 ---
 
 ## 12. シミュレーション結果
+
+> **注意:** 以下のv2〜v3.2の数値は旧成功条件「折り返し7セル検出」で測った履歴であり、
+> Y字またはGTR完成率としては無効です。現在の回帰値は
+> [GTR-RESEARCH.md](./GTR-RESEARCH.md#シミュレーション指標) を参照してください。
 
 10000ゲーム×ランダムペア生成（2手制約付き）での成功率（3回平均）:
 

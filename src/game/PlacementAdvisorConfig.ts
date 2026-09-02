@@ -36,10 +36,15 @@ export const ADVISOR_SCORING = {
     NON_TARGET_FOLD_PENALTY: -7,  // 折り返しエリア内だがテンプレート外（コンパニオン配置を許容しつつ暴発防止はGROUP_SIZE_3_FOLDに委任）
     STEPPING_STONE_BONUS: 15,  // (2,12)踏み台ボーナス: P1完了後にのみ適用し(2,11)到達を強力促進
     TOO_HIGH_ON_FOLD_SIDE: -20,// col0-2でh-4以上
+    TRIGGER_BLOCK_PENALTY: -250, // (0,h-4)の標準発火口を相方ぷよで塞がない
     P3_COMPANION_TOO_HIGH: -3, // P3テンプレート直上(h-4)のコンパニオンは軽減（P3縦置きを促進）
     CHAIN_TAIL_CONNECTION: 0,  // (2,h-3)連鎖尾接続点: P2(2,h-2)完了後はペナルティなし
   },
   CHAIN_TAIL: {
+    Y_TARGET_MATCH: 60,
+    // fold_buildingでは重み0.3なので、折り返し加点より強く予約セルを保護する。
+    Y_TARGET_WRONG_COLOR: -2500,
+    Y_JOINT_COMPLETE: 100,
     TOO_HIGH_PENALTY: -10,
     HORIZONTAL_ADJACENCY_BONUS: 8,   // 接続・連鎖尾領域の横方向同色隣接
     LAYER_BONUS: 5,                  // 列に2色以上のレイヤーがあるボーナス
@@ -64,5 +69,7 @@ export const ADVISOR_SCORING = {
   LOOKAHEAD: {
     ENABLED: true,
     DISCOUNT: 0.4,             // nextPairスコアをcurrentの40%の重みで加算
+    SECOND_DISCOUNT: 0.4,      // NEXTNEXTはNEXT評価内でさらに40%へ減衰
+    BEAM_WIDTH: 4,             // NEXT上位4配置だけからNEXTNEXTを探索
   },
 } as const

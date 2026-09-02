@@ -354,7 +354,7 @@ function simulateQuiet(pairs: PuyoPair[]): SimResult {
     checkAndClear(grid)
 
     const gtrResult = GTRDetector.detectGTR(grid)
-    if (gtrResult.hasBasicPattern) {
+    if (gtrResult.isGTR) {
       return { success: true, turnsUsed: turn + 1, gtrDetected: true, chainCount: gtrResult.chainCount, finalGrid: grid }
     }
   }
@@ -366,8 +366,11 @@ console.log('\n' + '▣'.repeat(30))
 console.log('ランダムペアテスト（2000ゲーム）')
 console.log('▣'.repeat(30))
 
-const NUM_GAMES = 500
-const MAX_TURNS_LIST = [10, 12, 15, 20]
+const NUM_GAMES = Number(process.env.SIM_GAMES ?? 500)
+const MAX_TURNS_LIST = (process.env.SIM_TURNS ?? '10,12,15,20')
+  .split(',')
+  .map(Number)
+  .filter(Number.isFinite)
 
 for (const MAX_TURNS of MAX_TURNS_LIST) {
   let successCount = 0
@@ -388,6 +391,10 @@ for (const MAX_TURNS of MAX_TURNS_LIST) {
   if (successCount > 0) {
     console.log(`  平均ターン数: ${(totalTurns / successCount).toFixed(1)}`)
   }
+}
+
+if (process.env.SIM_ONLY === '1') {
+  process.exit(0)
 }
 
 const MAX_TURNS = 15

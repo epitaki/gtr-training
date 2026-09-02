@@ -7,7 +7,7 @@ import { GuideManager } from '../GuideManager'
 import { GameHistory } from '../GameHistory'
 import { PuyoRenderer } from '../PuyoRenderer'
 import { FIELD_CONFIG, LAYOUT_GUIDED, NEXT_AREA_CONFIG, TEXT_STYLES, ANIMATION_CONFIG } from '../VisualConfig'
-import { PlacementAdvisor, PlacementAdvice } from '../PlacementAdvisor'
+import { PlacementAdvisor, PlacementAdvice, type GTRTrainingPlan } from '../PlacementAdvisor'
 
 export default class GuidedPracticeScene extends Phaser.Scene {
   private cursors?: Phaser.Types.Input.Keyboard.CursorKeys
@@ -30,6 +30,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
   private isGravityEnabled: boolean = true
   private isAdvisorEnabled: boolean = true
   private currentAdvice: PlacementAdvice | null = null
+  private trainingPlan?: GTRTrainingPlan
 
   // 描画関連
   private fieldSprites: (Phaser.GameObjects.Sprite | null)[][] = []
@@ -70,6 +71,10 @@ export default class GuidedPracticeScene extends Phaser.Scene {
 
   private createInitialGameState(): GameState {
     const twoHandCombination = PuyoPairManager.createValidTwoHandCombination()
+    this.trainingPlan = PlacementAdvisor.createTrainingPlan(
+      twoHandCombination.pair1,
+      twoHandCombination.pair2,
+    )
 
     return {
       field: this.gameField.getField(),
@@ -233,7 +238,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
       this.gameState.gtrCount = previousState.gtrCount
       this.gameState.gtrScore = previousState.gtrScore
 
-      this.guideManager.updateState(this.gameField.getField())
+      this.updateGuideState()
       this.updateGuide()
       this.updateDisplay()
       this.updateAdvice()
@@ -332,8 +337,16 @@ export default class GuidedPracticeScene extends Phaser.Scene {
 
     this.spawnNextPair()
 
-    this.guideManager.updateState(this.gameField.getField())
+    this.updateGuideState()
     this.updateGuide()
+  }
+
+  private updateGuideState() {
+    const field = this.gameField.getField()
+    this.guideManager.updateState(
+      field,
+      PlacementAdvisor.isGuidedTargetComplete(field.grid, this.trainingPlan),
+    )
   }
 
   private processChain() {
@@ -382,22 +395,28 @@ export default class GuidedPracticeScene extends Phaser.Scene {
   private createGuidedNextPair() {
     const pair = PuyoPairManager.createRandomPair()
     const field = this.gameField.getField()
-    const plan = PlacementAdvisor.getFoldPlan(field.grid)
-
-    if (plan && plan.missingColors.length > 0) {
-      pair.main.color = plan.missingColors[0]
-      pair.sub.color = plan.missingColors[1] ?? plan.missingColors[0]
-    }
+    const colors = PlacementAdvisor.getGuidedPairColors(
+      field.grid,
+      pair.main.color,
+      pair.sub.color,
+      this.trainingPlan,
+    )
+    pair.main.color = colors.mainColor
+    pair.sub.color = colors.subColor
     return pair
   }
 
   private evaluateGTR() {
     const field = this.gameField.getField()
     const gtrResult = GTRDetector.detectGTR(field.grid)
-    this.showDetailedResult(gtrResult)
+    const yJointComplete = PlacementAdvisor.getYJointPlan(
+      field.grid,
+      this.trainingPlan,
+    )?.missingColors.length === 0
+    this.showDetailedResult(gtrResult, yJointComplete)
   }
 
-  private showDetailedResult(result: GTRScore) {
+  private showDetailedResult(result: GTRScore, yJointComplete: boolean) {
     this.isPaused = true
     this.isShowingResult = true
     this.spaceKey?.reset()
@@ -412,8 +431,9 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     container.setDepth(1001)
 
     // タイトル
-    const titleColor = result.isGTR ? '#44dd88' : '#ff6666'
-    const titleText = result.isGTR ? 'GTR Complete!' : 'GTR未完成'
+    const isGuidedTargetComplete = result.isGTR && yJointComplete
+    const titleColor = isGuidedTargetComplete ? '#44dd88' : '#ff6666'
+    const titleText = isGuidedTargetComplete ? 'GTR Complete!' : 'GTR未完成'
     const title = this.add.text(0, 0, titleText, {
       fontSize: '32px',
       color: titleColor,
@@ -437,6 +457,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     // チェック項目（成功・失敗の両方を表示）
     const checks: { label: string; checked: boolean }[] = [
       { label: '折り返し', checked: result.hasBasicPattern },
+      { label: 'Y字連鎖尾', checked: yJointComplete },
       { label: '3連鎖', checked: result.chainCount >= 3 },
       { label: '4連鎖', checked: result.chainCount >= 4 },
       { label: '5連鎖', checked: result.chainCount >= 5 },
@@ -713,7 +734,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     this.guideDisplay.add(comment)
 
     if (guideContent.pattern) {
-      this.drawGuidePattern(guideContent.pattern, 50)
+      this.drawGuidePattern(guideContent.pattern, 50, guideContent.colorMap)
     }
 
     if (guideContent.description) {
@@ -728,7 +749,11 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     }
   }
 
-  private drawGuidePattern(pattern: string[][], offsetY: number) {
+  private drawGuidePattern(
+    pattern: string[][],
+    offsetY: number,
+    colorOverride?: Record<string, string>,
+  ) {
     const cellSize = 18
     const startX = -cellSize * 3
     let currentY = offsetY
@@ -748,7 +773,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
           cellBg.setStrokeStyle(1, 0x333355)
           this.guideDisplay?.add(cellBg)
 
-          const puyoColor = this.getActualColorForLetter(cell)
+          const puyoColor = colorOverride?.[cell] ?? this.getActualColorForLetter(cell)
           const puyoSprite = this.add.sprite(px, py, `puyo-${puyoColor}`)
           puyoSprite.setDisplaySize(cellSize - 2, cellSize - 2)
           this.guideDisplay?.add(puyoSprite)
@@ -767,6 +792,15 @@ export default class GuidedPracticeScene extends Phaser.Scene {
   }
 
   private getActualColorForLetter(letter: string): string {
+    if (this.trainingPlan) {
+      const planColorMap: Record<string, string> = {
+        A: this.trainingPlan.colorA,
+        B: this.trainingPlan.colorB,
+        C: this.trainingPlan.colorC,
+        D: this.trainingPlan.colorD,
+      }
+      return planColorMap[letter] ?? this.trainingPlan.colorA
+    }
     const colorMap: { [key: string]: string } = {
       'A': 'red',
       'B': 'green',
@@ -1063,7 +1097,13 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     }
 
     const field = this.gameField.getField()
-    this.currentAdvice = PlacementAdvisor.getAdvice(field, this.gameState.currentPair, this.gameState.nextPair ?? undefined)
+    this.currentAdvice = PlacementAdvisor.getAdvice(
+      field,
+      this.gameState.currentPair,
+      this.gameState.nextPair ?? undefined,
+      this.gameState.nextNextPair ?? undefined,
+      this.trainingPlan,
+    )
     this.updateGhostDisplay()
   }
 

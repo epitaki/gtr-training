@@ -131,13 +131,13 @@ export class GTRDetector {
       }
     }
     
-    isGTR = true
     quality = baseScore
     
     // 連鎖数の評価（(1,9)に(1,10)と同じ色が来たときの連鎖）
     const chainResult = this.evaluateChainCount(field)
     chainCount = chainResult.chainCount
     leftoverPuyos = chainResult.leftoverPuyos
+    isGTR = chainCount >= GTR_SCORING_CONFIG.MESSAGE_THRESHOLDS.CHAIN_3
     
     // 連鎖数による加点（最大5連鎖）
     const chainBonus = Math.min(chainCount, GTR_SCORING_CONFIG.CHAIN_COUNT.MAX_CHAIN) * GTR_SCORING_CONFIG.CHAIN_COUNT.POINTS_PER_CHAIN
@@ -188,7 +188,7 @@ export class GTRDetector {
       chainCount,
       leftoverPuyos,
       message,
-      hasBasicPattern: isGTR,
+      hasBasicPattern: true,
       chainTailType,
       row10Usage,
       leftoverConnected

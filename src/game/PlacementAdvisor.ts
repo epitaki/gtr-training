@@ -37,6 +37,14 @@ export interface FoldPlan {
   missingColors: PuyoColor[]
 }
 
+export interface YJointPlan {
+  colorC: PuyoColor
+  colorD: PuyoColor
+  missingColors: PuyoColor[]
+  matchedCells: number
+  totalCells: number
+}
+
 export interface ChainPotential {
   chainCount: number
   clearedPuyos: number
@@ -44,14 +52,52 @@ export interface ChainPotential {
   triggerColor: PuyoColor | null
 }
 
+export interface GuidedPairColors {
+  mainColor: PuyoColor
+  subColor: PuyoColor
+  stage: 'fold' | 'y_joint' | 'fallback'
+}
+
+export interface GTRTrainingPlan {
+  colorA: PuyoColor
+  colorB: PuyoColor
+  colorC: PuyoColor
+  colorD: PuyoColor
+}
+
 export class PlacementAdvisor {
   /** Infer the still-viable GTR fold colors and the colors needed to finish it. */
-  static getFoldPlan(grid: (PuyoColor | null)[][]): FoldPlan | null {
+  static createTrainingPlan(pair1: PuyoPair, pair2: PuyoPair): GTRTrainingPlan {
+    const sequence = [pair1.main.color, pair1.sub.color, pair2.main.color, pair2.sub.color]
+    const counts = this.ALL_COLORS.map(color => ({
+      color,
+      count: sequence.filter(item => item === color).length,
+      firstIndex: sequence.indexOf(color),
+    })).sort((left, right) =>
+      right.count - left.count ||
+      (left.firstIndex < 0 ? Number.MAX_SAFE_INTEGER : left.firstIndex) -
+        (right.firstIndex < 0 ? Number.MAX_SAFE_INTEGER : right.firstIndex),
+    )
+    const colorB = counts[0].color
+    const colorA = counts.find(item => item.color !== colorB && item.count > 0)?.color
+      ?? this.ALL_COLORS.find(color => color !== colorB)!
+
+    // Reusing A as the Y connector and B as its support forms a valid 3-chain
+    // while keeping the beginner plan to two colors.
+    return { colorA, colorB, colorC: colorA, colorD: colorB }
+  }
+
+  static getFoldPlan(
+    grid: (PuyoColor | null)[][],
+    trainingPlan?: GTRTrainingPlan,
+  ): FoldPlan | null {
     const h = grid.length
     let best: { plan: FoldPlan; score: number } | null = null
 
-    for (const colorA of this.ALL_COLORS) {
-      for (const colorB of this.ALL_COLORS) {
+    const colorAs = trainingPlan ? [trainingPlan.colorA] : this.ALL_COLORS
+    const colorBs = trainingPlan ? [trainingPlan.colorB] : this.ALL_COLORS
+    for (const colorA of colorAs) {
+      for (const colorB of colorBs) {
         if (colorA === colorB) continue
         const targets = [
           { x: 0, y: h - 1, color: colorB, priority: 3 },
@@ -75,8 +121,99 @@ export class PlacementAdvisor {
     return best?.plan ?? null
   }
 
+  /** Infer a physically supported Y-joint that connects after the GTR cap color clears. */
+  static getYJointPlan(
+    grid: (PuyoColor | null)[][],
+    trainingPlan?: GTRTrainingPlan,
+  ): YJointPlan | null {
+    const fold = this.getFoldPlan(grid, trainingPlan)
+    if (!fold) return null
+
+    const h = grid.length
+    let best: YJointPlan | null = null
+
+    const colorCs = trainingPlan ? [trainingPlan.colorC] : this.ALL_COLORS
+    const colorDs = trainingPlan ? [trainingPlan.colorD] : this.ALL_COLORS
+    for (const colorC of colorCs) {
+      // C must survive the second chain. Reusing A is valid, but reusing B is not.
+      if (colorC === fold.colorB) continue
+      for (const colorD of colorDs) {
+        if (colorD === colorC) continue
+        const targets = this.getYJointTargets(h, colorC, colorD)
+        if (targets.some(target => {
+          const cell = grid[target.y]?.[target.x]
+          return cell !== null && cell !== target.color
+        })) continue
+
+        const matchedCells = targets.filter(
+          target => grid[target.y]?.[target.x] === target.color,
+        ).length
+        const candidate: YJointPlan = {
+          colorC,
+          colorD,
+          missingColors: targets
+            .filter(target => grid[target.y]?.[target.x] === null)
+            .map(target => target.color),
+          matchedCells,
+          totalCells: targets.length,
+        }
+        if (!best || candidate.matchedCells > best.matchedCells) best = candidate
+      }
+    }
+
+    return best
+  }
+
+  static isGuidedTargetComplete(
+    grid: (PuyoColor | null)[][],
+    trainingPlan?: GTRTrainingPlan,
+  ): boolean {
+    const result = GTRDetector.detectGTR(grid)
+    const yPlan = this.getYJointPlan(grid, trainingPlan)
+    return result.isGTR && yPlan?.missingColors.length === 0
+  }
+
+  static getGuidedPairColors(
+    grid: (PuyoColor | null)[][],
+    fallbackMain: PuyoColor,
+    fallbackSub: PuyoColor,
+    trainingPlan?: GTRTrainingPlan,
+  ): GuidedPairColors {
+    const foldPlan = this.getFoldPlan(grid, trainingPlan)
+    if (foldPlan && foldPlan.missingColors.length > 0) {
+      const mainColor = foldPlan.missingColors[0]
+      const safeCompanion = trainingPlan
+        ? (mainColor === trainingPlan.colorA ? trainingPlan.colorB : trainingPlan.colorA)
+        : fallbackSub
+      return {
+        mainColor,
+        subColor: foldPlan.missingColors[1] ?? safeCompanion,
+        stage: 'fold',
+      }
+    }
+
+    const yPlan = this.getYJointPlan(grid, trainingPlan)
+    if (yPlan && yPlan.missingColors.length > 0) {
+      const mainColor = yPlan.missingColors[0]
+      const safeCompanion = mainColor === yPlan.colorC ? yPlan.colorD : yPlan.colorC
+      return {
+        mainColor,
+        subColor: yPlan.missingColors[1] ?? safeCompanion,
+        stage: 'y_joint',
+      }
+    }
+
+    return { mainColor: fallbackMain, subColor: fallbackSub, stage: 'fallback' }
+  }
+
   // メインAPI: フィールドとぷよペアからアドバイスを生成
-  static getAdvice(field: GameField, currentPair: PuyoPair, nextPair?: PuyoPair): PlacementAdvice {
+  static getAdvice(
+    field: GameField,
+    currentPair: PuyoPair,
+    nextPair?: PuyoPair,
+    nextNextPair?: PuyoPair,
+    trainingPlan?: GTRTrainingPlan,
+  ): PlacementAdvice {
     const grid = field.grid
     const mainColor = currentPair.main.color
     const subColor = currentPair.sub.color
@@ -92,8 +229,12 @@ export class PlacementAdvisor {
 
         const gridAfter = this.applyPlacement(grid, landing, mainColor, subColor)
 
-        const foldProgressScore = this.scoreFoldProgress(gridAfter, grid, landing, mainColor, subColor)
-        const chainTailScore = this.scoreChainTail(gridAfter, landing, mainColor, subColor)
+        const foldProgressScore = this.scoreFoldProgress(
+          gridAfter, grid, landing, mainColor, subColor, trainingPlan,
+        )
+        const chainTailScore = this.scoreChainTail(
+          gridAfter, grid, landing, mainColor, subColor, trainingPlan,
+        )
         const connectivityScore = this.scoreConnectivity(gridAfter, landing, mainColor, subColor)
         const heightPenalty = this.scoreHeightPenalty(landing)
         const chainSimScore = phase !== GamePhase.FOLD_BUILDING
@@ -109,7 +250,13 @@ export class PlacementAdvisor {
 
         // ネクスト先読み: nextPairの最善スコアを加算
         if (nextPair && ADVISOR_SCORING.LOOKAHEAD.ENABLED) {
-          const lookaheadScore = this.evaluateLookahead(gridAfter, nextPair, phase)
+          const stableGridAfter = this.resolveChains(gridAfter).grid
+          const lookaheadScore = this.evaluateLookahead(
+            stableGridAfter,
+            nextPair,
+            nextNextPair,
+            trainingPlan,
+          )
           totalScore += lookaheadScore * ADVISOR_SCORING.LOOKAHEAD.DISCOUNT
         }
 
@@ -136,11 +283,13 @@ export class PlacementAdvisor {
   private static evaluateLookahead(
     gridAfterCurrent: (PuyoColor | null)[][],
     nextPair: PuyoPair,
-    currentPhase: GamePhase
+    nextNextPair?: PuyoPair,
+    trainingPlan?: GTRTrainingPlan,
   ): number {
     const nextMainColor = nextPair.main.color
     const nextSubColor = nextPair.sub.color
-    let bestNextScore = -Infinity
+    const currentPhase = this.detectPhase(gridAfterCurrent)
+    const candidates: { score: number; grid: (PuyoColor | null)[][] }[] = []
 
     for (const rotation of [0, 1, 2, 3]) {
       const [minCol, maxCol] = this.getColumnRange(rotation)
@@ -154,10 +303,10 @@ export class PlacementAdvisor {
 
         // 軽量スコアリング: chainSimは常にスキップ（重いため）
         const foldScore = this.scoreFoldProgress(
-          gridAfterNext, gridAfterCurrent, nextLanding, nextMainColor, nextSubColor
+          gridAfterNext, gridAfterCurrent, nextLanding, nextMainColor, nextSubColor, trainingPlan,
         )
         const tailScore = this.scoreChainTail(
-          gridAfterNext, nextLanding, nextMainColor, nextSubColor
+          gridAfterNext, gridAfterCurrent, nextLanding, nextMainColor, nextSubColor, trainingPlan,
         )
         const connScore = this.scoreConnectivity(
           gridAfterNext, nextLanding, nextMainColor, nextSubColor
@@ -171,13 +320,28 @@ export class PlacementAdvisor {
           connScore * weights.connectivity +
           htScore * weights.heightPenalty
 
-        if (nextScore > bestNextScore) {
-          bestNextScore = nextScore
-        }
+        const stableGridAfterNext = this.resolveChains(gridAfterNext).grid
+        candidates.push({ score: nextScore, grid: stableGridAfterNext })
       }
     }
 
-    return isFinite(bestNextScore) ? bestNextScore : 0
+    candidates.sort((a, b) => b.score - a.score)
+    if (!nextNextPair) return candidates[0]?.score ?? 0
+
+    let bestScore = -Infinity
+    for (const candidate of candidates.slice(0, ADVISOR_SCORING.LOOKAHEAD.BEAM_WIDTH)) {
+      const nextNextScore = this.evaluateLookahead(
+        candidate.grid,
+        nextNextPair,
+        undefined,
+        trainingPlan,
+      )
+      bestScore = Math.max(
+        bestScore,
+        candidate.score + nextNextScore * ADVISOR_SCORING.LOOKAHEAD.SECOND_DISCOUNT,
+      )
+    }
+    return isFinite(bestScore) ? bestScore : 0
   }
 
   // --- フェーズ検出 ---
@@ -300,13 +464,16 @@ export class PlacementAdvisor {
     gridBefore: (PuyoColor | null)[][],
     landing: LandingResult,
     mainColor: PuyoColor,
-    subColor: PuyoColor
+    subColor: PuyoColor,
+    trainingPlan?: GTRTrainingPlan,
   ): number {
     // 全色組み合わせ(A,B)を試し、最もスコアの高いものを採用
     let bestScore = -Infinity
 
-    for (const a of this.ALL_COLORS) {
-      for (const b of this.ALL_COLORS) {
+    const colorAs = trainingPlan ? [trainingPlan.colorA] : this.ALL_COLORS
+    const colorBs = trainingPlan ? [trainingPlan.colorB] : this.ALL_COLORS
+    for (const a of colorAs) {
+      for (const b of colorBs) {
         if (a === b) continue
         const score = this.evaluateTemplate(gridAfter, gridBefore, a, b, landing, mainColor, subColor)
         if (score > bestScore) bestScore = score
@@ -334,7 +501,7 @@ export class PlacementAdvisor {
     colorB: PuyoColor,
     landing: LandingResult,
     mainColor: PuyoColor,
-    subColor: PuyoColor
+    subColor: PuyoColor,
   ): number {
     const S = ADVISOR_SCORING.FOLD
     const h = gridAfter.length
@@ -458,8 +625,11 @@ export class PlacementAdvisor {
 
       // col0-2でh-4以上（高すぎる）
       if (pos.x <= 2 && pos.y < height - 3) {
+        if (pos.x === 0 && pos.y === height - 4) {
+          penalty += S.TRIGGER_BLOCK_PENALTY
+        }
         // P3テンプレート直上(h-4)のコンパニオンは軽減ペナルティ
-        if (pos.y === height - 4 && templatePos.has(`${pos.x},${height - 3}`)) {
+        else if (pos.y === height - 4 && templatePos.has(`${pos.x},${height - 3}`)) {
           penalty += S.P3_COMPANION_TOO_HIGH
         } else {
           penalty += S.TOO_HIGH_ON_FOLD_SIDE
@@ -495,9 +665,11 @@ export class PlacementAdvisor {
 
   private static scoreChainTail(
     gridAfter: (PuyoColor | null)[][],
+    gridBefore: (PuyoColor | null)[][],
     landing: LandingResult,
     mainColor: PuyoColor,
-    subColor: PuyoColor
+    subColor: PuyoColor,
+    trainingPlan?: GTRTrainingPlan,
   ): number {
     const S = ADVISOR_SCORING.CHAIN_TAIL
     const h = gridAfter.length
@@ -507,6 +679,21 @@ export class PlacementAdvisor {
       { pos: landing.mainPos, color: mainColor },
       { pos: landing.subPos, color: subColor },
     ]
+
+    const yPlan = this.getYJointPlan(gridBefore, trainingPlan)
+    if (yPlan) {
+      const targets = this.getYJointTargets(h, yPlan.colorC, yPlan.colorD)
+      for (const { pos, color } of positions) {
+        const target = targets.find(item => item.x === pos.x && item.y === pos.y)
+        if (!target) continue
+        score += color === target.color ? S.Y_TARGET_MATCH : S.Y_TARGET_WRONG_COLOR
+      }
+
+      const completedCells = targets.filter(
+        target => gridAfter[target.y]?.[target.x] === target.color,
+      ).length
+      if (completedCells === targets.length) score += S.Y_JOINT_COMPLETE
+    }
 
     for (const { pos, color } of positions) {
       // 折り返しとの接続点を含む3〜6列目では、列番号ではなく色の接続を評価する。
@@ -544,6 +731,22 @@ export class PlacementAdvisor {
     }
 
     return score
+  }
+
+  private static getYJointTargets(
+    height: number,
+    colorC: PuyoColor,
+    colorD: PuyoColor,
+  ): { x: number; y: number; color: PuyoColor }[] {
+    // Physical build order: bottom supports, horizontal arms, then upper connector.
+    return [
+      { x: 2, y: height - 1, color: colorC },
+      { x: 3, y: height - 1, color: colorD },
+      { x: 4, y: height - 1, color: colorD },
+      { x: 3, y: height - 2, color: colorC },
+      { x: 4, y: height - 2, color: colorC },
+      { x: 2, y: height - 3, color: colorC },
+    ]
   }
 
   // 列の高さを返す（下から数えて何段ぷよがあるか）
