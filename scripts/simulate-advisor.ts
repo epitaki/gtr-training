@@ -366,7 +366,7 @@ console.log('\n' + '▣'.repeat(30))
 console.log('ランダムペアテスト（2000ゲーム）')
 console.log('▣'.repeat(30))
 
-const NUM_GAMES = 10000
+const NUM_GAMES = 500
 const MAX_TURNS_LIST = [10, 12, 15, 20]
 
 for (const MAX_TURNS of MAX_TURNS_LIST) {

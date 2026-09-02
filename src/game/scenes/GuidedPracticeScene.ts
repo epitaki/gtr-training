@@ -367,11 +367,9 @@ export default class GuidedPracticeScene extends Phaser.Scene {
       return
     }
 
-    const newTwoHandCombination = PuyoPairManager.createValidTwoHandCombination()
-
     this.gameState.currentPair = this.gameState.nextPair
     this.gameState.nextPair = this.gameState.nextNextPair
-    this.gameState.nextNextPair = newTwoHandCombination.pair1
+    this.gameState.nextNextPair = this.createGuidedNextPair()
 
     // 新ペア生成後に状態を保存: currentPairがトップ位置の新ペアになってから保存することで
     // 巻き戻し時に「着地済みペアが再着地して連鎖発火」するバグを防ぐ
@@ -379,6 +377,18 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     this.gameHistory.saveState(this.gameState)
 
     this.updateAdvice()
+  }
+
+  private createGuidedNextPair() {
+    const pair = PuyoPairManager.createRandomPair()
+    const field = this.gameField.getField()
+    const plan = PlacementAdvisor.getFoldPlan(field.grid)
+
+    if (plan && plan.missingColors.length > 0) {
+      pair.main.color = plan.missingColors[0]
+      pair.sub.color = plan.missingColors[1] ?? plan.missingColors[0]
+    }
+    return pair
   }
 
   private evaluateGTR() {
@@ -427,11 +437,10 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     // チェック項目（成功・失敗の両方を表示）
     const checks: { label: string; checked: boolean }[] = [
       { label: '折り返し', checked: result.hasBasicPattern },
-      { label: 'Y字連鎖尾', checked: result.chainTailType === 'Y' },
-      { label: 'L字連鎖尾', checked: result.chainTailType === 'L' },
-      { label: '階段連鎖尾', checked: result.chainTailType === 'stairs' },
+      { label: '3連鎖', checked: result.chainCount >= 3 },
       { label: '4連鎖', checked: result.chainCount >= 4 },
       { label: '5連鎖', checked: result.chainCount >= 5 },
+      { label: '7連鎖', checked: result.chainCount >= 7 },
       { label: '右上が立っている', checked: result.row10Usage === 'minimal' },
       { label: 'あまりぷよが連結', checked: result.leftoverConnected }
     ]

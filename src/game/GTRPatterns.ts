@@ -148,8 +148,9 @@ export class GTRDetector {
     // あまりぷよの評価（同じ色で連結している）
     const leftoverBonus = this.evaluateLeftoverPuyos(field, chainResult.leftoverPositions)
     
-    // 連鎖尾の形状タイプを判定
-    const chainTailType = this.detectChainTailType(field)
+    // 列の高さだけではY字/L字等を判定できないため、色と消去順を使う
+    // 判定器が実装されるまでは型名と型別倍率を付けない。
+    const chainTailType: GTRScore['chainTailType'] = undefined
 
     // 10行目の使用状況を判定
     const row10Usage = this.classifyRow10Usage(field, chainResult.usedPuyos)
@@ -157,24 +158,11 @@ export class GTRDetector {
     // あまりぷよが連結しているか判定
     const leftoverConnected = this.checkLeftoverConnected(chainResult.leftoverPositions)
 
-    // 連鎖尾タイプに応じた倍率を取得
-    // 評価順: Y字形(1.5) > 座布団形(1.3) > L字形(1.2) > 階段形(1.0)
-    let chainTailMultiplier = GTR_SCORING_CONFIG.CHAIN_TAIL_TYPE.DEFAULT
-    if (chainTailType === 'Y') {
-      chainTailMultiplier = GTR_SCORING_CONFIG.CHAIN_TAIL_TYPE.Y
-    } else if (chainTailType === 'zabuton') {
-      chainTailMultiplier = GTR_SCORING_CONFIG.CHAIN_TAIL_TYPE.ZABUTON
-    } else if (chainTailType === 'L') {
-      chainTailMultiplier = GTR_SCORING_CONFIG.CHAIN_TAIL_TYPE.L
-    } else if (chainTailType === 'stairs') {
-      chainTailMultiplier = GTR_SCORING_CONFIG.CHAIN_TAIL_TYPE.STAIRS
-    }
-
-    // 総合スコア計算（連鎖尾タイプの倍率を適用）
+    // 総合スコア計算。未検証の形状名による倍率は適用しない。
     chainTailScore = chainBonus + row10Bonus + leftoverBonus
     const totalScore = Math.round(
       quality * GTR_SCORING_CONFIG.SCORE_WEIGHTS.BASE_PATTERN_WEIGHT +
-      chainTailScore * GTR_SCORING_CONFIG.SCORE_WEIGHTS.CHAIN_TAIL_WEIGHT * chainTailMultiplier
+      chainTailScore * GTR_SCORING_CONFIG.SCORE_WEIGHTS.CHAIN_TAIL_WEIGHT
     )
     
     // メッセージ生成
@@ -584,55 +572,6 @@ export class GTRDetector {
     }
     
     return group
-  }
-  
-  // 連鎖尾の形状タイプを判定
-  // 評価順: Y字形 > 座布団形 > L字形 > 階段形
-  private static detectChainTailType(field: (PuyoColor | null)[][]): 'Y' | 'zabuton' | 'L' | 'stairs' | undefined {
-    // 連鎖尾エリア: col3-5 (0-indexed) = 4-6列目 (1-indexed)
-    // GTR折り返しは col0-2 (0-indexed) なので、連鎖尾はcol3から
-    const height = field.length
-
-    // 各列の高さを取得（上から下にスキャンし、最初に見つかったぷよの位置から高さを計算）
-    // col4Height = 4列目(1-indexed) = field[][3](0-indexed)
-    // col5Height = 5列目(1-indexed) = field[][4](0-indexed)
-    // col6Height = 6列目(1-indexed) = field[][5](0-indexed)
-    let col4Height = 0, col5Height = 0, col6Height = 0
-
-    for (let y = 0; y < height; y++) {
-      if (field[y][3] !== null && col4Height === 0) col4Height = height - y
-      if (field[y][4] !== null && col5Height === 0) col5Height = height - y
-      if (field[y][5] !== null && col6Height === 0) col6Height = height - y
-    }
-
-    // Y字形の判定（4-6列目が同じ高さで、それぞれ3段以上）⭐⭐⭐⭐
-    // Y字形は最も安定した連鎖が作りやすく、初心者にも推奨
-    if (col4Height >= 3 && col5Height >= 3 && col6Height >= 3 &&
-        Math.abs(col4Height - col5Height) <= 1 && Math.abs(col5Height - col6Height) <= 1) {
-      return 'Y'
-    }
-
-    // 座布団形の判定（横に広がる形、4-6列目が使われている）⭐⭐⭐
-    // 横に広がる安定した配置
-    if (col4Height >= 2 && col5Height >= 2 && col6Height >= 2 &&
-        Math.abs(col4Height - col5Height) <= 1 && Math.abs(col5Height - col6Height) <= 1) {
-      return 'zabuton'
-    }
-
-    // L字形の判定（4-5列目が高く、6列目が低い）⭐⭐
-    // L字型に連鎖を組む、バランスが良い
-    if (col4Height >= 3 && col5Height >= 3 && col6Height <= 2) {
-      return 'L'
-    }
-
-    // 階段形の判定（列が順に高くなるまたは低くなる）⭐
-    // 連鎖数を伸ばしやすいが難易度高め
-    if ((col4Height < col5Height && col5Height < col6Height) ||
-        (col4Height > col5Height && col5Height > col6Height)) {
-      return 'stairs'
-    }
-
-    return undefined
   }
   
   // 10行目の使用状況を分類

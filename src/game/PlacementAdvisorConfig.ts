@@ -40,14 +40,9 @@ export const ADVISOR_SCORING = {
     CHAIN_TAIL_CONNECTION: 0,  // (2,h-3)連鎖尾接続点: P2(2,h-2)完了後はペナルティなし
   },
   CHAIN_TAIL: {
-    CORRECT_COLUMN_BONUS: 10,
     TOO_HIGH_PENALTY: -10,
-    HORIZONTAL_ADJACENCY_BONUS: 8,   // 連鎖尾エリア内の横方向同色隣接
-    BOTTOM_ROW_BONUS: 5,             // 最下段(h-1)配置ボーナス
-    SECOND_ROW_BONUS: 3,             // 2段目(h-2)配置ボーナス
+    HORIZONTAL_ADJACENCY_BONUS: 8,   // 接続・連鎖尾領域の横方向同色隣接
     LAYER_BONUS: 5,                  // 列に2色以上のレイヤーがあるボーナス
-    BALANCED_HEIGHT_BONUS: 10,       // col3-5の高さ差≤1（Y字・座布団への誘導を強化）
-    LEFT_BIAS_PENALTY: -10,          // col3(4列目)がcol4-5より2段以上高い場合のペナルティ（左寄り連鎖尾防止）
     SAME_COLOR_COLUMN_BONUS: 8,      // 同じ列に同色ぷよが既にある場合のボーナス（Y字・L字の縦1色カラム形成）
   },
   CONNECTIVITY: {
@@ -63,7 +58,8 @@ export const ADVISOR_SCORING = {
   },
   CHAIN_SIM: {
     HAS_PATTERN_BONUS: 10,
-    PER_CHAIN_BONUS: 15,       // 連鎖1つの価値を強化
+    PER_CHAIN_BONUS: 18,       // 全列の発火候補を探索して得た連鎖数
+    CLEARED_PUYO_BONUS: 0.35,  // 多くの土台が実際に連鎖へ参加する形を優先
   },
   LOOKAHEAD: {
     ENABLED: true,

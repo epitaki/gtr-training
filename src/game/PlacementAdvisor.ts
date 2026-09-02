@@ -31,7 +31,50 @@ export interface PlacementAdvice {
   phaseMessage: string
 }
 
+export interface FoldPlan {
+  colorA: PuyoColor
+  colorB: PuyoColor
+  missingColors: PuyoColor[]
+}
+
+export interface ChainPotential {
+  chainCount: number
+  clearedPuyos: number
+  triggerColumn: number | null
+  triggerColor: PuyoColor | null
+}
+
 export class PlacementAdvisor {
+  /** Infer the still-viable GTR fold colors and the colors needed to finish it. */
+  static getFoldPlan(grid: (PuyoColor | null)[][]): FoldPlan | null {
+    const h = grid.length
+    let best: { plan: FoldPlan; score: number } | null = null
+
+    for (const colorA of this.ALL_COLORS) {
+      for (const colorB of this.ALL_COLORS) {
+        if (colorA === colorB) continue
+        const targets = [
+          { x: 0, y: h - 1, color: colorB, priority: 3 },
+          { x: 1, y: h - 1, color: colorB, priority: 3 },
+          { x: 0, y: h - 2, color: colorA, priority: 2 },
+          { x: 1, y: h - 2, color: colorA, priority: 2 },
+          { x: 2, y: h - 2, color: colorB, priority: 2 },
+          { x: 0, y: h - 3, color: colorA, priority: 1 },
+          { x: 1, y: h - 3, color: colorB, priority: 1 },
+        ]
+        if (targets.some(target => grid[target.y]?.[target.x] !== null && grid[target.y]?.[target.x] !== target.color)) continue
+
+        const missing = targets.filter(target => grid[target.y]?.[target.x] === null)
+        const score = targets.filter(target => grid[target.y]?.[target.x] === target.color)
+          .reduce((total, target) => total + target.priority, 0)
+        if (!best || score > best.score) {
+          best = { plan: { colorA, colorB, missingColors: missing.map(target => target.color) }, score }
+        }
+      }
+    }
+    return best?.plan ?? null
+  }
+
   // メインAPI: フィールドとぷよペアからアドバイスを生成
   static getAdvice(field: GameField, currentPair: PuyoPair, nextPair?: PuyoPair): PlacementAdvice {
     const grid = field.grid
@@ -146,16 +189,11 @@ export class PlacementAdvisor {
       return GamePhase.FOLD_BUILDING
     }
 
-    // 連鎖尾エリア(col3-5, 下4行)のぷよ数をカウント
-    const h = grid.length
-    let tailPuyoCount = 0
-    for (let col = 3; col <= 5; col++) {
-      for (let y = h - 1; y >= h - 4; y--) {
-        if (y >= 0 && grid[y]?.[col] !== null) tailPuyoCount++
-      }
-    }
-
-    return tailPuyoCount >= 6 ? GamePhase.COMPLETION : GamePhase.CHAIN_TAIL
+    // 完成判定は標準GTRの発火点から実際に3連鎖することを要求する。
+    // 任意色の仮想トリガー探索は配置の比較にだけ使い、完成条件には使わない。
+    return gtrResult.chainCount >= 3
+      ? GamePhase.COMPLETION
+      : GamePhase.CHAIN_TAIL
   }
 
   // --- 候補列挙ヘルパー ---
@@ -471,14 +509,12 @@ export class PlacementAdvisor {
     ]
 
     for (const { pos, color } of positions) {
-      // エリア配置ボーナス
-      if (pos.x >= 3 && pos.x <= 5) {
-        score += S.CORRECT_COLUMN_BONUS
-
-        // 横方向同色隣接ボーナス（連鎖尾エリア内のみ）
+      // 折り返しとの接続点を含む3〜6列目では、列番号ではなく色の接続を評価する。
+      if (pos.x >= 2 && pos.x <= 5) {
+        // 横方向同色隣接ボーナス
         for (const dx of [-1, 1]) {
           const nx = pos.x + dx
-          if (nx >= 3 && nx <= 5 && gridAfter[pos.y]?.[nx] === color) {
+          if (nx >= 2 && nx <= 5 && gridAfter[pos.y]?.[nx] === color) {
             score += S.HORIZONTAL_ADJACENCY_BONUS
           }
         }
@@ -490,10 +526,6 @@ export class PlacementAdvisor {
             (colAbove >= 0 && gridAfter[colAbove]?.[pos.x] === color)) {
           score += S.SAME_COLOR_COLUMN_BONUS
         }
-
-        // 底部充填ボーナス
-        if (pos.y === h - 1) score += S.BOTTOM_ROW_BONUS
-        else if (pos.y === h - 2) score += S.SECOND_ROW_BONUS
       }
 
       // 高すぎる位置へのペナルティ
@@ -502,30 +534,13 @@ export class PlacementAdvisor {
       }
     }
 
-    // レイヤー構造ボーナス（各列3-5で2色以上のレイヤー）
-    for (let col = 3; col <= 5; col++) {
+    // レイヤー構造ボーナス（接続・連鎖尾領域で2色以上の層がある）
+    for (let col = 2; col <= 5; col++) {
       const layers = this.countColorLayers(gridAfter, col)
       const colHeight = this.getColumnHeight(gridAfter, col)
       if (layers >= 2 && colHeight >= 2) {
         score += S.LAYER_BONUS
       }
-    }
-
-    // 列バランスボーナス（col3-5の高さ差≤1）
-    const heights = [3, 4, 5].map(col => this.getColumnHeight(gridAfter, col))
-    const maxH = Math.max(...heights)
-    const minH = Math.min(...heights)
-    if (maxH - minH <= 1 && maxH >= 2) {
-      score += S.BALANCED_HEIGHT_BONUS
-    }
-
-    // 左偏り防止: col3(4列目, x=3)がcol4(5列目)またはcol5(6列目)より
-    // 2段以上高い場合に、col3への追加配置をペナルティ
-    // 理由: 連鎖尾がcol3に偏るとY字が左に1列ズレた形になる
-    const [h3, h4, h5] = heights
-    const placedInCol3 = [landing.mainPos, landing.subPos].some(p => p.x === 3)
-    if (placedInCol3 && (h3 > h4 + 1 || h3 > h5 + 1)) {
-      score += S.LEFT_BIAS_PENALTY
     }
 
     return score
@@ -678,14 +693,115 @@ export class PlacementAdvisor {
   private static scoreChainSimulation(gridAfter: (PuyoColor | null)[][]): number {
     const S = ADVISOR_SCORING.CHAIN_SIM
     const gtrResult = GTRDetector.detectGTR(gridAfter)
+    const potential = this.analyzeChainPotential(gridAfter)
     let score = 0
 
     if (gtrResult.hasBasicPattern) {
       score += S.HAS_PATTERN_BONUS
     }
-    score += gtrResult.chainCount * S.PER_CHAIN_BONUS
+    score += potential.chainCount * S.PER_CHAIN_BONUS
+    score += potential.clearedPuyos * S.CLEARED_PUYO_BONUS
 
     return score
+  }
+
+  /**
+   * 全ての列・色に仮想単ぷよプローブを着地させ、最大何連鎖になるかを調べる。
+   * 実際に操作できる1手ではなく、盤面の接続可能性を列固定なしで比較するための評価。
+   */
+  static analyzeChainPotential(grid: (PuyoColor | null)[][]): ChainPotential {
+    let best: ChainPotential = {
+      chainCount: 0,
+      clearedPuyos: 0,
+      triggerColumn: null,
+      triggerColor: null,
+    }
+
+    // 現在手ですでに起きる消去を先に解決する。未解決盤面へ仮想ぷよを
+    // 足すと、本来は消えるグループへ次手が参加する不可能な評価になる。
+    const stableGrid = this.resolveChains(grid).grid
+    const width = stableGrid[0]?.length ?? 0
+    for (let column = 0; column < width; column++) {
+      const y = this.findLowestEmpty(stableGrid, column)
+      if (y < 0) continue
+
+      for (const color of this.ALL_COLORS) {
+        const candidate = stableGrid.map(row => [...row])
+        candidate[y][column] = color
+        const result = this.resolveChains(candidate)
+        if (
+          result.chainCount > best.chainCount ||
+          (result.chainCount === best.chainCount && result.clearedPuyos > best.clearedPuyos)
+        ) {
+          best = {
+            chainCount: result.chainCount,
+            clearedPuyos: result.clearedPuyos,
+            triggerColumn: column,
+            triggerColor: color,
+          }
+        }
+      }
+    }
+
+    return best
+  }
+
+  private static resolveChains(grid: (PuyoColor | null)[][]): Pick<ChainPotential, 'chainCount' | 'clearedPuyos'> & {
+    grid: (PuyoColor | null)[][]
+  } {
+    const simulation = grid.map(row => [...row])
+    let chainCount = 0
+    let clearedPuyos = 0
+
+    while (true) {
+      const clearPositions = this.findClearPositions(simulation)
+      if (clearPositions.size === 0) break
+
+      chainCount++
+      clearedPuyos += clearPositions.size
+      for (const key of clearPositions) {
+        const [x, y] = key.split(',').map(Number)
+        simulation[y][x] = null
+      }
+      this.applyGravity(simulation)
+    }
+
+    return { chainCount, clearedPuyos, grid: simulation }
+  }
+
+  private static findClearPositions(grid: (PuyoColor | null)[][]): Set<string> {
+    const clearPositions = new Set<string>()
+    const visited = new Set<string>()
+
+    for (let y = 0; y < grid.length; y++) {
+      for (let x = 0; x < (grid[y]?.length ?? 0); x++) {
+        const color = grid[y][x]
+        const key = `${x},${y}`
+        if (color === null || visited.has(key)) continue
+
+        const group = this.floodFill(grid, x, y, color)
+        for (const cell of group) visited.add(cell)
+        if (group.size >= 4) {
+          for (const cell of group) clearPositions.add(cell)
+        }
+      }
+    }
+
+    return clearPositions
+  }
+
+  private static applyGravity(grid: (PuyoColor | null)[][]): void {
+    const width = grid[0]?.length ?? 0
+    for (let x = 0; x < width; x++) {
+      const colors: PuyoColor[] = []
+      for (let y = grid.length - 1; y >= 0; y--) {
+        const color = grid[y][x]
+        if (color !== null) colors.push(color)
+      }
+      for (let y = grid.length - 1; y >= 0; y--) {
+        grid[y][x] = colors[grid.length - 1 - y] ?? null
+      }
+    }
   }
 
   // --- ヘルパー ---

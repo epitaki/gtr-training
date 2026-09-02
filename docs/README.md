@@ -11,6 +11,7 @@ GTRトレーニングツールのドキュメントです。
 - [BACKEND_COMPARISON.md](../BACKEND_COMPARISON.md) - バックエンド比較分析
 
 ### GTR学習ガイド
+- [GTR-RESEARCH.md](./GTR-RESEARCH.md) - 外部資料から得た知見と配置ロジックへの反映
 - [GTR-PATTERNS.md](./GTR-PATTERNS.md) - GTRパターン定義（技術仕様）
 - [GTR-VISUAL-GUIDE.md](./GTR-VISUAL-GUIDE.md) - GTR視覚的ガイド（学習用）
 - [GTR-SCORING-SYSTEM.md](./GTR-SCORING-SYSTEM.md) - GTR評価システム設計
@@ -74,6 +75,9 @@ GTRトレーニングツールのドキュメントです。
 
 ## ドキュメント更新履歴
 
+- **2026-09-03**:
+  - GTR外部調査を実施し、列固定ではなく発火シミュレーションで評価する方針を文書化
+  - PlacementAdvisorのフェーズ判定と連鎖評価を更新
 - **2026-02-22**:
   - GAME-MODES.md 更新（PlacementAdvisor、Fキー、Gキー、ビジュアル改善を反映）
   - progress-report.md 全面更新（Phase 2完了を反映）
