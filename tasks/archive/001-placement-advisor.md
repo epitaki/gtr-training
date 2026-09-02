@@ -201,7 +201,7 @@ private advisorStatusText?: Phaser.GameObjects.Text
 
 ## 検証方法
 
-1. `npm run dev` で開発サーバー起動
+1. `bun run dev` で開発サーバー起動
 2. 初心者用ガイド付きGTR練習を開始
 3. **空フィールド**: 折り返しエリア（左下）にゴーストが表示されること
 4. **折り返し構築中**: 折り返しパターンに沿った位置にゴーストが誘導すること

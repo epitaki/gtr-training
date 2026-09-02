@@ -1,4 +1,8 @@
-import { GameState, Field, PuyoColor } from './types'
+import { GameState, Field, PuyoPair } from './types'
+
+function copyPair(pair: PuyoPair | null): PuyoPair | null {
+  return pair ? { ...pair, main: { ...pair.main }, sub: { ...pair.sub } } : null
+}
 
 interface HistoryState {
   field: Field
@@ -24,9 +28,9 @@ export class GameHistory {
     
     const state: HistoryState = {
       field: fieldCopy,
-      currentPair: gameState.currentPair ? { ...gameState.currentPair } : null,
-      nextPair: gameState.nextPair ? { ...gameState.nextPair } : null,
-      nextNextPair: gameState.nextNextPair ? { ...gameState.nextNextPair } : null,
+      currentPair: copyPair(gameState.currentPair),
+      nextPair: copyPair(gameState.nextPair),
+      nextNextPair: copyPair(gameState.nextNextPair),
       score: gameState.score,
       gtrCount: gameState.gtrCount,
       gtrScore: gameState.gtrScore
@@ -50,7 +54,13 @@ export class GameHistory {
     
     // 一つ前の状態を返す
     const previousState = this.history[this.history.length - 1]
-    return previousState ? { ...previousState } : null
+    return previousState ? {
+      ...previousState,
+      field: { ...previousState.field, grid: previousState.field.grid.map(row => [...row]) },
+      currentPair: copyPair(previousState.currentPair),
+      nextPair: copyPair(previousState.nextPair),
+      nextNextPair: copyPair(previousState.nextNextPair)
+    } : null
   }
   
   clear() {

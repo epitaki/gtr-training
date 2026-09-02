@@ -45,7 +45,7 @@ export default class MenuScene extends Phaser.Scene {
       }).setOrigin(0.5)
 
       if (!item.enabled) {
-        const subText = this.add.text(centerX, y + 25, '（後日実装予定）', {
+        this.add.text(centerX, y + 25, '（後日実装予定）', {
           fontSize: '14px',
           color: '#555555',
           fontFamily: 'Arial, sans-serif'
@@ -86,9 +86,9 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     // キーボード操作
-    const cursors = this.input.keyboard?.createCursorKeys()
-    const enterKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
-    const spaceKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
+    this.input.keyboard?.createCursorKeys()
+    this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
+    this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
 
     this.input.keyboard?.on('keydown-UP', () => {
       if (menuTexts.length > 0) {

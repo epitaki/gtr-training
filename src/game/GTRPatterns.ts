@@ -267,31 +267,6 @@ export class GTRDetector {
     return field.map(row => [...row])
   }
   
-  // 連結したぷよを探索してグループを返す
-  private static findConnectedGroup(field: (PuyoColor | null)[][], x: number, y: number, visited: Set<string>): { x: number; y: number }[] {
-    const key = `${x},${y}`
-    if (visited.has(key) || !field[y] || !field[y][x]) {
-      return []
-    }
-    
-    const color = field[y][x]
-    const group: { x: number; y: number }[] = [{ x, y }]
-    visited.add(key)
-    
-    // 上下左右を探索
-    const directions = [[0, -1], [1, 0], [0, 1], [-1, 0]]
-    for (const [dx, dy] of directions) {
-      const nx = x + dx
-      const ny = y + dy
-      if (nx >= 0 && nx < 6 && ny >= 0 && ny < field.length && 
-          field[ny] && field[ny][nx] === color) {
-        group.push(...this.findConnectedGroup(field, nx, ny, visited))
-      }
-    }
-    
-    return group
-  }
-  
   // 連結したぷよを探索してグループを返す（評価範囲内限定）
   private static findConnectedGroupInRange(
     field: (PuyoColor | null)[][], 
@@ -331,7 +306,7 @@ export class GTRDetector {
   }
   
   // 消去処理（4つ以上連結したぷよを消す）- 評価範囲内のみ
-  private static clearConnectedPuyos(field: (PuyoColor | null)[][], evaluationRange?: { minX: number; maxX: number; minY: number; maxY: number }): { cleared: boolean; clearedPositions: Set<string> } {
+  private static clearConnectedPuyos(field: (PuyoColor | null)[][], evaluationRange?: { minX: number; maxX: number; minY: number; maxY: number }, origins?: (string | null)[][]): { cleared: boolean; clearedPositions: Set<string> } {
     const visited = new Set<string>()
     const clearedPositions = new Set<string>()
     let cleared = false
@@ -346,8 +321,11 @@ export class GTRDetector {
           if (group.length >= 4) {
             // 4つ以上連結しているので消去
             for (const pos of group) {
+              const origin = origins?.[pos.y]?.[pos.x]
               field[pos.y][pos.x] = null
-              clearedPositions.add(`${pos.x},${pos.y}`)
+              if (origins) origins[pos.y][pos.x] = null
+              if (origin) clearedPositions.add(origin)
+              else if (!origins) clearedPositions.add(`${pos.x},${pos.y}`)
             }
             cleared = true
           }
@@ -358,34 +336,8 @@ export class GTRDetector {
     return { cleared, clearedPositions }
   }
   
-  // 重力落下処理
-  private static applyGravity(field: (PuyoColor | null)[][]): boolean {
-    let moved = false
-    
-    // 下から上に向かって処理
-    for (let y = field.length - 2; y >= 0; y--) {
-      for (let x = 0; x < 6; x++) {
-        if (field[y] && field[y][x]) {
-          // 落下させる
-          let destY = y
-          while (destY + 1 < field.length && (!field[destY + 1] || !field[destY + 1][x])) {
-            destY++
-          }
-          
-          if (destY !== y) {
-            field[destY][x] = field[y][x]
-            field[y][x] = null
-            moved = true
-          }
-        }
-      }
-    }
-    
-    return moved
-  }
-  
   // 重力落下処理（評価範囲内のみ）
-  private static applyGravityInRange(field: (PuyoColor | null)[][], range: { minX: number; maxX: number; minY: number; maxY: number }): boolean {
+  private static applyGravityInRange(field: (PuyoColor | null)[][], range: { minX: number; maxX: number; minY: number; maxY: number }, origins?: (string | null)[][]): boolean {
     let moved = false
     
     // 下から上に向かって処理（評価範囲内のみ）
@@ -403,6 +355,10 @@ export class GTRDetector {
             if (!field[destY]) field[destY] = [null, null, null, null, null, null]
             field[destY][x] = field[y][x]
             field[y][x] = null
+            if (origins) {
+              origins[destY][x] = origins[y][x]
+              origins[y][x] = null
+            }
             moved = true
           }
         }
@@ -443,6 +399,7 @@ export class GTRDetector {
   } {
     // フィールドのコピーを作成してシミュレーション
     const simulationField = this.copyField(field)
+    const origins = field.map((row, y) => row.map((color, x) => color ? `${x},${y}` : null))
     const usedPuyos = new Set<string>()
     
     // (1,10)に(1,11)と同じ色を置いてシミュレート
@@ -456,10 +413,22 @@ export class GTRDetector {
         leftoverPositions: this.getPuyosInRange(field)
       }
     }
+
+    // The virtual trigger must be legally placeable. Never overwrite a puyo
+    // that already exists in the source position just to make a chain fire.
+    if (simulationField[9]?.[0]) {
+      return {
+        chainCount: 0,
+        leftoverPuyos: this.countPuyosInRange(field),
+        usedPuyos,
+        leftoverPositions: this.getPuyosInRange(field)
+      }
+    }
     
     // (1,10)にぷよを置く
     if (!simulationField[9]) simulationField[9] = [null, null, null, null, null, null]
     simulationField[9][0] = triggerColor
+    origins[9][0] = null // artificial trigger is not part of the source field
     
     // 評価範囲を定義（1-2列目: 10-12行目、3-6列目: 9-12行目）
     const evaluationRange = {
@@ -475,12 +444,12 @@ export class GTRDetector {
     
     while (hasCleared) {
       // 重力落下（評価範囲内のみ）
-      while (this.applyGravityInRange(simulationField, evaluationRange)) {
+      while (this.applyGravityInRange(simulationField, evaluationRange, origins)) {
         // 落下が完了するまで繰り返し
       }
       
       // 消去処理（評価範囲内のみ）
-      const clearResult = this.clearConnectedPuyos(simulationField, evaluationRange)
+      const clearResult = this.clearConnectedPuyos(simulationField, evaluationRange, origins)
       hasCleared = clearResult.cleared
       
       if (hasCleared) {
@@ -492,11 +461,9 @@ export class GTRDetector {
       }
     }
     
-    // あまりぷよを特定（評価範囲内で連鎖に使われないぷよ）
-    const leftoverPositions = this.getPuyosInRange(field).filter(puyo => {
-      const key = `${puyo.x},${puyo.y}`
-      return !usedPuyos.has(key)
-    })
+    // 落下後の座標と元盤面の座標は一致しないため、連鎖後に実際に
+    // 残った盤面からあまりぷよを求める。未発火時だけ元盤面を使う。
+    const leftoverPositions = this.getPuyosInRange(chainCount > 0 ? simulationField : field)
     
     return {
       chainCount,
@@ -507,7 +474,7 @@ export class GTRDetector {
   }
   
   // 10行目の使用状況を評価
-  private static evaluateRow10Usage(field: (PuyoColor | null)[][], usedPuyos: Set<string>): number {
+  private static evaluateRow10Usage(field: (PuyoColor | null)[][], _usedPuyos: Set<string>): number {
     // (6,10)だけ、または(6,10)と(5,10)だけが使われているか
     const has610 = field[9] && field[9][5] !== null
     const has510 = field[9] && field[9][4] !== null
@@ -530,7 +497,7 @@ export class GTRDetector {
   
   // あまりぷよの評価（note.mdの仕様：同じ色で連結していれば高評価、複数色なら0点）
   private static evaluateLeftoverPuyos(
-    field: (PuyoColor | null)[][],
+    _field: (PuyoColor | null)[][],
     leftoverPositions: { x: number; y: number; color: PuyoColor }[]
   ): number {
     // あまりぷよなしが最高評価

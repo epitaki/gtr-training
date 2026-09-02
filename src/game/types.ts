@@ -30,6 +30,9 @@ export interface GameField {
   height: number
 }
 
+// Backwards-compatible domain alias used by field/history helpers.
+export type Field = GameField
+
 export interface GameState {
   field: GameField
   currentPair: PuyoPair | null

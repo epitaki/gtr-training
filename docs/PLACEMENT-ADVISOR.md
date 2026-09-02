@@ -479,7 +479,7 @@ src/game/
 
 scripts/
 └── simulate-advisor.ts         ← 検証用シミュレーションスクリプト
-                                   npx tsx scripts/simulate-advisor.ts で実行
+                                   bunx tsx scripts/simulate-advisor.ts で実行
 ```
 
 ---

@@ -1,137 +1,89 @@
-interface TopPageProps {
-  onSelectMode: (mode: string) => void
-}
+import type { GameMode } from '../App'
+
+interface TopPageProps { onSelectMode: (mode: GameMode) => void }
+
+const MiniPuyo = ({ color }: { color: string }) => (
+  <span className={`block h-7 w-7 rounded-full ${color} shadow-[inset_0_-4px_0_rgba(0,0,0,0.12)] ring-2 ring-white/20`} />
+)
 
 export default function TopPage({ onSelectMode }: TopPageProps) {
   return (
-    <div className="max-w-4xl mx-auto font-puyo">
-      {/* ヒーローセクション */}
-      <div className="bg-white/80 backdrop-blur rounded-2xl shadow-xl border-2 border-puyo-pink/20 p-8 mb-6">
-        <h1 className="text-4xl font-extrabold bg-gradient-to-r from-puyo-red via-puyo-pink to-puyo-blue bg-clip-text text-transparent mb-4">
-          GTRトレーニングツールへようこそ！
-        </h1>
-        <p className="text-lg text-puyo-dark/70 mb-6">
-          ぷよぷよの重要な連鎖土台「GTR（グレート田中連鎖）」を
-          <br />
-          ゲームを楽しみながら習得できるトレーニングツールです。
-        </p>
-        <div className="flex gap-4">
-          <button
-            onClick={() => onSelectMode('guided')}
-            className="px-6 py-3 bg-puyo-green text-white font-bold rounded-2xl hover:scale-105 transition-transform shadow-lg shadow-puyo-green/30"
-          >
-            初心者用ガイドを始める
-          </button>
-          <button
-            onClick={() => onSelectMode('score-attack')}
-            className="px-6 py-3 bg-puyo-red text-white font-bold rounded-2xl hover:scale-105 transition-transform shadow-lg shadow-puyo-red/30"
-          >
-            スコアアタックに挑戦
-          </button>
-        </div>
-      </div>
+    <div className="mx-auto max-w-6xl font-puyo">
+      <section className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#171426] px-6 py-10 shadow-2xl shadow-indigo-950/20 sm:px-10 lg:px-14 lg:py-14">
+        <div className="absolute -right-24 -top-32 h-96 w-96 rounded-full bg-violet-500/20 blur-3xl" />
+        <div className="absolute -bottom-40 left-1/3 h-80 w-80 rounded-full bg-cyan-400/10 blur-3xl" />
 
-      {/* GTRとは */}
-      <div className="bg-white/80 backdrop-blur rounded-2xl shadow-lg border-2 border-puyo-blue/20 p-8 mb-6">
-        <h2 className="text-2xl font-extrabold text-puyo-dark mb-4">GTRとは？</h2>
-        <div className="text-puyo-dark/60 space-y-3">
-          <p>
-            GTR（グレート田中連鎖）は、ぷよぷよにおける効率的な連鎖の土台形の一つです。
-          </p>
-          <ul className="list-none space-y-2 ml-2">
-            <li className="flex items-start gap-2">
-              <span className="text-puyo-green font-bold">✓</span>
-              <span>2-3列目の特定の形状（折り返し部分）が特徴</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-puyo-green font-bold">✓</span>
-              <span>4列目以降に連鎖尾を配置して連鎖を伸ばす</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-puyo-green font-bold">✓</span>
-              <span>初心者から上級者まで幅広く使用される定番の形</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-puyo-green font-bold">✓</span>
-              <span>本ツールでは基本GTRと1列目拡張GTRを習得できます</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      {/* ゲームモード紹介 */}
-      <div className="grid md:grid-cols-2 gap-6 mb-6">
-        {/* 初心者用ガイド */}
-        <div className="bg-white/80 backdrop-blur rounded-2xl shadow-lg border-2 border-puyo-green/30 p-6 hover:shadow-xl hover:border-puyo-green/50 transition-all">
-          <div className="text-4xl mb-4">📚</div>
-          <h3 className="text-xl font-extrabold text-puyo-dark mb-2">
-            初心者用ガイド付きGTR練習
-          </h3>
-          <p className="text-puyo-dark/60 mb-4">
-            リアルタイムでGTRの形をガイド表示。巻き戻し機能で何度でも練習できます。
-          </p>
-          <ul className="text-sm text-puyo-dark/50 space-y-1 mb-4">
-            <li><span className="text-puyo-green font-bold">✓</span> 2手組み合わせ別おすすめ配置</li>
-            <li><span className="text-puyo-green font-bold">✓</span> Y字・L字・階段型連鎖尾サンプル</li>
-            <li><span className="text-puyo-green font-bold">✓</span> 詳細な評価とフィードバック</li>
-            <li><span className="text-puyo-green font-bold">✓</span> 巻き戻し・ポーズ機能</li>
-          </ul>
-          <button
-            onClick={() => onSelectMode('guided')}
-            className="w-full px-4 py-2.5 bg-puyo-green text-white font-bold rounded-xl hover:scale-[1.02] transition-transform shadow-md shadow-puyo-green/20"
-          >
-            始める
-          </button>
-        </div>
-
-        {/* スコアアタック */}
-        <div className="bg-white/80 backdrop-blur rounded-2xl shadow-lg border-2 border-puyo-red/30 p-6 hover:shadow-xl hover:border-puyo-red/50 transition-all">
-          <div className="text-4xl mb-4">⚡</div>
-          <h3 className="text-xl font-extrabold text-puyo-dark mb-2">
-            GTR training（スコアアタック）
-          </h3>
-          <p className="text-puyo-dark/60 mb-4">
-            5回のGTR完成を目指す高速プレイモード。スピードと精度を競います。
-          </p>
-          <ul className="text-sm text-puyo-dark/50 space-y-1 mb-4">
-            <li><span className="text-puyo-green font-bold">✓</span> 高速ゲームプレイ</li>
-            <li><span className="text-puyo-green font-bold">✓</span> GTR評価システム</li>
-            <li><span className="text-puyo-green font-bold">✓</span> 詳細な採点結果</li>
-            <li><span className="text-puyo-green font-bold">✓</span> ランキング対応（準備中）</li>
-          </ul>
-          <button
-            onClick={() => onSelectMode('score-attack')}
-            className="w-full px-4 py-2.5 bg-puyo-red text-white font-bold rounded-xl hover:scale-[1.02] transition-transform shadow-md shadow-puyo-red/20"
-          >
-            挑戦する
-          </button>
-        </div>
-      </div>
-
-      {/* 未実装機能 */}
-      <div className="bg-puyo-dark/5 rounded-2xl shadow-sm border border-puyo-dark/10 p-6">
-        <h3 className="text-lg font-extrabold text-puyo-dark/70 mb-3">開発予定機能</h3>
-        <div className="grid md:grid-cols-2 gap-4">
-          <div className="flex items-start gap-3">
-            <span className="text-2xl">⚔️</span>
-            <div>
-              <h4 className="font-bold text-puyo-dark/70">対戦モード</h4>
-              <p className="text-sm text-puyo-dark/40">
-                リアルタイムでGTR構築を競う対戦機能
-              </p>
+        <div className="relative grid items-center gap-10 lg:grid-cols-[1.15fr_.85fr]">
+          <div>
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-violet-300/15 bg-violet-300/10 px-3 py-1.5 text-xs font-bold tracking-wide text-violet-200">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399]" />
+              GTRを、置いて覚える。
+            </div>
+            <h1 className="max-w-2xl text-4xl font-black leading-[1.12] tracking-tight text-white sm:text-5xl lg:text-6xl">
+              迷わない積み方を、
+              <span className="bg-gradient-to-r from-violet-300 via-fuchsia-300 to-amber-200 bg-clip-text text-transparent">手の感覚に。</span>
+            </h1>
+            <p className="mt-5 max-w-xl text-base leading-8 text-slate-300 sm:text-lg">
+              次の一手をガイドで確かめながら、ぷよぷよの定番連鎖土台「GTR」を実戦形式で身につけよう。
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <button onClick={() => onSelectMode('guided')} className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3.5 font-extrabold text-[#171426] shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:bg-violet-50">
+                ガイド練習を始める
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </button>
+              <button onClick={() => onSelectMode('score-attack')} className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-6 py-3.5 font-bold text-white transition hover:-translate-y-0.5 hover:bg-white/10">
+                スコアアタック
+              </button>
             </div>
           </div>
-          <div className="flex items-start gap-3">
-            <span className="text-2xl">📊</span>
-            <div>
-              <h4 className="font-bold text-puyo-dark/70">統計情報</h4>
-              <p className="text-sm text-puyo-dark/40">
-                スコア履歴やよく使うGTRの形を分析
-              </p>
+
+          <div className="relative mx-auto w-full max-w-sm" aria-hidden="true">
+            <div className="absolute inset-4 rounded-[2rem] bg-violet-500/25 blur-2xl" />
+            <div className="relative rounded-[1.75rem] border border-white/10 bg-[#0d0b16]/90 p-5 shadow-2xl">
+              <div className="mb-4 flex items-center justify-between text-xs font-bold text-slate-400">
+                <span>GTR FORMATION</span><span className="text-emerald-400">GOOD</span>
+              </div>
+              <div className="grid grid-cols-6 gap-1.5 rounded-2xl border border-white/5 bg-black/30 p-4">
+                {Array.from({ length: 30 }, (_, i) => {
+                  const colors: Record<number, string> = { 18: 'bg-rose-400', 19: 'bg-sky-400', 24: 'bg-rose-400', 25: 'bg-rose-400', 26: 'bg-sky-400', 20: 'bg-amber-300', 27: 'bg-sky-400', 21: 'bg-emerald-400', 22: 'bg-amber-300', 28: 'bg-emerald-400', 29: 'bg-amber-300' }
+                  return colors[i] ? <MiniPuyo key={i} color={colors[i]} /> : <span key={i} className="h-7 w-7 rounded-full border border-white/[0.04]" />
+                })}
+              </div>
+              <div className="mt-4 flex items-center justify-between rounded-xl bg-white/[0.04] px-4 py-3">
+                <span className="text-sm text-slate-400">折り返し進捗</span>
+                <div className="flex items-center gap-3"><span className="h-1.5 w-24 overflow-hidden rounded-full bg-white/10"><span className="block h-full w-4/5 rounded-full bg-violet-400" /></span><b className="text-sm text-white">80%</b></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      <section className="py-10">
+        <div className="mb-5 flex items-end justify-between">
+          <div><p className="mb-1 text-xs font-extrabold tracking-[.18em] text-violet-600">TRAINING MODES</p><h2 className="text-2xl font-black text-slate-900">今日の練習を選ぶ</h2></div>
+          <p className="hidden text-sm text-slate-500 sm:block">まずはガイド練習がおすすめ</p>
+        </div>
+        <div className="grid gap-5 lg:grid-cols-2">
+          <button onClick={() => onSelectMode('guided')} className="group rounded-3xl border border-slate-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-1 hover:border-violet-300 hover:shadow-xl hover:shadow-violet-900/10 sm:p-7">
+            <div className="flex items-start justify-between"><span className="grid h-12 w-12 place-items-center rounded-2xl bg-violet-100 text-2xl">◈</span><span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">初心者におすすめ</span></div>
+            <h3 className="mt-6 text-xl font-black text-slate-900">ガイド付き練習</h3>
+            <p className="mt-2 leading-7 text-slate-500">おすすめ配置を見ながら、折り返しから連鎖尾まで一手ずつ練習します。</p>
+            <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-5 text-sm"><span className="text-slate-400">巻き戻し・配置ガイド付き</span><span className="font-extrabold text-violet-600 transition-transform group-hover:translate-x-1">始める →</span></div>
+          </button>
+          <button onClick={() => onSelectMode('score-attack')} className="group rounded-3xl border border-slate-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-1 hover:border-amber-300 hover:shadow-xl hover:shadow-amber-900/10 sm:p-7">
+            <div className="flex items-start justify-between"><span className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-100 text-2xl">↗</span><span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">腕試し</span></div>
+            <h3 className="mt-6 text-xl font-black text-slate-900">スコアアタック</h3>
+            <p className="mt-2 leading-7 text-slate-500">ガイドなしでGTRを組み、完成速度と形の精度からスコアを測ります。</p>
+            <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-5 text-sm"><span className="text-slate-400">評価・詳細フィードバック</span><span className="font-extrabold text-amber-600 transition-transform group-hover:translate-x-1">挑戦する →</span></div>
+          </button>
+        </div>
+      </section>
+
+      <section className="mb-8 grid gap-5 rounded-3xl border border-slate-200/80 bg-white/60 p-6 sm:grid-cols-3 sm:p-8">
+        {[['01', '置く', 'ガイドを参考にぷよを配置'], ['02', '振り返る', '評価で形と連鎖尾を確認'], ['03', '身につける', '繰り返して判断を高速化']].map(([n, title, body]) => (
+          <div key={n} className="flex gap-4"><span className="text-sm font-black text-violet-400">{n}</span><div><h3 className="font-extrabold text-slate-800">{title}</h3><p className="mt-1 text-sm leading-6 text-slate-500">{body}</p></div></div>
+        ))}
+      </section>
     </div>
   )
 }

@@ -18,7 +18,6 @@ export interface GuideContent {
 export class GuideManager {
   private currentState: GuideState = GuideState.INITIAL_TWO_HANDS
   private initialPairs?: { pair1: PuyoPair; pair2: PuyoPair }
-  private chainTailType?: 'Y' | 'L' | 'stairs' | 'zabuton'
   private detectedSkeleton?: 'Y' | 'L' | 'stairs' | 'zabuton'
   private selectedCompleteForm?: string[][]
   
@@ -29,7 +28,6 @@ export class GuideManager {
   
   reset() {
     this.currentState = GuideState.INITIAL_TWO_HANDS
-    this.chainTailType = undefined
   }
   
   updateState(field: Field) {
@@ -52,7 +50,6 @@ export class GuideManager {
       const skeleton = this.detectSkeleton(field)
       if (skeleton) {
         this.detectedSkeleton = skeleton
-        this.chainTailType = skeleton
         // 骨格に対応する完成形をランダムに選択
         const patterns = GTRGuidePatterns.getCompletePatterns(skeleton)
         this.selectedCompleteForm = patterns[Math.floor(Math.random() * patterns.length)]

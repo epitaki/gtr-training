@@ -1,4 +1,4 @@
-import { PuyoColor, GameField } from './types'
+import { PuyoColor, GameField, Field } from './types'
 
 export class GameFieldManager {
   private field: GameField

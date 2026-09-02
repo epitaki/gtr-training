@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { GameManager } from '../game/GameManager'
+import GameControls from './GameControls'
 
 interface GuidedGameProps {
   onExit: () => void
@@ -28,13 +29,16 @@ export default function GuidedGame({ onExit }: GuidedGameProps) {
   }, [onExit])
 
   return (
-    <div className="flex items-center justify-center py-4 min-h-[calc(100vh-6rem)] bg-puyo-dark">
+    <div className="min-h-[calc(100vh-8rem)] overflow-auto rounded-3xl bg-[#171426] p-3 shadow-2xl shadow-indigo-950/20 sm:p-4">
+      <div className="flex min-w-max justify-center">
       <div
         ref={containerRef}
         id="phaser-game"
-        className="rounded-2xl overflow-hidden shadow-2xl border-2 border-puyo-green/30"
+        className="overflow-hidden rounded-2xl border border-white/10 shadow-2xl"
         style={{ width: 900, height: 800 }}
       />
+      </div>
+      <GameControls guided />
     </div>
   )
 }

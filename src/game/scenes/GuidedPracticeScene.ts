@@ -42,6 +42,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
   private pauseText?: Phaser.GameObjects.Text
   private gravityStatusText?: Phaser.GameObjects.Text
   private advisorStatusText?: Phaser.GameObjects.Text
+  private gameOverDisplay?: Phaser.GameObjects.Container
 
   // レイアウト設定（VisualConfigから）
   private readonly CELL_SIZE = FIELD_CONFIG.CELL_SIZE
@@ -93,21 +94,31 @@ export default class GuidedPracticeScene extends Phaser.Scene {
 
     // 背景
     this.add.rectangle(canvasW / 2, canvasH / 2, canvasW, canvasH, LAYOUT_GUIDED.BG_COLOR)
+    this.add.circle(canvasW - 40, 30, 230, 0x6d5bd0, 0.07)
+    this.add.circle(40, canvasH - 20, 170, 0x3ecf8e, 0.035)
 
     // タイトル
-    this.add.text(canvasW / 2, 30, '初心者用ガイド付きGTR練習', {
+    this.add.text(canvasW / 2, 27, 'GUIDED PRACTICE', { ...TEXT_STYLES.label, fontSize: '10px', color: '#9b8cff', letterSpacing: 2 }).setOrigin(0.5)
+    this.add.text(canvasW / 2, 49, 'ガイド付きGTR練習', {
       ...TEXT_STYLES.title,
-      fontSize: '24px',
+      fontSize: '23px',
     }).setOrigin(0.5)
 
     // 操作説明（コンパクト表示）
-    this.add.text(canvasW / 2, 60, '← → ↓ 移動 | Z X 回転 | ↑ 巻き戻し | P ポーズ | F 落下 | G アドバイス | Space 評価 | Esc 戻る', {
+    this.add.text(canvasW / 2, 77, '← → ↓  移動    Z / X  回転    ↑  戻す    P  ポーズ    G  ガイド    SPACE  評価', {
       ...TEXT_STYLES.subtitle,
       fontSize: '12px',
     }).setOrigin(0.5)
 
     // フィールド描画
     this.drawField()
+
+    this.add.text(this.FIELD_X + this.CELL_SIZE * 2.5, this.FIELD_Y + this.CELL_SIZE * 0.5, '×', {
+      fontSize: '22px', color: '#f47582', fontFamily: TEXT_STYLES.title.fontFamily, fontStyle: 'bold'
+    }).setOrigin(0.5).setAlpha(0.72).setDepth(0)
+    this.add.text(this.FIELD_X, this.FIELD_Y + FIELD_CONFIG.ROWS * this.CELL_SIZE + 18, 'GTR FOUNDATION', {
+      ...TEXT_STYLES.label, fontSize: '10px', color: '#716a88', letterSpacing: 1
+    })
 
     // ガイド表示エリア
     this.createGuideDisplay()
@@ -130,9 +141,9 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     this.gKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.G)
 
     // 自由落下状態表示
-    this.gravityStatusText = this.add.text(10, 10, '自由落下: ON', {
-      fontSize: '16px',
-      color: '#00ff00',
+    this.gravityStatusText = this.add.text(360, 112, '●  自由落下 ON', {
+      fontSize: '12px',
+      color: '#66e0aa',
       fontFamily: TEXT_STYLES.title.fontFamily,
       stroke: '#000000',
       strokeThickness: 2
@@ -140,9 +151,9 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     this.gravityStatusText.setDepth(100)
 
     // アドバイザー状態表示
-    this.advisorStatusText = this.add.text(10, 32, 'アドバイザー: ON (G)', {
-      fontSize: '16px',
-      color: '#44ddff',
+    this.advisorStatusText = this.add.text(360, 136, '●  ガイド ON', {
+      fontSize: '12px',
+      color: '#b5a8ff',
       fontFamily: TEXT_STYLES.title.fontFamily,
       stroke: '#000000',
       strokeThickness: 2
@@ -172,12 +183,12 @@ export default class GuidedPracticeScene extends Phaser.Scene {
       this.toggleAdvisor()
     }
 
-    if (this.isPaused || this.gameState.gameOver || this.isShowingResult) return
-
     if (Phaser.Input.Keyboard.JustDown(this.upKey!)) {
       this.rewind()
       return
     }
+
+    if (this.isPaused || this.gameState.gameOver || this.isShowingResult) return
 
     this.handleInput(time)
 
@@ -210,6 +221,9 @@ export default class GuidedPracticeScene extends Phaser.Scene {
   private rewind() {
     const previousState = this.gameHistory.rewind()
     if (previousState) {
+      this.gameOverDisplay?.destroy(true)
+      this.gameOverDisplay = undefined
+      this.gameState.gameOver = false
       this.gameField.setField(previousState.field)
       this.gameState.field = this.gameField.getField()
       this.gameState.currentPair = previousState.currentPair
@@ -540,23 +554,35 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     const canvasW = LAYOUT_GUIDED.CANVAS_WIDTH
     const canvasH = LAYOUT_GUIDED.CANVAS_HEIGHT
 
+    this.gameOverDisplay?.destroy(true)
+    this.gameOverDisplay = this.add.container(0, 0)
     const bg = this.add.rectangle(canvasW / 2, canvasH / 2, 400, 200, 0x0a0a1a, 0.92)
     bg.setStrokeStyle(2, 0x4444aa)
+    this.gameOverDisplay.add(bg)
 
-    this.add.text(canvasW / 2, canvasH / 2 - 20, 'Game Over', {
+    const title = this.add.text(canvasW / 2, canvasH / 2 - 28, 'Game Over', {
       fontSize: '32px',
       color: '#ff6666',
       fontFamily: TEXT_STYLES.title.fontFamily,
     }).setOrigin(0.5)
+    this.gameOverDisplay.add(title)
 
-    this.add.text(canvasW / 2, canvasH / 2 + 20, `スコア: ${this.gameState.score}`, {
+    const score = this.add.text(canvasW / 2, canvasH / 2 + 14, `スコア: ${this.gameState.score}`, {
       fontSize: '18px',
       color: '#ffffff',
       fontFamily: TEXT_STYLES.title.fontFamily,
     }).setOrigin(0.5)
+    this.gameOverDisplay.add(score)
+    const help = this.add.text(canvasW / 2, canvasH / 2 + 55, '↑ 巻き戻す  /  Esc 戻る', {
+      fontSize: '13px', color: '#918aa8', fontFamily: TEXT_STYLES.title.fontFamily
+    }).setOrigin(0.5)
+    this.gameOverDisplay.add(help)
+    this.gameOverDisplay.setDepth(900)
   }
 
   private resetGame() {
+    this.gameOverDisplay?.destroy(true)
+    this.gameOverDisplay = undefined
     this.gameField.clear()
     this.clearGhostSprites()
     this.clearAllSprites()
@@ -583,6 +609,8 @@ export default class GuidedPracticeScene extends Phaser.Scene {
   private drawField() {
     const fieldW = FIELD_CONFIG.COLS * this.CELL_SIZE
     const fieldH = FIELD_CONFIG.ROWS * this.CELL_SIZE
+
+    this.add.rectangle(this.FIELD_X + fieldW / 2 + 7, this.FIELD_Y + fieldH / 2 + 9, fieldW + 12, fieldH + 12, 0x05040a, 0.45)
 
     // 外枠
     this.add.rectangle(
@@ -623,20 +651,21 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     this.guideDisplay = this.add.container(this.GUIDE_X, this.GUIDE_Y)
 
     const fieldH = FIELD_CONFIG.ROWS * this.CELL_SIZE
-    const bg = this.add.rectangle(0, fieldH / 2, LAYOUT_GUIDED.GUIDE_WIDTH, fieldH, 0x1a1a2e, 0.9)
+    const bg = this.add.rectangle(0, fieldH / 2, LAYOUT_GUIDED.GUIDE_WIDTH, fieldH, 0x211d33, 0.96)
     this.guideDisplay.add(bg)
 
     // 枠線（紫系ボーダー）
     const border = this.add.rectangle(0, fieldH / 2, LAYOUT_GUIDED.GUIDE_WIDTH, fieldH)
-    border.setStrokeStyle(2, 0x4444aa)
+    border.setStrokeStyle(1, 0x51496b)
     border.setFillStyle()
     this.guideDisplay.add(border)
 
-    const title = this.add.text(0, -30, 'ガイド', {
-      fontSize: '20px',
-      color: '#ffffff',
+    const title = this.add.text(-150, -31, 'COACH', {
+      fontSize: '11px',
+      color: '#9b8cff',
       fontFamily: TEXT_STYLES.title.fontFamily,
-    }).setOrigin(0.5)
+      fontStyle: 'bold', letterSpacing: 2
+    }).setOrigin(0, 0.5)
     this.guideDisplay.add(title)
   }
 
@@ -648,26 +677,27 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     const fieldH = FIELD_CONFIG.ROWS * this.CELL_SIZE
     const guideW = 350
     const guideH = Math.max(fieldH, 500)
-    const bg = this.add.rectangle(0, guideH / 2, guideW, guideH, 0x1a1a2e, 0.9)
+    const bg = this.add.rectangle(0, guideH / 2, guideW, guideH, 0x211d33, 0.96)
     this.guideDisplay.add(bg)
 
     const border = this.add.rectangle(0, guideH / 2, guideW, guideH)
-    border.setStrokeStyle(2, 0x4444aa)
+    border.setStrokeStyle(1, 0x51496b)
     border.setFillStyle()
     this.guideDisplay.add(border)
 
-    const title = this.add.text(0, -30, 'ガイド', {
-      fontSize: '20px',
-      color: '#ffffff',
+    const title = this.add.text(-150, -31, 'COACH', {
+      fontSize: '11px',
+      color: '#9b8cff',
       fontFamily: TEXT_STYLES.title.fontFamily,
-    }).setOrigin(0.5)
+      fontStyle: 'bold', letterSpacing: 2
+    }).setOrigin(0, 0.5)
     this.guideDisplay.add(title)
 
     const guideContent = this.guideManager.getGuideContent()
 
     const comment = this.add.text(0, -10, guideContent.comment, {
       fontSize: '16px',
-      color: '#ffdd44',
+      color: '#f3c94f',
       fontFamily: TEXT_STYLES.title.fontFamily,
       wordWrap: { width: 320 }
     }).setOrigin(0.5)
@@ -680,7 +710,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     if (guideContent.description) {
       const desc = this.add.text(0, 300, guideContent.description, {
         fontSize: '14px',
-        color: '#aaaacc',
+        color: '#c4bfd3',
         fontFamily: TEXT_STYLES.title.fontFamily,
         wordWrap: { width: 320 },
         align: 'center'
@@ -945,11 +975,11 @@ export default class GuidedPracticeScene extends Phaser.Scene {
 
     if (this.gravityStatusText) {
       if (this.isGravityEnabled) {
-        this.gravityStatusText.setText('自由落下: ON')
-        this.gravityStatusText.setColor('#00ff00')
+        this.gravityStatusText.setText('●  自由落下 ON')
+        this.gravityStatusText.setColor('#66e0aa')
       } else {
-        this.gravityStatusText.setText('自由落下: OFF')
-        this.gravityStatusText.setColor('#ff4444')
+        this.gravityStatusText.setText('●  自由落下 OFF')
+        this.gravityStatusText.setColor('#f47582')
       }
     }
 
@@ -1006,12 +1036,12 @@ export default class GuidedPracticeScene extends Phaser.Scene {
 
     if (this.advisorStatusText) {
       if (this.isAdvisorEnabled) {
-        this.advisorStatusText.setText('アドバイザー: ON (G)')
-        this.advisorStatusText.setColor('#44ddff')
+        this.advisorStatusText.setText('●  ガイド ON')
+        this.advisorStatusText.setColor('#b5a8ff')
         this.updateAdvice()
       } else {
-        this.advisorStatusText.setText('アドバイザー: OFF (G)')
-        this.advisorStatusText.setColor('#ff4444')
+        this.advisorStatusText.setText('●  ガイド OFF')
+        this.advisorStatusText.setColor('#f47582')
         this.clearGhostSprites()
       }
     }

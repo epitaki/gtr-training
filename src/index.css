@@ -3,7 +3,17 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    background: #f5f6fa;
+  }
   body {
     font-family: 'M PLUS Rounded 1c', sans-serif;
+    margin: 0;
+    min-width: 320px;
+    color: #171426;
+    -webkit-font-smoothing: antialiased;
+  }
+  button {
+    -webkit-tap-highlight-color: transparent;
   }
 }

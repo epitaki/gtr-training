@@ -18,6 +18,8 @@ export default class PuyoGame extends Phaser.Scene {
   private gameField: GameFieldManager
   private gameState: GameState
   private isGravityEnabled: boolean = true
+  private isShowingResult: boolean = false
+  private resultKeyHandler?: (event: KeyboardEvent) => void
 
   // 描画関連
   private fieldSprites: (Phaser.GameObjects.Sprite | null)[][] = []
@@ -77,6 +79,8 @@ export default class PuyoGame extends Phaser.Scene {
 
     // 背景
     this.add.rectangle(canvasW / 2, canvasH / 2, canvasW, canvasH, LAYOUT_SCORE_ATTACK.BG_COLOR)
+    this.add.circle(canvasW - 50, 40, 180, 0x6d5bd0, 0.08)
+    this.add.circle(30, canvasH - 20, 140, 0x3ecf8e, 0.04)
 
     // フィールドの枠線
     const fieldW = FIELD_CONFIG.COLS * this.CELL_SIZE
@@ -84,7 +88,8 @@ export default class PuyoGame extends Phaser.Scene {
     const fieldCenterX = this.FIELD_X + fieldW / 2
     const fieldCenterY = this.FIELD_Y + fieldH / 2
 
-    // 外枠
+    // フィールドの奥行きと外枠
+    this.add.rectangle(fieldCenterX + 7, fieldCenterY + 9, fieldW + 12, fieldH + 12, 0x05040a, 0.45)
     this.add.rectangle(fieldCenterX, fieldCenterY, fieldW + FIELD_CONFIG.FIELD_BORDER_WIDTH * 2, fieldH + FIELD_CONFIG.FIELD_BORDER_WIDTH * 2, FIELD_CONFIG.FIELD_BORDER_COLOR)
 
     // 内枠（黒いぷよフィールド）
@@ -93,6 +98,10 @@ export default class PuyoGame extends Phaser.Scene {
     // フィールドグリッド
     this.drawGrid()
 
+    this.add.text(this.FIELD_X + this.CELL_SIZE * 2.5, this.FIELD_Y + this.CELL_SIZE * 0.5, '×', {
+      fontSize: '22px', color: '#f47582', fontFamily: TEXT_STYLES.title.fontFamily, fontStyle: 'bold'
+    }).setOrigin(0.5).setAlpha(0.72).setDepth(0)
+
     // ネクストぷよ表示エリア
     this.createNextAreas()
 
@@ -100,8 +109,10 @@ export default class PuyoGame extends Phaser.Scene {
     this.initializeSprites()
 
     // タイトル
-    this.add.text(this.FIELD_X, 10, 'GTR Training', {
-      ...TEXT_STYLES.title,
+    this.add.text(this.FIELD_X, 24, 'SCORE ATTACK', { ...TEXT_STYLES.label, fontSize: '11px', color: '#9b8cff' })
+    this.add.text(this.FIELD_X, 43, 'GTR Training', { ...TEXT_STYLES.title, fontSize: '25px' })
+    this.add.text(this.FIELD_X, this.FIELD_Y + fieldH + 18, 'BUILD  /  CONNECT  /  CHAIN', {
+      ...TEXT_STYLES.label, fontSize: '10px', color: '#716a88', letterSpacing: 1
     })
 
     // NEXTエリア下にGTR情報パネルを配置
@@ -119,9 +130,13 @@ export default class PuyoGame extends Phaser.Scene {
       NEXT_AREA_CONFIG.BG_COLOR
     ).setStrokeStyle(1, NEXT_AREA_CONFIG.BORDER_COLOR)
 
+    this.add.text(infoPanelX + 10, infoPanelY - 14, 'RESULT', {
+      ...TEXT_STYLES.label, fontSize: '10px', color: '#8f86a8', letterSpacing: 1
+    })
+
     this.gtrCountText = this.add.text(infoPanelX + 10, infoPanelY + 10, 'GTR: 0回', {
       fontSize: '18px',
-      color: '#ffdd44',
+      color: '#f3c94f',
       fontFamily: TEXT_STYLES.title.fontFamily,
       stroke: '#000000',
       strokeThickness: 2
@@ -129,7 +144,7 @@ export default class PuyoGame extends Phaser.Scene {
 
     this.gtrScoreText = this.add.text(infoPanelX + 10, infoPanelY + 38, 'Score: 0', {
       fontSize: '16px',
-      color: '#44dd88',
+      color: '#66e0aa',
       fontFamily: TEXT_STYLES.title.fontFamily,
       stroke: '#000000',
       strokeThickness: 2
@@ -137,7 +152,7 @@ export default class PuyoGame extends Phaser.Scene {
 
     this.gtrQualityText = this.add.text(infoPanelX + 10, infoPanelY + 62, '形の質: -', {
       fontSize: '14px',
-      color: '#66ccff',
+      color: '#b5a8ff',
       fontFamily: TEXT_STYLES.title.fontFamily,
       stroke: '#000000',
       strokeThickness: 1
@@ -146,7 +161,7 @@ export default class PuyoGame extends Phaser.Scene {
     // 自由落下状態表示（情報パネル内）
     this.gravityStatusText = this.add.text(infoPanelX + 10, infoPanelY + 90, '自由落下: ON', {
       fontSize: '14px',
-      color: '#00ff00',
+      color: '#66e0aa',
       fontFamily: TEXT_STYLES.title.fontFamily,
       stroke: '#000000',
       strokeThickness: 2
@@ -156,7 +171,7 @@ export default class PuyoGame extends Phaser.Scene {
     // 操作説明（画面下部にコンパクト表示）
     this.add.text(canvasW / 2, canvasH - 12,
       '← → ↓ 移動 | Z X 回転 | F 落下 | Space 評価 | Esc 戻る',
-      { fontSize: '12px', color: '#666688', fontFamily: TEXT_STYLES.title.fontFamily }
+      { fontSize: '12px', color: '#827b99', fontFamily: TEXT_STYLES.title.fontFamily }
     ).setOrigin(0.5)
 
     // キー入力設定
@@ -169,6 +184,9 @@ export default class PuyoGame extends Phaser.Scene {
 
     // ゲーム開始
     this.startGame()
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      if (this.resultKeyHandler) this.input.keyboard?.off('keydown', this.resultKeyHandler)
+    })
   }
 
   update(time: number) {
@@ -181,7 +199,11 @@ export default class PuyoGame extends Phaser.Scene {
       this.toggleGravity()
     }
 
-    if (this.gameState.gameOver) return
+    if (this.gameState.gameOver) {
+      if (Phaser.Input.Keyboard.JustDown(this.spaceKey!)) this.resetGame()
+      return
+    }
+    if (this.isShowingResult) return
 
     this.handleInput(time)
 
@@ -287,6 +309,32 @@ export default class PuyoGame extends Phaser.Scene {
   }
 
   private processChain() {
+    let chainCount = 0
+    let totalCleared = 0
+
+    // Resolve the complete chain before spawning the next controllable pair.
+    // This prevents input from mutating the board between chain steps.
+    while (true) {
+      while (this.gameField.applyGravity()) {}
+
+      const result = this.gameField.clearConnectedPuyos()
+      if (!result.cleared) break
+
+      chainCount++
+      totalCleared += result.count
+      this.gameState.score += result.count * 10
+    }
+
+    if (chainCount > 0) {
+      const fieldCenterX = this.FIELD_X + 3 * this.CELL_SIZE
+      this.playScorePopup(fieldCenterX, this.FIELD_Y + 2 * this.CELL_SIZE, `${chainCount}連鎖! +${totalCleared * 10}`)
+    }
+
+    this.checkGTR()
+  }
+
+  /*
+  private processChainLegacy() {
     while (this.gameField.applyGravity()) {
       // 落下が完了するまで繰り返し
     }
@@ -305,6 +353,7 @@ export default class PuyoGame extends Phaser.Scene {
       this.checkGTR()
     }
   }
+  */
 
   private checkGTR() {
     const field = this.gameField.getField()
@@ -425,10 +474,14 @@ export default class PuyoGame extends Phaser.Scene {
       fontFamily: TEXT_STYLES.title.fontFamily,
     }).setOrigin(0.5).setDepth(1001)
 
-    this.add.text(centerX, centerY + 20, `スコア: ${this.gameState.score}`, {
+    this.add.text(centerX, centerY + 8, `スコア: ${this.gameState.score}`, {
       fontSize: '20px',
       color: '#ffffff',
       fontFamily: TEXT_STYLES.title.fontFamily,
+    }).setOrigin(0.5).setDepth(1001)
+
+    this.add.text(centerX, centerY + 52, 'Space: 再挑戦  /  Esc: 終了', {
+      fontSize: '14px', color: '#918aa8', fontFamily: TEXT_STYLES.title.fontFamily
     }).setOrigin(0.5).setDepth(1001)
   }
 
@@ -571,6 +624,9 @@ export default class PuyoGame extends Phaser.Scene {
   }
 
   private displayEvaluationResult(result: GTRScore) {
+    if (this.isShowingResult) return
+    this.isShowingResult = true
+    this.spaceKey?.reset()
     const centerX = this.cameras.main.width / 2
     const centerY = this.cameras.main.height / 2
 
@@ -633,19 +689,31 @@ export default class PuyoGame extends Phaser.Scene {
     if (msgEl) elements.push(msgEl)
 
     const handleKey = (event: KeyboardEvent) => {
+      event.preventDefault()
+      event.stopPropagation()
       if (event.key === ' ') {
-        elements.forEach(el => el.destroy())
         this.input.keyboard?.off('keydown', handleKey)
-        this.manualReset()
+        this.resultKeyHandler = undefined
+        this.spaceKey?.reset()
+        elements.forEach(el => el.destroy())
+        this.time.delayedCall(50, () => {
+          this.manualReset()
+          this.isShowingResult = false
+        })
       } else if (event.key === 'Escape') {
         this.input.keyboard?.off('keydown', handleKey)
+        this.resultKeyHandler = undefined
         this.exitToMenu()
       }
     }
+    this.resultKeyHandler = handleKey
     this.input.keyboard?.on('keydown', handleKey)
   }
 
   private resetGame() {
+    this.children.getAll()
+      .filter(child => (child as Phaser.GameObjects.GameObject & { depth?: number }).depth !== undefined && (child as Phaser.GameObjects.GameObject & { depth: number }).depth >= 1000)
+      .forEach(child => child.destroy())
     this.gameField.clear()
     this.clearAllSprites()
     this.gameState = this.createInitialGameState()
@@ -668,10 +736,11 @@ export default class PuyoGame extends Phaser.Scene {
     const baseY = this.FIELD_Y
 
     // NEXTラベル
-    this.add.text(baseX, baseY - 24, 'NEXT', {
+    this.add.text(baseX, baseY - 26, 'NEXT', {
       ...TEXT_STYLES.label,
-      fontSize: '16px',
-      color: '#aaaacc',
+      fontSize: '13px',
+      color: '#f8f7ff',
+      letterSpacing: 1,
     })
 
     // NEXTボックス
@@ -771,11 +840,11 @@ export default class PuyoGame extends Phaser.Scene {
 
     if (this.gravityStatusText) {
       if (this.isGravityEnabled) {
-        this.gravityStatusText.setText('自由落下: ON')
-        this.gravityStatusText.setColor('#00ff00')
+        this.gravityStatusText.setText('●  自由落下 ON')
+        this.gravityStatusText.setColor('#66e0aa')
       } else {
-        this.gravityStatusText.setText('自由落下: OFF')
-        this.gravityStatusText.setColor('#ff4444')
+        this.gravityStatusText.setText('●  自由落下 OFF')
+        this.gravityStatusText.setColor('#f47582')
       }
     }
 

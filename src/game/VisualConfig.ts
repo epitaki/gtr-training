@@ -1,10 +1,10 @@
 // ゲーム画面の共有ビジュアル設定
 
 export const PUYO_COLORS = {
-  red:    { main: 0xe74040, light: 0xf28b8b, dark: 0xb02828, eye: 0xffffff, pupil: 0x333333 },
-  green:  { main: 0x40b840, light: 0x8bd88b, dark: 0x287028, eye: 0xffffff, pupil: 0x333333 },
-  blue:   { main: 0x4070e7, light: 0x8baaf2, dark: 0x2848b0, eye: 0xffffff, pupil: 0x333333 },
-  yellow: { main: 0xe7d040, light: 0xf2e58b, dark: 0xb09e28, eye: 0xffffff, pupil: 0x333333 },
+  red:    { main: 0xf05262, light: 0xff9aa5, dark: 0xb92d43, eye: 0xffffff, pupil: 0x242033 },
+  green:  { main: 0x3ecf8e, light: 0x91ecc2, dark: 0x16815a, eye: 0xffffff, pupil: 0x242033 },
+  blue:   { main: 0x5687f5, light: 0xa4c0ff, dark: 0x3154b5, eye: 0xffffff, pupil: 0x242033 },
+  yellow: { main: 0xf3c94f, light: 0xffe99b, dark: 0xa98218, eye: 0xffffff, pupil: 0x242033 },
 } as const
 
 export const FIELD_CONFIG = {
@@ -12,12 +12,12 @@ export const FIELD_CONFIG = {
   ROWS: 13,
   CELL_SIZE: 48,
   CELL_GAP: 1,
-  GRID_LINE_COLOR: 0x444444,
-  GRID_LINE_ALPHA: 0.5,
+  GRID_LINE_COLOR: 0x363149,
+  GRID_LINE_ALPHA: 0.38,
   GRID_LINE_WIDTH: 1,
-  FIELD_BG_COLOR: 0x0a0a14,
-  FIELD_BORDER_COLOR: 0x555566,
-  FIELD_BORDER_WIDTH: 3,
+  FIELD_BG_COLOR: 0x0c0a14,
+  FIELD_BORDER_COLOR: 0x4d4568,
+  FIELD_BORDER_WIDTH: 4,
 } as const
 
 export const LAYOUT_SCORE_ATTACK = {
@@ -25,7 +25,7 @@ export const LAYOUT_SCORE_ATTACK = {
   CANVAS_HEIGHT: 800,
   FIELD_X: 48,
   FIELD_Y: 100,
-  BG_COLOR: 0x12121a,
+  BG_COLOR: 0x171426,
 } as const
 
 export const LAYOUT_GUIDED = {
@@ -36,7 +36,7 @@ export const LAYOUT_GUIDED = {
   GUIDE_X: 600,
   GUIDE_Y: 100,
   GUIDE_WIDTH: 280,
-  BG_COLOR: 0x12121a,
+  BG_COLOR: 0x171426,
 } as const
 
 export const NEXT_AREA_CONFIG = {
@@ -45,8 +45,8 @@ export const NEXT_AREA_CONFIG = {
   GAP_BETWEEN: 20,
   AREA_WIDTH: 120,
   AREA_PADDING: 16,
-  BG_COLOR: 0x1a1a2e,
-  BORDER_COLOR: 0x444466,
+  BG_COLOR: 0x211d33,
+  BORDER_COLOR: 0x51496b,
 } as const
 
 export const ANIMATION_CONFIG = {

@@ -4,13 +4,13 @@ import TopPage from './components/TopPage'
 import GuidedGame from './components/GuidedGame'
 import ScoreAttackGame from './components/ScoreAttackGame'
 
-type GameMode = 'top' | 'guided' | 'score-attack' | 'battle' | 'stats'
+export type GameMode = 'top' | 'guided' | 'score-attack' | 'battle' | 'stats'
 
 function App() {
   const [currentMode, setCurrentMode] = useState<GameMode>('top')
 
-  const handleSelectMode = (mode: string) => {
-    setCurrentMode(mode as GameMode)
+  const handleSelectMode = (mode: GameMode) => {
+    setCurrentMode(mode)
   }
 
   const handleLogoClick = () => {

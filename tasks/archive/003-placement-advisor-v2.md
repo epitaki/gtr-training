@@ -138,7 +138,7 @@ export const ADVISOR_SCORING = {
 
 ## 検証方法
 
-1. `npm run dev` で開発サーバー起動
+1. `bun run dev` で開発サーバー起動
 2. 初心者用ガイド付きGTR練習を開始
 
 ### テストケース

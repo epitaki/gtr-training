@@ -7,7 +7,7 @@ export async function testSupabaseConnection(): Promise<{
 }> {
   try {
     // 1. 基本的な接続テスト
-    const { data: healthCheck, error: healthError } = await supabase
+    const { error: healthError } = await supabase
       .from('profiles')
       .select('count')
       .limit(0)

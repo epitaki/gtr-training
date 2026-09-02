@@ -26,36 +26,36 @@ GTRトレーニングツール - ぷよぷよの連鎖土台「GTR（グレー�
 ### クイックスタート
 ```bash
 # プロジェクト作成
-npm create vite@latest . -- --template react-ts
+bun create vite . --template react-ts
 
 # 依存関係インストール
-npm install phaser@^3.70.0 zustand@^4.5.0
-npm install -D tailwindcss@^3.4.0 postcss autoprefixer
-npm install -D @types/node vitest @testing-library/react
+bun add phaser@^3.70.0 zustand@^4.5.0
+bun add -d tailwindcss@^3.4.0 postcss autoprefixer
+bun add -d @types/node vitest @testing-library/react
 
 # Tailwind CSS初期化
-npx tailwindcss init -p
+bunx tailwindcss init -p
 
 # 開発サーバー起動
-npm run dev
+bun run dev
 ```
 
 ### ビルドコマンド
 ```bash
 # 開発サーバー起動（http://localhost:5173）
-npm run dev
+bun run dev
 
 # プロダクションビルド
-npm run build
+bun run build
 
 # ビルドプレビュー
-npm run preview
+bun run preview
 
 # テスト実行
-npm run test
+bun run test
 
 # 型チェック
-npm run type-check
+bun run type-check
 ```
 
 ## プロジェクト構造
@@ -162,19 +162,19 @@ gtr-training/
 
 ```bash
 # 開発サーバー起動（http://localhost:5173）
-npm run dev
+bun run dev
 
 # プロダクションビルド
-npm run build
+bun run build
 
 # ビルドプレビュー
-npm run preview
+bun run preview
 
 # テスト実行
-npm run test
+bun run test
 
 # 型チェック
-npm run type-check
+bun run type-check
 ```
 
 ## 現在の実装状況
@@ -317,7 +317,7 @@ npm run type-check
 ### ゲームが表示されない場合
 1. ブラウザを強制リフレッシュ（Ctrl + F5）
 2. F12でConsoleを開き、エラーを確認
-3. 開発サーバーが起動しているか確認（npm run dev）
+3. 開発サーバーが起動しているか確認（bun run dev）
 
 ### Supabase接続エラー
 1. .env ファイルの環境変数を確認

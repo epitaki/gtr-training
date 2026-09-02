@@ -135,9 +135,9 @@ const useGameStore = create<GameState>((set) => ({
 ### Phase 1: 基礎構築（1-2週間）
 ```bash
 # プロジェクトセットアップ
-npm create vite@latest gtr-training -- --template react-ts
+bun create vite gtr-training --template react-ts
 cd gtr-training
-npm install phaser zustand tailwindcss
+bun add phaser zustand tailwindcss
 ```
 
 1. Reactの基本UIを作成
@@ -223,20 +223,20 @@ node --version
 ### 初期セットアップコマンド
 ```bash
 # プロジェクト作成
-npm create vite@latest gtr-training -- --template react-ts
+bun create vite gtr-training --template react-ts
 
 # 依存関係インストール
 cd gtr-training
-npm install phaser@^3.70.0
-npm install zustand
-npm install -D tailwindcss postcss autoprefixer
-npm install -D @types/node
+bun add phaser@^3.70.0
+bun add zustand
+bun add -d tailwindcss postcss autoprefixer
+bun add -d @types/node
 
 # Tailwind CSS初期化
-npx tailwindcss init -p
+bunx tailwindcss init -p
 
 # 開発サーバー起動
-npm run dev
+bun run dev
 ```
 
 ## なぜこの構成が初心者に優しいか

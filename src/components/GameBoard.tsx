@@ -8,7 +8,7 @@ interface GameBoardProps {
 }
 
 export default function GameBoard({ width, height, className = '' }: GameBoardProps) {
-  const gameManagerRef = useRef<GameManager>()
+  const gameManagerRef = useRef<GameManager | undefined>(undefined)
 
   useEffect(() => {
     console.log('GameBoard useEffect called')
