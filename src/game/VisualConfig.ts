@@ -33,9 +33,9 @@ export const LAYOUT_GUIDED = {
   CANVAS_HEIGHT: 800,
   FIELD_X: 48,
   FIELD_Y: 100,
-  GUIDE_X: 600,
+  GUIDE_X: 690,
   GUIDE_Y: 100,
-  GUIDE_WIDTH: 280,
+  GUIDE_WIDTH: 380,
   BG_COLOR: 0x171426,
 } as const
 

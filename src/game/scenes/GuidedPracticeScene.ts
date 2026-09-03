@@ -145,9 +145,11 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     this.fKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.F)
     this.gKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.G)
 
-    // 自由落下状態表示
-    this.gravityStatusText = this.add.text(360, 112, '●  自由落下 ON', {
-      fontSize: '12px',
+    const nextLayout = this.getNextAreaLayout()
+
+    // NEXT欄の下に状態表示をまとめ、ぷよ表示とは重ねない。
+    this.gravityStatusText = this.add.text(nextLayout.baseX + 12, nextLayout.statusY + 11, '●  自由落下 ON', {
+      fontSize: '11px',
       color: '#66e0aa',
       fontFamily: TEXT_STYLES.title.fontFamily,
       stroke: '#000000',
@@ -156,8 +158,8 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     this.gravityStatusText.setDepth(100)
 
     // アドバイザー状態表示
-    this.advisorStatusText = this.add.text(360, 136, '●  ガイド ON', {
-      fontSize: '12px',
+    this.advisorStatusText = this.add.text(nextLayout.baseX + 12, nextLayout.statusY + 37, '●  ガイド ON', {
+      fontSize: '11px',
       color: '#b5a8ff',
       fontFamily: TEXT_STYLES.title.fontFamily,
       stroke: '#000000',
@@ -679,24 +681,6 @@ export default class GuidedPracticeScene extends Phaser.Scene {
 
   private createGuideDisplay() {
     this.guideDisplay = this.add.container(this.GUIDE_X, this.GUIDE_Y)
-
-    const fieldH = FIELD_CONFIG.ROWS * this.CELL_SIZE
-    const bg = this.add.rectangle(0, fieldH / 2, LAYOUT_GUIDED.GUIDE_WIDTH, fieldH, 0x211d33, 0.96)
-    this.guideDisplay.add(bg)
-
-    // 枠線（紫系ボーダー）
-    const border = this.add.rectangle(0, fieldH / 2, LAYOUT_GUIDED.GUIDE_WIDTH, fieldH)
-    border.setStrokeStyle(1, 0x51496b)
-    border.setFillStyle()
-    this.guideDisplay.add(border)
-
-    const title = this.add.text(-150, -31, 'COACH', {
-      fontSize: '11px',
-      color: '#9b8cff',
-      fontFamily: TEXT_STYLES.title.fontFamily,
-      fontStyle: 'bold', letterSpacing: 2
-    }).setOrigin(0, 0.5)
-    this.guideDisplay.add(title)
   }
 
   private updateGuide() {
@@ -705,7 +689,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     this.guideDisplay.removeAll(true)
 
     const fieldH = FIELD_CONFIG.ROWS * this.CELL_SIZE
-    const guideW = 350
+    const guideW = LAYOUT_GUIDED.GUIDE_WIDTH
     const guideH = Math.max(fieldH, 500)
     const bg = this.add.rectangle(0, guideH / 2, guideW, guideH, 0x211d33, 0.96)
     this.guideDisplay.add(bg)
@@ -715,36 +699,49 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     border.setFillStyle()
     this.guideDisplay.add(border)
 
-    const title = this.add.text(-150, -31, 'COACH', {
+    const title = this.add.text(-guideW / 2 + 20, 16, 'COACH', {
       fontSize: '11px',
       color: '#9b8cff',
       fontFamily: TEXT_STYLES.title.fontFamily,
       fontStyle: 'bold', letterSpacing: 2
-    }).setOrigin(0, 0.5)
+    }).setOrigin(0, 0)
     this.guideDisplay.add(title)
 
     const guideContent = this.guideManager.getGuideContent()
 
-    const comment = this.add.text(0, -10, guideContent.comment, {
+    const commentTop = 44
+    const textWidth = guideW - 40
+    const comment = this.add.text(0, commentTop, guideContent.comment, {
       fontSize: '16px',
       color: '#f3c94f',
       fontFamily: TEXT_STYLES.title.fontFamily,
-      wordWrap: { width: 320 }
-    }).setOrigin(0.5)
+      wordWrap: { width: textWidth },
+      align: 'center',
+      lineSpacing: 4,
+    }).setOrigin(0.5, 0)
     this.guideDisplay.add(comment)
 
+    const commentBottom = commentTop + comment.height
+    let descriptionTop = commentBottom + 28
     if (guideContent.pattern) {
-      this.drawGuidePattern(guideContent.pattern, 50, guideContent.colorMap)
+      const patternTop = commentBottom + 28
+      const patternHeight = this.drawGuidePattern(
+        guideContent.pattern,
+        patternTop,
+        guideContent.colorMap,
+      )
+      descriptionTop = patternTop + patternHeight + 24
     }
 
     if (guideContent.description) {
-      const desc = this.add.text(0, 300, guideContent.description, {
+      const desc = this.add.text(0, descriptionTop, guideContent.description, {
         fontSize: '14px',
         color: '#c4bfd3',
         fontFamily: TEXT_STYLES.title.fontFamily,
-        wordWrap: { width: 320 },
-        align: 'center'
-      }).setOrigin(0.5)
+        wordWrap: { width: textWidth },
+        align: 'center',
+        lineSpacing: 5,
+      }).setOrigin(0.5, 0)
       this.guideDisplay.add(desc)
     }
   }
@@ -753,9 +750,11 @@ export default class GuidedPracticeScene extends Phaser.Scene {
     pattern: string[][],
     offsetY: number,
     colorOverride?: Record<string, string>,
-  ) {
+  ): number {
     const cellSize = 18
-    const startX = -cellSize * 3
+    const rowGap = 4
+    const maxColumns = Math.max(...pattern.map(row => row.length))
+    const startX = -((maxColumns - 1) * cellSize) / 2
     let currentY = offsetY
 
     pattern.forEach((row) => {
@@ -766,7 +765,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
 
       row.forEach((cell, x) => {
         const px = startX + x * cellSize
-        const py = currentY
+        const py = currentY + cellSize / 2
 
         if (cell !== '_') {
           const cellBg = this.add.rectangle(px, py, cellSize - 1, cellSize - 1, 0x000000)
@@ -787,8 +786,10 @@ export default class GuidedPracticeScene extends Phaser.Scene {
           this.guideDisplay?.add(emptyCell)
         }
       })
-      currentY += cellSize
+      currentY += cellSize + rowGap
     })
+
+    return currentY - offsetY
   }
 
   private getActualColorForLetter(letter: string): string {
@@ -917,59 +918,82 @@ export default class GuidedPracticeScene extends Phaser.Scene {
   private updateNextPairSprites() {
     this.clearNextSprites()
 
-    const baseX = this.FIELD_X + FIELD_CONFIG.COLS * this.CELL_SIZE + 20
-    const baseY = this.FIELD_Y
-    const boxCenterX = baseX + NEXT_AREA_CONFIG.AREA_WIDTH / 2
+    const layout = this.getNextAreaLayout()
 
     if (this.gameState.nextPair) {
-      const subY = baseY + NEXT_AREA_CONFIG.AREA_PADDING + NEXT_AREA_CONFIG.NEXT_CELL_SIZE * 0.5
-      const mainY = baseY + NEXT_AREA_CONFIG.AREA_PADDING + NEXT_AREA_CONFIG.NEXT_CELL_SIZE * 1.5
+      const subY = layout.baseY + 40
+      const mainY = layout.baseY + 76
 
-      this.nextPairSprites.sub = this.add.sprite(boxCenterX, subY, `puyo-${this.gameState.nextPair.sub.color}`)
+      this.nextPairSprites.sub = this.add.sprite(layout.boxCenterX, subY, `puyo-${this.gameState.nextPair.sub.color}`)
       this.nextPairSprites.sub.setDisplaySize(NEXT_AREA_CONFIG.NEXT_CELL_SIZE, NEXT_AREA_CONFIG.NEXT_CELL_SIZE)
 
-      this.nextPairSprites.main = this.add.sprite(boxCenterX, mainY, `puyo-${this.gameState.nextPair.main.color}`)
+      this.nextPairSprites.main = this.add.sprite(layout.boxCenterX, mainY, `puyo-${this.gameState.nextPair.main.color}`)
       this.nextPairSprites.main.setDisplaySize(NEXT_AREA_CONFIG.NEXT_CELL_SIZE, NEXT_AREA_CONFIG.NEXT_CELL_SIZE)
     }
 
     if (this.gameState.nextNextPair) {
-      const nextBoxH = NEXT_AREA_CONFIG.NEXT_CELL_SIZE * 2 + NEXT_AREA_CONFIG.AREA_PADDING * 2
-      const nnBaseY = baseY + nextBoxH + NEXT_AREA_CONFIG.GAP_BETWEEN
-      const subY = nnBaseY + NEXT_AREA_CONFIG.AREA_PADDING + NEXT_AREA_CONFIG.NEXT_NEXT_CELL_SIZE * 0.5
-      const mainY = nnBaseY + NEXT_AREA_CONFIG.AREA_PADDING + NEXT_AREA_CONFIG.NEXT_NEXT_CELL_SIZE * 1.5
+      const subY = layout.nnBoxY + 34
+      const mainY = layout.nnBoxY + 60
 
-      this.nextNextPairSprites.sub = this.add.sprite(boxCenterX, subY, `puyo-${this.gameState.nextNextPair.sub.color}`)
+      this.nextNextPairSprites.sub = this.add.sprite(layout.boxCenterX, subY, `puyo-${this.gameState.nextNextPair.sub.color}`)
       this.nextNextPairSprites.sub.setDisplaySize(NEXT_AREA_CONFIG.NEXT_NEXT_CELL_SIZE, NEXT_AREA_CONFIG.NEXT_NEXT_CELL_SIZE)
 
-      this.nextNextPairSprites.main = this.add.sprite(boxCenterX, mainY, `puyo-${this.gameState.nextNextPair.main.color}`)
+      this.nextNextPairSprites.main = this.add.sprite(layout.boxCenterX, mainY, `puyo-${this.gameState.nextNextPair.main.color}`)
       this.nextNextPairSprites.main.setDisplaySize(NEXT_AREA_CONFIG.NEXT_NEXT_CELL_SIZE, NEXT_AREA_CONFIG.NEXT_NEXT_CELL_SIZE)
     }
   }
 
-  private createNextAreas() {
+  private getNextAreaLayout() {
     const baseX = this.FIELD_X + FIELD_CONFIG.COLS * this.CELL_SIZE + 20
     const baseY = this.FIELD_Y
-
-    // NEXTラベル
-    this.add.text(baseX, baseY - 24, 'NEXT', {
-      fontSize: '16px',
-      color: '#aaaacc',
-      fontFamily: TEXT_STYLES.title.fontFamily,
-    })
-
-    // NEXTボックス
     const nextBoxH = NEXT_AREA_CONFIG.NEXT_CELL_SIZE * 2 + NEXT_AREA_CONFIG.AREA_PADDING * 2
-    const boxCenterX = baseX + NEXT_AREA_CONFIG.AREA_WIDTH / 2
-
-    this.add.rectangle(boxCenterX, baseY + nextBoxH / 2, NEXT_AREA_CONFIG.AREA_WIDTH, nextBoxH, NEXT_AREA_CONFIG.BG_COLOR)
-      .setStrokeStyle(2, NEXT_AREA_CONFIG.BORDER_COLOR)
-
-    // ネクネクストボックス
     const nnBoxY = baseY + nextBoxH + NEXT_AREA_CONFIG.GAP_BETWEEN
     const nnBoxH = NEXT_AREA_CONFIG.NEXT_NEXT_CELL_SIZE * 2 + NEXT_AREA_CONFIG.AREA_PADDING * 2
+    return {
+      baseX,
+      baseY,
+      boxCenterX: baseX + NEXT_AREA_CONFIG.AREA_WIDTH / 2,
+      nextBoxH,
+      nnBoxY,
+      nnBoxH,
+      statusY: nnBoxY + nnBoxH + 16,
+    }
+  }
 
-    this.add.rectangle(boxCenterX, nnBoxY + nnBoxH / 2, NEXT_AREA_CONFIG.AREA_WIDTH, nnBoxH, NEXT_AREA_CONFIG.BG_COLOR)
+  private createNextAreas() {
+    const layout = this.getNextAreaLayout()
+
+    this.add.rectangle(layout.boxCenterX, layout.baseY + layout.nextBoxH / 2, NEXT_AREA_CONFIG.AREA_WIDTH, layout.nextBoxH, NEXT_AREA_CONFIG.BG_COLOR)
+      .setStrokeStyle(2, NEXT_AREA_CONFIG.BORDER_COLOR)
+
+    this.add.rectangle(layout.boxCenterX, layout.nnBoxY + layout.nnBoxH / 2, NEXT_AREA_CONFIG.AREA_WIDTH, layout.nnBoxH, NEXT_AREA_CONFIG.BG_COLOR)
       .setStrokeStyle(1, NEXT_AREA_CONFIG.BORDER_COLOR).setAlpha(0.7)
+
+    this.add.rectangle(
+      layout.boxCenterX,
+      layout.statusY + 32,
+      NEXT_AREA_CONFIG.AREA_WIDTH,
+      64,
+      0x191628,
+      0.92,
+    ).setStrokeStyle(1, 0x3f3955)
+
+    // ラベルを各ボックス内に収め、上部の操作説明と分離する。
+    this.add.text(layout.baseX + 9, layout.baseY + 7, 'NEXT', {
+      fontSize: '11px',
+      color: '#aaaacc',
+      fontFamily: TEXT_STYLES.title.fontFamily,
+      fontStyle: 'bold',
+      letterSpacing: 1,
+    })
+
+    this.add.text(layout.baseX + 9, layout.nnBoxY + 7, 'NEXT 2', {
+      fontSize: '10px',
+      color: '#77738d',
+      fontFamily: TEXT_STYLES.title.fontFamily,
+      fontStyle: 'bold',
+      letterSpacing: 1,
+    })
   }
 
   private clearNextSprites() {
