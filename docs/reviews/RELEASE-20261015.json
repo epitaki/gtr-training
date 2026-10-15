@@ -1,0 +1,25 @@
+{
+  "commit": "1b99273f7062d506530ec3504c494aefbeda2c47",
+  "ci": {
+    "id": 38705201310,
+    "conclusion": "success",
+    "url": "https://github.com/epitaki/gtr-training/actions/runs/38705201310"
+  },
+  "release": {
+    "id": 413573309,
+    "url": "https://github.com/epitaki/gtr-training/releases/tag/v1.0.0",
+    "tag": "v1.0.0",
+    "draft": false
+  },
+  "artifact": {
+    "id": 11957788131,
+    "digest": "sha256:226e657c4a2e1f8a740683cada547c5cb33d49b0511a15499b6f61d00d4fe413",
+    "bytes": 1385162,
+    "files": 7,
+    "asset_id": 643215367,
+    "url": "https://github.com/epitaki/gtr-training/releases/download/v1.0.0/gtr-training-v1.0.0.zip"
+  },
+  "webHosting": "awaiting user provider selection",
+  "credentialsPrinted": false,
+  "publicDownloadVerified": true
+}

@@ -1,0 +1,27 @@
+{
+  "id": "8ced9e6b-9aa8-46f3-b3d6-3e949b0278da",
+  "completed": false,
+  "notesVerified": true,
+  "checklist": [
+    {
+      "text": "公開先・環境・認証方式と受入条件を確定",
+      "completed": false
+    },
+    {
+      "text": "PRの型・テスト・build・DB検証を設定",
+      "completed": true
+    },
+    {
+      "text": "main成功commitのDB→アプリ公開と並行制御",
+      "completed": false
+    },
+    {
+      "text": "秘密情報分離・復旧・公開後疎通を確認",
+      "completed": false
+    },
+    {
+      "text": "独立レビュー・受入・docsとHabitica更新",
+      "completed": false
+    }
+  ]
+}

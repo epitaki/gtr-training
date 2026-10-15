@@ -38,3 +38,14 @@ CI失敗時の非公開、同一commitでのDB→アプリ順序、秘密分離�
 ### CIの先行実装
 
 公開先の回答待ちの間に、pull_request/main push/workflow_dispatchの検証CIを追加。contents:read、checkout認証保持なし、第三者Actionは確認済みの完全SHA固定。Bun 1.4.0/frozen lockfileで型、CLI型、全テスト（SQL/RLSのPGliteを含む）、buildを順に実行する。mainのdist成果物を当該commit名で7日保持する。PRへ管理秘密値は渡さず、公開用Supabase URL/anon keyはrepository variablesで設定する。DB→本番公開jobは公開先確定後に追加する。
+
+### push・GitHubリリース完了 / Web公開は未完了
+
+- 監査済み実装を `1b99273f7062d506530ec3504c494aefbeda2c47` としてmainへpush。remoteの同一SHAを確認した。ローカルの `.claude/settings.local.json` と秘密設定/キャッシュは除外した。
+- [GitHub Actions 38705201310](https://github.com/epitaki/gtr-training/actions/runs/38705201310) が成功。Linuxでも型/CLI型/サーバー型、133ファイル1,793テスト、production buildが通過した。PRにも同じ検証を実行し、production管理資格情報は渡さない。
+- 同一CIのdist成果物を [v1.0.0](https://github.com/epitaki/gtr-training/releases/tag/v1.0.0) に添付して公開。tagが検証済みcommitを指し、artifact/添付zipのSHA-256一致と公開ダウンロードを確認。ソース配布と静的サイトzipのリリースであり、Webサイトのホスティング完了とは区別する。
+- push後の全Git履歴1,448 blobを再走査。実秘密値の検出なし。明示的FAKEのテスト文字列2件は履歴側も実バイトで確認し、秘密値とは別に記録した。
+- 公開先は未指定。Cloudflare Pages（ヘッダー設定に対応、接続が必要）/GitHub Pages（既存GitHub認証を利用可能）の選択を利用者へ確認中。選択を省いて本番サイトやOAuth戻り先を作成していない。
+- 残作業: ホスティング接続、本番HTTPヘッダー/HTTPS、正確なOAuth戻り先とGoogle公開状態、mainの同一commitでDB→アプリ公開するjob、疎通/ロールバック。Habitica本体は未完了を維持する。
+
+証跡: `docs/reviews/RELEASE-20261015.json`、`docs/reviews/RELEASE-CI-20261015.json`。公開先の選択以外のpush・成果物配布を先行完了した。
