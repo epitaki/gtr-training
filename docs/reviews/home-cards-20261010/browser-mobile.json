@@ -1,0 +1,13 @@
+{
+  "width": 360,
+  "topHasNoButtons": true,
+  "twoModeCards": true,
+  "cardsBelowTop": true,
+  "correctLayout": true,
+  "goodRemoved": true,
+  "progressRemoved": true,
+  "helpCardRemoved": true,
+  "noHorizontalOverflow": true,
+  "guideStarts": true,
+  "scoreStarts": true
+}

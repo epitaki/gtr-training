@@ -1,100 +1,24 @@
-# ドキュメント一覧
+# GTR training ドキュメント
 
-GTRトレーニングツールのドキュメントです。
+GTR完成を優先する練習ツールの文書入口です。仕様と最新の状態は [進捗報告](progress-report.md) と [品質基準](specs/GTR-QUALITY-CRITERIA.md) を確認してください。日付付き資料は当時の条件・測定を記録したもので、現在の全機能の達成を保証しません。
 
-## ドキュメント構成
+## まず読む
 
-### プロジェクト概要
-- [REQUIREMENT.md](../REQUIREMENT.md) - 要件定義書（全体仕様）
-- [ARCHITECTURE.md](../ARCHITECTURE.md) - 技術設計書
-- [TECH_RECOMMENDATION.md](../TECH_RECOMMENDATION.md) - 技術選定の詳細と理由
-- [BACKEND_COMPARISON.md](../BACKEND_COMPARISON.md) - バックエンド比較分析
+- [要件](specs/REQUIREMENT.md)、[ゲームモード](specs/GAME-MODES.md)、[視覚ガイド](specs/GTR-VISUAL-GUIDE.md)：学習者向けの入口。
+- [現行のコード構成と依存方向](PROJECT-STRUCTURE.md)、[開発手順](development/README.md)：実装者向けの入口。
+- [最新進捗と残件](progress-report.md)：完了範囲、測定条件、未完了項目。
+- [ベンチマーク](../benchmarks/README.md)、[人間の配置記録](../benchmarks/human/README.md)：測定と再現データ。
 
-### GTR学習ガイド
-- [GTR-RESEARCH.md](./GTR-RESEARCH.md) - 外部資料から得た知見と配置ロジックへの反映
-- [GTR-PATTERNS.md](./GTR-PATTERNS.md) - GTRパターン定義（技術仕様）
-- [GTR-VISUAL-GUIDE.md](./GTR-VISUAL-GUIDE.md) - GTR視覚的ガイド（学習用）
-- [GTR-SCORING-SYSTEM.md](./GTR-SCORING-SYSTEM.md) - GTR評価システム設計
+## 分類別索引
 
-### ゲーム設計
-- [GAME-MODES.md](./GAME-MODES.md) - ゲームモード仕様書
-- [layout-design.md](./layout-design.md) - レイアウト設計書
-- [PUYO-GENERATION.md](./PUYO-GENERATION.md) - 2手目組み合わせ制約仕様
+| 分類 | 内容 |
+|---|---|
+| [仕様](specs/README.md) | 要件、モード、推薦、採点、供給、品質基準 |
+| [設計](design/README.md) | 機能設計・改善計画 |
+| [調査](research/README.md) | GTR研究、出典、再現JSON、動画観察 |
+| [作業記録](records/README.md) | 推薦の変更経緯、測定、採用保留 |
+| [受入・レビュー](reviews/README.md) | 実操作チェック、レビュー結果、固定スナップショット |
+| [開発](development/README.md) | 分業方針、初期アーキテクチャ、文書移動対応表 |
+| [保存資料](archive/README.md) | 初期提案、メモ、2026-09-27時点の旧索引 |
 
-### 開発者向け
-- [CLAUDE.md](../CLAUDE.md) - Claude Code 開発ガイド
-- [note.md](../note.md) - UI設計とSPA構成
-- [progress-report.md](./progress-report.md) - 開発進捗レポート
-
-### 仕様書管理
-- [tasks/](../tasks/) - アクティブな仕様書
-- [tasks/archive/](../tasks/archive/) - 完了した仕様書のアーカイブ
-
-## 学習者向け推奨読書順序
-
-### 1. まず概要を掴む
-1. [REQUIREMENT.md](../REQUIREMENT.md) - どんなツールなのか
-
-### 2. GTRを学ぶ
-1. [GTR-VISUAL-GUIDE.md](./GTR-VISUAL-GUIDE.md) - **まずここから！** 図解で分かりやすく説明
-2. [GTR-PATTERNS.md](./GTR-PATTERNS.md) - より詳細な技術仕様
-
-### 3. 実践する
-1. ゲームを起動して実際に練習
-2. スコア向上を目指す
-
-## 開発者向け推奨読書順序
-
-### 1. プロジェクト理解
-1. [REQUIREMENT.md](../REQUIREMENT.md) - 要件定義
-2. [ARCHITECTURE.md](../ARCHITECTURE.md) - 技術設計
-3. [CLAUDE.md](../CLAUDE.md) - 開発ガイド
-
-### 2. GTRロジック理解
-1. [GTR-PATTERNS.md](./GTR-PATTERNS.md) - パターン定義
-2. [GTR-SCORING-SYSTEM.md](./GTR-SCORING-SYSTEM.md) - 評価システム
-3. `src/game/GTRPatterns.ts` - 検出・評価の実装
-
-### 3. ゲームモード理解
-1. [GAME-MODES.md](./GAME-MODES.md) - モード仕様
-2. [PUYO-GENERATION.md](./PUYO-GENERATION.md) - ぷよ生成制約
-
-### 4. 実装・拡張
-1. 既存コードの理解
-2. 仕様書をtasks/に作成
-3. 実装後にtasks/archive/へ移動
-
-## GTR対応状況
-
-| GTRタイプ | 対応状況 | 難易度 | 説明 |
-|-----------|----------|--------|------|
-| 標準GTR | ✅ 対応 | ⭐⭐ | 2-3列目中心の基本形 |
-| 折り返しGTR | ✅ 対応 | ⭐⭐⭐ | 1列目を含む発展形 |
-| 逆折りGTR | ❌ 対象外 | ⭐⭐⭐⭐⭐ | 複雑すぎるため除外 |
-| 変則GTR | ❌ 対象外 | ⭐⭐⭐⭐ | 基本習得を優先 |
-
-## ドキュメント更新履歴
-
-- **2026-09-03**:
-  - GTR外部調査を実施し、列固定ではなく発火シミュレーションで評価する方針を文書化
-  - PlacementAdvisorのフェーズ判定と連鎖評価を更新
-- **2026-02-22**:
-  - GAME-MODES.md 更新（PlacementAdvisor、Fキー、Gキー、ビジュアル改善を反映）
-  - progress-report.md 全面更新（Phase 2完了を反映）
-  - README.md 更新（ドキュメント一覧の整理）
-- **2024-11-30**:
-  - GTR-SCORING-SYSTEM.md 作成
-  - GTR-PATTERNS.md, GTR-VISUAL-GUIDE.md 更新
-- **2024-11-24**:
-  - layout-design.md 作成
-- **2024-08-11**:
-  - GAME-MODES.md 作成
-  - PUYO-GENERATION.md 作成
-- **2024-08-08**:
-  - GTR-PATTERNS.md 作成
-  - GTR-VISUAL-GUIDE.md 作成
-  - docs/README.md 作成
-
----
-
-質問や改善提案がありましたら、GitHubのIssuesでお知らせください。
+旧パスからの移動先は [移動対応表](development/DOCUMENTATION-MAP-20261003.md) に記録しています。課題管理はHabiticaで行い、削除済みの `tasks/` は使用しません。

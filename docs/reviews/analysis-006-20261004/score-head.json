@@ -1,0 +1,168 @@
+{
+  "grid": [
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      "blue",
+      "blue",
+      "blue",
+      null,
+      null,
+      "yellow"
+    ],
+    [
+      "green",
+      "red",
+      "green",
+      "blue",
+      "blue",
+      "yellow"
+    ],
+    [
+      "green",
+      "green",
+      "red",
+      "green",
+      "green",
+      "blue"
+    ],
+    [
+      "red",
+      "red",
+      "green",
+      "yellow",
+      "yellow",
+      "blue"
+    ]
+  ],
+  "current": {
+    "main": {
+      "color": "blue",
+      "x": 2,
+      "y": 1
+    },
+    "sub": {
+      "color": "yellow",
+      "x": 2,
+      "y": 0
+    },
+    "rotation": 0,
+    "falling": true
+  },
+  "next": {
+    "main": {
+      "color": "yellow",
+      "x": 2,
+      "y": 1
+    },
+    "sub": {
+      "color": "blue",
+      "x": 2,
+      "y": 0
+    },
+    "rotation": 0,
+    "falling": true
+  },
+  "nextNext": {
+    "main": {
+      "color": "green",
+      "x": 2,
+      "y": 1
+    },
+    "sub": {
+      "color": "red",
+      "x": 2,
+      "y": 0
+    },
+    "rotation": 0,
+    "falling": true
+  },
+  "score": 0,
+  "gtrCount": 0,
+  "gtrScore": 0,
+  "playing": false,
+  "paused": false,
+  "rendererPresent": false,
+  "display": {
+    "total": 55,
+    "chainObjects": 0
+  },
+  "visibility": "visible",
+  "evaluationTexts": [
+    "土台5連鎖完成",
+    "土台スコア: 90点",
+    "土台内の連鎖数: 5連鎖",
+    "将来の色・配置待ち（仮置きでは本線6連鎖。今の組では未確認）\n実在ぷよ：コア7／土台参加12／土台余り1\n範囲外：接続見込み2／未接続0（この仮想本線での分類）\n頭や範囲外の接続見込みは土台へ加点しません。土台の仮想5連鎖・余り1個。100点には安定した19個の5連鎖全消しが必要です",
+    "Space: 続ける / Esc: TOPページへ"
+  ]
+}

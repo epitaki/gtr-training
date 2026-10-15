@@ -1,0 +1,12 @@
+--- PuyoGame.ts before
++++ PuyoGame.ts after
+@@ -150,9 +150,6 @@
+     // タイトル
+     addUIText(this, this.FIELD_X, 24, 'SCORE ATTACK', { ...TEXT_STYLES.label, fontSize: '14px', color: '#b5a8ff' })
+     this.gtrCountText = addUIText(this, this.FIELD_X, 48, 'GTR: 1 / 10', { ...TEXT_STYLES.title, fontSize: '24px', color: '#ffe99b' })
+-    addUIText(this, this.FIELD_X, this.FIELD_Y + fieldH + 18, 'BUILD  /  CONNECT  /  CHAIN', {
+-      ...TEXT_STYLES.label, fontSize: '14px', color: '#c4bfd3', letterSpacing: 1
+-    })
+ 
+     // NEXTエリア下にGTR情報パネルを配置
+     const infoPanelX = this.FIELD_X + fieldW + 24

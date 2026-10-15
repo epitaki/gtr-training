@@ -1,0 +1,54 @@
+{
+  "fixture": true,
+  "cloudDataWritten": false,
+  "selectedRoundAction": {
+    "enabled": true,
+    "insideDialog": true
+  },
+  "initial": {
+    "queue": [
+      [
+        "red",
+        "blue"
+      ],
+      [
+        "green",
+        "yellow"
+      ],
+      [
+        "blue",
+        "yellow"
+      ]
+    ],
+    "empty": true,
+    "guide": true,
+    "inspection": false,
+    "gravity": false
+  },
+  "recordedAndRandomQueue": [
+    {
+      "turn": 1,
+      "matched": true
+    },
+    {
+      "turn": 2,
+      "matched": true
+    },
+    {
+      "turn": 3,
+      "matched": true
+    },
+    {
+      "turn": 4,
+      "matched": true
+    },
+    {
+      "turn": 5,
+      "matched": true
+    }
+  ],
+  "rewindRepeated": true,
+  "mobileStarted": true,
+  "exceptions": 0,
+  "saveRequests": 0
+}

@@ -1,0 +1,79 @@
+{
+  "round": 1,
+  "snapshot": "20d78ccc3ab945a906a72168853e2e4f12b9c260098d77500e1695263b7a9b36",
+  "reviewer": "key_config_r1_acceptance",
+  "model": "gpt-6-astra",
+  "accepted": false,
+  "hashesVerified": 191,
+  "protectedHashesVerified": 113,
+  "validation": {
+    "files": 87,
+    "tests": 1214,
+    "passed": 1214,
+    "typeCheck": true,
+    "scriptsTypeCheck": true,
+    "build": true
+  },
+  "confirmed": [
+    {
+      "id": "K1",
+      "priority": "P2",
+      "location": "src/game/input/PhaserInputAdapter.ts:19",
+      "problem": "Ctrl保持で非文字割当（矢印/Space/Shift）まで拒否",
+      "fix": "修飾付き文字拒否とIME/外部focus拒否を維持し非文字ゲーム割当を通す",
+      "regression": "DOM入口から両preset/左右CtrlShift/逆順/Ctrl+矢印SpaceShift/文字拒否・非消費"
+    },
+    {
+      "id": "K2",
+      "priority": "P2",
+      "location": "src/components/game/GuidedGame.tsx:43;src/components/game/ScoreAttackGame.tsx:20",
+      "problem": "一覧復帰後のcanvasfocus不在",
+      "fix": "表示後focus復帰、設定や報告が開いていれば奪取しない",
+      "regression": "両mode追加clickなしの移動回転pause、userpause維持/停止理由重複/持越し防止"
+    },
+    {
+      "id": "K3",
+      "priority": "P2",
+      "location": "src/components/game/GuidedGame.tsx:153;src/components/game/ScoreAttackGame.tsx:45",
+      "problem": "上部pause button後focusがbuttonに残る",
+      "fix": "意味action送信後canvasfocus復帰",
+      "regression": "両mode button停止→key再開、button再開→key移動、単発/持越し防止"
+    },
+    {
+      "id": "K4",
+      "priority": "P3",
+      "location": "docs/GAME-MODES.md:144",
+      "problem": "共通操作説明に固定Z/X・通常Esc退出が残る",
+      "fix": "初期割当と可変割当・状態別操作へ更新、上下交換も割当済み回転とする",
+      "regression": "文書照合"
+    },
+    {
+      "id": "K5",
+      "priority": "P2",
+      "location": "src/game/scenes/GuidedPracticeScene.ts:312",
+      "problem": "意味actionが再現検査ゲートを迂回し、結果由来再現URLで評価すると結果消去+凍結clockへreset予約、再開時に局面喪失",
+      "fix": "意味入力へ状態許可共有、検査中破壊操作拒否、通常結果評価=再挑戦と明示終了維持。連鎖userpause中戻すは新規回帰でないが設計pause中盤面操作なしへ整理",
+      "regression": "press/release経路で検査中表示/盤面/履歴/RNG/遅延予約不変と再開後潜伏resetなし、通常評価再挑戦1回"
+    },
+    {
+      "id": "K6",
+      "priority": "P3",
+      "location": "src/game/scenes/GuidedPracticeScene.ts:213;:1167",
+      "problem": "塞がれた基本形のCOACH案内が保存後も旧U/Eを表示",
+      "fix": "設定購読で表示のみ更新、推薦計算/盤面再生成なし",
+      "regression": "U→T/E→Q即時追随、盤面履歴RNG推薦内容不変"
+    }
+  ],
+  "validationRemainder": {
+    "id": "V1",
+    "items": [
+      "DOM入口でNumpad4/6はsame code異なるkey/NumLockでも同じ操作",
+      "左右modifierとpointer/physical混在の独立解放と単発/反復重複防止",
+      "GameControls経路のcancel/lostcapture/leave/blur/hidden/unmountで保持解除",
+      "実入力quickdrop保持が次ツモを確定しない"
+    ],
+    "hardwareLimit": "OS IME/実機NumLock/実タッチは未確認として残す。アプリ契約試験で実機確認済みとはしない。"
+  },
+  "rejectedCandidates": [],
+  "next": "Sol修正、親の直列検証、新規Sol3レビュー、Astra再受入"
+}

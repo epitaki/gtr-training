@@ -1,0 +1,89 @@
+{
+  "round": 2,
+  "agent": "key_config_r1_acceptance",
+  "model": "gpt-6-astra",
+  "snapshot": "17c9299da48420cd8f8c20035f96b3c2bdced03ed948920e37b377d84aaf598b",
+  "verdict": "受入不可",
+  "validation": {
+    "sourceHashes": 195,
+    "protectedHashes": 113,
+    "mismatch": 0,
+    "testFiles": 89,
+    "tests": 1224,
+    "typeChecks": "本体/scripts成功",
+    "build": "成功",
+    "ui": "CHECK第2回節",
+    "hardware": "NumLock/OS IME/実タッチ未実施"
+  },
+  "previous": {
+    "K1": "修正確認、DOMテストあり",
+    "K2": "修正確認、テスト/UIあり",
+    "K3": "修正確認、テスト/UIあり",
+    "K4": "文書修正確認",
+    "K5": "検査意味入力とpaused rewind拒否確認。副作用K11",
+    "K6": "表示だけ更新、保護状態不変テストあり",
+    "V1": "入力/取消/混在/物理quick drop試験追加。意味解除待ちはK10未達"
+  },
+  "findings": [
+    {
+      "id": "K7",
+      "severity": "P2",
+      "source": "reviewer1",
+      "file": "src/game/scenes/PuyoGame.ts",
+      "line": 297,
+      "condition": "自由落下ONで800ms以上user pause→再開。lastFallTimeが旧時刻。",
+      "impact": "次フレーム即落下、接地なら即着地・連鎖。",
+      "fix": "再開時刻へ落下基準を補正。ガイド同等挙動は開始前から存在し新退行に数えない。",
+      "tests": "空中/接地で長時間pause、再開直後移動/着地なし、正常間隔で後続落下。user/hidden chain理由維持。"
+    },
+    {
+      "id": "K8",
+      "severity": "P2",
+      "source": "reviewer3",
+      "file": "src/game/input/InputController.ts",
+      "line": 93,
+      "condition": "左heldでframe消費→右down/upを次frame前に実施。pending右+held左。",
+      "impact": "相殺せず右回転する。",
+      "fix": "移動と同じpending/反対held混在相殺。",
+      "tests": "両順序、物理同士/pointer混在、短押しkeyup、古い単発再生なし。"
+    },
+    {
+      "id": "K9",
+      "severity": "P2",
+      "source": "reviewer3 narrowed",
+      "file": "src/game/input/bindings.ts",
+      "line": 40,
+      "condition": "特にTabをpauseへ割当。",
+      "impact": "通常/pause両状態でTab/Shift+Tab消費し設定/終了への標準focus移動を妨げる。全状態で絶対退出不能という広い主張はしない。",
+      "fix": "Tabを共通許可リストから除外、取得/保存拒否、旧保存Tabは不正復旧。",
+      "tests": "取得/保存拒否、保存原文保持+通知、Tab/Shift+Tab非消費で画面ボタンへfocus移動。"
+    },
+    {
+      "id": "K10",
+      "severity": "P2",
+      "source": "root",
+      "file": "src/game/input/InputController.ts",
+      "line": 63,
+      "condition": "pointer quickDropを保持→次ツモ→別pointer/同義物理キーpress。",
+      "impact": "旧pointer解除前に次ツモも確定可能。旧pointerだけで自動連続落下する問題ではない。",
+      "fix": "意味入力元も状態変更時点の解除待ちに含め、対応release/取消まで保持。物理keyupだけで意味待ちを解除しない。",
+      "tests": "両Sceneのpointer保持+別pointer/同義キーで再確定なし。必要な解除後新規pressで一度。cancel/blur/hidden/unmountで待ち残留なし。gate中chain再生維持。"
+    },
+    {
+      "id": "K11",
+      "severity": "P2",
+      "source": "Astra",
+      "file": "src/game/scenes/GuidedPracticeScene.ts",
+      "line": 60,
+      "related": "src/game/scenes/PuyoGame.ts:46",
+      "condition": "K5共通canAcceptにresult evaluate追加したため物理E/個別Qも許可。",
+      "impact": "結果操作をプレイ割当から分離する契約に反し再挑戦する。",
+      "fix": "画面evaluateだけresult時newGameへ意味変換。DOM結果はSpace/Esc/許可share。inspection拒否維持。",
+      "tests": "両Scene実DOMでE/Qは結果表示/盤面/遅延予約不変、Space一回retry。画面evaluate通常resultはretry、inspection拒否。"
+    }
+  ],
+  "exclusions": [
+    "GameControls keyboard起動なしは開始基準から存在。"
+  ],
+  "status": "同じSolへ差戻し。新規3レビューとAstra再受入まで未完了"
+}

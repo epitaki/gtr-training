@@ -1,0 +1,86 @@
+--- src/components/gallery/CompletionGallery.tsx before
++++ src/components/gallery/CompletionGallery.tsx after
+@@ -79,6 +79,8 @@
+     startClock()
+   }
+ 
++  const displayFrame = frame?.phase === 'complete' ? null : frame
++
+   return (
+     <dialog ref={dialogRef} aria-labelledby="gallery-dialog-title" onCancel={event => { event.preventDefault(); onClose() }} onClick={event => { if (event.target === dialogRef.current) onClose() }} className="w-[min(96vw,560px)] max-h-[94dvh] overflow-y-auto rounded-none border border-[#6f648d] bg-[#171426] p-0 text-white shadow-pixel backdrop:bg-[#211d33]">
+       <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#6f648d] px-4 py-3 sm:px-6">
+@@ -87,7 +89,7 @@
+       </div>
+       <div className="flex flex-col items-center gap-3 px-3 py-4 sm:py-6">
+         {[36, 48].map(size => <div key={size} className={size === 36 ? 'sm:hidden' : 'hidden sm:block'}>
+-          <GalleryBoard grid={frame?.grid ?? preview.initialGrid} size={size} fading={frame?.fading} alpha={frame?.alpha} starter={frame ? frame.starterPosition : preview.starter} />
++          <GalleryBoard grid={displayFrame?.grid ?? preview.initialGrid} size={size} fading={displayFrame?.fading} alpha={displayFrame?.alpha} starter={displayFrame ? displayFrame.starterPosition : preview.starter} />
+         </div>)}
+         <p role="status" aria-live="polite" className="min-h-6 font-normal text-[#ffe99b]">{frame?.chainIndex ? `${frame.chainIndex}連鎖目` : frame?.phase === 'complete' ? `${preview.trace?.result.chainCount ?? 0}連鎖・全消し` : playing ? '再生中' : '再生待ち'}</p>
+         {preview.unavailableReason && <p role="alert">{preview.unavailableReason}</p>}
+--- /dev/null
++++ src/components/gallery/CompletionGalleryPlayback.test.tsx
+@@ -0,0 +1,63 @@
++// @vitest-environment jsdom
++import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
++import { afterEach, beforeEach, expect, it, vi } from 'vitest'
++import { GALLERY_SHAPES } from '../../game/guide/GTRCompletionGallery'
++import { GALLERY_DISPLAY_LABELS } from './GalleryShapeDisplay'
++import CompletionGallery from './CompletionGallery'
++
++let serial = 0, time = 0
++let frames: Map<number, FrameRequestCallback>
++let modalDescriptor: PropertyDescriptor | undefined, closeDescriptor: PropertyDescriptor | undefined
++const tick = (count: number) => act(() => {
++  for (let i = 0; i < count; i++) {
++    const pending = [...frames.values()]; frames.clear(); time += 50
++    pending.forEach(callback => callback(time))
++  }
++})
++const boards = (dialog: HTMLElement) => [...dialog.querySelectorAll('div[aria-hidden="true"]')]
++const snapshots = (dialog: HTMLElement) => boards(dialog).map(board => board.innerHTML)
++beforeEach(() => {
++  serial = time = 0; frames = new Map()
++  vi.spyOn(document, 'hidden', 'get').mockReturnValue(false)
++  vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => { frames.set(++serial, callback); return serial })
++  vi.stubGlobal('cancelAnimationFrame', (id: number) => { frames.delete(id) })
++  vi.stubGlobal('matchMedia', () => ({ matches: false }))
++  modalDescriptor = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, 'showModal')
++  closeDescriptor = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, 'close')
++  Object.defineProperty(HTMLDialogElement.prototype, 'showModal', { configurable: true, value: function (this: HTMLDialogElement) { this.open = true } })
++  Object.defineProperty(HTMLDialogElement.prototype, 'close', { configurable: true, value: function (this: HTMLDialogElement) { this.open = false } })
++})
++afterEach(() => {
++  cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals()
++  for (const [name, descriptor] of [['showModal', modalDescriptor], ['close', closeDescriptor]] as const) {
++    if (descriptor) Object.defineProperty(HTMLDialogElement.prototype, name, descriptor)
++    else delete (HTMLDialogElement.prototype as unknown as Record<string, unknown>)[name]
++  }
++})
++it.each(GALLERY_SHAPES)('restores %s after completing playback, stays still and supports another replay', shape => {
++  render(<CompletionGallery onReturn={() => {}} returnLabel="戻る" />)
++  fireEvent.click(within(screen.getByRole('group', { name: '完成形の骨格を選ぶ' })).getByRole('button', { name: GALLERY_DISPLAY_LABELS[shape] }))
++  fireEvent.click(within(screen.getByRole('region', { name: GALLERY_DISPLAY_LABELS[shape] + 'の完成形' })).getAllByRole('button')[0])
++  const dialog = screen.getByRole('dialog'), initial = snapshots(dialog)
++  expect(boards(dialog)).toHaveLength(2)
++  expect(boards(dialog).every(board => board.querySelectorAll('img').length === 20)).toBe(true)
++  tick(16)
++  expect(within(dialog).getByRole('status').textContent).toBe('1連鎖目')
++  expect(snapshots(dialog)).not.toEqual(initial)
++  tick(80)
++  expect(within(dialog).getByRole('status').textContent).toBe('5連鎖・全消し')
++  expect(snapshots(dialog)).toEqual(initial)
++  expect(frames.size).toBe(0)
++  tick(40)
++  expect(snapshots(dialog)).toEqual(initial)
++  expect(frames.size).toBe(0)
++  fireEvent.click(within(dialog).getByRole('button', { name: 'もう一度再生' }))
++  expect(frames.size).toBe(1)
++  tick(96)
++  expect(snapshots(dialog)).toEqual(initial)
++  expect(frames.size).toBe(0)
++  fireEvent.click(within(dialog).getByRole('button', { name: '閉じる' }))
++  expect(screen.queryByRole('dialog')).toBeNull()
++  tick(1)
++  expect(frames.size).toBe(0)
++})

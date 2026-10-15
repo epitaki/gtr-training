@@ -1,0 +1,11 @@
+{
+  "securityTaskId": "86a6453c-7e4c-4f20-a52c-f5389c45561a",
+  "securityCompleted": true,
+  "notesMatch": true,
+  "checked": 3,
+  "checklistCount": 3,
+  "upstreamTaskId": "600cd7d5-8072-4256-9a6c-c799a1039440",
+  "upstreamCompleted": false,
+  "releaseCompleted": false,
+  "releaseNotesVerified": true
+}

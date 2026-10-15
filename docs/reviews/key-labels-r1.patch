@@ -1,0 +1,143 @@
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-labels-before-767c663dad8a4b19800cf49476163d27\\docs\\GAME-MODES.md" b/docs/GAME-MODES.md
+index 83d77c7..88ac1d5 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-labels-before-767c663dad8a4b19800cf49476163d27\\docs\\GAME-MODES.md"
++++ b/docs/GAME-MODES.md
+@@ -59,12 +59,12 @@ GTRトレーニングツールには、プレイヤーのスキルレベルに
+ 完成図と操作例は [GTR視覚的ガイド](GTR-VISUAL-GUIDE.md) を参照。
+ 
+ #### 学習支援機能
+-- 初期「おすすめ」設定：A / Uで1手巻戻し、Space / EでGTR評価、Gでガイド、Fで自由落下、Rで共有
++- 初期「設定2」：A / Uで1手巻戻し、Space / EでGTR評価、Gでガイド、Fで自由落下、Rで共有
+ - Esc / F1でポーズ・再開。終了は画面の明示ボタン。P互換割当はない
+ - 結果画面では新しく押したSpaceで新ゲーム、Escで終了。評価Spaceを押し続けたまま結果画面に移っても再開せず、一度離す必要がある
+ - 基本操作は左右が←/Num4・→/Num6、回転がZ・X、高速落下が↓/V/Ctrl、クイックドロップが↑/Shift/C。左右Ctrl/Shiftは同じ設定を使う
+-- 「オフィシャル」は右回転X/↑、左回転Z/Ctrl、高速落下↓/V、クイックドロップSpace。切替は基本7操作だけを置換する。評価もSpaceの場合は重複を表示して保存不可となるため、どちらかを手動で変更する
+-- キー設定画面で個別の複数キー割当、保存、取消、すべて初期化ができる。「評価・巻戻しを手元へ」は下書きの2操作だけをSpace / EとA / Uに変える。重複や未許可キーは保存できない
++- 「設定1」は右回転X/↑、左回転Z/Ctrl、高速落下↓/V、クイックドロップSpace。設定1・設定2の切替は基本7操作だけを置換する。評価もSpaceの場合は重複を表示して保存不可となるため、どちらかを手動で変更する
++- キー設定画面で個別の複数キー割当、保存、取消、すべて初期化ができる。重複や未許可キーは保存できない
+ 
+ #### 評価システム
+ 詳細なチェック形式の評価結果（成功✓/失敗✗の両方を表示）：
+@@ -109,12 +109,12 @@ GTRトレーニングツールには、プレイヤーのスキルレベルに
+ - 壁キック機能
+ 
+ #### 操作
+-- ガイドと同じおすすめ初期設定を使う。Fで自由落下、Space / EでGTR評価、Esc/F1でポーズ
++- ガイドと同じ設定2の初期設定を使う。Fで自由落下、Space / EでGTR評価、Esc/F1でポーズ
+ - 結果画面では新しく押したSpaceで続行、Escで終了。終了は画面の明示ボタンからも可能
+ - クイックドロップは現在の組を支持位置まで下げ、通常の着地経路で確定する。自然落下OFFでも実行可能
+ - スコア、連鎖数、メッセージ表示
+ 
+-キー設定は両モードで共通の専用保存領域を使う。読取りに失敗した場合はおすすめ設定をその回に使い、元の保存データは保持して通知する。書込みに失敗した場合は今回だけ適用したことを通知する。画像にあるマウス割当は後段の残件。
++キー設定は両モードで共通の専用保存領域を使う。読取りに失敗した場合は設定2の初期設定をその回に使い、元の保存データは保持して通知する。書込みに失敗した場合は今回だけ適用したことを通知する。画像にあるマウス割当は後段の残件。
+ 正常な保存済みversion 1の割当はそのまま復元し、新しい初期キーを自動で追加しない。新初期値は未保存・読取失敗・明示的な「すべて初期化」に適用する。
+ 
+ ## 完成形一覧（閲覧機能）
+@@ -143,7 +143,7 @@ Y字・座布団・L字を各10例収録する。カードを選ぶと拡大モ
+ ## 共通機能
+ 
+ ### 基本操作
+-- 初期「おすすめ」設定では、**← / Num4・→ / Num6**で左右移動、**↓ / V / Ctrl**で高速落下、**Z・X**で左右回転、**↑ / Shift / C**でクイックドロップ
++- 初期「設定2」では、**← / Num4・→ / Num6**で左右移動、**↓ / V / Ctrl**で高速落下、**Z・X**で左右回転、**↑ / Shift / C**でクイックドロップ
+ - **Esc / F1**はプレイ中・連鎖中のポーズ／再開。終了は画面の明示ボタンから行う
+ - 結果画面では新しく押した**Space**で新ゲーム／続行、**Esc**で退出。ゲームオーバー・表示障害時のEsc退出も維持する
+ - 設定画面でキーを変更した場合、実際の操作は保存した割当に従う。画面内の操作案内もそれに追随する
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-labels-before-767c663dad8a4b19800cf49476163d27\\src\\components\\settings\\KeySettings.tsx" b/src/components/settings/KeySettings.tsx
+index 3387d46..e915113 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-labels-before-767c663dad8a4b19800cf49476163d27\\src\\components\\settings\\KeySettings.tsx"
++++ b/src/components/settings/KeySettings.tsx
+@@ -1,7 +1,7 @@
+ import { useEffect, useState } from 'react'
+ import {
+   ACTIONS, ACTION_LABELS, BASIC_ACTIONS, PRESETS,
+-  bindingConflict, defaultBindings, displayCode, withErgonomicActions, type Bindings, type BoundAction,
++  bindingConflict, defaultBindings, displayCode, type Bindings, type BoundAction,
+ } from '../../game/input/bindings'
+ import { getBindings, getSettingsNotice, saveBindings } from '../../game/input/settings'
+ import { startKeyCapture } from './keyCapture'
+@@ -50,12 +50,11 @@ export default function KeySettings({ onClose }: Props) {
+       <h2 className="mb-3 text-xl font-bold">キー設定</h2>
+       <p className="mb-4 text-sm text-white/70">ゲーム画面を選ぶとキーボード操作に戻ります。Ctrl・Shiftは左右共通、NumキーはNumLockに関係なく同じ操作です。キー取得中のTab / Shift+Tabは取得だけを取り消し、フォーカスを移動します。</p>
+       <div className="mb-4 flex flex-wrap gap-2">
+-        <button type="button" onClick={() => preset('official')} className="rounded bg-violet-600 px-3 py-2">オフィシャル</button>
+-        <button type="button" onClick={() => preset('recommended')} className="rounded bg-violet-600 px-3 py-2">おすすめ</button>
+-        <button type="button" onClick={() => { setDraft(withErgonomicActions); setMessage('評価と巻戻しの割当を変更しました。保存すると適用されます。') }} className="rounded bg-violet-600 px-3 py-2">評価・巻戻しを手元へ</button>
+-        <button type="button" onClick={() => { setDraft(defaultBindings()); setMessage('すべておすすめ初期値に戻しました。') }} className="rounded bg-slate-600 px-3 py-2">すべて初期化</button>
++        <button type="button" onClick={() => preset('official')} className="rounded bg-violet-600 px-3 py-2">設定1</button>
++        <button type="button" onClick={() => preset('recommended')} className="rounded bg-violet-600 px-3 py-2">設定2</button>
++        <button type="button" onClick={() => { setDraft(defaultBindings()); setMessage('すべて設定2の初期値に戻しました。') }} className="rounded bg-slate-600 px-3 py-2">すべて初期化</button>
+       </div>
+-      <p className="mb-4 text-sm text-white/70">オフィシャルのクイックドロップはSpaceです。評価にもSpaceを割り当てている場合は重複するため、保存前にどちらかの割当を変更してください。</p>
++      <p className="mb-4 text-sm text-white/70">設定1のクイックドロップはSpaceです。評価にもSpaceを割り当てている場合は重複するため、保存前にどちらかの割当を変更してください。</p>
+       <div className="grid gap-2">
+         {ACTIONS.map(action => <div key={action} className="flex flex-wrap items-center gap-2 rounded bg-white/5 p-2">
+           <span className="w-32 font-bold">{ACTION_LABELS[action]}</span>
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-labels-before-767c663dad8a4b19800cf49476163d27\\src\\game\\input\\bindings.ts" b/src/game/input/bindings.ts
+index cb98454..575876e 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-labels-before-767c663dad8a4b19800cf49476163d27\\src\\game\\input\\bindings.ts"
++++ b/src/game/input/bindings.ts
+@@ -31,11 +31,6 @@ export function defaultBindings(): Bindings {
+     rewind: ['KeyA', 'KeyU'], evaluate: ['Space', 'KeyE'], guide: ['KeyG'], gravity: ['KeyF'], share: ['KeyR'] } as Bindings
+ }
+ 
+-/** Apply the optional ergonomic layout to a draft, leaving every other action intact. */
+-export function withErgonomicActions(bindings: Bindings): Bindings {
+-  return { ...bindings, rewind: ['KeyA', 'KeyU'], evaluate: ['Space', 'KeyE'] }
+-}
+-
+ export const ALLOWED_CODES = new Set([
+   ...Array.from({ length: 26 }, (_, index) => `Key${String.fromCharCode(65 + index)}`),
+   ...Array.from({ length: 10 }, (_, index) => `Digit${index}`),
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-labels-before-767c663dad8a4b19800cf49476163d27\\src\\game\\input\\InputController.test.ts" b/src/game/input/InputController.test.ts
+index d9c098d..61033f5 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-labels-before-767c663dad8a4b19800cf49476163d27\\src\\game\\input\\InputController.test.ts"
++++ b/src/game/input/InputController.test.ts
+@@ -1,6 +1,6 @@
+ import { describe, expect, it } from 'vitest'
+ import { InputController } from './InputController'
+-import { PRESETS, bindingConflict, defaultBindings, validateBindings, withErgonomicActions } from './bindings'
++import { BASIC_ACTIONS, PRESETS, bindingConflict, defaultBindings, validateBindings } from './bindings'
+ 
+ describe('keyboard bindings', () => {
+   it('keeps the two approved presets and rejects ambiguous or invalid saved bindings', () => {
+@@ -20,20 +20,13 @@ describe('keyboard bindings', () => {
+     expect(bindingConflict(bindings)).toContain('Tabは割り当てできません')
+   })
+ 
+-  it('changes only the two requested draft actions and exposes the official Space conflict', () => {
+-    const custom = defaultBindings()
+-    custom.left = ['KeyQ']
+-    custom.rewind = ['KeyT']
+-    custom.evaluate = ['KeyW']
+-    const before = structuredClone(custom)
+-    const next = withErgonomicActions(custom)
+-    expect(next).toEqual({ ...before, rewind: ['KeyA', 'KeyU'], evaluate: ['Space', 'KeyE'] })
+-    expect(custom).toEqual(before)
+-    for (const action of Object.keys(PRESETS.official) as Array<keyof typeof PRESETS.official>) {
+-      next[action] = [...PRESETS.official[action]]
+-    }
+-    expect(bindingConflict(next)).toContain('Spaceはクイックドロップと評価で重複')
+-    expect(validateBindings(next)).toBe(false)
++  it('rejects the Space conflict after applying setting 1 to the basic seven actions', () => {
++    const bindings = defaultBindings()
++    for (const action of BASIC_ACTIONS) bindings[action] = [...PRESETS.official[action]]
++    expect(bindings.rewind).toEqual(['KeyA', 'KeyU'])
++    expect(bindings.evaluate).toEqual(['Space', 'KeyE'])
++    expect(bindingConflict(bindings)).toContain('Spaceはクイックドロップと評価で重複')
++    expect(validateBindings(bindings)).toBe(false)
+   })
+ 
+   it.each([['KeyA', 'KeyU', 'rewind'], ['Space', 'KeyE', 'evaluate']] as const)(
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-labels-before-767c663dad8a4b19800cf49476163d27\\src\\game\\input\\settings.ts" b/src/game/input/settings.ts
+index 4021094..9b3f1bc 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-labels-before-767c663dad8a4b19800cf49476163d27\\src\\game\\input\\settings.ts"
++++ b/src/game/input/settings.ts
+@@ -25,7 +25,7 @@ export function loadBindings(): void {
+     notice = null
+   } catch {
+     current = defaultBindings()
+-    notice = '保存されたキー設定を読めなかったため、おすすめ設定を使用しています。元のデータは保持しました。'
++    notice = '保存されたキー設定を読めなかったため、設定2の初期設定を使用しています。元のデータは保持しました。'
+   }
+   publish()
+ }

@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "checkedAt": "2026-09-19",
+  "purpose": "公開解説の盤面図を手で転記した発火点伸ばしの学習資料。アプリの推薦変更や実戦成績ではない。",
+  "format": "rowsは上から下。省略した上段は空。6列13行。R=red,G=green,B=blue,Y=yellow。columnは1始まり。発火は指定列の最上面へ1個だけ落とす形状検証であり、組ぷよの相方は含まない。",
+  "cases": [
+    {
+      "id": "m1-base",
+      "source": "https://puyo-camp.jp/posts/59084",
+      "image": "https://d3r48p4ajaoh51.cloudfront.net/production/uploads/ckeditor_asset/data/48551/f3fc2204-a3c0-44dc-86e1-4f3489c9cc4c.jpeg",
+      "note": "図上部の落下中の青黄は盤面に含めない。",
+      "rows": ["GBY...", "BBYR..", "GRBYRR", "GGRBYR", "RRBBYY"],
+      "fires": [{"column": 2, "color": "B", "chains": 6, "leftover": 0, "steps": ["B", "G", "R", "B", "Y", "R"]}]
+    },
+    {
+      "id": "m2-sandwich",
+      "source": "https://puyo-camp.jp/posts/59084",
+      "image": "https://d3r48p4ajaoh51.cloudfront.net/production/uploads/ckeditor_asset/data/48552/9d461c4c-e1e7-490d-9085-1576b03464c6.jpeg",
+      "note": "7連鎖自体は成立する。著者の注意点は破綻ではなく、その後の伸ばしの柔軟性。",
+      "rows": [".B....", ".Y....", "GBY...", "BBYR..", "GRBYRR", "GGRBYR", "RRBBYY"],
+      "fires": [{"column": 3, "color": "Y", "chains": 7, "leftover": 0, "steps": ["Y", "B", "G", "R", "B", "Y", "R"]}]
+    },
+    {
+      "id": "m3-preparation",
+      "source": "https://puyo-camp.jp/posts/59084",
+      "image": "https://d3r48p4ajaoh51.cloudfront.net/production/uploads/ckeditor_asset/data/48555/ffe9d7bd-299c-48f6-8cce-cc7450d2c081.jpeg",
+      "note": "追加の接続ぷよが必要。仕込みと発火可能な完成形を区別する。",
+      "rows": ["..Y...", "RRR...", "GBYY.Y", "BBYR.B", "GRBYRR", "GGRBYR", "RRBBYY"],
+      "noSingleDropChainAtLeast": 3,
+      "fires": []
+    },
+    {
+      "id": "m4-short-route",
+      "source": "https://puyo-camp.jp/posts/59084",
+      "image": "https://d3r48p4ajaoh51.cloudfront.net/production/uploads/ckeditor_asset/data/48557/9ddee84e-d546-49c6-b0f6-29e1fe3d8f22.jpeg",
+      "note": "図の空中の赤は発火用1個として別扱い。青黄が同じ連鎖段で消える。",
+      "rows": [".BY...", "RRR...", "GBYY.Y", "BBYR.B", "GRBYRR", "GGRBYR", "RRBBYY"],
+      "fires": [{"column": 1, "color": "R", "chains": 7, "leftover": 2, "steps": ["R", "BY", "G", "R", "B", "Y", "R"]}]
+    },
+    {
+      "id": "m5-long-route",
+      "source": "https://puyo-camp.jp/posts/59084",
+      "image": "https://d3r48p4ajaoh51.cloudfront.net/production/uploads/ckeditor_asset/data/48558/e8a78aec-93ae-4f96-b864-70a4a4b1ce9e.jpeg",
+      "note": "m3から2列目へ黄下・青上を追加。赤発火後に黄と青を別々に消す。",
+      "rows": [".B....", ".YY...", "RRR...", "GBYY.Y", "BBYR.B", "GRBYRR", "GGRBYR", "RRBBYY"],
+      "fires": [{"column": 1, "color": "R", "chains": 8, "leftover": 2, "steps": ["R", "Y", "B", "G", "R", "B", "Y", "R"]}]
+    },
+    {
+      "id": "k1-key",
+      "source": "https://puyo-camp.jp/posts/68237",
+      "image": "https://d3r48p4ajaoh51.cloudfront.net/production/uploads/ckeditor_asset/data/62153/0c7be33a-3dca-471f-83df-65ffe57c7343.png",
+      "note": "図3-1。1列目の青は黄消去後のGTR接続に使うキーぷよ。",
+      "rows": ["BG....", "YYY..Y", "BRGBBY", "BBRGGB", "RRGYYB"],
+      "fires": [{"column": 3, "color": "Y", "chains": 6, "leftover": 0, "steps": ["Y", "B", "R", "G", "B", "Y"]}]
+    },
+    {
+      "id": "k2-key-group",
+      "source": "https://puyo-camp.jp/posts/68237",
+      "image": "https://d3r48p4ajaoh51.cloudfront.net/production/uploads/ckeditor_asset/data/62158/da13708a-40b3-44c6-8dba-047ae1b4cc43.png",
+      "note": "図3-2。青を縦3に増やすだけではまだ連鎖数は増えない。",
+      "rows": ["B.....", "B.....", "BG....", "YYY..Y", "BRGBBY", "BBRGGB", "RRGYYB"],
+      "fires": [{"column": 3, "color": "Y", "chains": 6, "leftover": 0, "steps": ["Y", "B", "R", "G", "B", "Y"]}]
+    },
+    {
+      "id": "k3-moved-trigger",
+      "source": "https://puyo-camp.jp/posts/68237",
+      "image": "https://d3r48p4ajaoh51.cloudfront.net/production/uploads/ckeditor_asset/data/62161/056e9dad-2e95-4c56-ae7f-2043101bc7a0.png",
+      "note": "図3-3。新しい青発火なら7連鎖。元の黄発火も6連鎖として残る。",
+      "rows": ["B.....", "Y.....", "B.....", "B.....", "BG....", "YYY..Y", "BRGBBY", "BBRGGB", "RRGYYB"],
+      "fires": [
+        {"column": 2, "color": "B", "chains": 7, "leftover": 0, "steps": ["B", "Y", "B", "R", "G", "B", "Y"]},
+        {"column": 3, "color": "Y", "chains": 6, "leftover": 2, "steps": ["Y", "B", "R", "G", "B", "Y"]}
+      ]
+    }
+  ]
+}

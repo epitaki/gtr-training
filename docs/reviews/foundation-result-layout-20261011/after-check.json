@@ -1,0 +1,117 @@
+{
+  "guest": true,
+  "expectedScore": 100,
+  "texts": [
+    {
+      "text": "SCORE: 100点",
+      "fontSize": "48px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "GTR評価範囲",
+      "fontSize": "24px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "○ 基本形",
+      "fontSize": "24px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "○ 3連鎖",
+      "fontSize": "24px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "○ 4連鎖",
+      "fontSize": "24px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "○ 5連鎖",
+      "fontSize": "24px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "○ 最小土台が完成",
+      "fontSize": "24px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "○ 余りなし・1個・同色連結",
+      "fontSize": "24px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "仮発火：再生待ち",
+      "fontSize": "24px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "もう一度",
+      "fontSize": "24px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "点数は評価範囲のみで評価",
+      "fontSize": "16px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "Space 新しいゲーム\nEsc ホーム",
+      "fontSize": "24px",
+      "resolution": 4,
+      "filter": 1
+    }
+  ],
+  "scoreAlpha": {
+    "partial": 9186,
+    "solid": 41967
+  },
+  "fontLoaded": true,
+  "layout": {
+    "shortKeys": true,
+    "scoreAboveDiagram": true,
+    "diagramBeforeChecks": true,
+    "checksAboveFooter": true,
+    "replayAboveFooter": true,
+    "footerAboveInstructions": true,
+    "wholeHeightUsed": true,
+    "allTextInsideCanvas": true,
+    "scoreSize": "48px",
+    "diagramCellSize": 48
+  },
+  "replay": {
+    "replayExists": true,
+    "gridUnchanged": true,
+    "randomUnchanged": true,
+    "resultOpen": true,
+    "playbackActive": true
+  },
+  "mobile": {
+    "scorePresent": true,
+    "noPageOverflow": true,
+    "horizontalCanvasScroll": true
+  },
+  "completedReplay": true,
+  "spaceNewGame": true,
+  "empty": {
+    "zeroScore": true,
+    "instructions": true,
+    "boundsInside": true
+  },
+  "escHome": true,
+  "exceptionCount": 0,
+  "saveRequests": 0
+}

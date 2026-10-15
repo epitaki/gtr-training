@@ -1,0 +1,23 @@
+{
+  "modes": [
+    {
+      "mode": "ガイド練習",
+      "borderMatchesBoard": true,
+      "singleFrame": true,
+      "noBrightBorder": true,
+      "fourPuyo48px": true,
+      "labelsKept": true,
+      "scoreBorderMatches": true
+    },
+    {
+      "mode": "スコアアタック",
+      "borderMatchesBoard": true,
+      "singleFrame": true,
+      "noBrightBorder": true,
+      "fourPuyo48px": true,
+      "labelsKept": true,
+      "scoreBorderMatches": true
+    }
+  ],
+  "exceptionCount": 0
+}

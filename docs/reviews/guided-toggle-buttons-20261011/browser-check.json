@@ -1,0 +1,106 @@
+{
+  "prep": {
+    "buttons": [
+      {
+        "width": 120,
+        "height": 44,
+        "left": 356,
+        "right": 476,
+        "top": 404,
+        "bottom": 448
+      },
+      {
+        "width": 120,
+        "height": 44,
+        "left": 356,
+        "right": 476,
+        "top": 456,
+        "bottom": 500
+      }
+    ],
+    "notOverlappingNext": true,
+    "notOverlappingGuide": true
+  },
+  "mouse": [
+    {
+      "gravity": false,
+      "guide": true,
+      "gravityLabel": "自由落下 OFF",
+      "guideLabel": "ガイド ON",
+      "gameUnchanged": true,
+      "canvasFocused": true
+    },
+    {
+      "gravity": true,
+      "guide": true,
+      "gravityLabel": "自由落下 ON",
+      "guideLabel": "ガイド ON",
+      "gameUnchanged": true,
+      "canvasFocused": true
+    },
+    {
+      "gravity": false,
+      "guide": true,
+      "gravityLabel": "自由落下 OFF",
+      "guideLabel": "ガイド ON",
+      "gameUnchanged": true,
+      "canvasFocused": true
+    },
+    {
+      "gravity": false,
+      "guide": false,
+      "gravityLabel": "自由落下 OFF",
+      "guideLabel": "ガイド OFF",
+      "gameUnchanged": true,
+      "canvasFocused": true
+    },
+    {
+      "gravity": false,
+      "guide": true,
+      "gravityLabel": "自由落下 OFF",
+      "guideLabel": "ガイド ON",
+      "gameUnchanged": true,
+      "canvasFocused": true
+    }
+  ],
+  "pausedClickBlocked": true,
+  "resultCopy": true,
+  "resultClickBlocked": true,
+  "touch": [
+    {
+      "gravity": true,
+      "guide": true,
+      "gravityLabel": "自由落下 ON",
+      "guideLabel": "ガイド ON",
+      "gameUnchanged": true,
+      "canvasFocused": true
+    },
+    {
+      "gravity": false,
+      "guide": true,
+      "gravityLabel": "自由落下 OFF",
+      "guideLabel": "ガイド ON",
+      "gameUnchanged": true,
+      "canvasFocused": true
+    },
+    {
+      "gravity": false,
+      "guide": false,
+      "gravityLabel": "自由落下 OFF",
+      "guideLabel": "ガイド OFF",
+      "gameUnchanged": true,
+      "canvasFocused": true
+    },
+    {
+      "gravity": false,
+      "guide": true,
+      "gravityLabel": "自由落下 OFF",
+      "guideLabel": "ガイド ON",
+      "gameUnchanged": true,
+      "canvasFocused": true
+    }
+  ],
+  "noPageOverflow": true,
+  "exceptions": 0,
+  "saveRequests": 0
+}

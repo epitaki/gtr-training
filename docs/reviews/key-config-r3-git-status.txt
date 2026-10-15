@@ -1,0 +1,136 @@
+ M .claude/settings.local.json
+ M .gitignore
+ M ARCHITECTURE.md
+ M CLAUDE.md
+ M REQUIREMENT.md
+ M docs/GAME-MODES.md
+ M docs/GTR-PATTERNS.md
+ M docs/GTR-RESEARCH.md
+ M docs/GTR-SCORING-SYSTEM.md
+ M docs/GTR-VISUAL-GUIDE.md
+ M docs/PLACEMENT-ADVISOR.md
+ M docs/PUYO-GENERATION.md
+ M docs/README.md
+ M docs/progress-report.md
+ M note.md
+ M package.json
+ D scripts/measure-guided-advisor.ts
+ D scripts/simulate-advisor.ts
+ M src/App.tsx
+ D src/components/GameBoard.tsx
+ D src/components/GameControls.tsx
+ D src/components/GameLayout.tsx
+ D src/components/GuidedGame.tsx
+ D src/components/ScoreAttackGame.tsx
+ M src/components/layout/MainLayout.tsx
+ M src/components/layout/SideMenu.tsx
+ D src/game/GTRGuidePatterns.ts
+ D src/game/GTRPatterns.ts
+ D src/game/GTRScoringConfig.ts
+ D src/game/GameField.ts
+ D src/game/GameHistory.ts
+ M src/game/GameManager.ts
+ D src/game/GuideManager.test.ts
+ D src/game/GuideManager.ts
+ D src/game/PlacementAdvisor.test.ts
+ D src/game/PlacementAdvisor.ts
+ D src/game/PlacementAdvisorConfig.ts
+ D src/game/PuyoGame.ts
+ D src/game/PuyoPair.ts
+ D src/game/PuyoRenderer.ts
+ D src/game/VisualConfig.test.ts
+ D src/game/VisualConfig.ts
+ M src/game/scenes/GuidedPracticeScene.ts
+ D src/game/types.ts
+ D tasks/archive/001-placement-advisor.md
+ D tasks/archive/002-fix-chain-sprite-sync.md
+ D tasks/archive/003-placement-advisor-v2.md
+ D tasks/archive/004-chain-tail-advisor-fix.md
+?? .codex/
+?? .gitattributes
+?? .mcp.json
+?? AGENTS.md
+?? assets/
+?? benchmarks/
+?? docs/ADVISOR-CONSTRUCTION-20260922.md
+?? docs/ADVISOR-CONTINUOUS-20260924.md
+?? docs/ADVISOR-FAILURE-PATTERNS-20260920.md
+?? docs/ADVISOR-FOLD-GUARD-20260925.md
+?? docs/ADVISOR-FOUNDATION-PREPARATION-20260924.md
+?? docs/ADVISOR-FOUNDATION-SHAPES-20260927.md
+?? docs/ADVISOR-FOUNDATION70-20260924.md
+?? docs/ADVISOR-GOAL70-REVIEW.md
+?? docs/ADVISOR-HEAD-CONSTRUCTION-20260926.md
+?? docs/ADVISOR-HEAD-EXTENSION-20260922.md
+?? docs/ADVISOR-HEAD-SCAFFOLDS-20260925.md
+?? docs/ADVISOR-LEARNING-500-20260922.md
+?? docs/ADVISOR-LEFT-CONNECTION-20260922.md
+?? docs/ADVISOR-LOWER-TAIL-20260922.md
+?? docs/ADVISOR-NATURAL-1000-20260919.md
+?? docs/ADVISOR-PAIR-USE-20260922.md
+?? docs/ADVISOR-PERFECT-FOUNDATION-20260925.md
+?? docs/ADVISOR-QUALITY-20260918.md
+?? docs/ADVISOR-READY-MAIN-FIRE-20260920.md
+?? docs/ADVISOR-SPARE-ALLOCATION-20260925.md
+?? docs/ADVISOR-SPARE-PUYO-20260924.md
+?? docs/ADVISOR-SPARE-PUYO-DESIGN-20260924.md
+?? docs/ADVISOR-SPARE5-20260924.md
+?? docs/ADVISOR-SURFACE-20260922.md
+?? docs/ADVISOR-TAIL-CASCADE-20260924.md
+?? docs/ADVISOR-TAIL-WAIT-20260922.md
+?? docs/ADVISOR-TALL-WELLS-20260922.md
+?? docs/ASTRA-SOL-DEVELOPMENT.md
+?? docs/CHAIN-ANIMATION-CHECK.md
+?? docs/CHAIN-ANIMATION-DESIGN.md
+?? docs/FOUNDATION-SCORE-20260925.md
+?? docs/GTR-AVALANCHE-RESEARCH.md
+?? docs/GTR-COMPLETION-GALLERY.md
+?? docs/GTR-COMPLETION-VIDEO-20260927.md
+?? docs/GTR-EVALUATION-RANGE-20260924.md
+?? docs/GTR-HEAD-EXTENSION-RESEARCH.md
+?? docs/GTR-HEAD-SCAFFOLDS-20260925.md
+?? docs/GTR-HUMAN-PLAY-STUDY.md
+?? docs/GTR-OPENING-RESEARCH.md
+?? docs/GTR-QUALITY-CRITERIA.md
+?? docs/GTR-SOURCE-CATALOG.md
+?? docs/GTR-SPARE-ALLOCATION-RESEARCH-20260925.md
+?? docs/GTR-SURFACE-QUALITY-20260927.md
+?? docs/GTR-Y-TAIL-PREFERENCE.md
+?? docs/INPUT-PIXEL-THEME-PLAN-20260927.md
+?? docs/KEY-CONFIG-CHECK-20260927.md
+?? docs/KEY-CONFIG-DESIGN-20260927.md
+?? docs/PROJECT-STRUCTURE.md
+?? docs/PUYO-CONNECTION-JOIN-FIX.md
+?? docs/PUYO-PIXEL-ART-DESIGN.md
+?? docs/PUYO-PIXEL-INTEGRATION-CHECK.md
+?? docs/PUYO-PIXEL-INTEGRATION.md
+?? docs/PUYO-PIXEL-PRODUCTION.md
+?? docs/RESULT-CHAIN-PREVIEW.md
+?? docs/research/
+?? docs/reviews/
+?? scripts/README.md
+?? scripts/analysis/
+?? scripts/assets/
+?? scripts/benchmark/
+?? scripts/human/
+?? scripts/shared/
+?? src/architecture.test.ts
+?? src/assets/
+?? src/benchmark/
+?? src/components/feedback/
+?? src/components/gallery/
+?? src/components/game/
+?? src/components/settings/
+?? src/game/GameManager.test.ts
+?? src/game/advisor/
+?? src/game/core/
+?? src/game/feedback/
+?? src/game/gtr/
+?? src/game/guide/
+?? src/game/input/
+?? src/game/rendering/
+?? src/game/scenes/ChainAnimationScenes.test.ts
+?? src/game/scenes/GuidedPracticeScene.test.ts
+?? src/game/scenes/PairRotationInput.test.ts
+?? src/game/scenes/PuyoGame.ts
+?? tsconfig.scripts.json

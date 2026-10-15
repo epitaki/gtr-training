@@ -1,0 +1,274 @@
+{
+  "snapshot": {
+    "kind": "gtr-issue-snapshot",
+    "version": 1,
+    "appVersion": "1.0.0",
+    "capturedAt": "2026-10-04T07:11:05.300Z",
+    "mode": "guided",
+    "page": "http://127.0.0.1:5175/",
+    "turnNumber": 1,
+    "field": {
+      "grid": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          "blue",
+          "blue",
+          "blue",
+          null,
+          null,
+          "yellow"
+        ],
+        [
+          "green",
+          "red",
+          "green",
+          "blue",
+          "blue",
+          "yellow"
+        ],
+        [
+          "green",
+          "green",
+          "red",
+          "green",
+          "green",
+          "blue"
+        ],
+        [
+          "red",
+          "red",
+          "green",
+          "yellow",
+          "yellow",
+          "blue"
+        ]
+      ],
+      "width": 6,
+      "height": 13
+    },
+    "currentPair": {
+      "main": {
+        "color": "blue",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "yellow",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "nextPair": {
+      "main": {
+        "color": "green",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "nextNextPair": {
+      "main": {
+        "color": "blue",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "yellow",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "openingPairs": {
+      "pair1": {
+        "main": {
+          "color": "red",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "red",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "pair2": {
+        "main": {
+          "color": "green",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "red",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      }
+    },
+    "score": 0,
+    "gtrCount": 0,
+    "gtrScore": 0,
+    "gameOver": false,
+    "pairRandomState": 123456,
+    "trainingPlan": {
+      "colorA": "green",
+      "colorB": "red",
+      "colorC": "green",
+      "colorD": "red"
+    },
+    "settings": {
+      "gravityEnabled": false,
+      "advisorEnabled": false,
+      "paused": true,
+      "showingResult": true
+    },
+    "gtrEvaluation": {
+      "scoringVersion": "masked-foundation-minimal-v2",
+      "minimalFoundationComplete": false,
+      "isGTR": true,
+      "quality": 100,
+      "chainTailScore": 68,
+      "totalScore": 90,
+      "chainCount": 5,
+      "leftoverPuyos": 1,
+      "message": "素晴らしい！5連鎖のGTR！",
+      "hasBasicPattern": true,
+      "row10Usage": "minimal",
+      "rightEdgeRaised": false,
+      "leftoverConnected": false
+    },
+    "tailPlans": [
+      {
+        "shape": "Y",
+        "color": "green",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 4,
+        "filledSupportCells": 2,
+        "matchedCells": 6,
+        "totalCells": 6,
+        "continuationCount": 0,
+        "templateFilled": true
+      }
+    ],
+    "advice": null,
+    "recentTurns": [],
+    "previousState": null
+  },
+  "feedback": {
+    "comment": "",
+    "expectedColumn": null,
+    "expectedRotation": null
+  },
+  "replayUrl": "http://127.0.0.1:5175/#gtr-replay=eyJraW5kIjoiZ3RyLXJlcGxheSIsInZlcnNpb24iOjEsInNvdXJjZUNhcHR1cmVkQXQiOiIyMDI2LTEwLTA0VDA3OjExOjA1LjMwMFoiLCJmaWVsZCI6eyJncmlkIjpbW251bGwsbnVsbCxudWxsLG51bGwsbnVsbCxudWxsXSxbbnVsbCxudWxsLG51bGwsbnVsbCxudWxsLG51bGxdLFtudWxsLG51bGwsbnVsbCxudWxsLG51bGwsbnVsbF0sW251bGwsbnVsbCxudWxsLG51bGwsbnVsbCxudWxsXSxbbnVsbCxudWxsLG51bGwsbnVsbCxudWxsLG51bGxdLFtudWxsLG51bGwsbnVsbCxudWxsLG51bGwsbnVsbF0sW251bGwsbnVsbCxudWxsLG51bGwsbnVsbCxudWxsXSxbbnVsbCxudWxsLG51bGwsbnVsbCxudWxsLG51bGxdLFtudWxsLG51bGwsbnVsbCxudWxsLG51bGwsbnVsbF0sWyJibHVlIiwiYmx1ZSIsImJsdWUiLG51bGwsbnVsbCwieWVsbG93Il0sWyJncmVlbiIsInJlZCIsImdyZWVuIiwiYmx1ZSIsImJsdWUiLCJ5ZWxsb3ciXSxbImdyZWVuIiwiZ3JlZW4iLCJyZWQiLCJncmVlbiIsImdyZWVuIiwiYmx1ZSJdLFsicmVkIiwicmVkIiwiZ3JlZW4iLCJ5ZWxsb3ciLCJ5ZWxsb3ciLCJibHVlIl1dLCJ3aWR0aCI6NiwiaGVpZ2h0IjoxM30sImN1cnJlbnRQYWlyIjp7Im1haW4iOnsiY29sb3IiOiJibHVlIiwieCI6MiwieSI6MX0sInN1YiI6eyJjb2xvciI6InllbGxvdyIsIngiOjIsInkiOjB9LCJyb3RhdGlvbiI6MCwiZmFsbGluZyI6dHJ1ZX0sIm5leHRQYWlyIjp7Im1haW4iOnsiY29sb3IiOiJncmVlbiIsIngiOjIsInkiOjF9LCJzdWIiOnsiY29sb3IiOiJyZWQiLCJ4IjoyLCJ5IjowfSwicm90YXRpb24iOjAsImZhbGxpbmciOnRydWV9LCJuZXh0TmV4dFBhaXIiOnsibWFpbiI6eyJjb2xvciI6ImJsdWUiLCJ4IjoyLCJ5IjoxfSwic3ViIjp7ImNvbG9yIjoieWVsbG93IiwieCI6MiwieSI6MH0sInJvdGF0aW9uIjowLCJmYWxsaW5nIjp0cnVlfSwib3BlbmluZ1BhaXJzIjp7InBhaXIxIjp7Im1haW4iOnsiY29sb3IiOiJyZWQiLCJ4IjoyLCJ5IjoxfSwic3ViIjp7ImNvbG9yIjoicmVkIiwieCI6MiwieSI6MH0sInJvdGF0aW9uIjowLCJmYWxsaW5nIjp0cnVlfSwicGFpcjIiOnsibWFpbiI6eyJjb2xvciI6ImdyZWVuIiwieCI6MiwieSI6MX0sInN1YiI6eyJjb2xvciI6InJlZCIsIngiOjIsInkiOjB9LCJyb3RhdGlvbiI6MCwiZmFsbGluZyI6dHJ1ZX19LCJzY29yZSI6MCwiZ3RyQ291bnQiOjAsImd0clNjb3JlIjowLCJnYW1lT3ZlciI6ZmFsc2UsInBhaXJSYW5kb21TdGF0ZSI6MTIzNDU2LCJ0cmFpbmluZ1BsYW4iOnsiY29sb3JBIjoiZ3JlZW4iLCJjb2xvckIiOiJyZWQiLCJjb2xvckMiOiJncmVlbiIsImNvbG9yRCI6InJlZCJ9LCJzb3VyY2VTZXR0aW5ncyI6eyJncmF2aXR5RW5hYmxlZCI6ZmFsc2UsImFkdmlzb3JFbmFibGVkIjpmYWxzZSwicGF1c2VkIjp0cnVlLCJzaG93aW5nUmVzdWx0Ijp0cnVlfSwicmVjZW50VHVybnMiOltdLCJwcmV2aW91c1N0YXRlIjpudWxsLCJzb3VyY2VBbmFseXNpcyI6eyJhcHBWZXJzaW9uIjoiMS4wLjAiLCJndHJFdmFsdWF0aW9uIjp7InNjb3JpbmdWZXJzaW9uIjoibWFza2VkLWZvdW5kYXRpb24tbWluaW1hbC12MiIsIm1pbmltYWxGb3VuZGF0aW9uQ29tcGxldGUiOmZhbHNlLCJpc0dUUiI6dHJ1ZSwicXVhbGl0eSI6MTAwLCJjaGFpblRhaWxTY29yZSI6NjgsInRvdGFsU2NvcmUiOjkwLCJjaGFpbkNvdW50Ijo1LCJsZWZ0b3ZlclB1eW9zIjoxLCJtZXNzYWdlIjoi57Sg5pm044KJ44GX44GE77yBNemAo-mOluOBrkdUUu-8gSIsImhhc0Jhc2ljUGF0dGVybiI6dHJ1ZSwicm93MTBVc2FnZSI6Im1pbmltYWwiLCJyaWdodEVkZ2VSYWlzZWQiOmZhbHNlLCJsZWZ0b3ZlckNvbm5lY3RlZCI6ZmFsc2V9LCJ0YWlsUGxhbnMiOlt7InNoYXBlIjoiWSIsImNvbG9yIjoiZ3JlZW4iLCJjaGFpbkNlbGxzIjpbeyJ4IjoyLCJ5IjoxMn0seyJ4IjozLCJ5IjoxMX0seyJ4Ijo0LCJ5IjoxMX0seyJ4IjoyLCJ5IjoxMH1dLCJzdXBwb3J0Q2VsbHMiOlt7IngiOjMsInkiOjEyfSx7IngiOjQsInkiOjEyfV0sIm1hdGNoZWRDaGFpbkNlbGxzIjo0LCJmaWxsZWRTdXBwb3J0Q2VsbHMiOjIsIm1hdGNoZWRDZWxscyI6NiwidG90YWxDZWxscyI6NiwiY29udGludWF0aW9uQ291bnQiOjAsInRlbXBsYXRlRmlsbGVkIjp0cnVlfV0sImFkdmljZSI6bnVsbH19"
+}

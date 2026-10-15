@@ -1,0 +1,60 @@
+// Archived trial tests; original path: src/game/advisor/ConstructionFlexibility.test.ts
+import { describe, expect, it } from 'vitest'
+import { constructionFlexibility } from './ConstructionFlexibility'
+import { PuyoColor } from '../core/types'
+import { PlacementAdvisor } from './PlacementAdvisor'
+import { simulateTurn, type PuyoGrid } from '../core/ChainSimulator'
+import type { PuyoPair } from '../core/types'
+
+const { RED: R, BLUE: B, GREEN: G, YELLOW: Y } = PuyoColor
+
+describe('construction color flexibility', () => {
+  it('prefers different open colors to repeated copies of a single color', () => {
+    expect(constructionFlexibility([[], [], []], [[R], [B], [Y]], false)).toBe(36)
+    expect(constructionFlexibility([[], [], []], [[R], [R], [R]], false)).toBe(12)
+  })
+
+  it('does not count colors buried behind a missing support or repeated in one column', () => {
+    expect(constructionFlexibility([[], []], [[R, B, G, Y], [R]], false)).toBe(12)
+    expect(constructionFlexibility([[R], []], [[R, B, G, Y], [R]], false)).toBe(24)
+  })
+
+  it('does not invent open cells above a finished column or on top of spare puyos', () => {
+    expect(constructionFlexibility([[R], [B, Y]], [[R], [B]], false)).toBe(0)
+    expect(constructionFlexibility([], [], false)).toBe(0)
+  })
+
+  it('stops rewarding unfilled entrances after the teaching tail is filled', () => {
+    expect(constructionFlexibility([[], [], [], []], [[R], [B], [G], [Y]], true)).toBe(0)
+  })
+
+  it.each([0, 1, 2, 3])('has a bounded, color-neutral score and leaves inputs untouched (shift %i)', shift => {
+    const palette = [R, B, G, Y]
+    const targets = palette.map((_, i) => [palette[(i + shift) % palette.length]])
+    const columns: PuyoColor[][] = [[], [], [], []]
+    const original = structuredClone({ columns, targets })
+    expect(constructionFlexibility(columns, targets, false)).toBe(48)
+    expect({ columns, targets }).toEqual(original)
+  })
+
+  it.each([0, 1, 2, 3])('opens the low tail supports instead of stacking a spare double on the far right (shift %i)', shift => {
+    // Additional development game 77, second pair. This test supplies only the
+    // board/visible pairs, not the game number, seed or the remaining queue.
+    const palette = [R, B, G, Y]
+    const rename = (color: PuyoColor) => palette[(palette.indexOf(color) + shift) % palette.length]
+    const pair = (main: PuyoColor, sub: PuyoColor): PuyoPair => ({
+      main: { color: rename(main), x: 2, y: 1 }, sub: { color: rename(sub), x: 2, y: 0 },
+      rotation: 0, falling: true,
+    })
+    const grid: PuyoGrid = Array.from({ length: 13 }, () => Array(6).fill(null))
+    grid[12][0] = grid[12][1] = rename(B)
+    const plan = { colorA: rename(R), colorB: rename(B), colorC: rename(R), colorD: rename(B) }
+    const current = pair(B, B)
+    const advice = PlacementAdvisor.getAdvice({ grid, width: 6, height: 13 }, current, pair(R, G), pair(G, Y), plan)
+    const placed = simulateTurn(grid, current, advice.bestPlacement!.placement)
+    expect(placed.valid).toBe(true)
+    expect(placed.chainCount).toBe(0)
+    expect(placed.stableGrid[12]).toEqual([rename(B), rename(B), null, rename(B), rename(B), null])
+    expect(placed.stableGrid.slice(0, -1).flat().every(color => color === null)).toBe(true)
+  })
+})

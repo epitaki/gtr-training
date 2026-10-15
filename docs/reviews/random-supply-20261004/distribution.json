@@ -1,0 +1,100 @@
+{
+  "date": "2026-10-04",
+  "seed": 20261004,
+  "scope": "Subsequent pairs only; first two training pairs excluded",
+  "oldScore": {
+    "samples": 200000,
+    "doubles": 99808,
+    "mixed": 100192,
+    "doublePercent": 49.904,
+    "colorCounts": {
+      "red": 100175,
+      "green": 99935,
+      "blue": 100052,
+      "yellow": 99838
+    },
+    "pairCounts": {
+      "yellow/yellow": 24995,
+      "green/yellow": 8264,
+      "red/blue": 8459,
+      "blue/blue": 24976,
+      "yellow/green": 8403,
+      "green/green": 24842,
+      "red/red": 24995,
+      "yellow/red": 8192,
+      "green/blue": 8354,
+      "green/red": 8388,
+      "blue/green": 8363,
+      "red/green": 8479,
+      "red/yellow": 8366,
+      "blue/red": 8301,
+      "blue/yellow": 8314,
+      "yellow/blue": 8309
+    }
+  },
+  "newScore": {
+    "samples": 200000,
+    "doubles": 49818,
+    "mixed": 150182,
+    "doublePercent": 24.909,
+    "colorCounts": {
+      "red": 99571,
+      "green": 100180,
+      "blue": 100349,
+      "yellow": 99900
+    },
+    "pairCounts": {
+      "yellow/yellow": 12448,
+      "yellow/red": 12482,
+      "green/green": 12469,
+      "blue/green": 12691,
+      "green/red": 12600,
+      "blue/red": 12441,
+      "red/blue": 12448,
+      "blue/blue": 12618,
+      "green/yellow": 12484,
+      "yellow/green": 12469,
+      "yellow/blue": 12432,
+      "red/green": 12485,
+      "green/blue": 12513,
+      "red/yellow": 12549,
+      "red/red": 12283,
+      "blue/yellow": 12588
+    }
+  },
+  "guide": {
+    "samples": 200000,
+    "doubles": 49818,
+    "mixed": 150182,
+    "doublePercent": 24.909,
+    "colorCounts": {
+      "red": 99571,
+      "green": 100180,
+      "blue": 100349,
+      "yellow": 99900
+    },
+    "pairCounts": {
+      "yellow/yellow": 12448,
+      "yellow/red": 12482,
+      "green/green": 12469,
+      "blue/green": 12691,
+      "green/red": 12600,
+      "blue/red": 12441,
+      "red/blue": 12448,
+      "blue/blue": 12618,
+      "green/yellow": 12484,
+      "yellow/green": 12469,
+      "yellow/blue": 12432,
+      "red/green": 12485,
+      "green/blue": 12513,
+      "red/yellow": 12549,
+      "red/red": 12283,
+      "blue/yellow": 12588
+    }
+  },
+  "fingerprints": {
+    "src/game/core/PuyoPair.ts": "f45133fd32c083e99434ea4140d7c3fbdc401bd9f06db6c5e555f91b3378f72c",
+    "src/game/scenes/PuyoGame.ts": "055f25e3bf16454c6583e453fbfdbdc2b3ad5897464ae2cb72a45e16167f2769",
+    "src/game/scenes/GuidedPracticeScene.ts": "f4791201c26a0f86935d645aa0fa85c2989ba0281add6cfd53900442efc91481"
+  }
+}

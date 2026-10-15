@@ -1,0 +1,53 @@
+{
+  "desktop": {
+    "shapes": [
+      {
+        "shape": 1,
+        "tenExamples": true,
+        "numberSequence": true,
+        "boards36px": true,
+        "noDescriptions": true,
+        "boardsInsideCards": true
+      },
+      {
+        "shape": 2,
+        "tenExamples": true,
+        "numberSequence": true,
+        "boards36px": true,
+        "noDescriptions": true,
+        "boardsInsideCards": true
+      },
+      {
+        "shape": 3,
+        "tenExamples": true,
+        "numberSequence": true,
+        "boards36px": true,
+        "noDescriptions": true,
+        "boardsInsideCards": true
+      }
+    ]
+  },
+  "modal": {
+    "numberKept": true,
+    "board48px": true,
+    "noDescriptions": true,
+    "closeFocused": true
+  },
+  "replay": {
+    "fiveChainsComplete": true
+  },
+  "mobileModal": {
+    "board36px": true,
+    "noHorizontalOverflow": true,
+    "boardInsideDialog": true
+  },
+  "mobile": {
+    "openerFocused": true,
+    "tenExamples": true,
+    "boards36px": true,
+    "singleColumn": true,
+    "noPageOverflow": true,
+    "boardsInsideCards": true
+  },
+  "exceptionCount": 0
+}

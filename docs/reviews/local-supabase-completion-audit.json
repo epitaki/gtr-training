@@ -1,0 +1,12 @@
+{
+  "acceptedSnapshot": "400956da89b85213310ffe0cb99054404e84fdf896cd68ee2f9d9b244e0d6d94",
+  "postAcceptanceDocumentationChanges": [
+    "docs/AUTH-DB-DESIGN-20260930.md",
+    "docs/AUTH-SETUP.md",
+    "docs/LOCAL-SUPABASE-DEVELOPMENT-20260930.md",
+    "docs/PROJECT-STRUCTURE.md"
+  ],
+  "unexpectedChanges": [],
+  "deletedFilesReappeared": [],
+  "applicationTestConfigurationUnchanged": true
+}

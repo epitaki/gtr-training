@@ -1,0 +1,701 @@
+{
+  "scope": "Real production scenes through existing test fixture, gravity OFF; Down on supported pair, five-chain 200 points, no quick-drop control used. Frame timing and long physical holds are verified by automated tests.",
+  "scoreAfter": {
+    "state": {
+      "current": {
+        "falling": true,
+        "main": {
+          "color": "yellow",
+          "x": 2,
+          "y": 1
+        },
+        "rotation": 0,
+        "sub": {
+          "color": "blue",
+          "x": 2,
+          "y": 0
+        }
+      },
+      "display": {
+        "chainObjects": 0,
+        "total": 28
+      },
+      "evaluationTexts": [],
+      "grid": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          "blue",
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "gtrCount": 0,
+      "gtrScore": 0,
+      "mode": "score",
+      "next": {
+        "falling": true,
+        "main": {
+          "color": "green",
+          "x": 2,
+          "y": 1
+        },
+        "rotation": 0,
+        "sub": {
+          "color": "red",
+          "x": 2,
+          "y": 0
+        }
+      },
+      "nextNext": {
+        "falling": true,
+        "main": {
+          "color": "red",
+          "x": 2,
+          "y": 1
+        },
+        "rotation": 0,
+        "sub": {
+          "color": "green",
+          "x": 2,
+          "y": 0
+        }
+      },
+      "paused": false,
+      "playing": false,
+      "rendererPresent": false,
+      "score": 200,
+      "visibility": "visible"
+    },
+    "status": {
+      "checking": false,
+      "completed": 0,
+      "elapsedSeconds": 0,
+      "events": [
+        "セット: five / 期待5連鎖20消去"
+      ],
+      "failures": [],
+      "frameMedianMs": null,
+      "frameP95Ms": null,
+      "frameSamples": 0,
+      "idleCounts": {},
+      "mode": "score",
+      "remaining": 0
+    }
+  },
+  "guideBefore": {
+    "advisorEnabled": false,
+    "current": {
+      "falling": true,
+      "main": {
+        "color": "red",
+        "x": 0,
+        "y": 9
+      },
+      "rotation": 0,
+      "sub": {
+        "color": "blue",
+        "x": 0,
+        "y": 8
+      }
+    },
+    "display": {
+      "chainObjects": 0,
+      "total": 45
+    },
+    "evaluationTexts": [],
+    "grid": [
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        "red"
+      ],
+      [
+        "red",
+        "green",
+        "yellow",
+        "blue",
+        "blue",
+        "red"
+      ],
+      [
+        "red",
+        "red",
+        "green",
+        "yellow",
+        "yellow",
+        "blue"
+      ],
+      [
+        "green",
+        "green",
+        "yellow",
+        "red",
+        "red",
+        "blue"
+      ]
+    ],
+    "gtrCount": 0,
+    "gtrScore": 0,
+    "historyLength": 1,
+    "mode": "guide",
+    "next": {
+      "falling": true,
+      "main": {
+        "color": "yellow",
+        "x": 2,
+        "y": 1
+      },
+      "rotation": 0,
+      "sub": {
+        "color": "blue",
+        "x": 2,
+        "y": 0
+      }
+    },
+    "nextNext": {
+      "falling": true,
+      "main": {
+        "color": "green",
+        "x": 2,
+        "y": 1
+      },
+      "rotation": 0,
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      }
+    },
+    "paused": false,
+    "playing": false,
+    "randomState": 123456,
+    "rendererPresent": false,
+    "score": 0,
+    "turns": 0,
+    "visibility": "visible"
+  },
+  "guideContact": {
+    "advisorEnabled": false,
+    "current": {
+      "falling": true,
+      "main": {
+        "color": "red",
+        "x": 0,
+        "y": 9
+      },
+      "rotation": 0,
+      "sub": {
+        "color": "blue",
+        "x": 0,
+        "y": 8
+      }
+    },
+    "display": {
+      "chainObjects": 21,
+      "total": 67
+    },
+    "evaluationTexts": [],
+    "grid": [
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        "red"
+      ],
+      [
+        "red",
+        "green",
+        "yellow",
+        "blue",
+        "blue",
+        "red"
+      ],
+      [
+        "red",
+        "red",
+        "green",
+        "yellow",
+        "yellow",
+        "blue"
+      ],
+      [
+        "green",
+        "green",
+        "yellow",
+        "red",
+        "red",
+        "blue"
+      ]
+    ],
+    "gtrCount": 0,
+    "gtrScore": 0,
+    "historyLength": 1,
+    "mode": "guide",
+    "next": {
+      "falling": true,
+      "main": {
+        "color": "yellow",
+        "x": 2,
+        "y": 1
+      },
+      "rotation": 0,
+      "sub": {
+        "color": "blue",
+        "x": 2,
+        "y": 0
+      }
+    },
+    "nextNext": {
+      "falling": true,
+      "main": {
+        "color": "green",
+        "x": 2,
+        "y": 1
+      },
+      "rotation": 0,
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      }
+    },
+    "paused": false,
+    "playing": true,
+    "randomState": 123456,
+    "rendererPresent": true,
+    "score": 0,
+    "turns": 0,
+    "visibility": "visible"
+  },
+  "guideAfter": {
+    "state": {
+      "advisorEnabled": false,
+      "current": {
+        "falling": true,
+        "main": {
+          "color": "yellow",
+          "x": 2,
+          "y": 1
+        },
+        "rotation": 0,
+        "sub": {
+          "color": "blue",
+          "x": 2,
+          "y": 0
+        }
+      },
+      "display": {
+        "chainObjects": 0,
+        "total": 27
+      },
+      "evaluationTexts": [],
+      "grid": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          "blue",
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "gtrCount": 0,
+      "gtrScore": 0,
+      "historyLength": 2,
+      "mode": "guide",
+      "next": {
+        "falling": true,
+        "main": {
+          "color": "green",
+          "x": 2,
+          "y": 1
+        },
+        "rotation": 0,
+        "sub": {
+          "color": "red",
+          "x": 2,
+          "y": 0
+        }
+      },
+      "nextNext": {
+        "falling": true,
+        "main": {
+          "color": "green",
+          "x": 2,
+          "y": 1
+        },
+        "rotation": 0,
+        "sub": {
+          "color": "yellow",
+          "x": 2,
+          "y": 0
+        }
+      },
+      "paused": false,
+      "playing": false,
+      "randomState": 3663255082,
+      "rendererPresent": false,
+      "score": 200,
+      "turns": 1,
+      "visibility": "visible"
+    },
+    "status": {
+      "checking": false,
+      "completed": 0,
+      "elapsedSeconds": 0,
+      "events": [
+        "セット: five / 期待5連鎖20消去"
+      ],
+      "failures": [],
+      "frameMedianMs": null,
+      "frameP95Ms": null,
+      "frameSamples": 0,
+      "idleCounts": {},
+      "mode": "guide",
+      "remaining": 0
+    }
+  }
+}

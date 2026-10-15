@@ -1,0 +1,85 @@
+{
+  "round": 3,
+  "snapshot": "28f5a44a744067e3c1bf3e2e14b104354935cf5bda379474d866697dfa6fccb1",
+  "independence": "Fresh gpt-6-sol agents, fork none; all completed; serialized due thread slots; no findings/history shared",
+  "reviews": [
+    {
+      "agent": "key_config_r3_review_1",
+      "model": "gpt-6-sol",
+      "scope": "25変更ファイルと関連する呼出元・型・テスト・仕様を実読、25ハッシュ一致",
+      "findings": [
+        {
+          "severity": "P2",
+          "file": "src/components/settings/KeySettings.tsx",
+          "line": 18,
+          "title": "キー取得中にTab/Shift+Tabを消費して取消ボタンへ移動できない",
+          "condition": "キーボードで追加を選んだ後、取得中にTab/Shift+Tabを押す",
+          "cause": "許可キー判定前のpreventDefault",
+          "impact": "割当拒否されるが既定のフォーカス移動も止まり、キー取得を取消へ到達できない",
+          "fix": "Tabを割当拒否しつつ既定フォーカス移動を通し、取得対象として消費するキーだけ抑止する"
+        }
+      ],
+      "limitations": "読取りのみ。テスト/build/UI未実行。物理NumLock/OS実IME/実タッチ未確認"
+    },
+    {
+      "agent": "key_config_r3_review_2",
+      "model": "gpt-6-sol",
+      "scope": "195ハッシュ一致。変更25ファイル、両Scene入力経路、GameManager、React呼出元、関連テスト・構成契約を実読",
+      "findings": [
+        {
+          "severity": "P2",
+          "file": "src/components/settings/KeySettings.tsx",
+          "line": 19,
+          "title": "キー取得中にTab/Shift+Tabの既定フォーカス移動を抑止",
+          "condition": "追加でキー取得待ちにしてTab/Shift+Tab",
+          "cause": "割当拒否より前にpreventDefault",
+          "impact": "キーボードだけでは取消ボタンへ直接移れない",
+          "fix": "Tabの割当は拒否しつつフォーカス移動を通す"
+        }
+      ],
+      "excluded": [
+        {
+          "candidate": "モバイル操作ボタンのキーボード起動不可",
+          "reason": "開始ベースラインからの差分ではないため今回の必須修正外"
+        }
+      ],
+      "limitations": "読み取りのみ。テスト/build/UI未実行。物理NumLock/OS実IME/実タッチ未確認"
+    },
+    {
+      "agent": "key_config_r3_review_3",
+      "model": "gpt-6-sol",
+      "scope": "変更25ハッシュ一致、仕様、入力/保存/設定UI、両Scene、React接続、関連テスト、開始基準差分とApp/MenuSceneを読取り確認",
+      "findings": [
+        {
+          "severity": "P2",
+          "file": "src/components/settings/KeySettings.tsx",
+          "line": 18,
+          "title": "キー取得中にTabで移動できない",
+          "condition": "追加から取得状態でTab/Shift+Tab",
+          "impact": "ブラウザーfocus移動が止まり取消へ移れない",
+          "fix": "preventDefault前にTabを非抑止・割当拒否する分岐"
+        },
+        {
+          "severity": "P2",
+          "file": "src/components/game/GameControls.tsx",
+          "line": 14,
+          "title": "画面操作ボタンをキーボードで実行できない",
+          "condition": "Tabで終了等へ移動後Enter/Space",
+          "impact": "狭幅ガイドの明示終了をキーボード起動できない",
+          "fix": "keyboard clickを意味押下/解除に渡しpointer clickと重複防止"
+        }
+      ],
+      "limitations": "読取りのみ、テスト/build/UI未実施、実機制約維持"
+    }
+  ],
+  "parentCandidates": [
+    {
+      "area": "KeySettings capture keyboard cancellation",
+      "file": "src/components/settings/KeySettings.tsx",
+      "line": 18,
+      "observation": "Tabを通すだけの修正でも、取得中に取消ボタンへフォーカスしてEnter/Spaceを押すとcapture handlerがキー割当として消費するため、取消ボタンの通常キーボード起動が妨げられる。",
+      "evidence": "window capture listenerは全keydownをpreventDefaultし、Enter/SpaceはいずれもALLOWED_CODESにある。キー取得を取消はonClickのみ。",
+      "request": "AstraはTab移動と取消ボタンのEnter/Space起動を一続きの受入条件として扱うか、Tabによる取得終了等の最小で一貫した設計を指定してほしい。現時点は候補で未採用。"
+    }
+  ]
+}

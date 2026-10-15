@@ -1,0 +1,2293 @@
+{
+  "same": true,
+  "firstRun": [
+    {
+      "field": {
+        "grid": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "blue",
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "yellow",
+            null,
+            null,
+            null
+          ]
+        ],
+        "width": 6,
+        "height": 13
+      },
+      "currentPair": {
+        "main": {
+          "color": "blue",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "blue",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "nextPair": {
+        "main": {
+          "color": "blue",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "yellow",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "nextNextPair": {
+        "main": {
+          "color": "red",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "yellow",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "pairRandomState": 1775954443,
+      "score": 0,
+      "gtrCount": 0,
+      "gtrScore": 0,
+      "turnNumber": 2,
+      "recentTurns": [
+        {
+          "turn": 1,
+          "pair": {
+            "main": {
+              "color": "yellow",
+              "x": 2,
+              "y": 12
+            },
+            "sub": {
+              "color": "blue",
+              "x": 2,
+              "y": 11
+            },
+            "rotation": 0,
+            "falling": true
+          },
+          "placement": {
+            "column": 2,
+            "rotation": 0,
+            "mainPos": {
+              "x": 2,
+              "y": 12
+            },
+            "subPos": {
+              "x": 2,
+              "y": 11
+            }
+          },
+          "chainCount": 0,
+          "clearedPuyos": 0
+        }
+      ],
+      "previousState": {
+        "field": {
+          "width": 6,
+          "height": 13,
+          "grid": [
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ]
+          ]
+        },
+        "currentPair": {
+          "main": {
+            "color": "yellow",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "blue",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "nextPair": {
+          "main": {
+            "color": "blue",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "blue",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "nextNextPair": {
+          "main": {
+            "color": "blue",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "yellow",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "score": 0,
+        "gtrCount": 0,
+        "gtrScore": 0,
+        "pairRandomState": 2407790113
+      }
+    },
+    {
+      "field": {
+        "grid": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "blue",
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "blue",
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "blue",
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "yellow",
+            null,
+            null,
+            null
+          ]
+        ],
+        "width": 6,
+        "height": 13
+      },
+      "currentPair": {
+        "main": {
+          "color": "blue",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "yellow",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "nextPair": {
+        "main": {
+          "color": "red",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "yellow",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "nextNextPair": {
+        "main": {
+          "color": "red",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "green",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "pairRandomState": 1144118773,
+      "score": 0,
+      "gtrCount": 0,
+      "gtrScore": 0,
+      "turnNumber": 3,
+      "recentTurns": [
+        {
+          "turn": 1,
+          "pair": {
+            "main": {
+              "color": "yellow",
+              "x": 2,
+              "y": 12
+            },
+            "sub": {
+              "color": "blue",
+              "x": 2,
+              "y": 11
+            },
+            "rotation": 0,
+            "falling": true
+          },
+          "placement": {
+            "column": 2,
+            "rotation": 0,
+            "mainPos": {
+              "x": 2,
+              "y": 12
+            },
+            "subPos": {
+              "x": 2,
+              "y": 11
+            }
+          },
+          "chainCount": 0,
+          "clearedPuyos": 0
+        },
+        {
+          "turn": 2,
+          "pair": {
+            "main": {
+              "color": "blue",
+              "x": 2,
+              "y": 10
+            },
+            "sub": {
+              "color": "blue",
+              "x": 2,
+              "y": 9
+            },
+            "rotation": 0,
+            "falling": true
+          },
+          "placement": {
+            "column": 2,
+            "rotation": 0,
+            "mainPos": {
+              "x": 2,
+              "y": 10
+            },
+            "subPos": {
+              "x": 2,
+              "y": 9
+            }
+          },
+          "chainCount": 0,
+          "clearedPuyos": 0
+        }
+      ],
+      "previousState": {
+        "field": {
+          "width": 6,
+          "height": 13,
+          "grid": [
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              "blue",
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              "yellow",
+              null,
+              null,
+              null
+            ]
+          ]
+        },
+        "currentPair": {
+          "main": {
+            "color": "blue",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "blue",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "nextPair": {
+          "main": {
+            "color": "blue",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "yellow",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "nextNextPair": {
+          "main": {
+            "color": "red",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "yellow",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "score": 0,
+        "gtrCount": 0,
+        "gtrScore": 0,
+        "pairRandomState": 1775954443
+      }
+    },
+    {
+      "field": {
+        "grid": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "yellow",
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "yellow",
+            null,
+            null,
+            null
+          ]
+        ],
+        "width": 6,
+        "height": 13
+      },
+      "currentPair": {
+        "main": {
+          "color": "red",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "yellow",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "nextPair": {
+        "main": {
+          "color": "red",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "green",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "nextNextPair": {
+        "main": {
+          "color": "blue",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "green",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "pairRandomState": 512283103,
+      "score": 40,
+      "gtrCount": 0,
+      "gtrScore": 0,
+      "turnNumber": 4,
+      "recentTurns": [
+        {
+          "turn": 1,
+          "pair": {
+            "main": {
+              "color": "yellow",
+              "x": 2,
+              "y": 12
+            },
+            "sub": {
+              "color": "blue",
+              "x": 2,
+              "y": 11
+            },
+            "rotation": 0,
+            "falling": true
+          },
+          "placement": {
+            "column": 2,
+            "rotation": 0,
+            "mainPos": {
+              "x": 2,
+              "y": 12
+            },
+            "subPos": {
+              "x": 2,
+              "y": 11
+            }
+          },
+          "chainCount": 0,
+          "clearedPuyos": 0
+        },
+        {
+          "turn": 2,
+          "pair": {
+            "main": {
+              "color": "blue",
+              "x": 2,
+              "y": 10
+            },
+            "sub": {
+              "color": "blue",
+              "x": 2,
+              "y": 9
+            },
+            "rotation": 0,
+            "falling": true
+          },
+          "placement": {
+            "column": 2,
+            "rotation": 0,
+            "mainPos": {
+              "x": 2,
+              "y": 10
+            },
+            "subPos": {
+              "x": 2,
+              "y": 9
+            }
+          },
+          "chainCount": 0,
+          "clearedPuyos": 0
+        },
+        {
+          "turn": 3,
+          "pair": {
+            "main": {
+              "color": "blue",
+              "x": 2,
+              "y": 8
+            },
+            "sub": {
+              "color": "yellow",
+              "x": 2,
+              "y": 7
+            },
+            "rotation": 0,
+            "falling": true
+          },
+          "placement": {
+            "column": 2,
+            "rotation": 0,
+            "mainPos": {
+              "x": 2,
+              "y": 8
+            },
+            "subPos": {
+              "x": 2,
+              "y": 7
+            }
+          },
+          "chainCount": 1,
+          "clearedPuyos": 4
+        }
+      ],
+      "previousState": {
+        "field": {
+          "width": 6,
+          "height": 13,
+          "grid": [
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              "blue",
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              "blue",
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              "blue",
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              "yellow",
+              null,
+              null,
+              null
+            ]
+          ]
+        },
+        "currentPair": {
+          "main": {
+            "color": "blue",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "yellow",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "nextPair": {
+          "main": {
+            "color": "red",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "yellow",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "nextNextPair": {
+          "main": {
+            "color": "red",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "green",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "score": 0,
+        "gtrCount": 0,
+        "gtrScore": 0,
+        "pairRandomState": 1144118773
+      }
+    }
+  ],
+  "secondRun": [
+    {
+      "field": {
+        "grid": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "blue",
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "yellow",
+            null,
+            null,
+            null
+          ]
+        ],
+        "width": 6,
+        "height": 13
+      },
+      "currentPair": {
+        "main": {
+          "color": "blue",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "blue",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "nextPair": {
+        "main": {
+          "color": "blue",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "yellow",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "nextNextPair": {
+        "main": {
+          "color": "red",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "yellow",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "pairRandomState": 1775954443,
+      "score": 0,
+      "gtrCount": 0,
+      "gtrScore": 0,
+      "turnNumber": 2,
+      "recentTurns": [
+        {
+          "turn": 1,
+          "pair": {
+            "main": {
+              "color": "yellow",
+              "x": 2,
+              "y": 12
+            },
+            "sub": {
+              "color": "blue",
+              "x": 2,
+              "y": 11
+            },
+            "rotation": 0,
+            "falling": true
+          },
+          "placement": {
+            "column": 2,
+            "rotation": 0,
+            "mainPos": {
+              "x": 2,
+              "y": 12
+            },
+            "subPos": {
+              "x": 2,
+              "y": 11
+            }
+          },
+          "chainCount": 0,
+          "clearedPuyos": 0
+        }
+      ],
+      "previousState": {
+        "field": {
+          "width": 6,
+          "height": 13,
+          "grid": [
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ]
+          ]
+        },
+        "currentPair": {
+          "main": {
+            "color": "yellow",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "blue",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "nextPair": {
+          "main": {
+            "color": "blue",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "blue",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "nextNextPair": {
+          "main": {
+            "color": "blue",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "yellow",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "score": 0,
+        "gtrCount": 0,
+        "gtrScore": 0,
+        "pairRandomState": 2407790113
+      }
+    },
+    {
+      "field": {
+        "grid": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "blue",
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "blue",
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "blue",
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "yellow",
+            null,
+            null,
+            null
+          ]
+        ],
+        "width": 6,
+        "height": 13
+      },
+      "currentPair": {
+        "main": {
+          "color": "blue",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "yellow",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "nextPair": {
+        "main": {
+          "color": "red",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "yellow",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "nextNextPair": {
+        "main": {
+          "color": "red",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "green",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "pairRandomState": 1144118773,
+      "score": 0,
+      "gtrCount": 0,
+      "gtrScore": 0,
+      "turnNumber": 3,
+      "recentTurns": [
+        {
+          "turn": 1,
+          "pair": {
+            "main": {
+              "color": "yellow",
+              "x": 2,
+              "y": 12
+            },
+            "sub": {
+              "color": "blue",
+              "x": 2,
+              "y": 11
+            },
+            "rotation": 0,
+            "falling": true
+          },
+          "placement": {
+            "column": 2,
+            "rotation": 0,
+            "mainPos": {
+              "x": 2,
+              "y": 12
+            },
+            "subPos": {
+              "x": 2,
+              "y": 11
+            }
+          },
+          "chainCount": 0,
+          "clearedPuyos": 0
+        },
+        {
+          "turn": 2,
+          "pair": {
+            "main": {
+              "color": "blue",
+              "x": 2,
+              "y": 10
+            },
+            "sub": {
+              "color": "blue",
+              "x": 2,
+              "y": 9
+            },
+            "rotation": 0,
+            "falling": true
+          },
+          "placement": {
+            "column": 2,
+            "rotation": 0,
+            "mainPos": {
+              "x": 2,
+              "y": 10
+            },
+            "subPos": {
+              "x": 2,
+              "y": 9
+            }
+          },
+          "chainCount": 0,
+          "clearedPuyos": 0
+        }
+      ],
+      "previousState": {
+        "field": {
+          "width": 6,
+          "height": 13,
+          "grid": [
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              "blue",
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              "yellow",
+              null,
+              null,
+              null
+            ]
+          ]
+        },
+        "currentPair": {
+          "main": {
+            "color": "blue",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "blue",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "nextPair": {
+          "main": {
+            "color": "blue",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "yellow",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "nextNextPair": {
+          "main": {
+            "color": "red",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "yellow",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "score": 0,
+        "gtrCount": 0,
+        "gtrScore": 0,
+        "pairRandomState": 1775954443
+      }
+    },
+    {
+      "field": {
+        "grid": [
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "yellow",
+            null,
+            null,
+            null
+          ],
+          [
+            null,
+            null,
+            "yellow",
+            null,
+            null,
+            null
+          ]
+        ],
+        "width": 6,
+        "height": 13
+      },
+      "currentPair": {
+        "main": {
+          "color": "red",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "yellow",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "nextPair": {
+        "main": {
+          "color": "red",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "green",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "nextNextPair": {
+        "main": {
+          "color": "blue",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "green",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "pairRandomState": 512283103,
+      "score": 40,
+      "gtrCount": 0,
+      "gtrScore": 0,
+      "turnNumber": 4,
+      "recentTurns": [
+        {
+          "turn": 1,
+          "pair": {
+            "main": {
+              "color": "yellow",
+              "x": 2,
+              "y": 12
+            },
+            "sub": {
+              "color": "blue",
+              "x": 2,
+              "y": 11
+            },
+            "rotation": 0,
+            "falling": true
+          },
+          "placement": {
+            "column": 2,
+            "rotation": 0,
+            "mainPos": {
+              "x": 2,
+              "y": 12
+            },
+            "subPos": {
+              "x": 2,
+              "y": 11
+            }
+          },
+          "chainCount": 0,
+          "clearedPuyos": 0
+        },
+        {
+          "turn": 2,
+          "pair": {
+            "main": {
+              "color": "blue",
+              "x": 2,
+              "y": 10
+            },
+            "sub": {
+              "color": "blue",
+              "x": 2,
+              "y": 9
+            },
+            "rotation": 0,
+            "falling": true
+          },
+          "placement": {
+            "column": 2,
+            "rotation": 0,
+            "mainPos": {
+              "x": 2,
+              "y": 10
+            },
+            "subPos": {
+              "x": 2,
+              "y": 9
+            }
+          },
+          "chainCount": 0,
+          "clearedPuyos": 0
+        },
+        {
+          "turn": 3,
+          "pair": {
+            "main": {
+              "color": "blue",
+              "x": 2,
+              "y": 8
+            },
+            "sub": {
+              "color": "yellow",
+              "x": 2,
+              "y": 7
+            },
+            "rotation": 0,
+            "falling": true
+          },
+          "placement": {
+            "column": 2,
+            "rotation": 0,
+            "mainPos": {
+              "x": 2,
+              "y": 8
+            },
+            "subPos": {
+              "x": 2,
+              "y": 7
+            }
+          },
+          "chainCount": 1,
+          "clearedPuyos": 4
+        }
+      ],
+      "previousState": {
+        "field": {
+          "width": 6,
+          "height": 13,
+          "grid": [
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              "blue",
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              "blue",
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              "blue",
+              null,
+              null,
+              null
+            ],
+            [
+              null,
+              null,
+              "yellow",
+              null,
+              null,
+              null
+            ]
+          ]
+        },
+        "currentPair": {
+          "main": {
+            "color": "blue",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "yellow",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "nextPair": {
+          "main": {
+            "color": "red",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "yellow",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "nextNextPair": {
+          "main": {
+            "color": "red",
+            "x": 2,
+            "y": 1
+          },
+          "sub": {
+            "color": "green",
+            "x": 2,
+            "y": 0
+          },
+          "rotation": 0,
+          "falling": true
+        },
+        "score": 0,
+        "gtrCount": 0,
+        "gtrScore": 0,
+        "pairRandomState": 1144118773
+      }
+    }
+  ]
+}

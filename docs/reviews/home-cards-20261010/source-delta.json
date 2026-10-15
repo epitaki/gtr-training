@@ -1,0 +1,12 @@
+[
+  {
+    "path": "src/components/TopPage.tsx",
+    "before": "6030b81f307f4625f82cf4409d6d2b35baa6062c4cbd98ec51ef767a05986fd4",
+    "after": "2ff0519289d564c789a1500eaf922d75bc9e0d368dd5998de31be59c32ea48cb"
+  },
+  {
+    "path": "src/components/layout/SideMenu.tsx",
+    "before": "df01b92ee6f4ce5776d667dcd8b8ddcaa7581221d864ce86d668ef533b0f8590",
+    "after": "eeac9e91acfe47fd374852079846d0f67d37e41946a176cc2ad4525ebdd113cc"
+  }
+]

@@ -1,0 +1,1113 @@
+{
+  "id": "gtr-completion-r2-20260927",
+  "baseline": "C:/Users/sunpe/AppData/Local/Temp/gtr-completion-baseline-9a54b45a8a4b46ce95e041e0ea32a746",
+  "candidate": "C:/Users/sunpe/AppData/Local/Temp/gtr-completion-candidate-v4-472542534e894b1e98a86ec67aec4e7d",
+  "scope": "Completion example UI and exact-tie CURRENT frontier choice; existing dirty changes outside baseline difference excluded",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "f4d18e0488c8d2be5b2bf490a65f331737f9fb363dfc24ff4f0d83ac12f6a2dc",
+      "baselineSha256": null
+    },
+    {
+      "path": "bun.lock",
+      "sha256": "d10e14527646c84a5515e7907006086e73d89ba748580aec1a34cd338837ba69",
+      "baselineSha256": null
+    },
+    {
+      "path": "docs/GTR-QUALITY-CRITERIA.md",
+      "sha256": "5721fffec1a2d330a016fc30aeb210a004caf8b70b6a7e6572d68587fe1ceeb7",
+      "baselineSha256": "5721fffec1a2d330a016fc30aeb210a004caf8b70b6a7e6572d68587fe1ceeb7"
+    },
+    {
+      "path": "docs/GTR-SCORING-SYSTEM.md",
+      "sha256": "8e8875eae06e3938d70f84e8e88382f900f8f42cbb211b2e8599d75fec538ede",
+      "baselineSha256": "8e8875eae06e3938d70f84e8e88382f900f8f42cbb211b2e8599d75fec538ede"
+    },
+    {
+      "path": "docs/PROJECT-STRUCTURE.md",
+      "sha256": "8e3e5c281342517ccc9174890b8a8feff1d2dde3403481e66d197a1a4453bc52",
+      "baselineSha256": "8e3e5c281342517ccc9174890b8a8feff1d2dde3403481e66d197a1a4453bc52"
+    },
+    {
+      "path": "package.json",
+      "sha256": "8554a2635ee760a0598db4ca072464c5f15700f9c7180b32a7acf59d473fc716",
+      "baselineSha256": "8554a2635ee760a0598db4ca072464c5f15700f9c7180b32a7acf59d473fc716"
+    },
+    {
+      "path": "scripts/analysis/analyze-advisor-failures.ts",
+      "sha256": "d8f3ac3d323bbef8df615dc7326afb009b6b96055ea466c047bc679ee2aab22a",
+      "baselineSha256": "d8f3ac3d323bbef8df615dc7326afb009b6b96055ea466c047bc679ee2aab22a"
+    },
+    {
+      "path": "scripts/analysis/analyze-advisor-quality.ts",
+      "sha256": "6cb6e24183c62b2a2d6dbf67aaf2c7ea137724701215517c012e8d69459cac77",
+      "baselineSha256": "6cb6e24183c62b2a2d6dbf67aaf2c7ea137724701215517c012e8d69459cac77"
+    },
+    {
+      "path": "scripts/analysis/analyze-completion-waits.ts",
+      "sha256": "a3db3dd86a80a9a8cc4d45027642a60c2ff6dc25d80015abfe9bd614d4a3c209",
+      "baselineSha256": "a3db3dd86a80a9a8cc4d45027642a60c2ff6dc25d80015abfe9bd614d4a3c209"
+    },
+    {
+      "path": "scripts/analysis/analyze-construction-stalls.ts",
+      "sha256": "b790c138721e15fab7af0416cd4958597d2cbef4200f5eba60a55b44516707af",
+      "baselineSha256": "b790c138721e15fab7af0416cd4958597d2cbef4200f5eba60a55b44516707af"
+    },
+    {
+      "path": "scripts/analysis/analyze-left-connection.ts",
+      "sha256": "8cda4ebdd0c41e31c9e8609a739ba01594fefb99d7d6c25e609cf4b77ee92434",
+      "baselineSha256": "8cda4ebdd0c41e31c9e8609a739ba01594fefb99d7d6c25e609cf4b77ee92434"
+    },
+    {
+      "path": "scripts/analysis/analyze-spare-puyos.ts",
+      "sha256": "54203d148b4fab69a28bea4ca9830be6ca9419cd10fbefe759d8df1bb8b0a2b0",
+      "baselineSha256": "54203d148b4fab69a28bea4ca9830be6ca9419cd10fbefe759d8df1bb8b0a2b0"
+    },
+    {
+      "path": "scripts/analysis/analyze-tall-wells.ts",
+      "sha256": "28b3b12b1979792564ac146c4729587dbfe1132cbbdc58eeca505874e1de8d93",
+      "baselineSha256": "28b3b12b1979792564ac146c4729587dbfe1132cbbdc58eeca505874e1de8d93"
+    },
+    {
+      "path": "scripts/analysis/audit-foundation-fire-opportunities.ts",
+      "sha256": "a3de5d0c5e61b7b9286f3f2052fd631c10ac474290c047925425bea738cc1920",
+      "baselineSha256": "a3de5d0c5e61b7b9286f3f2052fd631c10ac474290c047925425bea738cc1920"
+    },
+    {
+      "path": "scripts/analysis/audit-perfect-foundation-routes.ts",
+      "sha256": "c345b64f46946299307d36d365e62c0d33845034c9c88a7d21d4c7d9f43d2ef5",
+      "baselineSha256": "c345b64f46946299307d36d365e62c0d33845034c9c88a7d21d4c7d9f43d2ef5"
+    },
+    {
+      "path": "scripts/analysis/audit-spare-allocation.ts",
+      "sha256": "cf79e3ef7de217ba1c2e30ba590df2862bfcbbe56f622de5b4912ea46c540e01",
+      "baselineSha256": "cf79e3ef7de217ba1c2e30ba590df2862bfcbbe56f622de5b4912ea46c540e01"
+    },
+    {
+      "path": "scripts/analysis/check-fold-feedback.ts",
+      "sha256": "bcb5c1770e7da6d8866e464b01e184d8197c5f9da525dc4d31e10c19c3d7aace",
+      "baselineSha256": "bcb5c1770e7da6d8866e464b01e184d8197c5f9da525dc4d31e10c19c3d7aace"
+    },
+    {
+      "path": "scripts/analysis/check-head-guide-feedback.ts",
+      "sha256": "6d9853128ba8453e67bfb3e59a907960aaa5fbe9fafb673706ea74a763356152",
+      "baselineSha256": "6d9853128ba8453e67bfb3e59a907960aaa5fbe9fafb673706ea74a763356152"
+    },
+    {
+      "path": "scripts/analysis/compare-continuous-foundations.test.ts",
+      "sha256": "5edb44251d333857ebdee32ebd1aaeea657c8cdfee75ef2211d6f5bcf01f8fd3",
+      "baselineSha256": "5edb44251d333857ebdee32ebd1aaeea657c8cdfee75ef2211d6f5bcf01f8fd3"
+    },
+    {
+      "path": "scripts/analysis/compare-continuous-foundations.ts",
+      "sha256": "b7fd8adfabe20dcd56605cbb0c2d2f22b9ddea04748989b5d21e0ebc181e1f0e",
+      "baselineSha256": "b7fd8adfabe20dcd56605cbb0c2d2f22b9ddea04748989b5d21e0ebc181e1f0e"
+    },
+    {
+      "path": "scripts/analysis/compare-foundation-quality.ts",
+      "sha256": "1fa9dee86a73181a0784b25d441712986a73acca646be2ae6718764dfcab3503",
+      "baselineSha256": "1fa9dee86a73181a0784b25d441712986a73acca646be2ae6718764dfcab3503"
+    },
+    {
+      "path": "scripts/analysis/compare-guided-tail-completion.ts",
+      "sha256": "828d1194869acf4907f3cd5cf3cbbc0fcef2e3eaaba4d41db08c9742ac50b539",
+      "baselineSha256": "828d1194869acf4907f3cd5cf3cbbc0fcef2e3eaaba4d41db08c9742ac50b539"
+    },
+    {
+      "path": "scripts/analysis/compare-head-scaffolds.ts",
+      "sha256": "ae8722932f8401fc41b4c52fb64561a2be33f73c314f99c746d0a4d653a540ff",
+      "baselineSha256": "ae8722932f8401fc41b4c52fb64561a2be33f73c314f99c746d0a4d653a540ff"
+    },
+    {
+      "path": "scripts/analysis/diagnose-advisor-failure-opportunities.ts",
+      "sha256": "2b1c6ab819375b07a3dddb95831feab19c117ec4069863fa821fbe32bc06157c",
+      "baselineSha256": "2b1c6ab819375b07a3dddb95831feab19c117ec4069863fa821fbe32bc06157c"
+    },
+    {
+      "path": "scripts/analysis/inspect-spare-fixtures.ts",
+      "sha256": "f1cf5fa0b2b589724de17e8511ad64e11ef6e4885412702f257498b988ec8cec",
+      "baselineSha256": "f1cf5fa0b2b589724de17e8511ad64e11ef6e4885412702f257498b988ec8cec"
+    },
+    {
+      "path": "scripts/analysis/probe-advisor-failure-counterfactuals.ts",
+      "sha256": "3e8277024260d4ed18e7d9bbbafa866f493e0bf76d840904ccf55870229d96d3",
+      "baselineSha256": "3e8277024260d4ed18e7d9bbbafa866f493e0bf76d840904ccf55870229d96d3"
+    },
+    {
+      "path": "scripts/analysis/probe-spare-strategies.ts",
+      "sha256": "c6fd1ee4fb88584099d033fa416485a6dc24daacb8c3c16a60675bd2c5e0b4c5",
+      "baselineSha256": "c6fd1ee4fb88584099d033fa416485a6dc24daacb8c3c16a60675bd2c5e0b4c5"
+    },
+    {
+      "path": "scripts/analysis/promote-spare-probe.ts",
+      "sha256": "a28031fbd45f031dc981992cf565192237e18a0bd2414f0d978b0c34f2f4c2c9",
+      "baselineSha256": "a28031fbd45f031dc981992cf565192237e18a0bd2414f0d978b0c34f2f4c2c9"
+    },
+    {
+      "path": "scripts/analysis/trace-completion-wait.ts",
+      "sha256": "c2889339b4d661ba6566109d5715a08803323d5986b3de19e0e3811f9678c674",
+      "baselineSha256": "c2889339b4d661ba6566109d5715a08803323d5986b3de19e0e3811f9678c674"
+    },
+    {
+      "path": "scripts/analysis/trace-foundation-feedback.ts",
+      "sha256": "f492f6fb5bbd02dbb6c6729432c020392acf692153c084cb83352a8fb7781443",
+      "baselineSha256": "f492f6fb5bbd02dbb6c6729432c020392acf692153c084cb83352a8fb7781443"
+    },
+    {
+      "path": "scripts/analysis/verify-head-scaffolds.ts",
+      "sha256": "c48a94d0a5d54f2d36166d9ace48bf424bdfdf4c2b9422610576a84ce5ba0e4d",
+      "baselineSha256": "c48a94d0a5d54f2d36166d9ace48bf424bdfdf4c2b9422610576a84ce5ba0e4d"
+    },
+    {
+      "path": "scripts/analysis/verify-spare-target.ts",
+      "sha256": "cdbb40a75271d97d98a9c72ba63d301eed6eb4cb6c1b4a2265e3840ca9301a04",
+      "baselineSha256": "cdbb40a75271d97d98a9c72ba63d301eed6eb4cb6c1b4a2265e3840ca9301a04"
+    },
+    {
+      "path": "scripts/assets/build_puyo.py",
+      "sha256": "89d120d75ff589979aa675ff5eac2d109fbd84a0c7618bd95b6ba175dffc7dfe",
+      "baselineSha256": "89d120d75ff589979aa675ff5eac2d109fbd84a0c7618bd95b6ba175dffc7dfe"
+    },
+    {
+      "path": "scripts/assets/test_puyo_assets.py",
+      "sha256": "c4e90cb5edc448c77b90ff7f51c09593f1f45ec74833c839693e80c2bb22af7f",
+      "baselineSha256": "c4e90cb5edc448c77b90ff7f51c09593f1f45ec74833c839693e80c2bb22af7f"
+    },
+    {
+      "path": "scripts/benchmark/benchmark-advisor.ts",
+      "sha256": "48ece2cb516d00b496278f1cecaa45408ed5f15b09f0822a2acbbfe34210bf5c",
+      "baselineSha256": "48ece2cb516d00b496278f1cecaa45408ed5f15b09f0822a2acbbfe34210bf5c"
+    },
+    {
+      "path": "scripts/benchmark/check-opening-guidance.ts",
+      "sha256": "feafb525b1aaaf32a92a678470bb2272ec687ff2c0c92d0cc2351c3a2e4c5dd7",
+      "baselineSha256": "feafb525b1aaaf32a92a678470bb2272ec687ff2c0c92d0cc2351c3a2e4c5dd7"
+    },
+    {
+      "path": "scripts/benchmark/compare-engine-behavior.ts",
+      "sha256": "0541f28d47244798869d579ea24a2f9fed1641a92478f5a9a3d0fa4cbfd79de9",
+      "baselineSha256": "0541f28d47244798869d579ea24a2f9fed1641a92478f5a9a3d0fa4cbfd79de9"
+    },
+    {
+      "path": "scripts/benchmark/measure-advisor-latency.ts",
+      "sha256": "a244f41518ab78ef6522b735cbe9800988f4f0832193345f08ab557600f6d1f9",
+      "baselineSha256": "a244f41518ab78ef6522b735cbe9800988f4f0832193345f08ab557600f6d1f9"
+    },
+    {
+      "path": "scripts/benchmark/measure-advisor-range.ts",
+      "sha256": "ada6e187a74ec62e5f84368339222e0c591b59daa178aed190295a17e3165368",
+      "baselineSha256": "ada6e187a74ec62e5f84368339222e0c591b59daa178aed190295a17e3165368"
+    },
+    {
+      "path": "scripts/benchmark/measure-continuous-guide.test.ts",
+      "sha256": "afd4e269f1572c2096e1c0c58caf885954b6185945ce2e5f32abd0b5ff34ca9f",
+      "baselineSha256": "afd4e269f1572c2096e1c0c58caf885954b6185945ce2e5f32abd0b5ff34ca9f"
+    },
+    {
+      "path": "scripts/benchmark/measure-continuous-guide.ts",
+      "sha256": "316bdf801fd483a894a41fb390b335c375870cd1f7052c6397e3c10e1f4eed86",
+      "baselineSha256": "316bdf801fd483a894a41fb390b335c375870cd1f7052c6397e3c10e1f4eed86"
+    },
+    {
+      "path": "scripts/benchmark/merge-continuous-guide.test.ts",
+      "sha256": "3fc26e7b0d40dd4f7297f8b87227ca705de8b24cc598759e0a9433ac6bdffb3f",
+      "baselineSha256": "3fc26e7b0d40dd4f7297f8b87227ca705de8b24cc598759e0a9433ac6bdffb3f"
+    },
+    {
+      "path": "scripts/benchmark/merge-continuous-guide.ts",
+      "sha256": "098ec01afd7eac493215cc5284841dd35476d6e0ac62554fb5727f4c012e7159",
+      "baselineSha256": "098ec01afd7eac493215cc5284841dd35476d6e0ac62554fb5727f4c012e7159"
+    },
+    {
+      "path": "scripts/benchmark/reserve-spare-holdout.ts",
+      "sha256": "562e3bd00c8d626305ab6cee4fef0f7b4ee27f38fa5d83a429024d9504e467c8",
+      "baselineSha256": "562e3bd00c8d626305ab6cee4fef0f7b4ee27f38fa5d83a429024d9504e467c8"
+    },
+    {
+      "path": "scripts/benchmark/simulate-advisor.ts",
+      "sha256": "d90dc66c0f6da0bca6e7efad12ad5a8b7e2316e23410d6df0a837fa96ec4cf98",
+      "baselineSha256": "d90dc66c0f6da0bca6e7efad12ad5a8b7e2316e23410d6df0a837fa96ec4cf98"
+    },
+    {
+      "path": "scripts/benchmark/slice-benchmark-report.ts",
+      "sha256": "5b88c0068a71ac780804ab626d08714046e7b9ef2d045191ef6653a27232f7b4",
+      "baselineSha256": "5b88c0068a71ac780804ab626d08714046e7b9ef2d045191ef6653a27232f7b4"
+    },
+    {
+      "path": "scripts/human/compare-human-openings.ts",
+      "sha256": "38485e09d19e9f5455e1fab376f6770e9d014833490b159aa2a88c4650165d64",
+      "baselineSha256": "38485e09d19e9f5455e1fab376f6770e9d014833490b159aa2a88c4650165d64"
+    },
+    {
+      "path": "scripts/human/summarize-human-comparison.ts",
+      "sha256": "f6b23fd4ff8c2723c2a8c6ef62ed7dedfa6bfbe022449dc5e006500b719ceb54",
+      "baselineSha256": "f6b23fd4ff8c2723c2a8c6ef62ed7dedfa6bfbe022449dc5e006500b719ceb54"
+    },
+    {
+      "path": "scripts/README.md",
+      "sha256": "90927ffb3e5afbaf5e910062d86d574a9d89278df46bb73a7791faab2033c29a",
+      "baselineSha256": "90927ffb3e5afbaf5e910062d86d574a9d89278df46bb73a7791faab2033c29a"
+    },
+    {
+      "path": "scripts/shared/source-fingerprint.test.ts",
+      "sha256": "0415670848acfec95b7115a8dc489708849fc211ea78b9dfe79f3c93b7b2ee0c",
+      "baselineSha256": "0415670848acfec95b7115a8dc489708849fc211ea78b9dfe79f3c93b7b2ee0c"
+    },
+    {
+      "path": "scripts/shared/source-fingerprint.ts",
+      "sha256": "df956e3ed091cadb2d81d420772f0aab7d21e37d1e242170671ca243db2360f3",
+      "baselineSha256": "ade658b1595b82db8a357e3908277e8a88484b647dd9fa95d6a222a0d77ae113"
+    },
+    {
+      "path": "src/App.tsx",
+      "sha256": "00d7acab0f0e7ba7c2e5865151da0fbaf85e2286fe69df2beee0dc5a65ebdb77",
+      "baselineSha256": "00d7acab0f0e7ba7c2e5865151da0fbaf85e2286fe69df2beee0dc5a65ebdb77"
+    },
+    {
+      "path": "src/architecture.test.ts",
+      "sha256": "8745b42d798801bf54fe22736edb6d202665cd75163ecb403693f0c669629072",
+      "baselineSha256": "8745b42d798801bf54fe22736edb6d202665cd75163ecb403693f0c669629072"
+    },
+    {
+      "path": "src/assets/puyo/atlas.png",
+      "sha256": "1e7532ce0bead7a29340663d6e041f8221919ecb1f0711c6b08997c0ea44ce55",
+      "baselineSha256": "1e7532ce0bead7a29340663d6e041f8221919ecb1f0711c6b08997c0ea44ce55"
+    },
+    {
+      "path": "src/assets/puyo/manifest.json",
+      "sha256": "92e5508b2bcc94fb61d96234256b459a3e13c054081c4dd1a8b08887a35e128c",
+      "baselineSha256": "92e5508b2bcc94fb61d96234256b459a3e13c054081c4dd1a8b08887a35e128c"
+    },
+    {
+      "path": "src/assets/puyo/README.md",
+      "sha256": "03e966458a699bc7125e5f15670b36d6a871dce1ea6653932b99e444ea997544",
+      "baselineSha256": "03e966458a699bc7125e5f15670b36d6a871dce1ea6653932b99e444ea997544"
+    },
+    {
+      "path": "src/benchmark/AdaptiveTailBenchmark.test.ts",
+      "sha256": "6f2760566826fec0bb099b419f3b4f4b70280506813163c8c7534cef735b6be9",
+      "baselineSha256": "6f2760566826fec0bb099b419f3b4f4b70280506813163c8c7534cef735b6be9"
+    },
+    {
+      "path": "src/benchmark/AdvisorBenchmark.test.ts",
+      "sha256": "3f3cf248b8435960a5a2efc635370c3a14053d4c07dda4cde17eeb6a0d7bebe0",
+      "baselineSha256": "3f3cf248b8435960a5a2efc635370c3a14053d4c07dda4cde17eeb6a0d7bebe0"
+    },
+    {
+      "path": "src/benchmark/AdvisorBenchmark.ts",
+      "sha256": "3113cc87aead58b6b1011a7092406c61d549ff5e680e705081d6c9d5f98ff1a5",
+      "baselineSha256": "3113cc87aead58b6b1011a7092406c61d549ff5e680e705081d6c9d5f98ff1a5"
+    },
+    {
+      "path": "src/benchmark/BenchmarkCliArgs.test.ts",
+      "sha256": "a6aced232952d78dacc19f225766b8e0b65849c42949a456e450910cdedac6a5",
+      "baselineSha256": "a6aced232952d78dacc19f225766b8e0b65849c42949a456e450910cdedac6a5"
+    },
+    {
+      "path": "src/benchmark/BenchmarkCliArgs.ts",
+      "sha256": "987e7f38aa34102a9fac9d3d106df3c59b8a5f9885c546e517420c9b388b3abb",
+      "baselineSha256": "987e7f38aa34102a9fac9d3d106df3c59b8a5f9885c546e517420c9b388b3abb"
+    },
+    {
+      "path": "src/benchmark/BenchmarkReportValidation.test.ts",
+      "sha256": "ca5a29066a02402528ca7f86f4dc7c3b9c732de00b70eb7d11a60dfc947836ab",
+      "baselineSha256": "ca5a29066a02402528ca7f86f4dc7c3b9c732de00b70eb7d11a60dfc947836ab"
+    },
+    {
+      "path": "src/benchmark/BenchmarkReportValidation.ts",
+      "sha256": "027acf267d5d793aa6d2375648b0279f6197e2aa1061549680cfcd563327e021",
+      "baselineSha256": "027acf267d5d793aa6d2375648b0279f6197e2aa1061549680cfcd563327e021"
+    },
+    {
+      "path": "src/benchmark/FoundationQuality.test.ts",
+      "sha256": "17b3fb8926f786d9ec70033de01b2f79b0a82808ab62cedad451b1f94b5ae636",
+      "baselineSha256": "17b3fb8926f786d9ec70033de01b2f79b0a82808ab62cedad451b1f94b5ae636"
+    },
+    {
+      "path": "src/benchmark/FoundationQuality.ts",
+      "sha256": "f1c6a437cbf8dd7e7f8ee2fca0df4a72d9cb0c90c7e6ddc58fcefb34e1a2ce76",
+      "baselineSha256": "f1c6a437cbf8dd7e7f8ee2fca0df4a72d9cb0c90c7e6ddc58fcefb34e1a2ce76"
+    },
+    {
+      "path": "src/benchmark/HumanReplay.test.ts",
+      "sha256": "87b61a9f0ecec6e93ef4f9b4400800af0bbd44eefa7f5e37c2a855d7c01e0e2b",
+      "baselineSha256": "87b61a9f0ecec6e93ef4f9b4400800af0bbd44eefa7f5e37c2a855d7c01e0e2b"
+    },
+    {
+      "path": "src/benchmark/HumanReplay.ts",
+      "sha256": "53d80e8179946a311fd8d7a1595d7d6a9db4013126cd9ed19909c91598e384c3",
+      "baselineSha256": "53d80e8179946a311fd8d7a1595d7d6a9db4013126cd9ed19909c91598e384c3"
+    },
+    {
+      "path": "src/benchmark/HumanReplayLibrary.test.ts",
+      "sha256": "28d5630b6fd5e30fc84cfa2d133aa2dc86f78456f8e5becf494788a7f0b950d6",
+      "baselineSha256": "28d5630b6fd5e30fc84cfa2d133aa2dc86f78456f8e5becf494788a7f0b950d6"
+    },
+    {
+      "path": "src/benchmark/SparePuyoAnalysis.test.ts",
+      "sha256": "d8a77f920ec993baa485092211ec44ead44a915072a5bd3d4efe9023eb5e07cc",
+      "baselineSha256": "d8a77f920ec993baa485092211ec44ead44a915072a5bd3d4efe9023eb5e07cc"
+    },
+    {
+      "path": "src/benchmark/SparePuyoAnalysis.ts",
+      "sha256": "2799ba205126c032c102bdd8979ab557a08da950b413f311d19550f5b516ead6",
+      "baselineSha256": "2799ba205126c032c102bdd8979ab557a08da950b413f311d19550f5b516ead6"
+    },
+    {
+      "path": "src/benchmark/SpareUseRegression.test.ts",
+      "sha256": "bdefdc5c870b868876d9ea5409f6809c447669dce7494efe009b6f12f85866b4",
+      "baselineSha256": "bdefdc5c870b868876d9ea5409f6809c447669dce7494efe009b6f12f85866b4"
+    },
+    {
+      "path": "src/benchmark/TailTutorialReplay.test.ts",
+      "sha256": "ea462ca45114e1cd396ac15e24a3d3e9e6f40059f343d08fc4dc587278337f8c",
+      "baselineSha256": "ea462ca45114e1cd396ac15e24a3d3e9e6f40059f343d08fc4dc587278337f8c"
+    },
+    {
+      "path": "src/components/feedback/GTRIssueReportPanel.tsx",
+      "sha256": "23b550ad0c23e1a937616ec529a61f62dd000a1a3f3a73eba386e5d06dde4fff",
+      "baselineSha256": "23b550ad0c23e1a937616ec529a61f62dd000a1a3f3a73eba386e5d06dde4fff"
+    },
+    {
+      "path": "src/components/feedback/PairOrientationPicker.test.tsx",
+      "sha256": "5ed446a7f6511860ba6257c41e5f593455a9dfbb3df6afc39df36ba6f3233b85",
+      "baselineSha256": "5ed446a7f6511860ba6257c41e5f593455a9dfbb3df6afc39df36ba6f3233b85"
+    },
+    {
+      "path": "src/components/feedback/PairOrientationPicker.tsx",
+      "sha256": "bf7ec1f84d0119c1172d6cb6e143a97854e336a4d013462bc3df2c17568a3502",
+      "baselineSha256": "bf7ec1f84d0119c1172d6cb6e143a97854e336a4d013462bc3df2c17568a3502"
+    },
+    {
+      "path": "src/components/game/GameBoard.tsx",
+      "sha256": "357143847623ab253af66e6fa0f975803d3db5cb9922db8ea2efd4f12261a7ea",
+      "baselineSha256": "357143847623ab253af66e6fa0f975803d3db5cb9922db8ea2efd4f12261a7ea"
+    },
+    {
+      "path": "src/components/game/GameControls.tsx",
+      "sha256": "afa9a6cbb75e86970ad9f30b6acfcbb10189112e06aecae8fae51245bade8e2e",
+      "baselineSha256": "afa9a6cbb75e86970ad9f30b6acfcbb10189112e06aecae8fae51245bade8e2e"
+    },
+    {
+      "path": "src/components/game/GameLayout.tsx",
+      "sha256": "479e41d91ed1c8292ae8e0c104713479a34d6206109edb5468c9352dfdbbe44c",
+      "baselineSha256": "479e41d91ed1c8292ae8e0c104713479a34d6206109edb5468c9352dfdbbe44c"
+    },
+    {
+      "path": "src/components/game/GuidedGame.tsx",
+      "sha256": "92122a79bfdc341383512706b110fa6e708fca977add4a3d4bd5db24a539569e",
+      "baselineSha256": "92122a79bfdc341383512706b110fa6e708fca977add4a3d4bd5db24a539569e"
+    },
+    {
+      "path": "src/components/game/reportStatus.test.ts",
+      "sha256": "6ab38278c2337e85420543d4e29e7f0e3ada3785908d1d1b16c7c25cda61aecb",
+      "baselineSha256": "6ab38278c2337e85420543d4e29e7f0e3ada3785908d1d1b16c7c25cda61aecb"
+    },
+    {
+      "path": "src/components/game/reportStatus.ts",
+      "sha256": "3e1f7c408d4f0123f6c4664bbae5b2557efb2c507b8f87be20fa3c03af1906bd",
+      "baselineSha256": "3e1f7c408d4f0123f6c4664bbae5b2557efb2c507b8f87be20fa3c03af1906bd"
+    },
+    {
+      "path": "src/components/game/ScoreAttackGame.tsx",
+      "sha256": "8ef33f2b55e8342f34ada227d9c0fecbac3c383c70815fcd38e8e4074423c696",
+      "baselineSha256": "8ef33f2b55e8342f34ada227d9c0fecbac3c383c70815fcd38e8e4074423c696"
+    },
+    {
+      "path": "src/components/layout/Header.tsx",
+      "sha256": "de8b46ef3930c4fece8f412d0a179ee2c910f0446b85ee2a74ed02a8020a7454",
+      "baselineSha256": "de8b46ef3930c4fece8f412d0a179ee2c910f0446b85ee2a74ed02a8020a7454"
+    },
+    {
+      "path": "src/components/layout/MainLayout.tsx",
+      "sha256": "ddf005855dba8c5aa077fb3ca2333f15533be2167aeb48c20b1585d7d76ff568",
+      "baselineSha256": "ddf005855dba8c5aa077fb3ca2333f15533be2167aeb48c20b1585d7d76ff568"
+    },
+    {
+      "path": "src/components/layout/SideMenu.tsx",
+      "sha256": "bcaa2a8dcf4df9ed0ef1828b8dcabf79b17189c931434dd1cca530de53575654",
+      "baselineSha256": "bcaa2a8dcf4df9ed0ef1828b8dcabf79b17189c931434dd1cca530de53575654"
+    },
+    {
+      "path": "src/components/TopMenu.tsx",
+      "sha256": "5c44e312b3ad4d1f586f5706faeca9c419de6ecc05db7b2d0ef56432952e1a62",
+      "baselineSha256": "5c44e312b3ad4d1f586f5706faeca9c419de6ecc05db7b2d0ef56432952e1a62"
+    },
+    {
+      "path": "src/components/TopPage.tsx",
+      "sha256": "7389249868c13b45e26400959dcb9b61af8ec1fa5b7ee89a4b7ce92d893a2f35",
+      "baselineSha256": "7389249868c13b45e26400959dcb9b61af8ec1fa5b7ee89a4b7ce92d893a2f35"
+    },
+    {
+      "path": "src/game/advisor/BoardSurface.test.ts",
+      "sha256": "4596a89ba7f6e991869d7f3d58577008be1dd316fb3404127e27f93c53291f5c",
+      "baselineSha256": "4596a89ba7f6e991869d7f3d58577008be1dd316fb3404127e27f93c53291f5c"
+    },
+    {
+      "path": "src/game/advisor/BoardSurface.ts",
+      "sha256": "32a4c8ff45255d9c0d23032c5f8007ff3ff248811ed18da1f7cac744fc89e568",
+      "baselineSha256": "32a4c8ff45255d9c0d23032c5f8007ff3ff248811ed18da1f7cac744fc89e568"
+    },
+    {
+      "path": "src/game/advisor/CompletionWait.test.ts",
+      "sha256": "c178983b7346d5e0221c0b9ae4e229656dc2d25158a3a76786760261fc3406d1",
+      "baselineSha256": "c178983b7346d5e0221c0b9ae4e229656dc2d25158a3a76786760261fc3406d1"
+    },
+    {
+      "path": "src/game/advisor/CompletionWait.ts",
+      "sha256": "0e741b531229b7febc68f61dab812e27aa1132cc436b242f673d0c3bf4a654d4",
+      "baselineSha256": "0e741b531229b7febc68f61dab812e27aa1132cc436b242f673d0c3bf4a654d4"
+    },
+    {
+      "path": "src/game/advisor/CompletionWaitRegression.test.ts",
+      "sha256": "789e696dbb0c8d7dde1cf6cc49d73a2e7aaba2a6acd2680163e101ff5d222b87",
+      "baselineSha256": "789e696dbb0c8d7dde1cf6cc49d73a2e7aaba2a6acd2680163e101ff5d222b87"
+    },
+    {
+      "path": "src/game/advisor/ConnectedExtension.ts",
+      "sha256": "52a2d82e1d4ee1bbcfe85375d03bad52ff35a8fb46fbd738881171138128010f",
+      "baselineSha256": "52a2d82e1d4ee1bbcfe85375d03bad52ff35a8fb46fbd738881171138128010f"
+    },
+    {
+      "path": "src/game/advisor/ConstructionAlternatives.test.ts",
+      "sha256": "39166af30cc72e089167fbcd6323e36051e1d38e3507225bcd072a430fa91fd1",
+      "baselineSha256": "39166af30cc72e089167fbcd6323e36051e1d38e3507225bcd072a430fa91fd1"
+    },
+    {
+      "path": "src/game/advisor/ConstructionUse.test.ts",
+      "sha256": "9af96f9ad6b18e35afbd6ff561b1f856022cd510ec9e45bc2509361c98088e61",
+      "baselineSha256": "9af96f9ad6b18e35afbd6ff561b1f856022cd510ec9e45bc2509361c98088e61"
+    },
+    {
+      "path": "src/game/advisor/ConstructionUse.ts",
+      "sha256": "bcf2f80b2351551311b10ecfb7155ac4da043e2e3c706b66cd48321d2bc9ec1f",
+      "baselineSha256": "bcf2f80b2351551311b10ecfb7155ac4da043e2e3c706b66cd48321d2bc9ec1f"
+    },
+    {
+      "path": "src/game/advisor/ContinuousAdvisor.test.ts",
+      "sha256": "35c21b64ff63c9d6dd7cbb32ee95762c48953d3f582b9375950d32663dc1cd7a",
+      "baselineSha256": "35c21b64ff63c9d6dd7cbb32ee95762c48953d3f582b9375950d32663dc1cd7a"
+    },
+    {
+      "path": "src/game/advisor/ContinuousAdvisor.ts",
+      "sha256": "bc345aa6bf93cc8157f3e6182d3b5a36bb40427b57cea2ef86953211ae6dd7dc",
+      "baselineSha256": "f73d5763f8f86ba5093868849d68db78133a5e064e2d78f07d57b73b2322b445"
+    },
+    {
+      "path": "src/game/advisor/FirePreference.test.ts",
+      "sha256": "5965aabb81ab96ae83ec469066ef2ad9c12e285c8afcfd7db9ff6cb57f7ba0ac",
+      "baselineSha256": "5965aabb81ab96ae83ec469066ef2ad9c12e285c8afcfd7db9ff6cb57f7ba0ac"
+    },
+    {
+      "path": "src/game/advisor/FirePreference.ts",
+      "sha256": "f10f8de4877680a55d1c385571e0e8a769b26418b23c49009820a1e7dcba751e",
+      "baselineSha256": "f10f8de4877680a55d1c385571e0e8a769b26418b23c49009820a1e7dcba751e"
+    },
+    {
+      "path": "src/game/advisor/FiveChainPlanner.test.ts",
+      "sha256": "3616f6eceb83384c59c32fa5971eada8084f44958291a8ca4c5f4b0fc243f1c6",
+      "baselineSha256": "486e5efd82ac93ecd59ba64a237f3ac74110748a9e2b557e7328bcdd8618ec5f"
+    },
+    {
+      "path": "src/game/advisor/FiveChainPlanner.ts",
+      "sha256": "5f6f6516ea622e902f9397098fbd1f71f53348c6b5f814ab9cdc6ab7d532c1ee",
+      "baselineSha256": "3e8fa7ff501ae40bb6a67f47af7128ef7dcfecd4af78d4d9ab74e4841d5ff8cc"
+    },
+    {
+      "path": "src/game/advisor/FiveChainSkeletons.test.ts",
+      "sha256": "a1a52e2ca6829da45113452aba9ed6af368dadf26bc121649e158d9b51efb858",
+      "baselineSha256": "a1a52e2ca6829da45113452aba9ed6af368dadf26bc121649e158d9b51efb858"
+    },
+    {
+      "path": "src/game/advisor/FiveChainSkeletons.ts",
+      "sha256": "a037568aaf67ad2a93a916e13fd4cf1ae8810e42e64509c76c097083474a441d",
+      "baselineSha256": "a037568aaf67ad2a93a916e13fd4cf1ae8810e42e64509c76c097083474a441d"
+    },
+    {
+      "path": "src/game/advisor/fixtures/unrecognized-tail-fires.json",
+      "sha256": "311a8830a8067013f6b8680847c3decc94afe047c76fa0624bd8fc998a72e0c1",
+      "baselineSha256": "311a8830a8067013f6b8680847c3decc94afe047c76fa0624bd8fc998a72e0c1"
+    },
+    {
+      "path": "src/game/advisor/FoldConstruction.test.ts",
+      "sha256": "8df127f8cafe5278c6e51cb144c6613e9ac504fe0d2cbc3fc987cdbe3be49467",
+      "baselineSha256": "8df127f8cafe5278c6e51cb144c6613e9ac504fe0d2cbc3fc987cdbe3be49467"
+    },
+    {
+      "path": "src/game/advisor/FoldConstruction.ts",
+      "sha256": "0b3e8089c798b367710bc3b5a0138af02d160ff0b2369b0d3aab3c6e38b1178a",
+      "baselineSha256": "0b3e8089c798b367710bc3b5a0138af02d160ff0b2369b0d3aab3c6e38b1178a"
+    },
+    {
+      "path": "src/game/advisor/FoundationContext.test.ts",
+      "sha256": "922d02f876db687f1f10214d9b6c7efb11b7f4e54ff57e1e476e63cd4f45d07b",
+      "baselineSha256": "922d02f876db687f1f10214d9b6c7efb11b7f4e54ff57e1e476e63cd4f45d07b"
+    },
+    {
+      "path": "src/game/advisor/FoundationContext.ts",
+      "sha256": "7aa89aeeeac307b9f8b4d8101d9f37968e48cee4b787fd739d5a1d5e74e009ee",
+      "baselineSha256": "7aa89aeeeac307b9f8b4d8101d9f37968e48cee4b787fd739d5a1d5e74e009ee"
+    },
+    {
+      "path": "src/game/advisor/FoundationFireConsistency.test.ts",
+      "sha256": "06fe8d2a4c12bb1a43d3dc85dc3bc7d8b16873b325318a9ef06565af1274fd13",
+      "baselineSha256": "06fe8d2a4c12bb1a43d3dc85dc3bc7d8b16873b325318a9ef06565af1274fd13"
+    },
+    {
+      "path": "src/game/advisor/FoundationPreference.test.ts",
+      "sha256": "8b3e4f56d04fc7a3973a25d50d1fb24dc11dcb08cd09c85929a003d1dce2eeb9",
+      "baselineSha256": "8b3e4f56d04fc7a3973a25d50d1fb24dc11dcb08cd09c85929a003d1dce2eeb9"
+    },
+    {
+      "path": "src/game/advisor/FoundationPreference.ts",
+      "sha256": "2744376c6f2fb00afb5618d11a302d6c0f7b5624bbca944a63bb4046dfc9ba05",
+      "baselineSha256": "2744376c6f2fb00afb5618d11a302d6c0f7b5624bbca944a63bb4046dfc9ba05"
+    },
+    {
+      "path": "src/game/advisor/FrontierFlexibility.test.ts",
+      "sha256": "3375ac9b2fb10c2c950443349a3685ba178a4b0a95ae619a43766da1e9ff9b82",
+      "baselineSha256": null
+    },
+    {
+      "path": "src/game/advisor/FrontierFlexibility.ts",
+      "sha256": "1381a61968da2fdd938176195034a97ea48d3b1e324bb892ebccf93905daba14",
+      "baselineSha256": null
+    },
+    {
+      "path": "src/game/advisor/GuidedTail.test.ts",
+      "sha256": "a42d2c3d74790ca19bc4de6556bd2884ae9e1a6c40a971f3d468eb221c2e099f",
+      "baselineSha256": "a42d2c3d74790ca19bc4de6556bd2884ae9e1a6c40a971f3d468eb221c2e099f"
+    },
+    {
+      "path": "src/game/advisor/GuidedTail.ts",
+      "sha256": "0b8872cca39cd275725dba86e86775497edea7833908be8ed297e5fcc4d47552",
+      "baselineSha256": "0b8872cca39cd275725dba86e86775497edea7833908be8ed297e5fcc4d47552"
+    },
+    {
+      "path": "src/game/advisor/HeadConstruction.test.ts",
+      "sha256": "af1c5ca22813f8300301d38ed2341edbdebd50d0142011d744bc5b15c745ee3d",
+      "baselineSha256": "af1c5ca22813f8300301d38ed2341edbdebd50d0142011d744bc5b15c745ee3d"
+    },
+    {
+      "path": "src/game/advisor/HeadExtension.test.ts",
+      "sha256": "5cd3d64bacbe398a6449a7b83e0fe6d6d0a577dd1475a513a8199792abeb6174",
+      "baselineSha256": "5cd3d64bacbe398a6449a7b83e0fe6d6d0a577dd1475a513a8199792abeb6174"
+    },
+    {
+      "path": "src/game/advisor/HeadScaffold.test.ts",
+      "sha256": "3dbc4820bbb4ff70bf253970bcec4b1de2e2b1a981e38673888b1a4729bddac3",
+      "baselineSha256": "3dbc4820bbb4ff70bf253970bcec4b1de2e2b1a981e38673888b1a4729bddac3"
+    },
+    {
+      "path": "src/game/advisor/HeadScaffold.ts",
+      "sha256": "e8ae7128efa600bc8b6195889d9a8580eb5a1e49bc44791327e5d2e786f8855e",
+      "baselineSha256": "e8ae7128efa600bc8b6195889d9a8580eb5a1e49bc44791327e5d2e786f8855e"
+    },
+    {
+      "path": "src/game/advisor/LeftConnection.test.ts",
+      "sha256": "8e8d5c0cf0e33e6cd163b2eddc155a489bb5dcccc78c198a9064be8347eb4312",
+      "baselineSha256": "8e8d5c0cf0e33e6cd163b2eddc155a489bb5dcccc78c198a9064be8347eb4312"
+    },
+    {
+      "path": "src/game/advisor/LowerChainInsertion.test.ts",
+      "sha256": "749cb15573af364a3fc25f6cc58cd1ba8e4da12b08e7e772a77afedda4bfc27e",
+      "baselineSha256": "749cb15573af364a3fc25f6cc58cd1ba8e4da12b08e7e772a77afedda4bfc27e"
+    },
+    {
+      "path": "src/game/advisor/LowerChainInsertion.ts",
+      "sha256": "07fae517f42d9a7629c9179db53644d67505626506e18cde7ff0c08e8601583d",
+      "baselineSha256": "07fae517f42d9a7629c9179db53644d67505626506e18cde7ff0c08e8601583d"
+    },
+    {
+      "path": "src/game/advisor/LowFiveChainSkeletons.test.ts",
+      "sha256": "6deeadda46d120c904b025547970a20ecd94682256ecc547ae8cda4fac454360",
+      "baselineSha256": "6deeadda46d120c904b025547970a20ecd94682256ecc547ae8cda4fac454360"
+    },
+    {
+      "path": "src/game/advisor/LowFiveChainSkeletons.ts",
+      "sha256": "ebf18152b69505a4936106e6b0c96893ed678dc1ea746ac07221363c9c5cf932",
+      "baselineSha256": "ebf18152b69505a4936106e6b0c96893ed678dc1ea746ac07221363c9c5cf932"
+    },
+    {
+      "path": "src/game/advisor/MainFireAnalysis.ts",
+      "sha256": "c1395f79b02a20f2c283e3908300073180410b42f2ba9c14f856a307e9e85278",
+      "baselineSha256": "c1395f79b02a20f2c283e3908300073180410b42f2ba9c14f856a307e9e85278"
+    },
+    {
+      "path": "src/game/advisor/NearFoundationTarget.test.ts",
+      "sha256": "0bed3a63aec73f378c4714f8fc3fbbafafaa1812ebbbe78f411b636f7c89a530",
+      "baselineSha256": "0bed3a63aec73f378c4714f8fc3fbbafafaa1812ebbbe78f411b636f7c89a530"
+    },
+    {
+      "path": "src/game/advisor/PairPlacementUse.test.ts",
+      "sha256": "ced19efd48e321d73fe3f40f29c8f2d478eda4212c03b69f2ce2132a89d09b6a",
+      "baselineSha256": "ced19efd48e321d73fe3f40f29c8f2d478eda4212c03b69f2ce2132a89d09b6a"
+    },
+    {
+      "path": "src/game/advisor/PairPlacementUse.ts",
+      "sha256": "7e0fa4a7c199e911851cd524eec52f05e45167159e795fd53e5b34287a5e95da",
+      "baselineSha256": "7e0fa4a7c199e911851cd524eec52f05e45167159e795fd53e5b34287a5e95da"
+    },
+    {
+      "path": "src/game/advisor/PairUseRegression.test.ts",
+      "sha256": "30775b2abf641d4d2058778cbb24682b9bd01f5f16f220778e0f306abc03d380",
+      "baselineSha256": "30775b2abf641d4d2058778cbb24682b9bd01f5f16f220778e0f306abc03d380"
+    },
+    {
+      "path": "src/game/advisor/PerfectFoundationPlanner.test.ts",
+      "sha256": "8fd5dba676473c72491a0f66a514adbcde06faedb878f45f18d7921e5a1054ee",
+      "baselineSha256": "3ed68bb95eb94c9274e65ad305cd0310402e38419d9c9ef02ab757bf51077a67"
+    },
+    {
+      "path": "src/game/advisor/PerfectFoundationPlanner.ts",
+      "sha256": "79601909cc8ebb4197d47eb6604b996b1d925ff08f99653aeedef24c631baa7c",
+      "baselineSha256": "25c8d422152db081e1da64598d2e84564cf291ca40004dbaeb0ac30e546d8943"
+    },
+    {
+      "path": "src/game/advisor/PlacementAdvisor.test.ts",
+      "sha256": "a0b9965b173d07b7f89a153058e824df9dd989e087f70248352c21eecfdc168c",
+      "baselineSha256": "a0b9965b173d07b7f89a153058e824df9dd989e087f70248352c21eecfdc168c"
+    },
+    {
+      "path": "src/game/advisor/PlacementAdvisor.ts",
+      "sha256": "389540137a32841d866bee7103348a4775e3d003e2dd607cc9238e30b50693af",
+      "baselineSha256": "0389765deffa3ef1f2dca6150da37e6d628c0f2d1fdbd1e6a1fcdc49917c8bdb"
+    },
+    {
+      "path": "src/game/advisor/PlacementAdvisorConfig.ts",
+      "sha256": "3c7b4b0b5234cc2bae921c34c051fd8488a968b539d5c9e9e48c87fb991ec741",
+      "baselineSha256": "3c7b4b0b5234cc2bae921c34c051fd8488a968b539d5c9e9e48c87fb991ec741"
+    },
+    {
+      "path": "src/game/advisor/PlacementAdvisorHumanStyle.test.ts",
+      "sha256": "dd63b406b9afb7da42894ea70f69ea9842ccbca56050a07d39fefa18b85fe201",
+      "baselineSha256": "dd63b406b9afb7da42894ea70f69ea9842ccbca56050a07d39fefa18b85fe201"
+    },
+    {
+      "path": "src/game/advisor/PlacementAdvisorOpening.test.ts",
+      "sha256": "d2427bae768845b054b209b42739d63facb76cb6bf2fbb86ff6fbf0cf37f0f76",
+      "baselineSha256": "d2427bae768845b054b209b42739d63facb76cb6bf2fbb86ff6fbf0cf37f0f76"
+    },
+    {
+      "path": "src/game/advisor/PlacementAdvisorReadyFire.test.ts",
+      "sha256": "525b1d78d6589e2d2ea06942c7236f16c62a3aa5f502e84101b08f5bab0af88c",
+      "baselineSha256": "525b1d78d6589e2d2ea06942c7236f16c62a3aa5f502e84101b08f5bab0af88c"
+    },
+    {
+      "path": "src/game/advisor/PlacementAdvisorTailPreference.test.ts",
+      "sha256": "955f6be56cd40014d3f4c65e7211f15316411259595d54ec8064744ad9127376",
+      "baselineSha256": "955f6be56cd40014d3f4c65e7211f15316411259595d54ec8064744ad9127376"
+    },
+    {
+      "path": "src/game/advisor/PlacementAdvisorTailProtection.test.ts",
+      "sha256": "aa75cd81c1487d15c9e6541f63e8b55b8b1702385cf902177bce83eee60be0b1",
+      "baselineSha256": "aa75cd81c1487d15c9e6541f63e8b55b8b1702385cf902177bce83eee60be0b1"
+    },
+    {
+      "path": "src/game/advisor/PlacementAdvisorTerminal.test.ts",
+      "sha256": "75ec9d9606ed5660b27d3ff0e2a0ccc65b1b38993f53588682062a51feebe220",
+      "baselineSha256": "75ec9d9606ed5660b27d3ff0e2a0ccc65b1b38993f53588682062a51feebe220"
+    },
+    {
+      "path": "src/game/advisor/PlacementAdvisorUnrecognizedTailFire.test.ts",
+      "sha256": "55297569ab560c6820eba3d15e45d977808446f157f5fba9cd33205889e089ca",
+      "baselineSha256": "55297569ab560c6820eba3d15e45d977808446f157f5fba9cd33205889e089ca"
+    },
+    {
+      "path": "src/game/advisor/PlacementEffort.test.ts",
+      "sha256": "bfa5eec64e7324e9e7f7cc557276bc0c13675260dc1fe4d74b148f87e01d7612",
+      "baselineSha256": "bfa5eec64e7324e9e7f7cc557276bc0c13675260dc1fe4d74b148f87e01d7612"
+    },
+    {
+      "path": "src/game/advisor/PlacementEffort.ts",
+      "sha256": "829c181772d2785c2a3ae522db123f41235226d2ae33a96409d0d41a733dd152",
+      "baselineSha256": "829c181772d2785c2a3ae522db123f41235226d2ae33a96409d0d41a733dd152"
+    },
+    {
+      "path": "src/game/advisor/SkeletonRecovery.test.ts",
+      "sha256": "2a98fee3c870e7a70bfd387d4ac5e2e23f25d13a461791fa6686d3b3f8e598fd",
+      "baselineSha256": "2a98fee3c870e7a70bfd387d4ac5e2e23f25d13a461791fa6686d3b3f8e598fd"
+    },
+    {
+      "path": "src/game/advisor/SkeletonRecovery.ts",
+      "sha256": "60a14975f126069e0cc0d5ae5d7ea259a38474747ecbfdb93c3d13b8c8de5cdb",
+      "baselineSha256": "60a14975f126069e0cc0d5ae5d7ea259a38474747ecbfdb93c3d13b8c8de5cdb"
+    },
+    {
+      "path": "src/game/advisor/SpareAllocation.test.ts",
+      "sha256": "0f97b038e0b388463d16adf54c16ee35947cccd8da8c7bc0d90843ce2e964974",
+      "baselineSha256": "0f97b038e0b388463d16adf54c16ee35947cccd8da8c7bc0d90843ce2e964974"
+    },
+    {
+      "path": "src/game/advisor/SpareAllocation.ts",
+      "sha256": "d0e71fbe098733647b1bbcb93513f77c4070f3f9df53620be9369916b2a0e41c",
+      "baselineSha256": "d0e71fbe098733647b1bbcb93513f77c4070f3f9df53620be9369916b2a0e41c"
+    },
+    {
+      "path": "src/game/advisor/TailCascadeRecovery.test.ts",
+      "sha256": "5cdd40fcff4f97ae9815699df24c392f09f3a52a32e8fa0d4b5e75db388ba997",
+      "baselineSha256": "5cdd40fcff4f97ae9815699df24c392f09f3a52a32e8fa0d4b5e75db388ba997"
+    },
+    {
+      "path": "src/game/advisor/TailCascadeRecovery.ts",
+      "sha256": "0a8ccf52e361a84fe18b3817490684c245ab210ce442da39a73b02952cae811a",
+      "baselineSha256": "0a8ccf52e361a84fe18b3817490684c245ab210ce442da39a73b02952cae811a"
+    },
+    {
+      "path": "src/game/advisor/TailPlanner.test.ts",
+      "sha256": "afb5fa34f8eb345e547980ec3b9320122fbfcf5bc3d27b29034c33fe5892f567",
+      "baselineSha256": "afb5fa34f8eb345e547980ec3b9320122fbfcf5bc3d27b29034c33fe5892f567"
+    },
+    {
+      "path": "src/game/advisor/TailPlanner.ts",
+      "sha256": "71849d68cf6c58b58cc141d3093f02aeda33b848923f9a506819d8521b5164a6",
+      "baselineSha256": "71849d68cf6c58b58cc141d3093f02aeda33b848923f9a506819d8521b5164a6"
+    },
+    {
+      "path": "src/game/advisor/TailPreference.ts",
+      "sha256": "824c6e342a5c3feda98bf82e4e3e77e24ff69fbc619d8acba98cebe034a3a4be",
+      "baselineSha256": "824c6e342a5c3feda98bf82e4e3e77e24ff69fbc619d8acba98cebe034a3a4be"
+    },
+    {
+      "path": "src/game/advisor/types.ts",
+      "sha256": "ccfe87623dec2930f65194c214016c8b15b7b35f412d42c5922313821a61ca33",
+      "baselineSha256": "ccfe87623dec2930f65194c214016c8b15b7b35f412d42c5922313821a61ca33"
+    },
+    {
+      "path": "src/game/advisor/VisibleFireSurface.test.ts",
+      "sha256": "34858a9a921fd78d14e08dd0e7bb1c414e12e267e4a945dc09cb7c6d26a173e1",
+      "baselineSha256": "34858a9a921fd78d14e08dd0e7bb1c414e12e267e4a945dc09cb7c6d26a173e1"
+    },
+    {
+      "path": "src/game/advisor/VisibleMainFireSearch.test.ts",
+      "sha256": "5c759788b811e29645134f50a4e290d6266c67ed8450a3433b2f24ca417db714",
+      "baselineSha256": "5c759788b811e29645134f50a4e290d6266c67ed8450a3433b2f24ca417db714"
+    },
+    {
+      "path": "src/game/advisor/VisibleMainFireSearch.ts",
+      "sha256": "19f88daa03742cd6a2cba244c16fabda10ce42acc92abf0451b35828ee752634",
+      "baselineSha256": "19f88daa03742cd6a2cba244c16fabda10ce42acc92abf0451b35828ee752634"
+    },
+    {
+      "path": "src/game/core/ChainSimulator.test.ts",
+      "sha256": "5392d1e23175aa4f8f04c251b6ccaa8e512f60336d3fc59fc0b138e35798bdb4",
+      "baselineSha256": "5392d1e23175aa4f8f04c251b6ccaa8e512f60336d3fc59fc0b138e35798bdb4"
+    },
+    {
+      "path": "src/game/core/ChainSimulator.ts",
+      "sha256": "61aae9b60efa4773d31d26479477c8c7e587cfde9db11b34d865552501c1aa95",
+      "baselineSha256": "61aae9b60efa4773d31d26479477c8c7e587cfde9db11b34d865552501c1aa95"
+    },
+    {
+      "path": "src/game/core/ChainSimulatorTraversal.test.ts",
+      "sha256": "3de863f6eb9cb88332543ac6f5ed711729c8ff148dbc43ede718824321b10fbb",
+      "baselineSha256": "3de863f6eb9cb88332543ac6f5ed711729c8ff148dbc43ede718824321b10fbb"
+    },
+    {
+      "path": "src/game/core/ChainTrace.test.ts",
+      "sha256": "a245622112939a45373a34a37302cf54bc5799d3a338f7ca088d7ca9cfa031f1",
+      "baselineSha256": "a245622112939a45373a34a37302cf54bc5799d3a338f7ca088d7ca9cfa031f1"
+    },
+    {
+      "path": "src/game/core/ChainTrace.ts",
+      "sha256": "8b7f4a93198c3f8c451aac9cd45e403fde81b29074a670300db1d99c8b944aa9",
+      "baselineSha256": "8b7f4a93198c3f8c451aac9cd45e403fde81b29074a670300db1d99c8b944aa9"
+    },
+    {
+      "path": "src/game/core/GameField.test.ts",
+      "sha256": "572949afe811da885733ff63aa931d98e84c7a88ab99b8e6bb15471dbd7db210",
+      "baselineSha256": "572949afe811da885733ff63aa931d98e84c7a88ab99b8e6bb15471dbd7db210"
+    },
+    {
+      "path": "src/game/core/GameField.ts",
+      "sha256": "0a5010dd637f2003da665fa1b29cd0c51d6177bea547bb00aa2e2045fb568101",
+      "baselineSha256": "0a5010dd637f2003da665fa1b29cd0c51d6177bea547bb00aa2e2045fb568101"
+    },
+    {
+      "path": "src/game/core/GameHistory.test.ts",
+      "sha256": "ddec1b880a486845dac8e3eb3bef72657e42a3913462ae85c2eb801ca1bc4011",
+      "baselineSha256": "ddec1b880a486845dac8e3eb3bef72657e42a3913462ae85c2eb801ca1bc4011"
+    },
+    {
+      "path": "src/game/core/GameHistory.ts",
+      "sha256": "10421c99ff8a7b97253924886c1e6f05381b06fef421beca495dc83501a05d44",
+      "baselineSha256": "10421c99ff8a7b97253924886c1e6f05381b06fef421beca495dc83501a05d44"
+    },
+    {
+      "path": "src/game/core/PuyoPair.test.ts",
+      "sha256": "3223fdb208c5daba036e7013fc2b35f61155c9c1f4123d5c4ec1c71d7047c67c",
+      "baselineSha256": "3223fdb208c5daba036e7013fc2b35f61155c9c1f4123d5c4ec1c71d7047c67c"
+    },
+    {
+      "path": "src/game/core/PuyoPair.ts",
+      "sha256": "f45133fd32c083e99434ea4140d7c3fbdc401bd9f06db6c5e555f91b3378f72c",
+      "baselineSha256": "f45133fd32c083e99434ea4140d7c3fbdc401bd9f06db6c5e555f91b3378f72c"
+    },
+    {
+      "path": "src/game/core/PuyoPairRotation.test.ts",
+      "sha256": "e0ae81d1782d6a6692b4fe2ae3bd2f8e13e89265ee8ee4c22d4fdc833a5518e6",
+      "baselineSha256": "e0ae81d1782d6a6692b4fe2ae3bd2f8e13e89265ee8ee4c22d4fdc833a5518e6"
+    },
+    {
+      "path": "src/game/core/types.ts",
+      "sha256": "95ba2f17e574d801392fae186beb2b9d2d5d07ce5f60f7d6961fc4f16081de1b",
+      "baselineSha256": "95ba2f17e574d801392fae186beb2b9d2d5d07ce5f60f7d6961fc4f16081de1b"
+    },
+    {
+      "path": "src/game/feedback/constants.ts",
+      "sha256": "e49807baea27b2dbd2999a401726ac1b6efc4069f640ef9fa079ab3b80f23488",
+      "baselineSha256": "e49807baea27b2dbd2999a401726ac1b6efc4069f640ef9fa079ab3b80f23488"
+    },
+    {
+      "path": "src/game/feedback/format.ts",
+      "sha256": "52062b31337e931ea794e24439c40eb477a51d22285f40e191df7b693c900152",
+      "baselineSha256": "52062b31337e931ea794e24439c40eb477a51d22285f40e191df7b693c900152"
+    },
+    {
+      "path": "src/game/feedback/GTRIssueReport.test.ts",
+      "sha256": "5039d517cc38905258c0ab699d574bcbecb25c8e71f302a8367c98e129262413",
+      "baselineSha256": "5039d517cc38905258c0ab699d574bcbecb25c8e71f302a8367c98e129262413"
+    },
+    {
+      "path": "src/game/feedback/GTRIssueReport.ts",
+      "sha256": "48043999b2720c72541bec6170b290b52bc7f6f204511dad7832fd3770656cd0",
+      "baselineSha256": "48043999b2720c72541bec6170b290b52bc7f6f204511dad7832fd3770656cd0"
+    },
+    {
+      "path": "src/game/feedback/placementDescription.test.ts",
+      "sha256": "f3dd63bd7d57f3797094f6f17f1d1291895e7f82b18428fec18bb9bcafb0661a",
+      "baselineSha256": "f3dd63bd7d57f3797094f6f17f1d1291895e7f82b18428fec18bb9bcafb0661a"
+    },
+    {
+      "path": "src/game/feedback/placementDescription.ts",
+      "sha256": "2ec42378f114ff6acfaadcade3523516208f6ef050602c23794c698b5a543734",
+      "baselineSha256": "2ec42378f114ff6acfaadcade3523516208f6ef050602c23794c698b5a543734"
+    },
+    {
+      "path": "src/game/feedback/replay.ts",
+      "sha256": "8a4728ad95c91f95916656524490e5e52b190f3e5c1a42c57017556da015b38f",
+      "baselineSha256": "8a4728ad95c91f95916656524490e5e52b190f3e5c1a42c57017556da015b38f"
+    },
+    {
+      "path": "src/game/feedback/snapshot.ts",
+      "sha256": "cab0c46c0336b315dbc98fcc63291abe9902ba8353260da0fe23cfa27a5099c7",
+      "baselineSha256": "cab0c46c0336b315dbc98fcc63291abe9902ba8353260da0fe23cfa27a5099c7"
+    },
+    {
+      "path": "src/game/feedback/storage.ts",
+      "sha256": "9b0312cb59c01be7eca6127dfab733500439e77dab1873b82502336a49cbb79a",
+      "baselineSha256": "9b0312cb59c01be7eca6127dfab733500439e77dab1873b82502336a49cbb79a"
+    },
+    {
+      "path": "src/game/feedback/types.ts",
+      "sha256": "cd8daee6e9badfa4212ff3a457cd28f57a4568878732f67c9196e0f2669a3fac",
+      "baselineSha256": "cd8daee6e9badfa4212ff3a457cd28f57a4568878732f67c9196e0f2669a3fac"
+    },
+    {
+      "path": "src/game/feedback/validation.ts",
+      "sha256": "15aca768769a6ee94fff6da458b6caf27a07995fe9792fa3e09a54b33ce63433",
+      "baselineSha256": "15aca768769a6ee94fff6da458b6caf27a07995fe9792fa3e09a54b33ce63433"
+    },
+    {
+      "path": "src/game/GameManager.test.ts",
+      "sha256": "fbfdb7bbb2a5ad4bcbc6612f71497e39701f7b668c38b8a6b69950af75be8a61",
+      "baselineSha256": "fbfdb7bbb2a5ad4bcbc6612f71497e39701f7b668c38b8a6b69950af75be8a61"
+    },
+    {
+      "path": "src/game/GameManager.ts",
+      "sha256": "0f1c6e6478f69bcefc6d4973a3c58798d89193944ab18a85f5e3c03951f0fb6e",
+      "baselineSha256": "0f1c6e6478f69bcefc6d4973a3c58798d89193944ab18a85f5e3c03951f0fb6e"
+    },
+    {
+      "path": "src/game/gtr/EvaluationRange.test.ts",
+      "sha256": "de32b7356893ae20927ab644b643e2a51243b2e94966061f79cea4ad8ac6fc30",
+      "baselineSha256": "de32b7356893ae20927ab644b643e2a51243b2e94966061f79cea4ad8ac6fc30"
+    },
+    {
+      "path": "src/game/gtr/EvaluationRange.ts",
+      "sha256": "4dd0a196618e761c677b60059df29505270ea4081bce47e12f264a84c348f39d",
+      "baselineSha256": "4dd0a196618e761c677b60059df29505270ea4081bce47e12f264a84c348f39d"
+    },
+    {
+      "path": "src/game/gtr/GTRPatterns.ts",
+      "sha256": "8cf0d8f98fbe1bd322dbf78f6cf42add2b8ed0a971077a058358db1b4ec06158",
+      "baselineSha256": "8cf0d8f98fbe1bd322dbf78f6cf42add2b8ed0a971077a058358db1b4ec06158"
+    },
+    {
+      "path": "src/game/gtr/GTRScoring.test.ts",
+      "sha256": "aa349bf3b680fe9a97548d3de07a452483207dfb90dd4b50910b74629525ab0e",
+      "baselineSha256": "aa349bf3b680fe9a97548d3de07a452483207dfb90dd4b50910b74629525ab0e"
+    },
+    {
+      "path": "src/game/gtr/GTRScoringConfig.ts",
+      "sha256": "74feeb79aadf49e3ffd520e043e8552bc04e461805e4dd3ed212632d2f124384",
+      "baselineSha256": "74feeb79aadf49e3ffd520e043e8552bc04e461805e4dd3ed212632d2f124384"
+    },
+    {
+      "path": "src/game/gtr/HeadExtension.ts",
+      "sha256": "3c930e9b1a66d79ef51d53c959a68d22b1e3aa4086a4fc83e5bef3f3e7b70a66",
+      "baselineSha256": "3c930e9b1a66d79ef51d53c959a68d22b1e3aa4086a4fc83e5bef3f3e7b70a66"
+    },
+    {
+      "path": "src/game/gtr/LeftoverEvaluation.test.ts",
+      "sha256": "a8f3ecf84f4bf856065badb5750f19f015f6a09fe57f4b789b0698c31eb15521",
+      "baselineSha256": "a8f3ecf84f4bf856065badb5750f19f015f6a09fe57f4b789b0698c31eb15521"
+    },
+    {
+      "path": "src/game/gtr/LeftoverEvaluation.ts",
+      "sha256": "e246c0afd640112c616184729dc0687476ba614ccca834f08ae16a264d5339d5",
+      "baselineSha256": "e246c0afd640112c616184729dc0687476ba614ccca834f08ae16a264d5339d5"
+    },
+    {
+      "path": "src/game/guide/GTRCompletionExamples.test.ts",
+      "sha256": "e8bfb4e088c806abc5d4c92ac05e85fdd99e22c7b7aee83f4165395f60db7eae",
+      "baselineSha256": null
+    },
+    {
+      "path": "src/game/guide/GTRCompletionExamples.ts",
+      "sha256": "7c931a0ca3cc0c756d3d3520f63523fc74e8e37e388ff29e4d58357850b480cf",
+      "baselineSha256": null
+    },
+    {
+      "path": "src/game/guide/GTRGuidePatterns.ts",
+      "sha256": "60d2bbfb745e39ff4abc655168fce645c078a59c58cc9be28d774db290d32116",
+      "baselineSha256": "60d2bbfb745e39ff4abc655168fce645c078a59c58cc9be28d774db290d32116"
+    },
+    {
+      "path": "src/game/guide/GuideManager.test.ts",
+      "sha256": "fe97ef74bc0af7935ef00f5df0acd129f2a8936556004224be2d98331275ad28",
+      "baselineSha256": "eb0de6d30b3b5bd255d611353b4caf651621189c1dc218d1b143e986a4316d85"
+    },
+    {
+      "path": "src/game/guide/GuideManager.ts",
+      "sha256": "23bb1325ee7975cd90e7f53bc708ad8cab8a7f7c866df0af859ed84108c74112",
+      "baselineSha256": "369bd298a1b7b282bb7ea7c44099dece744fca089d53814aacb11679bd0cde06"
+    },
+    {
+      "path": "src/game/rendering/ChainPlayback.test.ts",
+      "sha256": "598317fe804ff79add903cca3de584c1d668966fb1c24079ae783432c3e41f1b",
+      "baselineSha256": "598317fe804ff79add903cca3de584c1d668966fb1c24079ae783432c3e41f1b"
+    },
+    {
+      "path": "src/game/rendering/ChainPlayback.ts",
+      "sha256": "d7a4b1ff53207d9e8fc2245ba89da23b7994c2899fa7c714fe9e2aff8bb65905",
+      "baselineSha256": "d7a4b1ff53207d9e8fc2245ba89da23b7994c2899fa7c714fe9e2aff8bb65905"
+    },
+    {
+      "path": "src/game/rendering/PuyoBoardRenderer.test.ts",
+      "sha256": "190a9686633a7c8237aa7bc02c8fc08197302c689f9eb6f4f47681dec5e6908d",
+      "baselineSha256": "190a9686633a7c8237aa7bc02c8fc08197302c689f9eb6f4f47681dec5e6908d"
+    },
+    {
+      "path": "src/game/rendering/PuyoBoardRenderer.ts",
+      "sha256": "75ca16c9c53a652eef7badbfc340706d8e679030aeca39455b3f291df3231229",
+      "baselineSha256": "75ca16c9c53a652eef7badbfc340706d8e679030aeca39455b3f291df3231229"
+    },
+    {
+      "path": "src/game/rendering/PuyoConnections.test.ts",
+      "sha256": "1db11ac93d0121ca89b22f587927183dc9c226e9425187be4d7f5b347140a3c2",
+      "baselineSha256": "1db11ac93d0121ca89b22f587927183dc9c226e9425187be4d7f5b347140a3c2"
+    },
+    {
+      "path": "src/game/rendering/PuyoConnections.ts",
+      "sha256": "ef793b8d81d124ec1f24771aa446af1145e7b78e8bbda722bcd6f16e0eb4c797",
+      "baselineSha256": "ef793b8d81d124ec1f24771aa446af1145e7b78e8bbda722bcd6f16e0eb4c797"
+    },
+    {
+      "path": "src/game/rendering/PuyoRenderer.test.ts",
+      "sha256": "d41a1aa9f1f37f9d8ed6f593071a25d26aef26363fc2f5e2455bb04ea8be06da",
+      "baselineSha256": "d41a1aa9f1f37f9d8ed6f593071a25d26aef26363fc2f5e2455bb04ea8be06da"
+    },
+    {
+      "path": "src/game/rendering/PuyoRenderer.ts",
+      "sha256": "c9fbee3985a52e389d94cc7a1065b394cd760d585ce0e787fa043c86dc5a9a5e",
+      "baselineSha256": "c9fbee3985a52e389d94cc7a1065b394cd760d585ce0e787fa043c86dc5a9a5e"
+    },
+    {
+      "path": "src/game/rendering/VisualConfig.test.ts",
+      "sha256": "8d4cb33d0f6e16005dee0d54ec2c07e2f31d0d3abfcb9e12e336a4a01f213e9a",
+      "baselineSha256": "8d4cb33d0f6e16005dee0d54ec2c07e2f31d0d3abfcb9e12e336a4a01f213e9a"
+    },
+    {
+      "path": "src/game/rendering/VisualConfig.ts",
+      "sha256": "4606368021518b79931ed75745fc1da87dead55533fb8c3977b7b7e0cdd7b6f6",
+      "baselineSha256": "4606368021518b79931ed75745fc1da87dead55533fb8c3977b7b7e0cdd7b6f6"
+    },
+    {
+      "path": "src/game/scenes/ChainAnimationScenes.test.ts",
+      "sha256": "ed9b8a9e95d9c8b58a15a51ee511453633241b5945c095918cbeaa4a386b4a34",
+      "baselineSha256": "ed9b8a9e95d9c8b58a15a51ee511453633241b5945c095918cbeaa4a386b4a34"
+    },
+    {
+      "path": "src/game/scenes/GuidedPracticeScene.test.ts",
+      "sha256": "47330e733d28f147e13438e1a7c4229c345c066cb61f4d0629174fe9a1d40fe9",
+      "baselineSha256": "362bec5d74e800879677ace8feab0bc8a11c784f7ad09884459712b1a4731f31"
+    },
+    {
+      "path": "src/game/scenes/GuidedPracticeScene.ts",
+      "sha256": "61b928f12aeeefb1f86fb831ccb9e34c4bb88ae22df770b9ccd7301a976b4cdc",
+      "baselineSha256": "4412a3068db6ed77ecb19c752e803c4cd52d54497e94ca3170efad07d56622a8"
+    },
+    {
+      "path": "src/game/scenes/MenuScene.ts",
+      "sha256": "589cb9c6896f24d08a3cc2bbef2892c30cf6703ee43c0907deb6a6d8b2e6ab1d",
+      "baselineSha256": "589cb9c6896f24d08a3cc2bbef2892c30cf6703ee43c0907deb6a6d8b2e6ab1d"
+    },
+    {
+      "path": "src/game/scenes/PairRotationInput.test.ts",
+      "sha256": "51a587bd7b0d7d6d8dc1ded773158c3bfe105cbaa05728b0ff76e948ff01b033",
+      "baselineSha256": "51a587bd7b0d7d6d8dc1ded773158c3bfe105cbaa05728b0ff76e948ff01b033"
+    },
+    {
+      "path": "src/game/scenes/PuyoGame.ts",
+      "sha256": "5f2c2869676d1a0fe54f7d194137ddb357770f72842d6e50192226502749647b",
+      "baselineSha256": "5f2c2869676d1a0fe54f7d194137ddb357770f72842d6e50192226502749647b"
+    },
+    {
+      "path": "src/index.css",
+      "sha256": "83e71f96250a2e2e96a6624961a3dc3c7954ff997745e4e24d2f09a05a3e519f",
+      "baselineSha256": "83e71f96250a2e2e96a6624961a3dc3c7954ff997745e4e24d2f09a05a3e519f"
+    },
+    {
+      "path": "src/lib/supabase.ts",
+      "sha256": "8c3fe3d12a1a9fc3ca2f59b9e3d010534e60c5f852c2217f22be7dba62e04260",
+      "baselineSha256": "8c3fe3d12a1a9fc3ca2f59b9e3d010534e60c5f852c2217f22be7dba62e04260"
+    },
+    {
+      "path": "src/lib/test-connection.ts",
+      "sha256": "cf6a411ac2c0e00434bfb982cfe0ec9f70877806271e3ba40f5e63df9666acf9",
+      "baselineSha256": "cf6a411ac2c0e00434bfb982cfe0ec9f70877806271e3ba40f5e63df9666acf9"
+    },
+    {
+      "path": "src/main.tsx",
+      "sha256": "d49885020e28e6f69d8ff94eb2ef917f6e701ab8d2fd8d13c5c66f5a2c1219a2",
+      "baselineSha256": "d49885020e28e6f69d8ff94eb2ef917f6e701ab8d2fd8d13c5c66f5a2c1219a2"
+    },
+    {
+      "path": "src/vite-env.d.ts",
+      "sha256": "6fa8f7718c6585f4866203718715358dd0e1ceec085e5c21e699c2a6a27cd16a",
+      "baselineSha256": "6fa8f7718c6585f4866203718715358dd0e1ceec085e5c21e699c2a6a27cd16a"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "5a8f9aad166147616182a5a8b2e809bc4138bbc0a95ca6be5d19f174b40bbe49",
+      "baselineSha256": "5a8f9aad166147616182a5a8b2e809bc4138bbc0a95ca6be5d19f174b40bbe49"
+    },
+    {
+      "path": "tsconfig.node.json",
+      "sha256": "6847175da5ab8079db6583b92c209f79a8ae39d35f3b0876ddfb0717b752d4c8",
+      "baselineSha256": null
+    },
+    {
+      "path": "tsconfig.scripts.json",
+      "sha256": "8004adf076d2449aee7869d9aa713fbb9c176d8d1dff85bb7f89ed21f88a4d83",
+      "baselineSha256": "8004adf076d2449aee7869d9aa713fbb9c176d8d1dff85bb7f89ed21f88a4d83"
+    },
+    {
+      "path": "vite.config.ts",
+      "sha256": "77dbc76f27a3df2b3585e24490124bcda7e0fd220f99a6d810ecf242902c3dbe",
+      "baselineSha256": null
+    }
+  ]
+}

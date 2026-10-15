@@ -1,0 +1,666 @@
+{
+  "source": "benchmarks/results/natural-1000-20260919-after.json",
+  "sourceSha256": "d301c1290ad2f30755e364a2217442f42947acaa8a0d657c68c6ff24bc86bbea",
+  "cases": [
+    {
+      "id": 71,
+      "turn": 15,
+      "grid": "...........................................GYG...RYGB..RRGB.RBGYY.RRBYGGBBYBBG",
+      "current": [
+        "red",
+        "blue"
+      ],
+      "next": [
+        "red",
+        "green"
+      ],
+      "next2": [
+        "red",
+        "red"
+      ],
+      "fold": [
+        "red",
+        "blue"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 71,
+      "turn": 16,
+      "grid": "...........................................GYG...RYGB..RRGBBRBGYYRRRBYGGBBYBBG",
+      "current": [
+        "red",
+        "green"
+      ],
+      "next": [
+        "red",
+        "red"
+      ],
+      "next2": [
+        "yellow",
+        "blue"
+      ],
+      "fold": [
+        "red",
+        "blue"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 71,
+      "turn": 17,
+      "grid": ".....................................GR....GYG...RYGB..RRGBBRBGYYRRRBYGGBBYBBG",
+      "current": [
+        "red",
+        "red"
+      ],
+      "next": [
+        "yellow",
+        "blue"
+      ],
+      "next2": [
+        "green",
+        "green"
+      ],
+      "fold": [
+        "red",
+        "blue"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 273,
+      "turn": 20,
+      "grid": "..........................YR...BRB...YRY...YGRB..GYRG..GYRY.RGYGYYRRGGBRGGBYYY",
+      "current": [
+        "green",
+        "red"
+      ],
+      "next": [
+        "red",
+        "blue"
+      ],
+      "next2": [
+        "red",
+        "red"
+      ],
+      "fold": [
+        "red",
+        "green"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 281,
+      "turn": 17,
+      "grid": ".................................RR....BB....YR..R.YRY.Y.YBYGRBBYGGGRRYRRRYRBR",
+      "current": [
+        "yellow",
+        "green"
+      ],
+      "next": [
+        "yellow",
+        "red"
+      ],
+      "next2": [
+        "green",
+        "green"
+      ],
+      "fold": [
+        "green",
+        "red"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 281,
+      "turn": 19,
+      "grid": "............................R....RRY...BBY...YRG.R.YRY.Y.YBYGRBBYGGGRRYRRRYRBR",
+      "current": [
+        "green",
+        "green"
+      ],
+      "next": [
+        "blue",
+        "green"
+      ],
+      "next2": [
+        "yellow",
+        "yellow"
+      ],
+      "fold": [
+        "green",
+        "red"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 281,
+      "turn": 20,
+      "grid": "............................R....RRY...BBY...YRG.RGYRY.YGYBYGRBBYGGGRRYRRRYRBR",
+      "current": [
+        "blue",
+        "green"
+      ],
+      "next": [
+        "yellow",
+        "yellow"
+      ],
+      "next2": [
+        "green",
+        "red"
+      ],
+      "fold": [
+        "green",
+        "red"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 285,
+      "turn": 15,
+      "grid": ".......................................B.....GR...GRR...YGBBBYBGGRBBYRBRYYGRRY",
+      "current": [
+        "yellow",
+        "blue"
+      ],
+      "next": [
+        "red",
+        "green"
+      ],
+      "next2": [
+        "blue",
+        "red"
+      ],
+      "fold": [
+        "blue",
+        "yellow"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 285,
+      "turn": 17,
+      "grid": "......................................RB....GGR..BGRR..YYGBBBYBGGRBBYRBRYYGRRY",
+      "current": [
+        "blue",
+        "red"
+      ],
+      "next": [
+        "blue",
+        "red"
+      ],
+      "next2": [
+        "yellow",
+        "green"
+      ],
+      "fold": [
+        "blue",
+        "yellow"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 285,
+      "turn": 18,
+      "grid": "................................RB....RB....GGR..BGRR..YYGBBBYBGGRBBYRBRYYGRRY",
+      "current": [
+        "blue",
+        "red"
+      ],
+      "next": [
+        "yellow",
+        "green"
+      ],
+      "next2": [
+        "green",
+        "green"
+      ],
+      "fold": [
+        "blue",
+        "yellow"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 436,
+      "turn": 18,
+      "grid": ".................................Y...G.RR..Y.GR..GBGG..BGBBBBYGRGRBBYBRGYYGBBG",
+      "current": [
+        "blue",
+        "yellow"
+      ],
+      "next": [
+        "red",
+        "yellow"
+      ],
+      "next2": [
+        "blue",
+        "blue"
+      ],
+      "fold": [
+        "blue",
+        "yellow"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 436,
+      "turn": 20,
+      "grid": "...........................Y...R.YB..G.RR..YYGR..GBGG..BGBBBBYGRGRBBYBRGYYGBBG",
+      "current": [
+        "blue",
+        "blue"
+      ],
+      "next": [
+        "green",
+        "green"
+      ],
+      "next2": [
+        "yellow",
+        "blue"
+      ],
+      "fold": [
+        "blue",
+        "yellow"
+      ],
+      "expectedChain": 7
+    },
+    {
+      "id": 465,
+      "turn": 14,
+      "grid": ".......................................G.....G...G.G...YGR.YBGYRGYBBGYRBGGYRRB",
+      "current": [
+        "blue",
+        "blue"
+      ],
+      "next": [
+        "red",
+        "red"
+      ],
+      "next2": [
+        "red",
+        "green"
+      ],
+      "fold": [
+        "blue",
+        "green"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 465,
+      "turn": 17,
+      "grid": "...............................R.B...G.G...R.G...GRG...YGRBYBGYRGYBBGYRBGGYRRB",
+      "current": [
+        "blue",
+        "red"
+      ],
+      "next": [
+        "yellow",
+        "green"
+      ],
+      "next2": [
+        "red",
+        "green"
+      ],
+      "fold": [
+        "blue",
+        "green"
+      ],
+      "expectedChain": 6
+    },
+    {
+      "id": 555,
+      "turn": 15,
+      "grid": ".......................................G...R.Y...BGY...YRYB.GBRRBYGGBYGYBBRYGY",
+      "current": [
+        "green",
+        "blue"
+      ],
+      "next": [
+        "green",
+        "red"
+      ],
+      "next2": [
+        "yellow",
+        "red"
+      ],
+      "fold": [
+        "green",
+        "blue"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 555,
+      "turn": 16,
+      "grid": "...........................B.....G.....G...R.Y...BGY...YRYB.GBRRBYGGBYGYBBRYGY",
+      "current": [
+        "green",
+        "red"
+      ],
+      "next": [
+        "yellow",
+        "red"
+      ],
+      "next2": [
+        "yellow",
+        "blue"
+      ],
+      "fold": [
+        "green",
+        "blue"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 555,
+      "turn": 19,
+      "grid": "...........................B....YG...RRG...RGY...BGY.Y.YRYBBGBRRBYGGBYGYBBRYGY",
+      "current": [
+        "red",
+        "green"
+      ],
+      "next": [
+        "yellow",
+        "yellow"
+      ],
+      "next2": [
+        "green",
+        "red"
+      ],
+      "fold": [
+        "green",
+        "blue"
+      ],
+      "expectedChain": 6
+    },
+    {
+      "id": 642,
+      "turn": 19,
+      "grid": "................................GY....GBB..YBYB..YRGG..YRGRGRGYRRGRRGBBBGGYYGG",
+      "current": [
+        "red",
+        "green"
+      ],
+      "next": [
+        "green",
+        "blue"
+      ],
+      "next2": [
+        "red",
+        "blue"
+      ],
+      "fold": [
+        "red",
+        "green"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 677,
+      "turn": 17,
+      "grid": "..................................Y....YB....YY...BBGB.GRBYBRBGGBYRRBBGBBBGBGB",
+      "current": [
+        "blue",
+        "red"
+      ],
+      "next": [
+        "blue",
+        "yellow"
+      ],
+      "next2": [
+        "red",
+        "green"
+      ],
+      "fold": [
+        "red",
+        "blue"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 677,
+      "turn": 19,
+      "grid": "...........................Y.....BY....YBR...YYB..BBGB.GRBYBRBGGBYRRBBGBBBGBGB",
+      "current": [
+        "red",
+        "green"
+      ],
+      "next": [
+        "blue",
+        "green"
+      ],
+      "next2": [
+        "blue",
+        "green"
+      ],
+      "fold": [
+        "red",
+        "blue"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 788,
+      "turn": 16,
+      "grid": ".......R.....B.....B.....R.....G.....R.....G.....BG....GGR..GRBRYRGGRBRRRRBYYY",
+      "current": [
+        "green",
+        "green"
+      ],
+      "next": [
+        "red",
+        "red"
+      ],
+      "next2": [
+        "blue",
+        "yellow"
+      ],
+      "fold": [
+        "green",
+        "red"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 943,
+      "turn": 18,
+      "grid": ".................................GG....RB....RR..BYGGG.BRYYYYGRGGRYYGRBGGGRYYG",
+      "current": [
+        "red",
+        "yellow"
+      ],
+      "next": [
+        "yellow",
+        "green"
+      ],
+      "next2": [
+        "red",
+        "red"
+      ],
+      "fold": [
+        "yellow",
+        "green"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 943,
+      "turn": 19,
+      "grid": ".................................GG....RB..RYRR..BYGGG.BRYYYYGRGGRYYGRBGGGRYYG",
+      "current": [
+        "yellow",
+        "green"
+      ],
+      "next": [
+        "red",
+        "red"
+      ],
+      "next2": [
+        "red",
+        "yellow"
+      ],
+      "fold": [
+        "yellow",
+        "green"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 950,
+      "turn": 19,
+      "grid": "..........................Y.....YG....GRR..RGBR..YRYY..RRGG.YGYYGYYYGBRGGGYYYG",
+      "current": [
+        "yellow",
+        "green"
+      ],
+      "next": [
+        "blue",
+        "yellow"
+      ],
+      "next2": [
+        "yellow",
+        "blue"
+      ],
+      "fold": [
+        "yellow",
+        "green"
+      ],
+      "expectedChain": 6
+    },
+    {
+      "id": 950,
+      "turn": 20,
+      "grid": "..........................Y....YYG...GGRR..RGBR..YRYY..RRGG.YGYYGYYYGBRGGGYYYG",
+      "current": [
+        "blue",
+        "yellow"
+      ],
+      "next": [
+        "yellow",
+        "blue"
+      ],
+      "next2": [
+        "blue",
+        "green"
+      ],
+      "fold": [
+        "yellow",
+        "green"
+      ],
+      "expectedChain": 6
+    },
+    {
+      "id": 969,
+      "turn": 19,
+      "grid": "......................B.....B.....R.....R...BYRY.GYBBB.BRYRRBGYBBBBBGYRRGGRYYR",
+      "current": [
+        "blue",
+        "blue"
+      ],
+      "next": [
+        "blue",
+        "yellow"
+      ],
+      "next2": [
+        "red",
+        "red"
+      ],
+      "fold": [
+        "blue",
+        "green"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 969,
+      "turn": 20,
+      "grid": "......................B.....B.....R...BBR...BYRY.GYBBB.BRYRRBGYBBBBBGYRRGGRYYR",
+      "current": [
+        "blue",
+        "yellow"
+      ],
+      "next": [
+        "red",
+        "red"
+      ],
+      "next2": [
+        "green",
+        "red"
+      ],
+      "fold": [
+        "blue",
+        "green"
+      ],
+      "expectedChain": 5
+    },
+    {
+      "id": 995,
+      "turn": 16,
+      "grid": ".................................Y.....Y...Y.RR..B.BB..B.RYYGRYBBYGGRRBRRRBRGR",
+      "current": [
+        "green",
+        "yellow"
+      ],
+      "next": [
+        "green",
+        "red"
+      ],
+      "next2": [
+        "blue",
+        "blue"
+      ],
+      "fold": [
+        "green",
+        "red"
+      ],
+      "expectedChain": 6
+    },
+    {
+      "id": 995,
+      "turn": 17,
+      "grid": ".................................YY....YG..Y.RR..B.BB..B.RYYGRYBBYGGRRBRRRBRGR",
+      "current": [
+        "green",
+        "red"
+      ],
+      "next": [
+        "blue",
+        "blue"
+      ],
+      "next2": [
+        "blue",
+        "red"
+      ],
+      "fold": [
+        "green",
+        "red"
+      ],
+      "expectedChain": 6
+    },
+    {
+      "id": 995,
+      "turn": 20,
+      "grid": ".....................B.....B.....YY....YG..Y.RRR.BGBBB.BRRYYGRYBBYGGRRBRRRBRGR",
+      "current": [
+        "green",
+        "blue"
+      ],
+      "next": [
+        "green",
+        "red"
+      ],
+      "next2": [
+        "yellow",
+        "blue"
+      ],
+      "fold": [
+        "green",
+        "red"
+      ],
+      "expectedChain": 6
+    }
+  ]
+}

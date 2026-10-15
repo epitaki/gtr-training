@@ -1,0 +1,30 @@
+{
+  "guest": true,
+  "gameOverShown": true,
+  "textWithinField": true,
+  "overlayWithinField": true,
+  "idleNoSubmissions": true,
+  "roundUnchanged": true,
+  "boardAndMovesHeld": true,
+  "resultsAbsent": true,
+  "mobile": {
+    "noPageOverflow": true,
+    "textWithinField": true
+  },
+  "explicitEvaluation": {
+    "submittedOnce": true,
+    "advancedOnce": true,
+    "overlayRemoved": true
+  },
+  "tenth": {
+    "submittedExactlyTen": true,
+    "resultAfterExplicitTenth": true,
+    "tenResults": true
+  },
+  "guide": {
+    "autoNewGameKept": true,
+    "noGameOverText": true
+  },
+  "saveWrites": 0,
+  "exceptionCount": 0
+}

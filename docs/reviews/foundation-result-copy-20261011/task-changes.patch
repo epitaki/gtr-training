@@ -1,0 +1,414 @@
+--- before/src/game/scenes/GuidedPracticeScene.ts
++++ after/src/game/scenes/GuidedPracticeScene.ts
+@@ -28,7 +28,6 @@
+ import { getBindings, subscribeBindings } from '../input/settings'
+ import { ContinuousAdvisor } from '../advisor/ContinuousAdvisor'
+ import { isGuidedTailComplete } from '../advisor/GuidedTail'
+-import { analyzeGTR } from '../advisor/GTRAnalysis'
+ import {
+   GTR_REPORT_CLOSE_EVENT,
+   GTR_REPORT_READY_EVENT,
+@@ -48,6 +47,13 @@
+   type GTRReportUnavailableDetail,
+   type GTRTurnRecord,
+ } from '../feedback/GTRIssueReport'
++
++// Keep dot-font contours crisp when sampling the high-density result text.
++function addResultText(scene: Phaser.Scene, x: number, y: number, text: string, style: Phaser.Types.GameObjects.Text.TextStyle = {}) {
++  const label = addUIText(scene, x, y, text, { ...style, resolution: 4 })
++  label.texture.setFilter(Phaser.Textures.FilterMode.NEAREST)
++  return label
++}
+ 
+ export default class GuidedPracticeScene extends Phaser.Scene {
+   private actionInput?: PhaserInputAdapter
+@@ -787,14 +793,10 @@
+   private evaluateGTR() {
+     const field = this.gameField.getField()
+     const gtrResult = GTRDetector.detectGTR(field.grid)
+-    const tailComplete = isGuidedTailComplete(
+-      field.grid,
+-      this.trainingPlan,
+-    )
+-    this.showDetailedResult(gtrResult, tailComplete)
+-  }
+-
+-  private showDetailedResult(result: GTRScore, tailComplete: boolean) {
++    this.showDetailedResult(gtrResult)
++  }
++
++  private showDetailedResult(result: GTRScore) {
+     this.cleanupResult()
+     this.isPaused = true
+     this.isShowingResult = true
+@@ -811,19 +813,8 @@
+     container.setDepth(1001)
+     this.resultContainer = container
+ 
+-    // タイトル
+-    const analysis = analyzeGTR(this.gameField.getField().grid, this.gameState.currentPair, result)
+-    const titleColor = analysis.stage === 'foundation' || analysis.stage === 'core' ? '#91ecc2' : '#ffe99b'
+-    const titleText = analysis.title
+-    const title = addUIText(this, 0, 0, titleText, {
+-      fontSize: '32px',
+-      color: titleColor,
+-      fontFamily: TEXT_STYLES.title.fontFamily,
+-    }).setOrigin(0.5, 0)
+-    container.add(title)
+-
+     // スコア
+-    const score = addUIText(this, 0, (title.height || 38) + 12, `土台スコア: ${result.totalScore}点`, {
++    const score = addResultText(this, 0, 0, `SCORE: ${result.totalScore}点`, {
+       fontSize: '32px',
+       color: '#ffe99b',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+@@ -840,8 +831,7 @@
+ 
+     // チェック項目（成功・失敗の両方を表示）
+     const checks: { label: string; checked: boolean }[] = [
+-      { label: '折り返し', checked: result.hasBasicPattern },
+-      { label: '教材の連鎖尾基本形', checked: tailComplete },
++      { label: '基本形', checked: result.hasBasicPattern },
+       { label: '3連鎖', checked: result.chainCount >= 3 },
+       { label: '4連鎖', checked: result.chainCount >= 4 },
+       { label: '5連鎖', checked: result.chainCount >= 5 },
+@@ -854,7 +844,7 @@
+     checks.forEach(check => {
+       const icon = check.checked ? '○' : '×'
+       const color = check.checked ? '#91ecc2' : '#ff9aa5'
+-      const text = addUIText(this, xOffset, yOffset, `${icon} ${check.label}`, {
++      const text = addResultText(this, xOffset, yOffset, `${icon} ${check.label}`, {
+         fontSize: '16px',
+         color: color,
+         fontFamily: TEXT_STYLES.title.fontFamily,
+@@ -864,21 +854,13 @@
+       yOffset += (text.height || 20) + 8
+     })
+ 
+-    const playbackStatus = addUIText(this, -180, previewTop + 160,
++    const playbackStatus = addResultText(this, -180, previewTop + 160,
+       preview.unavailableReason ?? '仮想発火：再生待ち', {
+-        fontSize: '14px', color: '#d7c8ff', fontFamily: TEXT_STYLES.title.fontFamily,
++        fontSize: '16px', color: '#d7c8ff', fontFamily: TEXT_STYLES.title.fontFamily,
+       wordWrap: { width: 300, useAdvancedWrap: true },
+       }).setOrigin(0.5, 0)
+     container.add(playbackStatus)
+     const replayTop = playbackStatus.y + (playbackStatus.height || 20) + 8
+-    const previewNote = addUIText(this, -180, replayTop + 52, preview.starter
+-      ? '同色1個を仮置きして再生（採点とは別）'
+-      : '仮置きに必要な発火色がありません（採点とは別）', {
+-      fontSize: '14px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily,
+-    wordWrap: { width: 300, useAdvancedWrap: true },
+-    }).setOrigin(0.5, 0)
+-    container.add(previewNote)
+-
+     if (preview.trace) {
+       this.resultPlayback = new ResultChainPlayback(preview.trace, {
+         frame: frame => {
+@@ -889,7 +871,7 @@
+               : `仮想発火：${frame.chainIndex}連鎖目`)
+         },
+       }, preview.trace.initial.ids[preview.starter!.y][preview.starter!.x] ?? undefined)
+-      const replayButton = addUIText(this, -180, replayTop, 'もう一度', {
++      const replayButton = addResultText(this, -180, replayTop, 'もう一度', {
+         fontSize: '16px', color: '#e8dcff', backgroundColor: '#40366f',
+         padding: { x: 12, y: 12 }, fontFamily: TEXT_STYLES.title.fontFamily,
+       }).setOrigin(0.5, 0)
+@@ -900,31 +882,14 @@
+       container.add(replayButton)
+     }
+ 
+-    const parts = GTRDetector.getFoundationChainBreakdown(grid)
+-    const breakdown = addUIText(this, 0, Math.max(yOffset, previewNote.y + (previewNote.height || 40)) + 16, parts
+-      ? `土台${parts.total}連鎖 = 基本形2連鎖 + 連鎖尾${parts.tail}連鎖`
+-      : '基本形から連鎖尾への接続を確認しましょう', {
+-      fontSize: '14px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily,
+-    wordWrap: { width: canvasW - 80, useAdvancedWrap: true }, align: 'center',
+-    }).setOrigin(0.5, 0)
+-    container.add(breakdown)
+-
+-    const scopeNote = addUIText(this, 0, breakdown.y + (breakdown.height || 20) + 12, '土台の連鎖・余り・点数は評価範囲内のみ', {
+-      fontSize: '14px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily,
+-    wordWrap: { width: canvasW - 80, useAdvancedWrap: true }, align: 'center',
++    const scopeNote = addResultText(this, 0, Math.max(yOffset, replayTop + 48) + 24, '点数は評価範囲のみで評価', {
++      fontSize: '16px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily,
++      wordWrap: { width: canvasW - 80, useAdvancedWrap: true }, align: 'center',
+     }).setOrigin(0.5, 0)
+     container.add(scopeNote)
+ 
+-    const contextNote = addUIText(this, 0, scopeNote.y + (scopeNote.height || 20) + 12,
+-      `${analysis.fireText}\n${analysis.useText}\n${analysis.scoreExplanation}`, {
+-        fontSize: '14px', color: analysis.fire.status === 'current' ? '#c4bfd3' : '#ffe99b',
+-        fontFamily: TEXT_STYLES.title.fontFamily, align: 'center',
+-        wordWrap: { width: canvasW - 80, useAdvancedWrap: true },
+-      }).setOrigin(0.5, 0)
+-    container.add(contextNote)
+-
+     // 操作説明
+-    const instruction = addUIText(this, 0, contextNote.y + (contextNote.height || 40) + 16, 'Spaceキーで新しいゲームを開始\nEscキーでメニューに戻る', {
++    const instruction = addResultText(this, 0, scopeNote.y + (scopeNote.height || 20) + 16, 'Spaceキーで新しいゲームを開始\nEscキーでメニューに戻る', {
+       fontSize: '16px',
+       color: '#c4bfd3',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+@@ -958,8 +923,8 @@
+     const activeLayer = this.add.container(0, 0)
+     container.add(activeLayer)
+ 
+-    const label = addUIText(this, offsetX, offsetY - 20, 'GTR評価範囲', {
+-      fontSize: '14px',
++    const label = addResultText(this, offsetX, offsetY - 20, 'GTR評価範囲', {
++      fontSize: '16px',
+       color: '#c4bfd3',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+     }).setOrigin(0.5)
+@@ -1043,10 +1008,7 @@
+     this.updateDisplay()
+     if (restoreResult && !this.gameState.gameOver) {
+       const field = this.gameField.getField()
+-      this.showDetailedResult(
+-        GTRDetector.detectGTR(field.grid),
+-        isGuidedTailComplete(field.grid, this.trainingPlan),
+-      )
++      this.showDetailedResult(GTRDetector.detectGTR(field.grid))
+     } else if (restorePause) {
+       this.togglePause()
+     }
+--- before/src/game/scenes/GuidedPracticeScene.test.ts
++++ after/src/game/scenes/GuidedPracticeScene.test.ts
+@@ -9,6 +9,7 @@
+     tweens: unknown
+   },
+   Scenes: { Events: { SHUTDOWN: 'shutdown', DESTROY: 'destroy' } },
++  Textures: { FilterMode: { NEAREST: 1 } },
+   Input: {
+     Keyboard: {
+       JustDown: justDown,
+@@ -207,7 +208,7 @@
+   const scene = createHarness() as SceneHarness & {
+     add: unknown
+     displayGTRField: ReturnType<typeof vi.fn>
+-    showDetailedResult: (result: ReturnType<typeof GTRDetector.detectGTR>, tail: boolean) => void
++    showDetailedResult: (result: ReturnType<typeof GTRDetector.detectGTR>) => void
+     resultPlayback?: ResultChainPlayback
+     resultKeyHandler?: (event: KeyboardEvent) => void
+     cleanupResult: () => void
+@@ -221,6 +222,7 @@
+   const texts = new Map<string, { on: ReturnType<typeof vi.fn>; setText: ReturnType<typeof vi.fn> }>()
+   const graphic = () => {
+     const item = {
++      texture: { setFilter: vi.fn() },
+       setDepth: vi.fn(), setOrigin: vi.fn(), setAlpha: vi.fn(), setText: vi.fn(), setInteractive: vi.fn(),
+       on: vi.fn(), add: vi.fn(), destroy: vi.fn(),
+     }
+@@ -580,9 +582,9 @@
+     const scene = createHarness() as SceneHarness & {
+       add: unknown
+       displayGTRField: () => void
+-      showDetailedResult: (result: ReturnType<typeof GTRDetector.detectGTR>, tail: boolean) => void
+-    }
+-    const graphic = { setDepth: vi.fn(), setOrigin: vi.fn(), add: vi.fn() }
++      showDetailedResult: (result: ReturnType<typeof GTRDetector.detectGTR>) => void
++    }
++    const graphic = { texture: { setFilter: vi.fn() }, setDepth: vi.fn(), setOrigin: vi.fn(), add: vi.fn() }
+     graphic.setOrigin.mockReturnValue(graphic)
+     const text = vi.fn((_x: number, _y: number, _content: string) => graphic)
+     scene.add = { rectangle: () => graphic, container: () => graphic, text }
+@@ -590,12 +592,11 @@
+     Object.assign(scene.input.keyboard, { on: vi.fn() })
+     const result = { ...GTRDetector.detectGTR(Array.from({ length: 13 }, () => Array(6).fill(null))),
+       chainCount, isGTR: true, hasBasicPattern: true, totalScore: 75 }
+-    scene.showDetailedResult(result, true)
++    scene.showDetailedResult(result)
+     const labels = text.mock.calls.map(call => call[2])
+-    expect(labels).toContain(chainCount >= 5 ? '土台5連鎖完成' : '土台を伸ばそう')
+-    expect(labels).toContain('○ 折り返し')
+-    expect(labels).toContain('○ 教材の連鎖尾基本形')
+-    expect(labels).toContain('土台の連鎖・余り・点数は評価範囲内のみ')
++    expect(labels).toContain('SCORE: 75点')
++    expect(labels).toContain('○ 基本形')
++    expect(labels).toContain('点数は評価範囲のみで評価')
+     expect(labels).toContain(`${chainCount >= 5 ? '○' : '×'} 5連鎖`)
+     expect(labels.some(label => /^[○×] 7連鎖$/.test(label))).toBe(false)
+     expect(result.chainCount).toBe(chainCount)
+@@ -605,9 +606,9 @@
+     const scene = createHarness() as SceneHarness & {
+       add: unknown
+       displayGTRField: () => void
+-      showDetailedResult: (result: ReturnType<typeof GTRDetector.detectGTR>, tail: boolean) => void
+-    }
+-    const graphic = { setDepth: vi.fn(), setOrigin: vi.fn(), add: vi.fn() }
++      showDetailedResult: (result: ReturnType<typeof GTRDetector.detectGTR>) => void
++    }
++    const graphic = { texture: { setFilter: vi.fn() }, setDepth: vi.fn(), setOrigin: vi.fn(), add: vi.fn() }
+     graphic.setOrigin.mockReturnValue(graphic)
+     const text = vi.fn((_x: number, _y: number, _content: string) => graphic)
+     scene.add = { rectangle: () => graphic, container: () => graphic, text }
+@@ -619,9 +620,9 @@
+       ...Array.from({ length: 13 - rows.length }, () => Array<PuyoColor | null>(6).fill(null)),
+       ...rows.map(row => [...row].map(color => colors[color] ?? null)),
+     ]
+-    scene.showDetailedResult(GTRDetector.detectGTR(grid), perfect)
++    scene.showDetailedResult(GTRDetector.detectGTR(grid))
+     const labels = text.mock.calls.map(call => call[2])
+-    expect(labels).toContain(`土台スコア: ${perfect ? 100 : 0}点`)
++    expect(labels).toContain(`SCORE: ${perfect ? 100 : 0}点`)
+     expect(labels).toContain(`${perfect ? '○' : '×'} 余りなし・1個・同色連結`)
+     expect(labels).toContain(`${perfect ? '○' : '×'} 最小土台が完成`)
+   })
+@@ -630,26 +631,26 @@
+     const scene = createHarness() as SceneHarness & {
+       add: unknown
+       displayGTRField: () => void
+-      showDetailedResult: (result: ReturnType<typeof GTRDetector.detectGTR>, tail: boolean) => void
+-    }
+-    const graphic = { setDepth: vi.fn(), setOrigin: vi.fn(), add: vi.fn() }
++      showDetailedResult: (result: ReturnType<typeof GTRDetector.detectGTR>) => void
++    }
++    const graphic = { texture: { setFilter: vi.fn() }, setDepth: vi.fn(), setOrigin: vi.fn(), add: vi.fn() }
+     graphic.setOrigin.mockReturnValue(graphic)
+     const text = vi.fn((_x: number, _y: number, _content: string) => graphic)
+     scene.add = { rectangle: () => graphic, container: () => graphic, text }
+     scene.displayGTRField = vi.fn()
+     Object.assign(scene.input.keyboard, { on: vi.fn() })
+     const result = GTRDetector.detectGTR(Array.from({ length: 13 }, () => Array(6).fill(null)))
+-    scene.showDetailedResult({ ...result, row10Usage: 'minimal', rightEdgeRaised }, true)
++    scene.showDetailedResult({ ...result, row10Usage: 'minimal', rightEdgeRaised })
+     const labels = text.mock.calls.map(call => call[2])
+     expect(labels).toContain('× 最小土台が完成')
+   })
+ 
+-  it('shows a perfect foundation and an unconfirmed physical connection separately', () => {
++  it('keeps the perfect score while omitting unconfirmed outside connections from the display', () => {
+     const scene = createHarness() as SceneHarness & {
+       add: unknown; displayGTRField: () => void
+-      showDetailedResult: (result: ReturnType<typeof GTRDetector.detectGTR>, tail: boolean) => void
+-    }
+-    const graphic = { setDepth: vi.fn(), setOrigin: vi.fn(), add: vi.fn() }
++      showDetailedResult: (result: ReturnType<typeof GTRDetector.detectGTR>) => void
++    }
++    const graphic = { texture: { setFilter: vi.fn() }, setDepth: vi.fn(), setOrigin: vi.fn(), add: vi.fn() }
+     graphic.setOrigin.mockReturnValue(graphic)
+     const text = vi.fn((_x: number, _y: number, _content: string) => graphic)
+     scene.add = { rectangle: () => graphic, container: () => graphic, text }
+@@ -659,26 +660,26 @@
+     const grid = [...Array.from({ length: 9 }, () => Array<PuyoColor | null>(6).fill(null)),
+       ...['B....R', 'RGYBBR', 'RRGYYB', 'GGYRRB'].map(row => [...row].map(c => colors[c] ?? null))]
+     scene.gameField.getField = () => ({ grid, width: 6, height: 13 })
+-    scene.showDetailedResult(GTRDetector.detectGTR(grid), true)
++    scene.showDetailedResult(GTRDetector.detectGTR(grid))
+     const labels = text.mock.calls.map(call => call[2])
+-    expect(labels).toContain('土台スコア: 100点')
+-    expect(labels).toContain('土台5連鎖 = 基本形2連鎖 + 連鎖尾3連鎖')
+-    expect(labels.some(label => label.includes('接続未確認1') && label.includes('発火可能性は未確認'))).toBe(true)
++    expect(labels).toContain('SCORE: 100点')
++    expect(labels).toContain('点数は評価範囲のみで評価')
++    expect(labels.some(label => label.includes('接続未確認') || label.includes('土台5連鎖'))).toBe(false)
+   })
+ 
+   it('waits for the evaluation key release before accepting a result new-game action', () => {
+     const scene = createHarness() as SceneHarness & {
+       add: unknown; displayGTRField: () => void
+-      showDetailedResult: (result: ReturnType<typeof GTRDetector.detectGTR>, tail: boolean) => void
++      showDetailedResult: (result: ReturnType<typeof GTRDetector.detectGTR>) => void
+       resetGame: ReturnType<typeof vi.fn>
+     }
+-    const graphic = { setDepth: vi.fn(), setOrigin: vi.fn(), add: vi.fn(), destroy: vi.fn() }
++    const graphic = { texture: { setFilter: vi.fn() }, setDepth: vi.fn(), setOrigin: vi.fn(), add: vi.fn(), destroy: vi.fn() }
+     graphic.setOrigin.mockReturnValue(graphic)
+     scene.add = { rectangle: () => graphic, container: () => graphic, text: () => graphic }
+     scene.displayGTRField = vi.fn()
+     scene.resetGame = vi.fn()
+     scene.actionInput.pressPhysical('Space')
+-    scene.showDetailedResult(GTRDetector.detectGTR(Array.from({ length: 13 }, () => Array(6).fill(null))), false)
++    scene.showDetailedResult(GTRDetector.detectGTR(Array.from({ length: 13 }, () => Array(6).fill(null))))
+     expect(scene.actionInput.isGated()).toBe(true)
+     scene.actionInput.press('newGame', 'key:Space')
+     expect(scene.actionInput.frame(501)).toEqual(new Set())
+@@ -897,7 +898,7 @@
+     const addSprite = vi.fn((_x: number, _y: number, _texture: string, _frame: string) => sprite)
+     scene.add = {
+       rectangle: addRectangle, container: vi.fn(() => layer), sprite: addSprite,
+-      text: vi.fn(() => ({ setOrigin: vi.fn().mockReturnThis() })),
++      text: vi.fn(() => ({ texture: { setFilter: vi.fn() }, setOrigin: vi.fn().mockReturnThis() })),
+     }
+     const grid = Array.from({ length: 13 }, () => Array<PuyoColor | null>(6).fill(null))
+     grid[9][0] = PuyoColor.RED // hypothetical starter, outside the grading range
+@@ -931,7 +932,7 @@
+       startGame: ReturnType<typeof vi.fn> }
+     runtime.resetGame = vi.fn()
+     runtime.startGame = vi.fn()
+-    scene.showDetailedResult(GTRDetector.detectGTR(field.grid), true)
++    scene.showDetailedResult(GTRDetector.detectGTR(field.grid))
+     const cancel = vi.spyOn(scene.resultPlayback!, 'cancel')
+     runtime.restartFromResult()
+     expect(cancel).toHaveBeenCalledOnce()
+@@ -949,7 +950,7 @@
+       turns: structuredClone(scene.turnHistory), random: scene.pairRandom.getState(),
+       advice: scene.currentAdvice,
+     }
+-    scene.showDetailedResult(GTRDetector.detectGTR(field.grid), true)
++    scene.showDetailedResult(GTRDetector.detectGTR(field.grid))
+     const playback = scene.resultPlayback!
+     const replay = vi.spyOn(playback, 'replay')
+     const button = texts.get('もう一度')!
+@@ -983,17 +984,17 @@
+   it('replaces the result playback and cancels the old trace', () => {
+     const { scene, field } = createResultHarness()
+     const result = GTRDetector.detectGTR(field.grid)
+-    scene.showDetailedResult(result, true)
++    scene.showDetailedResult(result)
+     const oldPlayback = scene.resultPlayback!
+     const cancel = vi.spyOn(oldPlayback, 'cancel')
+-    scene.showDetailedResult(result, true)
++    scene.showDetailedResult(result)
+     expect(cancel).toHaveBeenCalledOnce()
+     expect(scene.resultPlayback).not.toBe(oldPlayback)
+   })
+ 
+   it('cancels the trace on result Escape before exit', () => {
+     const { scene, field } = createResultHarness()
+-    scene.showDetailedResult(GTRDetector.detectGTR(field.grid), true)
++    scene.showDetailedResult(GTRDetector.detectGTR(field.grid))
+     const cancel = vi.spyOn(scene.resultPlayback!, 'cancel')
+     scene.actionInput.press('exit', 'key:Escape')
+     scene.update(501)
+@@ -1008,12 +1009,12 @@
+     const delayedCall = vi.fn()
+     Object.assign(scene.time, { delayedCall })
+     const result = GTRDetector.detectGTR(field.grid)
+-    scene.showDetailedResult(result, true)
++    scene.showDetailedResult(result)
+     const cancel = vi.spyOn(scene.resultPlayback!, 'cancel')
+     scene.actionInput.press('newGame', 'key:Space')
+     scene.update(501)
+     expect(cancel).toHaveBeenCalledOnce()
+-    scene.showDetailedResult(result, true)
++    scene.showDetailedResult(result)
+     delayedCall.mock.calls[0][1]()
+     expect(scene.isShowingResult).toBe(true)
+     expect(scene.resultPlayback).toBeDefined()
+@@ -1021,7 +1022,7 @@
+ 
+   it('cancels result playback exactly once on repeated cleanup', () => {
+     const { scene, field } = createResultHarness()
+-    scene.showDetailedResult(GTRDetector.detectGTR(field.grid), true)
++    scene.showDetailedResult(GTRDetector.detectGTR(field.grid))
+     const cancel = vi.spyOn(scene.resultPlayback!, 'cancel')
+     scene.cleanupResult()
+     scene.cleanupResult()
+--- before/src/game/rendering/UIText.ts
++++ after/src/game/rendering/UIText.ts
+@@ -1,11 +1,11 @@
+ import type * as Phaser from 'phaser'
+ import { UI_FONT_FAMILY, UI_COLORS } from '../../ui/theme'
+ 
+-/** All scene text, including recovery notices, uses the same regular face and texture density. */
++/** All scene text, including recovery notices, uses the same regular face; callers can select the texture density. */
+ export function addUIText(scene: Phaser.Scene, x: number, y: number, text: string | string[], style: Phaser.Types.GameObjects.Text.TextStyle = {}) {
+   return scene.add.text(Math.round(x), Math.round(y), text, {
+     fontSize: '16px', color: UI_COLORS.text, lineSpacing: 4,
+-    ...style, fontFamily: UI_FONT_FAMILY, fontStyle: 'normal', resolution: 2,
++    ...style, fontFamily: UI_FONT_FAMILY, fontStyle: 'normal', resolution: style.resolution ?? 2,
+     strokeThickness: 0,
+   })
+ }

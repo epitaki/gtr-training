@@ -1,0 +1,85 @@
+{
+  "round": 4,
+  "snapshot": "3b742d5d0e5ecedf88405638527a77031d5650fe6a03bb57ef6c581d7bd8f50d",
+  "independence": "Fresh gpt-6-sol, fork none; serialized due thread slots; no prior findings or other results shared; all three completed",
+  "reviews": [
+    {
+      "agent": "key_config_r4_review_1",
+      "model": "gpt-6-sol",
+      "scope": "固定197ハッシュ一致、変更27ファイル・仕様全文・App/MenuScene/GameManagerテスト・移動判定周辺を実読",
+      "findings": [
+        {
+          "severity": "P2",
+          "file": "src/game/input/PhaserInputAdapter.ts",
+          "line": 34,
+          "related": "src/game/input/bindings.ts:24",
+          "title": "ゲーム面でShift先行押下の後のTabがquickDropを発火する",
+          "condition": "おすすめ初期値、canvas focusでShiftを1フレーム以上保持→更新→Tab",
+          "impact": "逆focus移動前に現在の組が着地",
+          "contractClaim": "Shift+Tabをfocus移動に予約する契約との衝突",
+          "fix": "単独Shiftを維持しつつTab組合せ確定までShift発火を保留、実順序回帰"
+        }
+      ],
+      "limitations": "読取りのみ、実行/UI未実施"
+    },
+    {
+      "agent": "key_config_r4_review_2",
+      "model": "gpt-6-sol",
+      "scope": "固定27変更ファイル全行と各ハッシュ一致。仕様全文・開始基準patch・App/MenuScene/GameManager既存テスト・ChainPlayback・ペア移動/型/報告API契約を確認",
+      "findings": [],
+      "verdict": "指摘なし",
+      "limitations": "読取りのみ。テスト/build/browserは再実行せず。実機NumLock/OS実IME/実touch取消独立確認なし"
+    },
+    {
+      "agent": "key_config_r4_review_3",
+      "model": "gpt-6-sol",
+      "scope": "仕様全文、固定snapshot/baseline、差分27ファイル全て、App/MenuScene/ChainPlayback/PuyoPairを読取り確認、変更27hash一致",
+      "findings": [
+        {
+          "severity": "P2",
+          "file": "src/game/input/InputController.ts",
+          "line": 45,
+          "title": "解除待ち中に押された新pointerを追跡しない",
+          "condition": "quickDrop後pointer1保持→gate中pointer2 press→pointer1 release→pointer2保持のままpointer3/物理fresh press",
+          "impact": "pointer2 release前に次の組を確定可能",
+          "contractClaim": "解除待ち中に押した入力元も解除してから再開の契約に反する",
+          "fix": "gate中pressのsourceもblockedSourcesへ追加、対応releaseまでgate維持",
+          "testClaim": "既存テストはpointer2を離した後だけを確認"
+        }
+      ],
+      "limitations": "読取のみ、テスト/build/UIなし。実機NumLock/OS実IME/実touch取消未確認"
+    }
+  ],
+  "parentContractNotes": [
+    {
+      "topic": "Shift+Tab候補の仕様採否",
+      "observation": "実コード上、Shift先行keydownがquickDropとして次frameで発火することは成立。ただしTab自体は非消費でfocus移動は通る。K9はTabの割当禁止とfocus移動の非消費、K12は取得中の設定不変を明示。ゲーム中もShift+Tabで一切の盤面変化なしを要求するかは、画像由来のShift quickDrop・押下edgeと先行modifierの競合許容の設計との照合が必要。",
+      "request": "Astraが最終仕様から採否判断。Ctrl+Cでは先行Ctrl操作が発生し得ることを既存設計で明示的に受容している。Shiftの入力遅延を追加するときは既存の単発/保持ゲート/複数source契約を壊さない条件まで指定する。親は現時点で採否未決。"
+    },
+    {
+      "topic": "候補修正案の他契約への影響",
+      "evidence": "ALLOWED_CODESのShiftは任意のBoundActionに設定可能。InputControllerはleft/right/softDropの初回即時＋保持150ms反復を要求する。",
+      "observation": "Shiftキー一般をkeyupまで保留する方式は、Shiftに移動/高速落下を個別割当した際の保持・反復と両立しない。単発だけ遅延する方式でも設定によってShift+Tabの先行操作を完全には防げない。",
+      "request": "Tab非消費によるfocus移動の保証と、先行modifierによるゲーム操作を全て防ぐ保証を混同せず、承認済み単独キー/保持/画像プリセット/ブラウザーショートカット非完全互換の契約を基準に採否判定してほしい。これは根拠の補足で採否の指定ではない。"
+    },
+    {
+      "references": {
+        "contract": "docs/reviews/key-config-review-contract-20260927.md",
+        "lines": {
+          "72": "移動・高速落下は初回即時＋150ms反復",
+          "73": "quickDropなど押下エッジ一回",
+          "81": "Ctrl+C先行Ctrlの発生可能性",
+          "83": "ブラウザーショートカット完全無競合は保証しない",
+          "135": "Tab/Shift+Tabはfocus移動予約・Tab取得/保存拒否",
+          "143": "取得中はTab/Shift+Tabで設定不変の取得取消"
+        }
+      }
+    },
+    {
+      "topic": "解除待ち中の新pointer候補の仕様採否",
+      "evidence": "docs/reviews/key-config-r2-acceptance.json K10.fixは『意味入力元も状態変更時点の解除待ちに含め、対応release/取消まで保持』。旧pointer解除前の新pointer/物理pressによる次ツモ確定を禁止する。InputController.test.ts 90付近は旧pointer1と物理KeyCをreleaseした時、gate中に押したpointer2のrelease前でもisGated=falseを期待する。",
+      "observation": "gate中のpointer2 pressはheld/pendingへ入らず無視され、旧pointer1 releaseでgateが解除してもpointer2は自動発火しない。新たなpointer3等のfresh pressは受理可能。physicalはgate中のpressもphysicalへ追加するため待ち範囲がより保守的で差異はある。",
+      "request": "既存のK10契約（状態変更時点の旧入力解除待ち）と、全ての後続pointerまで待ちを拡張する新規要求を区別し、具体的影響・承認仕様から採否判定してください。親は候補を未採用のまま提示する。"
+    }
+  ]
+}

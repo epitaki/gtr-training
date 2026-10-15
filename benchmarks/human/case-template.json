@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "isTemplate": true,
+  "id": null,
+  "datasetId": null,
+  "recordId": null,
+  "recordedAt": null,
+  "source": { "url": null, "videoUrl": null, "timestampSeconds": null, "player": null },
+  "observation": {
+    "turn": null,
+    "boardBefore": null,
+    "current": null,
+    "next": null,
+    "next2": null,
+    "placement": null,
+    "transcriptionConfidence": "unverified",
+    "coverage": null,
+    "visibleQueueVerified": false,
+    "context": { "opponentBoard": null, "incomingGarbage": null, "timePressure": null },
+    "playerIntent": null,
+    "intentEvidence": null
+  },
+  "hypothesis": { "issue": null, "tags": [], "alternatives": [], "counterexamples": [] },
+  "validation": {
+    "status": "unassessed",
+    "isCorrectMoveLabel": false,
+    "conditions": null,
+    "engineFingerprint": null,
+    "artifacts": [],
+    "result": null,
+    "limitations": []
+  },
+  "revisions": []
+}

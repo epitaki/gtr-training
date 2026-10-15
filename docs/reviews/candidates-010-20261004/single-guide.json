@@ -1,0 +1,2165 @@
+{
+  "before": {
+    "kind": "gtr-issue-snapshot",
+    "version": 1,
+    "appVersion": "1.0.0",
+    "capturedAt": "2026-10-04T08:29:03.790Z",
+    "mode": "guided",
+    "page": "http://127.0.0.1:5175/",
+    "turnNumber": 1,
+    "field": {
+      "grid": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "width": 6,
+      "height": 13
+    },
+    "currentPair": {
+      "main": {
+        "color": "red",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "nextPair": {
+      "main": {
+        "color": "green",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "nextNextPair": {
+      "main": {
+        "color": "blue",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "yellow",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "openingPairs": {
+      "pair1": {
+        "main": {
+          "color": "red",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "red",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "pair2": {
+        "main": {
+          "color": "green",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "red",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      }
+    },
+    "score": 0,
+    "gtrCount": 0,
+    "gtrScore": 0,
+    "gameOver": false,
+    "pairRandomState": 123456,
+    "trainingPlan": {
+      "colorA": "green",
+      "colorB": "red",
+      "colorC": "green",
+      "colorD": "red"
+    },
+    "settings": {
+      "gravityEnabled": false,
+      "advisorEnabled": true,
+      "paused": false,
+      "showingResult": false
+    },
+    "gtrEvaluation": {
+      "scoringVersion": "masked-foundation-minimal-v2",
+      "minimalFoundationComplete": false,
+      "isGTR": false,
+      "quality": 0,
+      "chainTailScore": 0,
+      "totalScore": 0,
+      "chainCount": 0,
+      "leftoverPuyos": 0,
+      "message": "GTRの必須折り返しがありません",
+      "hasBasicPattern": false,
+      "row10Usage": "heavy",
+      "rightEdgeRaised": false,
+      "leftoverConnected": false
+    },
+    "tailPlans": [
+      {
+        "shape": "zabuton",
+        "color": "green",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 10
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 5,
+            "y": 11
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          },
+          {
+            "x": 5,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 8,
+        "continuationCount": 4,
+        "templateFilled": false
+      },
+      {
+        "shape": "zabuton",
+        "color": "blue",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 10
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 5,
+            "y": 11
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          },
+          {
+            "x": 5,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 8,
+        "continuationCount": 4,
+        "templateFilled": false
+      },
+      {
+        "shape": "zabuton",
+        "color": "yellow",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 10
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 5,
+            "y": 11
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          },
+          {
+            "x": 5,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 8,
+        "continuationCount": 4,
+        "templateFilled": false
+      },
+      {
+        "shape": "Y",
+        "color": "green",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 6,
+        "continuationCount": 3,
+        "templateFilled": false
+      },
+      {
+        "shape": "Y",
+        "color": "blue",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 6,
+        "continuationCount": 3,
+        "templateFilled": false
+      },
+      {
+        "shape": "Y",
+        "color": "yellow",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 6,
+        "continuationCount": 3,
+        "templateFilled": false
+      },
+      {
+        "shape": "L",
+        "color": "green",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "supportCells": [],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 4,
+        "continuationCount": 2,
+        "templateFilled": false
+      },
+      {
+        "shape": "L",
+        "color": "blue",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "supportCells": [],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 4,
+        "continuationCount": 2,
+        "templateFilled": false
+      },
+      {
+        "shape": "L",
+        "color": "yellow",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "supportCells": [],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 4,
+        "continuationCount": 2,
+        "templateFilled": false
+      }
+    ],
+    "advice": {
+      "phase": "fold_building",
+      "phaseMessage": "折り返しを作ろう（左下にぷよを積む）",
+      "bestPlacement": {
+        "placement": {
+          "column": 0,
+          "rotation": 1
+        },
+        "landing": {
+          "mainPos": {
+            "x": 0,
+            "y": 12
+          },
+          "subPos": {
+            "x": 1,
+            "y": 12
+          },
+          "valid": true
+        },
+        "immediateChainCount": 0,
+        "clearedPuyos": 0,
+        "isIntendedMainFire": false,
+        "hasCollateralClear": false,
+        "intendedMainChainCount": 0,
+        "intendedMainClearedPuyos": 0,
+        "totalScore": 100638.46920667795,
+        "phase": "fold_building",
+        "tailShape": "Y",
+        "tailColor": "yellow"
+      },
+      "candidates": [
+        {
+          "placement": {
+            "column": 0,
+            "rotation": 1
+          },
+          "landing": {
+            "mainPos": {
+              "x": 0,
+              "y": 12
+            },
+            "subPos": {
+              "x": 1,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": 100638.46920667795,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "yellow"
+        },
+        {
+          "placement": {
+            "column": 1,
+            "rotation": 3
+          },
+          "landing": {
+            "mainPos": {
+              "x": 1,
+              "y": 12
+            },
+            "subPos": {
+              "x": 0,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": 90000,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "blue"
+        },
+        {
+          "placement": {
+            "column": 1,
+            "rotation": 1
+          },
+          "landing": {
+            "mainPos": {
+              "x": 1,
+              "y": 12
+            },
+            "subPos": {
+              "x": 2,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99890.8,
+          "phase": "fold_building",
+          "tailShape": "zabuton",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 2,
+            "rotation": 3
+          },
+          "landing": {
+            "mainPos": {
+              "x": 2,
+              "y": 12
+            },
+            "subPos": {
+              "x": 1,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99890.8,
+          "phase": "fold_building",
+          "tailShape": "zabuton",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 3,
+            "rotation": 1
+          },
+          "landing": {
+            "mainPos": {
+              "x": 3,
+              "y": 12
+            },
+            "subPos": {
+              "x": 4,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99949.2,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 4,
+            "rotation": 3
+          },
+          "landing": {
+            "mainPos": {
+              "x": 4,
+              "y": 12
+            },
+            "subPos": {
+              "x": 3,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99949.2,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 4,
+            "rotation": 1
+          },
+          "landing": {
+            "mainPos": {
+              "x": 4,
+              "y": 12
+            },
+            "subPos": {
+              "x": 5,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99967.2,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 5,
+            "rotation": 3
+          },
+          "landing": {
+            "mainPos": {
+              "x": 5,
+              "y": 12
+            },
+            "subPos": {
+              "x": 4,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99967.2,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 2,
+            "rotation": 0
+          },
+          "landing": {
+            "mainPos": {
+              "x": 2,
+              "y": 12
+            },
+            "subPos": {
+              "x": 2,
+              "y": 11
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99970,
+          "phase": "fold_building",
+          "tailShape": "zabuton",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 2,
+            "rotation": 2
+          },
+          "landing": {
+            "mainPos": {
+              "x": 2,
+              "y": 11
+            },
+            "subPos": {
+              "x": 2,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99970,
+          "phase": "fold_building",
+          "tailShape": "zabuton",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 3,
+            "rotation": 0
+          },
+          "landing": {
+            "mainPos": {
+              "x": 3,
+              "y": 12
+            },
+            "subPos": {
+              "x": 3,
+              "y": 11
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99985.2,
+          "phase": "fold_building"
+        },
+        {
+          "placement": {
+            "column": 4,
+            "rotation": 0
+          },
+          "landing": {
+            "mainPos": {
+              "x": 4,
+              "y": 12
+            },
+            "subPos": {
+              "x": 4,
+              "y": 11
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99985.2,
+          "phase": "fold_building",
+          "tailShape": "L",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 5,
+            "rotation": 0
+          },
+          "landing": {
+            "mainPos": {
+              "x": 5,
+              "y": 12
+            },
+            "subPos": {
+              "x": 5,
+              "y": 11
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99985.2,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 3,
+            "rotation": 2
+          },
+          "landing": {
+            "mainPos": {
+              "x": 3,
+              "y": 11
+            },
+            "subPos": {
+              "x": 3,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99985.2,
+          "phase": "fold_building"
+        },
+        {
+          "placement": {
+            "column": 4,
+            "rotation": 2
+          },
+          "landing": {
+            "mainPos": {
+              "x": 4,
+              "y": 11
+            },
+            "subPos": {
+              "x": 4,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99985.2,
+          "phase": "fold_building",
+          "tailShape": "L",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 5,
+            "rotation": 2
+          },
+          "landing": {
+            "mainPos": {
+              "x": 5,
+              "y": 11
+            },
+            "subPos": {
+              "x": 5,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99985.2,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 2,
+            "rotation": 1
+          },
+          "landing": {
+            "mainPos": {
+              "x": 2,
+              "y": 12
+            },
+            "subPos": {
+              "x": 3,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99998.8,
+          "phase": "fold_building",
+          "tailShape": "zabuton",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 3,
+            "rotation": 3
+          },
+          "landing": {
+            "mainPos": {
+              "x": 3,
+              "y": 12
+            },
+            "subPos": {
+              "x": 2,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99998.8,
+          "phase": "fold_building",
+          "tailShape": "zabuton",
+          "tailColor": "green"
+        }
+      ]
+    },
+    "recentTurns": [],
+    "previousState": null
+  },
+  "after": {
+    "kind": "gtr-issue-snapshot",
+    "version": 1,
+    "appVersion": "1.0.0",
+    "capturedAt": "2026-10-04T08:47:31.704Z",
+    "mode": "guided",
+    "page": "http://127.0.0.1:5175/",
+    "turnNumber": 1,
+    "field": {
+      "grid": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "width": 6,
+      "height": 13
+    },
+    "currentPair": {
+      "main": {
+        "color": "red",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "nextPair": {
+      "main": {
+        "color": "green",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "nextNextPair": {
+      "main": {
+        "color": "blue",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "yellow",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "openingPairs": {
+      "pair1": {
+        "main": {
+          "color": "red",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "red",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "pair2": {
+        "main": {
+          "color": "green",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "red",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      }
+    },
+    "score": 0,
+    "gtrCount": 0,
+    "gtrScore": 0,
+    "gameOver": false,
+    "pairRandomState": 123456,
+    "trainingPlan": {
+      "colorA": "green",
+      "colorB": "red",
+      "colorC": "green",
+      "colorD": "red"
+    },
+    "settings": {
+      "gravityEnabled": false,
+      "advisorEnabled": true,
+      "paused": false,
+      "showingResult": false
+    },
+    "gtrEvaluation": {
+      "scoringVersion": "masked-foundation-minimal-v2",
+      "minimalFoundationComplete": false,
+      "isGTR": false,
+      "quality": 0,
+      "chainTailScore": 0,
+      "totalScore": 0,
+      "chainCount": 0,
+      "leftoverPuyos": 0,
+      "message": "GTRの必須折り返しがありません",
+      "hasBasicPattern": false,
+      "row10Usage": "heavy",
+      "rightEdgeRaised": false,
+      "leftoverConnected": false
+    },
+    "tailPlans": [
+      {
+        "shape": "zabuton",
+        "color": "green",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 10
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 5,
+            "y": 11
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          },
+          {
+            "x": 5,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 8,
+        "continuationCount": 4,
+        "templateFilled": false
+      },
+      {
+        "shape": "zabuton",
+        "color": "blue",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 10
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 5,
+            "y": 11
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          },
+          {
+            "x": 5,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 8,
+        "continuationCount": 4,
+        "templateFilled": false
+      },
+      {
+        "shape": "zabuton",
+        "color": "yellow",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 10
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 5,
+            "y": 11
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          },
+          {
+            "x": 5,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 8,
+        "continuationCount": 4,
+        "templateFilled": false
+      },
+      {
+        "shape": "Y",
+        "color": "green",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 6,
+        "continuationCount": 3,
+        "templateFilled": false
+      },
+      {
+        "shape": "Y",
+        "color": "blue",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 6,
+        "continuationCount": 3,
+        "templateFilled": false
+      },
+      {
+        "shape": "Y",
+        "color": "yellow",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 6,
+        "continuationCount": 3,
+        "templateFilled": false
+      },
+      {
+        "shape": "L",
+        "color": "green",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "supportCells": [],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 4,
+        "continuationCount": 2,
+        "templateFilled": false
+      },
+      {
+        "shape": "L",
+        "color": "blue",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "supportCells": [],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 4,
+        "continuationCount": 2,
+        "templateFilled": false
+      },
+      {
+        "shape": "L",
+        "color": "yellow",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "supportCells": [],
+        "matchedChainCells": 0,
+        "filledSupportCells": 0,
+        "matchedCells": 0,
+        "totalCells": 4,
+        "continuationCount": 2,
+        "templateFilled": false
+      }
+    ],
+    "advice": {
+      "phase": "fold_building",
+      "phaseMessage": "折り返しを作ろう（左下にぷよを積む）",
+      "bestPlacement": {
+        "placement": {
+          "column": 0,
+          "rotation": 1
+        },
+        "landing": {
+          "mainPos": {
+            "x": 0,
+            "y": 12
+          },
+          "subPos": {
+            "x": 1,
+            "y": 12
+          },
+          "valid": true
+        },
+        "immediateChainCount": 0,
+        "clearedPuyos": 0,
+        "isIntendedMainFire": false,
+        "hasCollateralClear": false,
+        "intendedMainChainCount": 0,
+        "intendedMainClearedPuyos": 0,
+        "totalScore": 100638.46920667795,
+        "phase": "fold_building",
+        "tailShape": "Y",
+        "tailColor": "yellow"
+      },
+      "candidates": [
+        {
+          "placement": {
+            "column": 0,
+            "rotation": 1
+          },
+          "landing": {
+            "mainPos": {
+              "x": 0,
+              "y": 12
+            },
+            "subPos": {
+              "x": 1,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": 100638.46920667795,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "yellow"
+        },
+        {
+          "placement": {
+            "column": 1,
+            "rotation": 3
+          },
+          "landing": {
+            "mainPos": {
+              "x": 1,
+              "y": 12
+            },
+            "subPos": {
+              "x": 0,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": 90000,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "blue"
+        },
+        {
+          "placement": {
+            "column": 1,
+            "rotation": 1
+          },
+          "landing": {
+            "mainPos": {
+              "x": 1,
+              "y": 12
+            },
+            "subPos": {
+              "x": 2,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99890.8,
+          "phase": "fold_building",
+          "tailShape": "zabuton",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 2,
+            "rotation": 3
+          },
+          "landing": {
+            "mainPos": {
+              "x": 2,
+              "y": 12
+            },
+            "subPos": {
+              "x": 1,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99890.8,
+          "phase": "fold_building",
+          "tailShape": "zabuton",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 3,
+            "rotation": 1
+          },
+          "landing": {
+            "mainPos": {
+              "x": 3,
+              "y": 12
+            },
+            "subPos": {
+              "x": 4,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99949.2,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 4,
+            "rotation": 3
+          },
+          "landing": {
+            "mainPos": {
+              "x": 4,
+              "y": 12
+            },
+            "subPos": {
+              "x": 3,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99949.2,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 4,
+            "rotation": 1
+          },
+          "landing": {
+            "mainPos": {
+              "x": 4,
+              "y": 12
+            },
+            "subPos": {
+              "x": 5,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99967.2,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 5,
+            "rotation": 3
+          },
+          "landing": {
+            "mainPos": {
+              "x": 5,
+              "y": 12
+            },
+            "subPos": {
+              "x": 4,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99967.2,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 2,
+            "rotation": 0
+          },
+          "landing": {
+            "mainPos": {
+              "x": 2,
+              "y": 12
+            },
+            "subPos": {
+              "x": 2,
+              "y": 11
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99970,
+          "phase": "fold_building",
+          "tailShape": "zabuton",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 2,
+            "rotation": 2
+          },
+          "landing": {
+            "mainPos": {
+              "x": 2,
+              "y": 11
+            },
+            "subPos": {
+              "x": 2,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99970,
+          "phase": "fold_building",
+          "tailShape": "zabuton",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 3,
+            "rotation": 0
+          },
+          "landing": {
+            "mainPos": {
+              "x": 3,
+              "y": 12
+            },
+            "subPos": {
+              "x": 3,
+              "y": 11
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99985.2,
+          "phase": "fold_building"
+        },
+        {
+          "placement": {
+            "column": 4,
+            "rotation": 0
+          },
+          "landing": {
+            "mainPos": {
+              "x": 4,
+              "y": 12
+            },
+            "subPos": {
+              "x": 4,
+              "y": 11
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99985.2,
+          "phase": "fold_building",
+          "tailShape": "L",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 5,
+            "rotation": 0
+          },
+          "landing": {
+            "mainPos": {
+              "x": 5,
+              "y": 12
+            },
+            "subPos": {
+              "x": 5,
+              "y": 11
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99985.2,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 3,
+            "rotation": 2
+          },
+          "landing": {
+            "mainPos": {
+              "x": 3,
+              "y": 11
+            },
+            "subPos": {
+              "x": 3,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99985.2,
+          "phase": "fold_building"
+        },
+        {
+          "placement": {
+            "column": 4,
+            "rotation": 2
+          },
+          "landing": {
+            "mainPos": {
+              "x": 4,
+              "y": 11
+            },
+            "subPos": {
+              "x": 4,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99985.2,
+          "phase": "fold_building",
+          "tailShape": "L",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 5,
+            "rotation": 2
+          },
+          "landing": {
+            "mainPos": {
+              "x": 5,
+              "y": 11
+            },
+            "subPos": {
+              "x": 5,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99985.2,
+          "phase": "fold_building",
+          "tailShape": "Y",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 2,
+            "rotation": 1
+          },
+          "landing": {
+            "mainPos": {
+              "x": 2,
+              "y": 12
+            },
+            "subPos": {
+              "x": 3,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99998.8,
+          "phase": "fold_building",
+          "tailShape": "zabuton",
+          "tailColor": "green"
+        },
+        {
+          "placement": {
+            "column": 3,
+            "rotation": 3
+          },
+          "landing": {
+            "mainPos": {
+              "x": 3,
+              "y": 12
+            },
+            "subPos": {
+              "x": 2,
+              "y": 12
+            },
+            "valid": true
+          },
+          "immediateChainCount": 0,
+          "clearedPuyos": 0,
+          "isIntendedMainFire": false,
+          "hasCollateralClear": false,
+          "intendedMainChainCount": 0,
+          "intendedMainClearedPuyos": 0,
+          "totalScore": -99998.8,
+          "phase": "fold_building",
+          "tailShape": "zabuton",
+          "tailColor": "green"
+        }
+      ]
+    },
+    "recentTurns": [],
+    "previousState": null
+  },
+  "comparisonCount": 0
+}

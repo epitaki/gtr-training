@@ -1,0 +1,17 @@
+[
+  {
+    "table_schema": "supabase_migrations",
+    "column_name": "version",
+    "data_type": "text"
+  },
+  {
+    "table_schema": "supabase_migrations",
+    "column_name": "statements",
+    "data_type": "ARRAY"
+  },
+  {
+    "table_schema": "supabase_migrations",
+    "column_name": "name",
+    "data_type": "text"
+  }
+]

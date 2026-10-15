@@ -1,0 +1,198 @@
+{
+  "status": {
+    "mode": "guide",
+    "completed": 120,
+    "checking": false,
+    "remaining": 0,
+    "elapsedSeconds": 312,
+    "frameSamples": 18704,
+    "frameMedianMs": 16.679999999999563,
+    "frameP95Ms": 16.69000000000087,
+    "idleCounts": {
+      "five": 27,
+      "one": 27
+    },
+    "failures": [],
+    "events": [
+      "完了: five / 5連鎖 / 200点",
+      "セット: one / 期待1連鎖4消去",
+      "完了: one / 1連鎖 / 40点",
+      "セット: five / 期待5連鎖20消去",
+      "完了: five / 5連鎖 / 200点",
+      "セット: one / 期待1連鎖4消去",
+      "完了: one / 1連鎖 / 40点",
+      "セット: five / 期待5連鎖20消去",
+      "完了: five / 5連鎖 / 200点",
+      "セット: one / 期待1連鎖4消去",
+      "完了: one / 1連鎖 / 40点",
+      "120回の実フレーム検査完了"
+    ]
+  },
+  "state": {
+    "mode": "guide",
+    "grid": [
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "blue",
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "current": {
+      "main": {
+        "color": "yellow",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "blue",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "next": {
+      "main": {
+        "color": "green",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "nextNext": {
+      "main": {
+        "color": "green",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "yellow",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "score": 40,
+    "gtrCount": 0,
+    "gtrScore": 0,
+    "playing": false,
+    "paused": false,
+    "rendererPresent": false,
+    "display": {
+      "total": 27,
+      "chainObjects": 0
+    },
+    "visibility": "visible",
+    "historyLength": 2,
+    "turns": 1,
+    "randomState": 3663255082,
+    "advisorEnabled": false,
+    "evaluationTexts": []
+  }
+}

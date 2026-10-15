@@ -1,0 +1,23 @@
+{
+  "project": {
+    "id": "fqzvthxzupjjkhpuwvst",
+    "name": "gtr-training",
+    "region": "ap-northeast-1",
+    "status": "ACTIVE_HEALTHY"
+  },
+  "auth": {
+    "site_url": "http://localhost:3000",
+    "uri_allow_list": "",
+    "disable_signup": false,
+    "external_google_enabled": false,
+    "external_github_enabled": false,
+    "external_email_enabled": true,
+    "google_client_configured": false,
+    "google_secret_configured": false,
+    "github_client_configured": false,
+    "github_secret_configured": false
+  },
+  "migrations": [],
+  "db": [],
+  "users": []
+}

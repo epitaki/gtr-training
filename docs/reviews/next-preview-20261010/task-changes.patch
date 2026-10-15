@@ -1,0 +1,352 @@
+--- src/game/rendering/VisualConfig.test.ts (before)
++++ src/game/rendering/VisualConfig.test.ts (after)
+@@ -1,5 +1,7 @@
+-import { describe, expect, it } from 'vitest'
++import { describe, expect, it, vi } from 'vitest'
++vi.mock('phaser', () => ({}))
+ import { FIELD_CONFIG, LAYOUT_GUIDED, NEXT_AREA_CONFIG } from './VisualConfig'
++import { getNextPreviewLayout } from './NextPreview'
+ 
+ describe('guided layout', () => {
+   it('configured guide panel leaves room for the NEXT sidebar and fits the canvas', () => {
+@@ -9,6 +11,20 @@
+     const guideLeft = LAYOUT_GUIDED.GUIDE_X - LAYOUT_GUIDED.GUIDE_WIDTH / 2
+     const guideRight = LAYOUT_GUIDED.GUIDE_X + LAYOUT_GUIDED.GUIDE_WIDTH / 2
+ 
++    const layout = getNextPreviewLayout(nextLeft, LAYOUT_GUIDED.FIELD_Y)
++    const halfPuyo = NEXT_AREA_CONFIG.CELL_SIZE / 2
++    expect(NEXT_AREA_CONFIG.CELL_SIZE).toBe(FIELD_CONFIG.CELL_SIZE)
++    for (const [index, pair] of [layout.next, layout.nextNext].entries()) {
++      const rowTop = layout.baseY + index * layout.rowHeight
++      const rowLeft = layout.baseX + (index ? NEXT_AREA_CONFIG.STEP_OFFSET : 0)
++      const rowRight = layout.baseX + layout.width - (index ? 0 : NEXT_AREA_CONFIG.STEP_OFFSET)
++      expect(pair.x - halfPuyo).toBeGreaterThan(rowLeft)
++      expect(pair.x + halfPuyo).toBeLessThan(rowRight)
++      expect(pair.labelY + NEXT_AREA_CONFIG.LABEL_HEIGHT).toBeLessThanOrEqual(pair.subY - halfPuyo)
++      expect(pair.mainY + halfPuyo).toBeLessThan(rowTop + layout.rowHeight)
++    }
++    expect(layout.statusY).toBeGreaterThan(layout.baseY + layout.height)
++    expect(layout.statusY + 64).toBeLessThanOrEqual(LAYOUT_GUIDED.CANVAS_HEIGHT)
+     expect(guideLeft).toBeGreaterThan(nextRight)
+     expect(guideRight).toBeLessThanOrEqual(LAYOUT_GUIDED.CANVAS_WIDTH - 20)
+   })
+--- src/game/rendering/VisualConfig.ts (before)
++++ src/game/rendering/VisualConfig.ts (after)
+@@ -42,13 +42,14 @@
+ } as const
+ 
+ export const NEXT_AREA_CONFIG = {
+-  NEXT_CELL_SIZE: 36,
+-  NEXT_NEXT_CELL_SIZE: 26,
+-  GAP_BETWEEN: 20,
++  CELL_SIZE: FIELD_CONFIG.CELL_SIZE,
++  LABEL_HEIGHT: 24,
++  STEP_OFFSET: 32,
++  STATUS_GAP: 16,
+   AREA_WIDTH: 120,
+-  AREA_PADDING: 16,
++  AREA_PADDING: 12,
+   BG_COLOR: 0x211d33,
+-  BORDER_COLOR: 0x51496b,
++  BORDER_COLOR: 0xb5a8ff,
+ } as const
+ 
+ export const ANIMATION_CONFIG = {
+--- src/game/scenes/ChainAnimationScenes.test.ts (before)
++++ src/game/scenes/ChainAnimationScenes.test.ts (after)
+@@ -105,17 +105,31 @@
+     expect(scene.fieldSprites[12][1].setDisplaySize).toHaveBeenCalledWith(48, 48)
+   })
+ 
+-  it.each([GuidedPracticeScene, PuyoGame])('uses mini12 for NEXT and 24px centered inside the existing NEXT2 slot', Scene => {
++  it.each([GuidedPracticeScene, PuyoGame])('shows both queued pairs at board size, in order, without mutating the queue', Scene => {
+     const scene = prepare(new Scene() as any)
++    const before = structuredClone(scene.gameState)
+     scene.updateNextPairSprites()
+     const calls = scene.add.sprite.mock.calls.slice(-4)
+     expect(calls.map((call: unknown[]) => call.slice(2))).toEqual([
+-      ['puyo-pixel-atlas', 'blue/mini12'], ['puyo-pixel-atlas', 'red/mini12'],
+-      ['puyo-pixel-atlas', 'blue/mini12'], ['puyo-pixel-atlas', 'red/mini12'],
++      ['puyo-pixel-atlas', 'blue/idle'], ['puyo-pixel-atlas', 'red/idle'],
++      ['puyo-pixel-atlas', 'blue/idle'], ['puyo-pixel-atlas', 'red/idle'],
+     ])
+-    expect(scene.nextPairSprites.main.setDisplaySize).toHaveBeenCalledWith(36, 36)
+-    expect(scene.nextNextPairSprites.main.setDisplaySize).toHaveBeenCalledWith(24, 24)
++    const sprites = [scene.nextPairSprites.sub, scene.nextPairSprites.main, scene.nextNextPairSprites.sub, scene.nextNextPairSprites.main]
++    sprites.forEach(sprite => expect(sprite.setDisplaySize).toHaveBeenCalledWith(48, 48))
++    expect(calls[0][0]).toBe(calls[1][0])
+     expect(calls[2][0]).toBe(calls[3][0])
++    expect(calls[1][1] - calls[0][1]).toBe(48)
++    expect(calls[3][1] - calls[2][1]).toBe(48)
++    expect(calls[2][0]).toBeGreaterThan(calls[0][0])
++    expect(calls[2][1] - calls[1][1]).toBeGreaterThan(48)
++    expect(scene.gameState).toEqual(before)
++    scene.gameState.nextPair.sub.color = PuyoColor.YELLOW
++    scene.gameState.nextNextPair.main.color = PuyoColor.GREEN
++    scene.updateNextPairSprites()
++    sprites.forEach(sprite => expect(sprite.destroy).toHaveBeenCalledOnce())
++    expect(scene.add.sprite.mock.calls.slice(-4).map((call: unknown[]) => call[3])).toEqual([
++      'yellow/idle', 'red/idle', 'blue/idle', 'green/idle',
++    ])
+   })
+ })
+ 
+--- src/game/scenes/GuidedPracticeScene.ts (before)
++++ src/game/scenes/GuidedPracticeScene.ts (after)
+@@ -20,7 +20,8 @@
+ import { PuyoBoardRenderer } from '../rendering/PuyoBoardRenderer'
+ import { PuyoRenderer } from '../rendering/PuyoRenderer'
+ import { cellMask } from '../rendering/PuyoConnections'
+-import { FIELD_CONFIG, LAYOUT_GUIDED, NEXT_AREA_CONFIG, TEXT_STYLES, ANIMATION_CONFIG } from '../rendering/VisualConfig'
++import { FIELD_CONFIG, LAYOUT_GUIDED, TEXT_STYLES, ANIMATION_CONFIG } from '../rendering/VisualConfig'
++import { createNextPairSprites, drawNextPreview, getNextPreviewLayout } from '../rendering/NextPreview'
+ import { PlacementAdvisor, PlacementAdvice, type GTRTrainingPlan } from '../advisor/PlacementAdvisor'
+ import { PhaserInputAdapter } from '../input/PhaserInputAdapter'
+ import { actionKeys, type GameAction } from '../input/bindings'
+@@ -1272,83 +1273,26 @@
+ 
+   private updateNextPairSprites() {
+     this.clearNextSprites()
+-
+     const layout = this.getNextAreaLayout()
+-
+-    if (this.gameState.nextPair) {
+-      const subY = layout.baseY + 40
+-      const mainY = layout.baseY + 76
+-
+-      this.nextPairSprites.sub = this.add.sprite(layout.boxCenterX, subY, PuyoRenderer.textureKey, PuyoRenderer.frame(this.gameState.nextPair.sub.color, 'mini12'))
+-      this.nextPairSprites.sub.setDisplaySize(NEXT_AREA_CONFIG.NEXT_CELL_SIZE, NEXT_AREA_CONFIG.NEXT_CELL_SIZE)
+-
+-      this.nextPairSprites.main = this.add.sprite(layout.boxCenterX, mainY, PuyoRenderer.textureKey, PuyoRenderer.frame(this.gameState.nextPair.main.color, 'mini12'))
+-      this.nextPairSprites.main.setDisplaySize(NEXT_AREA_CONFIG.NEXT_CELL_SIZE, NEXT_AREA_CONFIG.NEXT_CELL_SIZE)
+-    }
+-
+-    if (this.gameState.nextNextPair) {
+-      const subY = layout.nnBoxY + 34
+-      const mainY = layout.nnBoxY + 60
+-
+-      this.nextNextPairSprites.sub = this.add.sprite(layout.boxCenterX, subY, PuyoRenderer.textureKey, PuyoRenderer.frame(this.gameState.nextNextPair.sub.color, 'mini12'))
+-      this.nextNextPairSprites.sub.setDisplaySize(24, 24)
+-
+-      this.nextNextPairSprites.main = this.add.sprite(layout.boxCenterX, mainY, PuyoRenderer.textureKey, PuyoRenderer.frame(this.gameState.nextNextPair.main.color, 'mini12'))
+-      this.nextNextPairSprites.main.setDisplaySize(24, 24)
+-    }
++    if (this.gameState.nextPair) this.nextPairSprites = createNextPairSprites(this, this.gameState.nextPair, layout.next)
++    if (this.gameState.nextNextPair) this.nextNextPairSprites = createNextPairSprites(this, this.gameState.nextNextPair, layout.nextNext)
+   }
+ 
+   private getNextAreaLayout() {
+-    const baseX = this.FIELD_X + FIELD_CONFIG.COLS * this.CELL_SIZE + 20
+-    const baseY = this.FIELD_Y
+-    const nextBoxH = NEXT_AREA_CONFIG.NEXT_CELL_SIZE * 2 + NEXT_AREA_CONFIG.AREA_PADDING * 2
+-    const nnBoxY = baseY + nextBoxH + NEXT_AREA_CONFIG.GAP_BETWEEN
+-    const nnBoxH = NEXT_AREA_CONFIG.NEXT_NEXT_CELL_SIZE * 2 + NEXT_AREA_CONFIG.AREA_PADDING * 2
+-    return {
+-      baseX,
+-      baseY,
+-      boxCenterX: baseX + NEXT_AREA_CONFIG.AREA_WIDTH / 2,
+-      nextBoxH,
+-      nnBoxY,
+-      nnBoxH,
+-      statusY: nnBoxY + nnBoxH + 16,
+-    }
++    return getNextPreviewLayout(this.FIELD_X + FIELD_CONFIG.COLS * this.CELL_SIZE + 20, this.FIELD_Y)
+   }
+ 
+   private createNextAreas() {
+     const layout = this.getNextAreaLayout()
+-
+-    this.add.rectangle(layout.boxCenterX, layout.baseY + layout.nextBoxH / 2, NEXT_AREA_CONFIG.AREA_WIDTH, layout.nextBoxH, NEXT_AREA_CONFIG.BG_COLOR)
+-      .setStrokeStyle(2, NEXT_AREA_CONFIG.BORDER_COLOR)
+-
+-    this.add.rectangle(layout.boxCenterX, layout.nnBoxY + layout.nnBoxH / 2, NEXT_AREA_CONFIG.AREA_WIDTH, layout.nnBoxH, NEXT_AREA_CONFIG.BG_COLOR)
+-      .setStrokeStyle(1, NEXT_AREA_CONFIG.BORDER_COLOR).setAlpha(0.7)
+-
++    drawNextPreview(this, layout)
+     this.add.rectangle(
+-      layout.boxCenterX,
++      layout.baseX + layout.width / 2,
+       layout.statusY + 32,
+-      NEXT_AREA_CONFIG.AREA_WIDTH,
++      layout.width,
+       64,
+       0x191628,
+       0.92,
+     ).setStrokeStyle(1, 0x3f3955)
+-
+-    // ラベルを各ボックス内に収め、上部の操作説明と分離する。
+-    addUIText(this, layout.baseX + 9, layout.baseY + 7, 'NEXT', {
+-      fontSize: '14px',
+-      color: '#c4bfd3',
+-      fontFamily: TEXT_STYLES.title.fontFamily,
+-      
+-      letterSpacing: 1,
+-    })
+-
+-    addUIText(this, layout.baseX + 9, layout.nnBoxY + 7, 'NEXT 2', {
+-      fontSize: '14px',
+-      color: '#77738d',
+-      fontFamily: TEXT_STYLES.title.fontFamily,
+-      
+-      letterSpacing: 1,
+-    })
+   }
+ 
+   private clearNextSprites() {
+--- src/game/scenes/PuyoGame.ts (before)
++++ src/game/scenes/PuyoGame.ts (after)
+@@ -10,6 +10,7 @@
+ import { PuyoRenderer } from '../rendering/PuyoRenderer'
+ import { cellMask } from '../rendering/PuyoConnections'
+ import { FIELD_CONFIG, LAYOUT_SCORE_ATTACK, NEXT_AREA_CONFIG, TEXT_STYLES, ANIMATION_CONFIG } from '../rendering/VisualConfig'
++import { createNextPairSprites, drawNextPreview, getNextPreviewLayout } from '../rendering/NextPreview'
+ import { PhaserInputAdapter } from '../input/PhaserInputAdapter'
+ import { actionKeys, type GameAction } from '../input/bindings'
+ import { getBindings, subscribeBindings } from '../input/settings'
+@@ -156,9 +157,7 @@
+ 
+     // NEXTエリア下にGTR情報パネルを配置
+     const infoPanelX = this.FIELD_X + fieldW + 24
+-    const nextBoxH = NEXT_AREA_CONFIG.NEXT_CELL_SIZE * 2 + NEXT_AREA_CONFIG.AREA_PADDING * 2
+-    const nnBoxH = NEXT_AREA_CONFIG.NEXT_NEXT_CELL_SIZE * 2 + NEXT_AREA_CONFIG.AREA_PADDING * 2
+-    const infoPanelY = this.FIELD_Y + nextBoxH + NEXT_AREA_CONFIG.GAP_BETWEEN + nnBoxH + 30
++    const infoPanelY = this.getNextAreaLayout().statusY + 14
+ 
+     // 情報パネル背景
+     this.add.rectangle(
+@@ -698,67 +697,20 @@
+     this.lastFallTime = this.time.now
+   }
+ 
+-  private createNextAreas() {
+-    const baseX = this.FIELD_X + FIELD_CONFIG.COLS * this.CELL_SIZE + 24
+-    const baseY = this.FIELD_Y
+-
+-    // NEXTラベル
+-    addUIText(this, baseX, baseY - 26, 'NEXT', {
+-      ...TEXT_STYLES.label,
+-      fontSize: '14px',
+-      color: '#f8f7ff',
+-      letterSpacing: 1,
+-    })
+-
+-    // NEXTボックス
+-    const nextBoxH = NEXT_AREA_CONFIG.NEXT_CELL_SIZE * 2 + NEXT_AREA_CONFIG.AREA_PADDING * 2
+-    const nextBoxCX = baseX + NEXT_AREA_CONFIG.AREA_WIDTH / 2
+-    const nextBoxCY = baseY + nextBoxH / 2
+-
+-    this.add.rectangle(nextBoxCX, nextBoxCY, NEXT_AREA_CONFIG.AREA_WIDTH, nextBoxH, NEXT_AREA_CONFIG.BG_COLOR)
+-      .setStrokeStyle(2, NEXT_AREA_CONFIG.BORDER_COLOR)
+-
+-    // ネクネクストボックス
+-    const nnBoxY = baseY + nextBoxH + NEXT_AREA_CONFIG.GAP_BETWEEN
+-    const nnBoxH = NEXT_AREA_CONFIG.NEXT_NEXT_CELL_SIZE * 2 + NEXT_AREA_CONFIG.AREA_PADDING * 2
+-    const nnBoxCY = nnBoxY + nnBoxH / 2
+-
+-    this.add.rectangle(nextBoxCX, nnBoxCY, NEXT_AREA_CONFIG.AREA_WIDTH, nnBoxH, NEXT_AREA_CONFIG.BG_COLOR)
+-      .setStrokeStyle(1, NEXT_AREA_CONFIG.BORDER_COLOR).setAlpha(0.7)
+-  }
+-
+   private updateNextPairSprites() {
+     this.clearNextSprites()
+-
+-    const baseX = this.FIELD_X + FIELD_CONFIG.COLS * this.CELL_SIZE + 24
+-    const baseY = this.FIELD_Y
+-    const boxCenterX = baseX + NEXT_AREA_CONFIG.AREA_WIDTH / 2
+-
+-    // NEXTぷよ - 縦並びで表示（サブが上、メインが下）
+-    if (this.gameState.nextPair) {
+-      const subY = baseY + NEXT_AREA_CONFIG.AREA_PADDING + NEXT_AREA_CONFIG.NEXT_CELL_SIZE * 0.5
+-      const mainY = baseY + NEXT_AREA_CONFIG.AREA_PADDING + NEXT_AREA_CONFIG.NEXT_CELL_SIZE * 1.5
+-
+-      this.nextPairSprites.sub = this.add.sprite(boxCenterX, subY, PuyoRenderer.textureKey, PuyoRenderer.frame(this.gameState.nextPair.sub.color, 'mini12'))
+-      this.nextPairSprites.sub.setDisplaySize(NEXT_AREA_CONFIG.NEXT_CELL_SIZE, NEXT_AREA_CONFIG.NEXT_CELL_SIZE)
+-
+-      this.nextPairSprites.main = this.add.sprite(boxCenterX, mainY, PuyoRenderer.textureKey, PuyoRenderer.frame(this.gameState.nextPair.main.color, 'mini12'))
+-      this.nextPairSprites.main.setDisplaySize(NEXT_AREA_CONFIG.NEXT_CELL_SIZE, NEXT_AREA_CONFIG.NEXT_CELL_SIZE)
+-    }
+-
+-    // ネクネクストぷよ
+-    if (this.gameState.nextNextPair) {
+-      const nextBoxH = NEXT_AREA_CONFIG.NEXT_CELL_SIZE * 2 + NEXT_AREA_CONFIG.AREA_PADDING * 2
+-      const nnBaseY = baseY + nextBoxH + NEXT_AREA_CONFIG.GAP_BETWEEN
+-      const subY = nnBaseY + NEXT_AREA_CONFIG.AREA_PADDING + NEXT_AREA_CONFIG.NEXT_NEXT_CELL_SIZE * 0.5
+-      const mainY = nnBaseY + NEXT_AREA_CONFIG.AREA_PADDING + NEXT_AREA_CONFIG.NEXT_NEXT_CELL_SIZE * 1.5
+-
+-      this.nextNextPairSprites.sub = this.add.sprite(boxCenterX, subY, PuyoRenderer.textureKey, PuyoRenderer.frame(this.gameState.nextNextPair.sub.color, 'mini12'))
+-      this.nextNextPairSprites.sub.setDisplaySize(24, 24)
+-
+-      this.nextNextPairSprites.main = this.add.sprite(boxCenterX, mainY, PuyoRenderer.textureKey, PuyoRenderer.frame(this.gameState.nextNextPair.main.color, 'mini12'))
+-      this.nextNextPairSprites.main.setDisplaySize(24, 24)
+-    }
++    const layout = this.getNextAreaLayout()
++    if (this.gameState.nextPair) this.nextPairSprites = createNextPairSprites(this, this.gameState.nextPair, layout.next)
++    if (this.gameState.nextNextPair) this.nextNextPairSprites = createNextPairSprites(this, this.gameState.nextNextPair, layout.nextNext)
++  }
++
++  private getNextAreaLayout() {
++    return getNextPreviewLayout(this.FIELD_X + FIELD_CONFIG.COLS * this.CELL_SIZE + 24, this.FIELD_Y)
++  }
++
++  private createNextAreas() {
++    const layout = this.getNextAreaLayout()
++    drawNextPreview(this, layout)
+   }
+ 
+   private clearNextSprites() {
+--- /dev/null
++++ src/game/rendering/NextPreview.ts
+@@ -0,0 +1,53 @@
++import type * as Phaser from 'phaser'
++import type { PuyoPair } from '../core/types'
++import { NEXT_AREA_CONFIG } from './VisualConfig'
++import { PuyoRenderer } from './PuyoRenderer'
++import { addUIText } from './UIText'
++
++export function getNextPreviewLayout(baseX: number, baseY: number) {
++  const { CELL_SIZE: cellSize, AREA_WIDTH: width, AREA_PADDING: padding, LABEL_HEIGHT, STEP_OFFSET: step } = NEXT_AREA_CONFIG
++  const rowHeight = padding * 2 + LABEL_HEIGHT + cellSize * 2
++  const height = rowHeight * 2
++  const nextX = baseX + (width - step) / 2
++  const nextNextX = nextX + step
++  const subY = baseY + padding + LABEL_HEIGHT + cellSize / 2
++  return {
++    baseX, baseY, width, height, rowHeight,
++    next: { x: nextX, subY, mainY: subY + cellSize, labelY: baseY + padding },
++    nextNext: { x: nextNextX, subY: subY + rowHeight, mainY: subY + rowHeight + cellSize, labelY: baseY + rowHeight + padding },
++    statusY: baseY + height + NEXT_AREA_CONFIG.STATUS_GAP,
++    outline: [[0, 0], [width - step, 0], [width - step, rowHeight], [width, rowHeight],
++      [width, height], [step, height], [step, rowHeight], [0, rowHeight]] as readonly (readonly [number, number])[],
++  }
++}
++
++type NextPreviewLayout = ReturnType<typeof getNextPreviewLayout>
++
++/** One continuous frame follows the queue from the upper left to the lower right. */
++export function drawNextPreview(scene: Phaser.Scene, layout: NextPreviewLayout): void {
++  const frame = scene.add.graphics()
++  frame.fillStyle(NEXT_AREA_CONFIG.BG_COLOR, 1)
++  frame.lineStyle(3, NEXT_AREA_CONFIG.BORDER_COLOR, 1)
++  frame.beginPath()
++  layout.outline.forEach(([x, y], index) => {
++    if (index === 0) frame.moveTo(layout.baseX + x, layout.baseY + y)
++    else frame.lineTo(layout.baseX + x, layout.baseY + y)
++  })
++  frame.closePath()
++  frame.fillPath()
++  frame.strokePath()
++  for (const [text, position] of [['NEXT', layout.next], ['NEXT2', layout.nextNext]] as const) {
++    addUIText(scene, position.x, position.labelY, text, {
++      fontSize: '14px', color: '#f8f7ff',
++    }).setOrigin(0.5, 0)
++  }
++}
++
++export function createNextPairSprites(scene: Phaser.Scene, pair: PuyoPair, position: NextPreviewLayout['next']) {
++  const size = NEXT_AREA_CONFIG.CELL_SIZE
++  const sub = scene.add.sprite(position.x, position.subY, PuyoRenderer.textureKey, PuyoRenderer.frame(pair.sub.color, 'idle'))
++  sub.setDisplaySize(size, size)
++  const main = scene.add.sprite(position.x, position.mainY, PuyoRenderer.textureKey, PuyoRenderer.frame(pair.main.color, 'idle'))
++  main.setDisplaySize(size, size)
++  return { main, sub }
++}

@@ -1,0 +1,98 @@
+{
+  "guest": true,
+  "expectedScore": 100,
+  "texts": [
+    {
+      "text": "土台5連鎖完成",
+      "fontSize": "32px",
+      "resolution": 2
+    },
+    {
+      "text": "土台スコア: 100点",
+      "fontSize": "32px",
+      "resolution": 2
+    },
+    {
+      "text": "GTR評価範囲",
+      "fontSize": "14px",
+      "resolution": 2
+    },
+    {
+      "text": "○ 折り返し",
+      "fontSize": "16px",
+      "resolution": 2
+    },
+    {
+      "text": "○ 教材の連鎖尾基本形",
+      "fontSize": "16px",
+      "resolution": 2
+    },
+    {
+      "text": "○ 3連鎖",
+      "fontSize": "16px",
+      "resolution": 2
+    },
+    {
+      "text": "○ 4連鎖",
+      "fontSize": "16px",
+      "resolution": 2
+    },
+    {
+      "text": "○ 5連鎖",
+      "fontSize": "16px",
+      "resolution": 2
+    },
+    {
+      "text": "○ 最小土台が完成",
+      "fontSize": "16px",
+      "resolution": 2
+    },
+    {
+      "text": "○ 余りなし・1個・同色連結",
+      "fontSize": "16px",
+      "resolution": 2
+    },
+    {
+      "text": "仮想発火：再生待ち",
+      "fontSize": "14px",
+      "resolution": 2
+    },
+    {
+      "text": "同色1個を仮置きして再生（採点とは別）",
+      "fontSize": "14px",
+      "resolution": 2
+    },
+    {
+      "text": "もう一度",
+      "fontSize": "16px",
+      "resolution": 2
+    },
+    {
+      "text": "土台5連鎖 = 基本形2連鎖 + 連鎖尾3連鎖",
+      "fontSize": "14px",
+      "resolution": 2
+    },
+    {
+      "text": "土台の連鎖・余り・点数は評価範囲内のみ",
+      "fontSize": "14px",
+      "resolution": 2
+    },
+    {
+      "text": "将来の色・配置待ち（仮置きでは本線5連鎖。今の組では未確認）\n実在ぷよ：コア7／土台参加12／土台余り0\n範囲外：接続見込み0／接続未確認0（この仮想本線での分類）\n100点は最小19個の土台。範囲外の接続や実発火とは別です",
+      "fontSize": "14px",
+      "resolution": 2
+    },
+    {
+      "text": "Spaceキーで新しいゲームを開始\nEscキーでメニューに戻る",
+      "fontSize": "16px",
+      "resolution": 2
+    }
+  ],
+  "scoreAlpha": {
+    "partial": 3244,
+    "solid": 4394
+  },
+  "fontLoaded": true,
+  "exceptionCount": 0,
+  "saveRequests": 0
+}

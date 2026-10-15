@@ -1,0 +1,9 @@
+{
+  "migrationSourceMatches": true,
+  "quotaDefinitionVerified": true,
+  "can_change_role": false,
+  "can_change_id": false,
+  "can_change_name": true,
+  "can_change_avatar": true,
+  "exposed_views": []
+}

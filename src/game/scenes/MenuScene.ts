@@ -1,3 +1,4 @@
+import { addUIText } from '../rendering/UIText'
 import * as Phaser from 'phaser'
 
 export default class MenuScene extends Phaser.Scene {
@@ -10,20 +11,20 @@ export default class MenuScene extends Phaser.Scene {
     const centerY = this.cameras.main.height / 2
 
     // 背景
-    this.add.rectangle(centerX, centerY, 800, 800, 0x1a1a1a)
+    this.add.rectangle(centerX, centerY, 800, 800, 0x171426)
 
     // タイトル
-    this.add.text(centerX, 150, 'GTRトレーニングツール', {
-      fontSize: '36px',
-      color: '#ffffff',
-      fontFamily: 'Arial, sans-serif'
+    addUIText(this, centerX, 150, 'GTRトレーニングツール', {
+      fontSize: '32px',
+      color: '#f6f2ff',
+      wordWrap: { width: this.cameras.main.width - 80, useAdvancedWrap: true }, align: 'center'
     }).setOrigin(0.5)
 
     // サブタイトル
-    this.add.text(centerX, 200, 'ぷよぷよGTR練習ゲーム', {
+    addUIText(this, centerX, 200, 'ぷよぷよGTR練習ゲーム', {
       fontSize: '18px',
-      color: '#888888',
-      fontFamily: 'Arial, sans-serif'
+      color: '#c4bfd3',
+      wordWrap: { width: this.cameras.main.width - 80, useAdvancedWrap: true }, align: 'center'
     }).setOrigin(0.5)
 
     // メニュー項目
@@ -38,17 +39,17 @@ export default class MenuScene extends Phaser.Scene {
 
     menuItems.forEach((item, index) => {
       const y = 350 + index * 80
-      const text = this.add.text(centerX, y, item.text, {
+      const text = addUIText(this, centerX, y, item.text, {
         fontSize: '24px',
-        color: item.enabled ? '#ffffff' : '#555555',
-        fontFamily: 'Arial, sans-serif'
+        color: item.enabled ? '#f6f2ff' : '#c4bfd3',
+        wordWrap: { width: this.cameras.main.width - 80, useAdvancedWrap: true }, align: 'center'
       }).setOrigin(0.5)
 
       if (!item.enabled) {
-        this.add.text(centerX, y + 25, '（後日実装予定）', {
+        addUIText(this, centerX, y + 25, '（後日実装予定）', {
           fontSize: '14px',
-          color: '#555555',
-          fontFamily: 'Arial, sans-serif'
+          color: '#c4bfd3',
+          wordWrap: { width: this.cameras.main.width - 80, useAdvancedWrap: true }, align: 'center'
         }).setOrigin(0.5)
       }
 
@@ -70,17 +71,18 @@ export default class MenuScene extends Phaser.Scene {
     })
 
     // 選択カーソル
-    const cursor = this.add.text(centerX - 150, 350, '▶', {
+    const cursor = addUIText(this, centerX - 150, 350, '→', {
       fontSize: '24px',
       color: '#ffff00',
-      fontFamily: 'Arial, sans-serif'
+      wordWrap: { width: this.cameras.main.width - 80, useAdvancedWrap: true }, align: 'center'
     }).setOrigin(0.5)
 
     const updateSelection = () => {
       if (menuTexts.length > 0) {
         cursor.y = menuTexts[selectedIndex].y
+        cursor.x = menuTexts[selectedIndex].x - menuTexts[selectedIndex].width / 2 - 24
         menuTexts.forEach((text, index) => {
-          text.setColor(index === selectedIndex ? '#ffff00' : '#ffffff')
+          text.setColor(index === selectedIndex ? '#ffff00' : '#f6f2ff')
         })
       }
     }
@@ -123,10 +125,10 @@ export default class MenuScene extends Phaser.Scene {
     })
 
     // 操作説明
-    this.add.text(centerX, 650, '↑↓: 選択  Enter/Space: 決定', {
+    addUIText(this, centerX, 650, '↑↓: 選択  Enter/Space: 決定', {
       fontSize: '16px',
-      color: '#888888',
-      fontFamily: 'Arial, sans-serif'
+      color: '#c4bfd3',
+      wordWrap: { width: this.cameras.main.width - 80, useAdvancedWrap: true }, align: 'center'
     }).setOrigin(0.5)
 
     updateSelection()

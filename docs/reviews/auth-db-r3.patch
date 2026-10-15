@@ -1,0 +1,2478 @@
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\.env.example" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\.env.example"
+index 5b00de2..ade750b 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\.env.example"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\.env.example"
+@@ -1,3 +1,3 @@
+-# Supabase設定
+-VITE_SUPABASE_URL=your_supabase_project_url
+-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+\ No newline at end of file
++# Public browser configuration from a NEW Supabase project. Never use a service_role key here.
++VITE_SUPABASE_URL=
++VITE_SUPABASE_ANON_KEY=
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\.gitignore" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\.gitignore"
+index 30a23cf..6187962 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\.gitignore"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\.gitignore"
+@@ -10,6 +10,7 @@ lerna-debug.log*
+ node_modules
+ dist
+ dist-ssr
++.local/
+ *.local
+ benchmarks/results/
+ 
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\bun.lock" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\bun.lock"
+index a95c0df..4cf1cf5 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\bun.lock"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\bun.lock"
+@@ -18,9 +18,12 @@
+         "zustand": "^4.5.7",
+       },
+       "devDependencies": {
++        "@electric-sql/pglite": "^0.5.8",
+         "@testing-library/react": "^16.3.0",
++        "@types/jsdom": "^30.0.0",
+         "@types/node": "^24.2.0",
+         "autoprefixer": "^10.4.21",
++        "jsdom": "^30.1.1",
+         "postcss": "^8.5.6",
+         "tailwindcss": "^3.4.17",
+         "vitest": "^3.2.4",
+@@ -30,6 +33,10 @@
+   "packages": {
+     "@alloc/quick-lru": ["@alloc/quick-lru@5.3.0", "", {}, "sha512-U4+70Pc5ZS9osnCBCE5Jha/ciHM+Yp+CNMNC/7HvYbNRk1Ldd+f7qO65W5qfhu/TCv+/ozljlXXe9Nj8419DMA=="],
+ 
++    "@asamuzakjp/css-color": ["@asamuzakjp/css-color@7.1.2", "", { "dependencies": { "@csstools/css-calc": "^3.4.1", "@csstools/css-color-parser": "^4.2.4", "@csstools/css-parser-algorithms": "^4.0.1", "@csstools/css-tokenizer": "^4.0.2", "lru-cache": "^11.5.3" } }, "sha512-99DHAnXDB5z6EEK+9GMpVI7Mw4oxj97dY5bpOzMnjADQWxI8rN6TvTduuFLUhUMlS7/CfVZ06tcZsus6cltnNw=="],
++
++    "@asamuzakjp/dom-selector": ["@asamuzakjp/dom-selector@9.2.2", "", { "dependencies": { "bidi-js": "^1.1.0", "css-tree": "^3.2.1", "is-potential-custom-element-name": "^1.0.1", "lru-cache": "^11.5.3" } }, "sha512-lSWTBMjAcmu2xn5yEDU7jh6QDV+C8GEKtdJ4pIQhXh26RkKQ7S3FuQlt+zZkUbTdJ4d3XyV1kPI/G0zWXxqaqw=="],
++
+     "@babel/code-frame": ["@babel/code-frame@7.29.7", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.29.7", "js-tokens": "^4.0.0", "picocolors": "^1.1.1" } }, "sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw=="],
+ 
+     "@babel/compat-data": ["@babel/compat-data@7.29.7", "", {}, "sha512-locTkQyKvwIEgBzVrn8693ebc97F2U8ZHjbXwDXJ5Fn2TCpNwTlKcaKLkdHop5c/icOFE7qt7Q9JC5hnKNa6Gg=="],
+@@ -70,6 +77,22 @@
+ 
+     "@babel/types": ["@babel/types@7.29.8", "", { "dependencies": { "@babel/helper-string-parser": "^7.29.7", "@babel/helper-validator-identifier": "^7.29.7" } }, "sha512-Vj1jF3cPfxg7OAfoI7QnVKLoILlm2JF9pnVHrX8qx7AHMiYWT+NDAA7jChlNgRS4WTLc/fD1lXLmPixluj+3Gg=="],
+ 
++    "@bramus/specificity": ["@bramus/specificity@2.4.2", "", { "dependencies": { "css-tree": "^3.0.0" }, "bin": { "specificity": "bin/cli.js" } }, "sha512-ctxtJ/eA+t+6q2++vj5j7FYX3nRu311q1wfYH3xjlLOsczhlhxAg2FWNUXhpGvAw3BWo1xBcvOV6/YLc2r5FJw=="],
++
++    "@csstools/color-helpers": ["@csstools/color-helpers@6.1.2", "", {}, "sha512-grhRy3OKmniaAEKXMjua5z/EODX0MSqBGjunw8+j/3HQjOnahs2AGhvEOIYVUWcU6ScApbhLhVrQTX8XqrMrow=="],
++
++    "@csstools/css-calc": ["@csstools/css-calc@3.4.1", "", { "peerDependencies": { "@csstools/css-parser-algorithms": "^4.0.1", "@csstools/css-tokenizer": "^4.0.2" } }, "sha512-EtC7SoN1j6J4E4DCwg5QgbO5TGxgxIA1RXqe+W+qUM+BUcezx9wT+/tiQ/WO2yCX4i5X+Cuf9ciJ22aP4UEwWw=="],
++
++    "@csstools/css-color-parser": ["@csstools/css-color-parser@4.2.4", "", { "dependencies": { "@csstools/color-helpers": "^6.1.2", "@csstools/css-calc": "^3.4.1" }, "peerDependencies": { "@csstools/css-parser-algorithms": "^4.0.1", "@csstools/css-tokenizer": "^4.0.2" } }, "sha512-DyefytAZ735mX4Dq/WcDAXFtXhaEFvme0ZS9tVEBAc2whxUthXr0R0L2rmEPm59SrMBkGrFzQviBXMs/UtnABQ=="],
++
++    "@csstools/css-parser-algorithms": ["@csstools/css-parser-algorithms@4.0.1", "", { "peerDependencies": { "@csstools/css-tokenizer": "^4.0.2" } }, "sha512-ShL8BqPfbKJrJiKFH0xBbN0i7Nrh9HXYRuF+pzyj93R/BL2YAsUxJeqANErzqM+0JGl7vjHp+3OIgd/DL69YIA=="],
++
++    "@csstools/css-syntax-patches-for-csstree": ["@csstools/css-syntax-patches-for-csstree@1.1.14", "", { "peerDependencies": { "css-tree": "^3.2.1" }, "optionalPeers": ["css-tree"] }, "sha512-HpbVXyrofRXpHpgkNIjU/3EWR4WJvOkO3emNK/L6X/mTJU7bGUI3AkkpoTNXznQLp0KRjLHELTGeKI5dIkI9JQ=="],
++
++    "@csstools/css-tokenizer": ["@csstools/css-tokenizer@4.0.2", "", {}, "sha512-OoKoR0f76dCY666JlcbhmVTs2drYj1GUXZTYTcbUgJjh9Nv41aFfZ21bPQTERm5+L5cBDo466NltB2lplS5GBw=="],
++
++    "@electric-sql/pglite": ["@electric-sql/pglite@0.5.8", "", {}, "sha512-n9tsbUOhwx2epK1V0ZG9Ar4SHWUju04dhmzZXiSBXwBoleOvIfals33NAaWgagQVAL4Rbvx/Ptsu3P+pA09f6Q=="],
++
+     "@esbuild/aix-ppc64": ["@esbuild/aix-ppc64@0.28.2", "", { "os": "aix", "cpu": "ppc64" }, "sha512-XExcO+dvLKvVtNTibSTBej1NCAbaGhWn9Ww1ZPx80qsahhPFe/8jgWP0IchNe0F3HwkU7n8ejhH8bjonqht8mQ=="],
+ 
+     "@esbuild/android-arm": ["@esbuild/android-arm@0.28.2", "", { "os": "android", "cpu": "arm" }, "sha512-kXXoiPVVGQcnIYGOeaovwOURpniDBpSq4A03qkQ+BMQqtGG6HYap3xne9C1O1yo4TR3qxlCX5IqqmX6fFo2Lqg=="],
+@@ -122,6 +145,8 @@
+ 
+     "@esbuild/win32-x64": ["@esbuild/win32-x64@0.28.2", "", { "os": "win32", "cpu": "x64" }, "sha512-5ebpxr3nWMzrL/rnUI755Jkuee0bHL/Gq0WTF9lvcpv73wAp5eu8MfBUgWK9bhWvZjj7yX8etf/8tI8Ney695g=="],
+ 
++    "@exodus/bytes": ["@exodus/bytes@1.16.0", "", { "peerDependencies": { "@noble/hashes": "^1.8.0 || ^2.0.0" }, "optionalPeers": ["@noble/hashes"] }, "sha512-IcpW84uEn3N7ETtNZMlxKhfl6Pec8rUNGOTBtWbK1FKhJxIFAptZyVrvVRVBimAJxJCgc3PxepxkdWWG4DVzfA=="],
++
+     "@jridgewell/gen-mapping": ["@jridgewell/gen-mapping@0.3.13", "", { "dependencies": { "@jridgewell/sourcemap-codec": "^1.5.0", "@jridgewell/trace-mapping": "^0.3.24" } }, "sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA=="],
+ 
+     "@jridgewell/remapping": ["@jridgewell/remapping@2.3.5", "", { "dependencies": { "@jridgewell/gen-mapping": "^0.3.5", "@jridgewell/trace-mapping": "^0.3.24" } }, "sha512-LI9u/+laYG4Ds1TDKSJW2YPrIlcVYOwi2fUC6xB43lueCjgxV4lffOCZCtYFiH6TNOX+tQKXx97T4IKHbhyHEQ=="],
+@@ -226,12 +251,16 @@
+ 
+     "@types/estree": ["@types/estree@1.0.9", "", {}, "sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg=="],
+ 
++    "@types/jsdom": ["@types/jsdom@30.0.0", "", { "dependencies": { "@types/node": "*", "@types/tough-cookie": "*", "parse5": "^8.0.0", "undici-types": "^8.9.0" } }, "sha512-uAHGxujGE0cDaKGdK28zgDotFtNA7MKq5DXl8LrfdxdCI8VHcg15oJz+amHTChPNI5JpgEPQWc2xFdrw3em/nQ=="],
++
+     "@types/node": ["@types/node@24.13.3", "", { "dependencies": { "undici-types": "~7.18.0" } }, "sha512-Dh8vAsV36ig5wa9OX4pXvMc9D3Veibfw2wix0CUwYODLD8nkj9UsLjASr49nPg+2eKzxhBV+v7L8pXvT4e639Q=="],
+ 
+     "@types/react": ["@types/react@19.2.18", "", { "dependencies": { "csstype": "^3.2.2" } }, "sha512-AnzbBERsrLKtk2XSfTbYRLjQPdy116Sty4q+T+Bp3IC4l6jNBvreVPAHmpq9qhXQM7CXZPjLVmGMw9sy+hxQ3w=="],
+ 
+     "@types/react-dom": ["@types/react-dom@19.2.5", "", { "peerDependencies": { "@types/react": "^19.2.0" } }, "sha512-fMPwH9v7r/pp43yUd2/Mbiex5KouJwwR3dzHkhLREUC6764VyDsqxhAxv6OFEYR1RhjOyD1naqba8ECDBe7ZQg=="],
+ 
++    "@types/tough-cookie": ["@types/tough-cookie@4.0.5", "", {}, "sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA=="],
++
+     "@vitejs/plugin-react": ["@vitejs/plugin-react@5.2.0", "", { "dependencies": { "@babel/core": "^7.29.0", "@babel/plugin-transform-react-jsx-self": "^7.27.1", "@babel/plugin-transform-react-jsx-source": "^7.27.1", "@rolldown/pluginutils": "1.0.0-rc.3", "@types/babel__core": "^7.20.5", "react-refresh": "^0.18.0" }, "peerDependencies": { "vite": "^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0" } }, "sha512-YmKkfhOAi3wsB1PhJq5Scj3GXMn3WvtQ/JC0xoopuHoXSdmtdStOpFrYaT1kie2YgFBcIe64ROzMYRjCrYOdYw=="],
+ 
+     "@vitest/expect": ["@vitest/expect@3.2.7", "", { "dependencies": { "@types/chai": "^5.2.2", "@vitest/spy": "3.2.7", "@vitest/utils": "3.2.7", "chai": "^5.2.0", "tinyrainbow": "^2.0.0" } }, "sha512-E8eBXaKibuvH2pSZErOjdVb5vF4PbKYcrnluBTYxEk1l/VhhwZg1kZQsdtjq+CsF5CFydf2Rdkz7jDHKSisi3w=="],
+@@ -266,6 +295,8 @@
+ 
+     "baseline-browser-mapping": ["baseline-browser-mapping@2.11.20", "", { "bin": { "baseline-browser-mapping": "dist/cli.cjs" } }, "sha512-H0ulySigv6icDJ1F7SjtdCD6PrhTpdYCmP0CactWy1+ekh0AFd0o1Wn5T8b+hnTmdBx19u9yhL6wvCylXMY7zw=="],
+ 
++    "bidi-js": ["bidi-js@1.1.0", "", { "dependencies": { "require-from-string": "^2.0.2" } }, "sha512-fX1Onk0tdVPC7obPWB5EbJ1z7NVhLq4m2xZLq2YXBkxzMXIGRpNMU88n0EPgWseKl12J7zXs7qrDxPK4sRs2fg=="],
++
+     "binary-extensions": ["binary-extensions@2.3.0", "", {}, "sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw=="],
+ 
+     "braces": ["braces@3.0.3", "", { "dependencies": { "fill-range": "^7.1.1" } }, "sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA=="],
+@@ -288,12 +319,18 @@
+ 
+     "convert-source-map": ["convert-source-map@2.0.0", "", {}, "sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg=="],
+ 
++    "css-tree": ["css-tree@3.2.1", "", { "dependencies": { "mdn-data": "2.27.1", "source-map-js": "^1.2.1" } }, "sha512-X7sjQzceUhu1u7Y/ylrRZFU2FS6LRiFVp6rKLPg23y3x3c3DOKAwuXGDp+PAGjh6CSnCjYeAul8pcT8bAl+lSA=="],
++
+     "cssesc": ["cssesc@3.0.0", "", { "bin": { "cssesc": "bin/cssesc" } }, "sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg=="],
+ 
+     "csstype": ["csstype@3.2.3", "", {}, "sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ=="],
+ 
++    "data-urls": ["data-urls@7.0.0", "", { "dependencies": { "whatwg-mimetype": "^5.0.0", "whatwg-url": "^16.0.0" } }, "sha512-23XHcCF+coGYevirZceTVD7NdJOqVn+49IHyxgszm+JIiHLoB2TkmPtsYkNWT1pvRSGkc35L6NHs0yHkN2SumA=="],
++
+     "debug": ["debug@4.4.3", "", { "dependencies": { "ms": "^2.1.3" }, "peerDependencies": { "supports-color": "*" }, "optionalPeers": ["supports-color"] }, "sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA=="],
+ 
++    "decimal.js": ["decimal.js@10.6.0", "", {}, "sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg=="],
++
+     "deep-eql": ["deep-eql@5.0.2", "", {}, "sha512-h5k/5U50IJJFpzfL6nO9jaaumfjO/f2NjK/oYB2Djzm4p9L+3T9qWpZqZ2hAbLPuuYq9wrU08WQyBTL5GbPk5Q=="],
+ 
+     "dequal": ["dequal@2.0.3", "", {}, "sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA=="],
+@@ -306,6 +343,8 @@
+ 
+     "electron-to-chromium": ["electron-to-chromium@1.5.420", "", {}, "sha512-2yD6XreGusOfNV+dUcvipJEXc3n/n7fgr7996aszTG+YY5E4mqM4tOq/3uhP129cazL9YHbVWSpc79ePotWtPA=="],
+ 
++    "entities": ["entities@8.1.0", "", {}, "sha512-kxL7msIffSuh9aaFAMD7rxAIuTRMAHMeBtgHW2yUdWw732ZNh4MehkF2gdjvtdmikkaIP9bFDDJOPlsvm7avrA=="],
++
+     "es-errors": ["es-errors@1.3.0", "", {}, "sha512-Zf5H2Kxt2xjTvbJvP2ZWLEICxA6j+hAmMzIlypy4xcBg1vKVnx89Wy0GbS+kf5cwCVFFzdCFh2XSCFNULS6csw=="],
+ 
+     "es-module-lexer": ["es-module-lexer@1.7.0", "", {}, "sha512-jEQoCwk8hyb2AZziIOLhDqpm5+2ww5uIE6lkO/6jcOCusfk6LhMHpXXfBLXTZ7Ydyt0j4VoUQv6uGNYbdW+kBA=="],
+@@ -342,6 +381,8 @@
+ 
+     "hono": ["hono@4.13.5", "", {}, "sha512-O6+/eCYRkzzzy0rPWwKLiGBR1nFuUPZynnwjxN1MBA62NNqbT0wQEzQyK2gSO5yDIDB336sXQleAhOHrzlYyKw=="],
+ 
++    "html-encoding-sniffer": ["html-encoding-sniffer@7.0.0", "", { "dependencies": { "@exodus/bytes": "^1.15.1" } }, "sha512-UikN5yr7xsCDAq87Or5or0PAlD3HJJOKVzM05az588WnpDJ4Ux7a2A53Qi6gofGg2/EtvF/H4hCi/TXfCW4Y6w=="],
++
+     "iceberg-js": ["iceberg-js@0.8.1", "", {}, "sha512-1dhVQZXhcHje7798IVM+xoo/1ZdVfzOMIc8/rgVSijRK38EDqOJoGula9N/8ZI5RD8QTxNQtK/Gozpr+qUqRRA=="],
+ 
+     "is-binary-path": ["is-binary-path@2.1.0", "", { "dependencies": { "binary-extensions": "^2.0.0" } }, "sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw=="],
+@@ -354,10 +395,14 @@
+ 
+     "is-number": ["is-number@7.0.0", "", {}, "sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng=="],
+ 
++    "is-potential-custom-element-name": ["is-potential-custom-element-name@1.0.1", "", {}, "sha512-bCYeRA2rVibKZd+s2625gGnGF/t7DSqDs4dP7CrLA1m7jKWz6pps0LpYLJN8Q64HtmPKJ1hrN3nzPNKFEKOUiQ=="],
++
+     "jiti": ["jiti@1.21.7", "", { "bin": { "jiti": "bin/jiti.js" } }, "sha512-/imKNG4EbWNrVjoNC/1H5/9GFy+tqjGBHCaSsN+P2RnPqjsLmv6UD3Ej+Kj8nBWaRAwyk7kK5ZUc+OEatnTR3A=="],
+ 
+     "js-tokens": ["js-tokens@4.0.0", "", {}, "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ=="],
+ 
++    "jsdom": ["jsdom@30.1.1", "", { "dependencies": { "@asamuzakjp/css-color": "^7.0.0", "@asamuzakjp/dom-selector": "^9.2.1", "@bramus/specificity": "^2.4.2", "@csstools/css-syntax-patches-for-csstree": "^1.1.13", "@exodus/bytes": "^1.15.1", "css-tree": "^3.2.1", "data-urls": "^7.0.0", "decimal.js": "^10.6.0", "html-encoding-sniffer": "^7.0.0", "is-potential-custom-element-name": "^1.0.1", "lru-cache": "^11.5.2", "parse5": "^8.0.1", "saxes": "^6.0.0", "tough-cookie": "^6.0.2", "undici": "^8.10.2", "w3c-xmlserializer": "^6.0.0", "webidl-conversions": "^8.0.1", "whatwg-mimetype": "^5.0.0", "whatwg-url": "^17.1.1", "xml-name-validator": "^5.0.0" }, "peerDependencies": { "canvas": "^3.2.3" }, "optionalPeers": ["canvas"] }, "sha512-FahmoPK5vbPc+jxV1iErMHmAZypCZ942NHF4+qqaWAuvaKKTBZxawnmAtrbGWLU7MtlxfqIP0qw6aSI+aWGtLg=="],
++
+     "jsesc": ["jsesc@3.1.0", "", { "bin": { "jsesc": "bin/jsesc" } }, "sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA=="],
+ 
+     "json5": ["json5@2.2.3", "", { "bin": { "json5": "lib/cli.js" } }, "sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg=="],
+@@ -368,12 +413,14 @@
+ 
+     "loupe": ["loupe@3.2.1", "", {}, "sha512-CdzqowRJCeLU72bHvWqwRBBlLcMEtIvGrlvef74kMnV2AolS9Y8xUv1I0U/MNAWMhBlKIoyuEgoJ0t/bbwHbLQ=="],
+ 
+-    "lru-cache": ["lru-cache@5.1.1", "", { "dependencies": { "yallist": "^3.0.2" } }, "sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w=="],
++    "lru-cache": ["lru-cache@11.5.3", "", {}, "sha512-U4N8FgzmWxc8k1VH8Kr6lQg18U7Fjvby6wXHVRX/ZZ7IwWbRMgrRbP0Wrb5q5NVinryp4SQampHKdvtecItxUg=="],
+ 
+     "lz-string": ["lz-string@1.5.0", "", { "bin": { "lz-string": "bin/bin.js" } }, "sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ=="],
+ 
+     "magic-string": ["magic-string@0.30.21", "", { "dependencies": { "@jridgewell/sourcemap-codec": "^1.5.5" } }, "sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ=="],
+ 
++    "mdn-data": ["mdn-data@2.27.1", "", {}, "sha512-9Yubnt3e8A0OKwxYSXyhLymGW4sCufcLG6VdiDdUGVkPhpqLxlvP5vl1983gQjJl3tqbrM731mjaZaP68AgosQ=="],
++
+     "merge2": ["merge2@1.4.1", "", {}, "sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg=="],
+ 
+     "micromatch": ["micromatch@4.0.8", "", { "dependencies": { "braces": "^3.0.3", "picomatch": "^2.3.1" } }, "sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA=="],
+@@ -392,6 +439,8 @@
+ 
+     "object-hash": ["object-hash@3.0.0", "", {}, "sha512-RSn9F68PjH9HqtltsSnqYC1XXoWe9Bju5+213R98cNGttag9q9yAOTzdbsqvIa7aNm5WffBZFpWYr2aWrklWAw=="],
+ 
++    "parse5": ["parse5@8.0.1", "", { "dependencies": { "entities": "^8.0.0" } }, "sha512-z1e/HMG90obSGeidlli3hj7cbocou0/wa5HacvI3ASx34PecNjNQeaHNo5WIZpWofN9kgkqV1q5YvXe3F0FoPw=="],
++
+     "path-parse": ["path-parse@1.0.7", "", {}, "sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw=="],
+ 
+     "pathe": ["pathe@2.0.3", "", {}, "sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w=="],
+@@ -422,6 +471,8 @@
+ 
+     "pretty-format": ["pretty-format@27.5.1", "", { "dependencies": { "ansi-regex": "^5.0.1", "ansi-styles": "^5.0.0", "react-is": "^17.0.1" } }, "sha512-Qb1gy5OrP5+zDf2Bvnzdl3jsTf1qXVMazbvCoKhtKqVs4/YK4ozX4gKQJJVyNe+cajNPn0KoC0MC3FUmaHWEmQ=="],
+ 
++    "punycode": ["punycode@2.3.1", "", {}, "sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg=="],
++
+     "queue-microtask": ["queue-microtask@1.2.3", "", {}, "sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A=="],
+ 
+     "react": ["react@19.2.8", "", {}, "sha512-PWaYA1L/q9u2u7xYQi+Y3L3Yfnie7XyLeaJICV1MGD6LprsBxcAqGjYyr0eY3p+QdsA+x/Irkt4Qif8D63+Sbw=="],
+@@ -436,6 +487,8 @@
+ 
+     "readdirp": ["readdirp@3.6.0", "", { "dependencies": { "picomatch": "^2.2.1" } }, "sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA=="],
+ 
++    "require-from-string": ["require-from-string@2.0.2", "", {}, "sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw=="],
++
+     "resolve": ["resolve@1.22.12", "", { "dependencies": { "es-errors": "^1.3.0", "is-core-module": "^2.16.1", "path-parse": "^1.0.7", "supports-preserve-symlinks-flag": "^1.0.0" }, "bin": { "resolve": "bin/resolve" } }, "sha512-TyeJ1zif53BPfHootBGwPRYT1RUt6oGWsaQr8UyZW/eAm9bKoijtvruSDEmZHm92CwS9nj7/fWttqPCgzep8CA=="],
+ 
+     "reusify": ["reusify@1.1.0", "", {}, "sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw=="],
+@@ -444,6 +497,8 @@
+ 
+     "run-parallel": ["run-parallel@1.2.0", "", { "dependencies": { "queue-microtask": "^1.2.2" } }, "sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA=="],
+ 
++    "saxes": ["saxes@6.0.0", "", { "dependencies": { "xmlchars": "^2.2.0" } }, "sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA=="],
++
+     "scheduler": ["scheduler@0.27.0", "", {}, "sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q=="],
+ 
+     "semver": ["semver@6.3.1", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA=="],
+@@ -480,15 +535,25 @@
+ 
+     "tinyspy": ["tinyspy@4.0.4", "", {}, "sha512-azl+t0z7pw/z958Gy9svOTuzqIk6xq+NSheJzn5MMWtWTFywIacg2wUlzKFGtt3cthx0r2SxMK0yzJOR0IES7Q=="],
+ 
++    "tldts": ["tldts@7.4.16", "", { "dependencies": { "tldts-core": "^7.4.16" }, "bin": { "tldts": "bin/cli.js" } }, "sha512-QwBER5KMR86IIjpIiO7H/Z3IMJPsZ1A6RKPAqzTTgOyUQUSt9FdnKcqhTaJmkY6HVrgouZHZR0ncK5QxvmnQeg=="],
++
++    "tldts-core": ["tldts-core@7.4.16", "", {}, "sha512-MDolfaSJtlSK5Y0A1xl3277ekubZwobpBjugknDizI9O5Rm60a1m8k4ICK+MRsCDzPygT81mp3BBf5RKDlFRfA=="],
++
+     "to-regex-range": ["to-regex-range@5.0.1", "", { "dependencies": { "is-number": "^7.0.0" } }, "sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ=="],
+ 
++    "tough-cookie": ["tough-cookie@6.0.2", "", { "dependencies": { "tldts": "^7.0.5" } }, "sha512-exgYmnmL/sJpR3upZfXG5PoatXQii55xAiXGXzY+sROLZ/Y+SLcp9PgJNI9Vz37HpQ74WvDcLT8eqm+kV3FzrA=="],
++
++    "tr46": ["tr46@6.0.0", "", { "dependencies": { "punycode": "^2.3.1" } }, "sha512-bLVMLPtstlZ4iMQHpFHTR7GAGj2jxi8Dg0s2h2MafAE4uSWF98FC/3MomU51iQAMf8/qDUbKWf5GxuvvVcXEhw=="],
++
+     "ts-interface-checker": ["ts-interface-checker@0.1.13", "", {}, "sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA=="],
+ 
+     "tslib": ["tslib@2.8.1", "", {}, "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w=="],
+ 
+     "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
+ 
+-    "undici-types": ["undici-types@7.18.2", "", {}, "sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w=="],
++    "undici": ["undici@8.11.2", "", {}, "sha512-u4UB2/IrKdU6lFxumHmmo1a3fCQO5tzQllRorfoRS63txhrB7xTpSn1PftwC4qEHkOaqP95fCWW4lJzwErwzhQ=="],
++
++    "undici-types": ["undici-types@8.11.2", "", {}, "sha512-iMVNmWZ0leK/goS6eXMizSzmm9CDWtyphwbaCms3DNLqRxDL+mMoNVcZMTyyVgXP0N+Z8neAMzDoUOUJL8veKg=="],
+ 
+     "update-browserslist-db": ["update-browserslist-db@1.3.2", "", { "dependencies": { "escalade": "^3.2.0", "picocolors": "^1.1.1" }, "peerDependencies": { "browserslist": ">= 4.21.0" }, "bin": { "update-browserslist-db": "cli.js" } }, "sha512-UQ+MSxlhRm1bzjhU+DcuXfjFO1FzNtqhK5+9Yvlp90ItDLk5vT932A0rFu619nf7RVS+Y/VeaUW1jaRDqZ8VJw=="],
+ 
+@@ -502,16 +567,34 @@
+ 
+     "vitest": ["vitest@3.2.7", "", { "dependencies": { "@types/chai": "^5.2.2", "@vitest/expect": "3.2.7", "@vitest/mocker": "3.2.7", "@vitest/pretty-format": "^3.2.7", "@vitest/runner": "3.2.7", "@vitest/snapshot": "3.2.7", "@vitest/spy": "3.2.7", "@vitest/utils": "3.2.7", "chai": "^5.2.0", "debug": "^4.4.1", "expect-type": "^1.2.1", "magic-string": "^0.30.17", "pathe": "^2.0.3", "picomatch": "^4.0.2", "std-env": "^3.9.0", "tinybench": "^2.9.0", "tinyexec": "^0.3.2", "tinyglobby": "^0.2.14", "tinypool": "^1.1.1", "tinyrainbow": "^2.0.0", "vite": "^5.0.0 || ^6.0.0 || ^7.0.0-0", "vite-node": "3.2.4", "why-is-node-running": "^2.3.0" }, "peerDependencies": { "@edge-runtime/vm": "*", "@types/debug": "^4.1.12", "@types/node": "^18.0.0 || ^20.0.0 || >=22.0.0", "@vitest/browser": "3.2.7", "@vitest/ui": "3.2.7", "happy-dom": "*", "jsdom": "*" }, "optionalPeers": ["@edge-runtime/vm", "@types/debug", "@types/node", "@vitest/browser", "@vitest/ui", "happy-dom", "jsdom"], "bin": { "vitest": "./vitest.mjs" } }, "sha512-KrxIJ62Fd89gfysR4WotlgZABiz2dqFPgqGzX7s+CwsqLFomRH7777ZcrOD6+WVAh7khPQP41A+BKbpcJFrdEg=="],
+ 
++    "w3c-xmlserializer": ["w3c-xmlserializer@6.0.0", "", { "dependencies": { "xml-name-validator": "^5.0.0" } }, "sha512-4Nsy8K5Tr6SPDH9jhKJOHf7ChDrc1zufZTVSF7x72hwuEXBqxqk9G6cK+K2NRUtB3iELRJqjXb4JPDMBjMTl2Q=="],
++
++    "webidl-conversions": ["webidl-conversions@8.0.1", "", {}, "sha512-BMhLD/Sw+GbJC21C/UgyaZX41nPt8bUTg+jWyDeg7e7YN4xOM05YPSIXceACnXVtqyEw/LMClUQMtMZ+PGGpqQ=="],
++
++    "whatwg-mimetype": ["whatwg-mimetype@5.0.0", "", {}, "sha512-sXcNcHOC51uPGF0P/D4NVtrkjSU2fNsm9iog4ZvZJsL3rjoDAzXZhkm2MWt1y+PUdggKAYVoMAIYcs78wJ51Cw=="],
++
++    "whatwg-url": ["whatwg-url@17.1.2", "", { "dependencies": { "@exodus/bytes": "^1.15.1", "tr46": "^6.0.0", "webidl-conversions": "^8.0.1" } }, "sha512-TEZA+Zqxin7Jjsm2cjRohCmen5awh+hT6Zi3VZdqZlNRk7zvOI/9WpBFg/DWlA56bWnzwm6DuB8NS0EsxQH9uQ=="],
++
+     "why-is-node-running": ["why-is-node-running@2.3.0", "", { "dependencies": { "siginfo": "^2.0.0", "stackback": "0.0.2" }, "bin": { "why-is-node-running": "cli.js" } }, "sha512-hUrmaWBdVDcxvYqnyh09zunKzROWjbZTiNy8dBEjkS7ehEDQibXJ7XvlmtbwuTclUiIyN+CyXQD4Vmko8fNm8w=="],
+ 
++    "xml-name-validator": ["xml-name-validator@5.0.0", "", {}, "sha512-EvGK8EJ3DhaHfbRlETOWAS5pO9MZITeauHKJyb8wyajUfQUenkIg2MvLDTZ4T/TgIcm3HU0TFBgWWboAZ30UHg=="],
++
++    "xmlchars": ["xmlchars@2.2.0", "", {}, "sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw=="],
++
+     "yallist": ["yallist@3.1.1", "", {}, "sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g=="],
+ 
+     "zustand": ["zustand@4.5.7", "", { "dependencies": { "use-sync-external-store": "^1.2.2" }, "peerDependencies": { "@types/react": ">=16.8", "immer": ">=9.0.6", "react": ">=16.8" }, "optionalPeers": ["@types/react", "immer", "react"] }, "sha512-CHOUy7mu3lbD6o6LJLfllpjkzhHXSBlX8B9+qPddUsIfeF5S/UZ5q0kmCsnRqT1UHFQZchNFDDzMbQsuesHWlw=="],
+ 
++    "@babel/helper-compilation-targets/lru-cache": ["lru-cache@5.1.1", "", { "dependencies": { "yallist": "^3.0.2" } }, "sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w=="],
++
++    "@types/node/undici-types": ["undici-types@7.18.2", "", {}, "sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w=="],
++
+     "anymatch/picomatch": ["picomatch@2.3.2", "", {}, "sha512-V7+vQEJ06Z+c5tSye8S+nHUfI51xoXIXjHQ99cQtKUkQqqO1kO/KCJUfZXuB47h/YBlDhah2H3hdUGXn8ie0oA=="],
+ 
+     "chokidar/glob-parent": ["glob-parent@5.1.2", "", { "dependencies": { "is-glob": "^4.0.1" } }, "sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow=="],
+ 
++    "data-urls/whatwg-url": ["whatwg-url@16.0.1", "", { "dependencies": { "@exodus/bytes": "^1.11.0", "tr46": "^6.0.0", "webidl-conversions": "^8.0.1" } }, "sha512-1to4zXBxmXHV3IiSSEInrreIlu02vUOvrhxJJH5vcxYTBDAx51cqZiKdyTxlecdKNSjj8EcxGBxNf6Vg+945gw=="],
++
+     "fast-glob/glob-parent": ["glob-parent@5.1.2", "", { "dependencies": { "is-glob": "^4.0.1" } }, "sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow=="],
+ 
+     "micromatch/picomatch": ["picomatch@2.3.2", "", {}, "sha512-V7+vQEJ06Z+c5tSye8S+nHUfI51xoXIXjHQ99cQtKUkQqqO1kO/KCJUfZXuB47h/YBlDhah2H3hdUGXn8ie0oA=="],
+
+New file: docs/AUTH-DB-DESIGN-20260930.md
++# ログイン・ユーザーDB・ローカル管理者
++
++日付: 2026-09-30 / 状態: 実装・ローカル検証済み、修正版の独立レビューとAstra受入待ち。
++Habitica: `8503d097-3ae1-4d72-9bf9-aad9eaff9233`（本体未完了）。関連する未完了todoを検索し該当なしのため登録。
++
++## 依頼と受入範囲
++
++Google・GitHubのOAuthをSupabase Authへ委譲し、アプリはパスワードを保存・入力させない。ユーザープロフィールはPostgreSQLに保存する。未設定でもゲストプレイを維持し、外部サービスなしのローカル開発ではこのPCだけで使える管理者アカウントを提供する。
++
++既存Supabaseプロジェクトは長期停止し管理画面から復帰不可。利用者は「引き継ぐデータはない。新しいプロジェクトを使う」と回答済み。旧プロジェクトの削除・復元は実施しない。新規プロジェクト・OAuth設定と実ログイン検証は外部準備が必要で、未完了工程を完了にしない。
++
++範囲はログイン・ログアウト、アカウント表示、本人の表示名変更、DB初期設定と権限、ローカル管理者。ゲーム同期、ユーザー削除、全ユーザー管理画面、マウス操作は今回追加しない。ゲーム物理・採点・推薦・乱数・ツモ・入力仕様は変更しない。
++
++## データと認証
++
++- クラウド: Supabase Auth PKCE、Google/GitHubのみ。`profiles`はid・display_name・avatar_url・role(user/admin)・作成/更新時刻を持つ。メールをプロフィールに複製しない。providerは認証identityから読む。
++- 表示名はtrim後1〜50文字。本人のSELECTと表示名UPDATEだけ許可。RLSに加え列単位GRANTを使い、id/role/avatar/時刻の改ざんや直接INSERT/DELETEを拒否。
++- 登録triggerはroleをuserに固定し、編集可能なmetadataから権限を得ない。SECURITY DEFINERは固定search_path・完全修飾名。異常metadataを無害化して登録を妨げない。
++- 旧`sql/initial-setup.sql`にはemailをusernameへ保存するtriggerと全員閲覧policyがある。新規SQLと移行を安全な契約に合わせる。移行は旧username/統計を維持し、旧公開policy/広い権限を置換、未使用rankingsからの旧email公開も閉じる。利用者データの移行作業自体は不要。
++- 設定が欠ける場合はSupabase clientを作らない。公開キーだけを利用しservice_role/秘密鍵をブラウザ設定へ持ち込まない。
++- 秘密キーを公開用環境変数へ誤設定した場合はVite側でclient変換・配信前にdev/buildを拒否し、エラーへキー値を出さない。未設定ゲストとpublishable/anonは許可する。
++- callbackは専用query markerで処理しコードを一度だけ交換。認証queryだけ除去し既存再現hashを保持。OAuth前のhashは同一origin sessionStorageへ退避しApp初回読込前に戻す。任意return URLを設けない。
++- 認証状態は未設定/ゲスト/処理中/認証済み/失敗を区別し、ログアウト/切替後の古い非同期プロフィール結果を破棄。
++- OAuth callback成功時は選択したcloud identityを確定し、開始前または遷移中に別タブで成立したlocal sessionとの整合をreload後も維持する。callback失敗からlocalへの自動切替は行わない。
++- 選択はタブのsessionStorageへ保存し、書込失敗時も現在ページの選択を優先する。成功callbackでは残ったlocal sessionをCSRF付きで終了する。保存不能の状態でcallback完了後に別タブが新しくlocal loginし、その後reloadする場合の選択持続には制約が残る。
++- 接続診断は設定・通信・認可を区別し、保護されたprofilesの匿名SELECTを疎通確認に使わない。公開キーの判定は実client設定と整合させる。
++
++## ローカル管理者
++
++`server/localAuth/`のVite開発専用APIとSQLiteを使用。現環境Node 22.18.0でnode:sqlite実SQL成功をAstraが確認済み（ExperimentalWarningあり）。既存bun run devのVite/Node経路を維持。
++
++- `command=serve && !isPreview`でだけ登録。本番静的配信/previewではAPI・管理者ログイン不可。
++- 実listen先・socket peerのloopback判定、実ポートを含む厳密Host照合、転送ヘッダー拒否。公開/LAN bindでは機能無効。DEV/hostnameのクライアント判定だけに頼らない。
++- 更新要求は同一Origin・JSON・専用ヘッダー・サーバーCSRF nonce必須。CORS許可なし。小さいbody上限、no-store、SQLパラメーター束縛。
++- ランダムsession ID、HttpOnly/SameSite=Strict/host-only/API限定Path cookie。ログイン時更新、期限・ログアウト・再起動で失効。セッションはサーバー管理。
++- SQLiteの固定seedはid=`system_admin`、role=`admin`、backend=`local`の組でローカル専用管理者を表す。要求bodyでid/role等は受け付けない。表示名だけ編集可。クラウドJWTやクラウド管理者へ昇格しない。OAuth障害からの自動切替なし。
++- `.local/`にDB、gitignoreとVite配信deny。通常URLと/@fs/経由で漏れないことを検証。
++- identityはbackendとidの組で識別。Supabase側backend値は`cloud`、SQLite側は`local`。ローカルとクラウドを混同しない。
++
++## UI
++
++既存ヘッダー右の準備中アイコンをアカウントボタンへ置換。既存8bit配色・枠・44px操作領域・focus表示を維持する。アカウント画面にGoogle/GitHubログイン、設定不足時の説明、ローカル専用管理者ログイン、ログイン後の表示名と保存/ログアウトを表示。本人が選べない権限設定や実装詳細は通常UIへ混ぜない。
++
++アカウント画面を開いている間は既存suspended契約でゲーム入力を止める。閉じる/Escape/フォーカス移動を実装。OAuthでページを離れる際はプレイ途中の状態が失われることを簡潔に案内する。
++
++表示名の編集途中の値はbackend+idへ結び付け、別identityへ切り替われば同じ表示名でも初期化する。同一identityの通常再描画では入力を維持する。
++
++## 所有と開始時点
++
++- Astra設計: `/root/auth_db_design` (gpt-6-astra)、アプリ編集なし。
++- Sol実装: アプリ/auth/account/layout接続/lib/server/SQL/設定/関連テストを一人で所有。親はdocs・Habitica・snapshot・検証調整。
++- baseline: `docs/reviews/auth-db-baseline-20260930.json`。258ファイルを一時フォルダーへコピー。既存dirty変更を保護しHEAD差分を今回変更とみなさない。
++- 開始時src/publicは直前の受入済みarrow-scroll snapshotと完全一致。基本検証結果を再利用: type-check成功、92ファイル/1278テスト成功、build成功。既存bundle500kB警告あり。
++
++## 検証と完了条件
++
++1. type-check/test/buildとserver型検査。CLI変更ならtype-check:scripts。
++2. SQLite実DBのseed・永続化・再起動後プロフィール維持/セッション失効。偽cookie/期限切れ/未認証/role改ざん/CSRF/Origin/Host/peer/公開bindの拒否。
++3. 実PostgreSQL実行系で新規/旧SQL移行・本人/他人/匿名/RLS/列権限/不正metadataを検証。DockerなしのPGlite利用可、実Supabase検証とは区別。
++4. OAuth callback成功/失敗/二重実行/hash保持、非同期競合、未設定ゲスト動作。
++5. ブラウザでローカルログイン/表示名編集/ログアウト/ゲーム中断を確認。本番preview/API遮断/SQLite配信遮断を確認。
++6. sourceと生成物を固定し新規Sol3人の独立レビュー、Astraが実コード・全レビュー・検証を確認。確認済み指摘はSol修正後に新規3人で再レビュー。
++7. 外部OAuthの実ログインは新規Supabaseとprovider設定後に実行。未実施なら残件としてHabiticaに保持し全体完了にしない。
++
++## 公式資料
++
++- [Supabaseユーザー管理](https://supabase.com/docs/guides/auth/managing-user-data)
++- [PKCE](https://supabase.com/docs/guides/auth/sessions/pkce-flow)
++- [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security)
++- [停止プロジェクトの復元期限](https://supabase.com/docs/guides/platform/upgrading#time-limits)
++
++## 進捗
++
++2026-09-30: 設計と開始baseline記録。実装・ローカル検証済み。利用者が新規Supabaseプロジェクト `fqzvthxzupjjkhpuwvst` を作成。公開キー・SQL適用・provider設定・実ログイン確認は未完了。
++
++新規初期SQLにも既存scores/replaysの構造・RLS・indexを保持する。旧公開rankings/profileは復元しない。local失効/CSRF不整合はsession再確認で復旧し、2タブ共有cookieでは取得済みprofileへ同期する。login nonceは期限回収と有限上限を持つ。
+
+New file: docs/AUTH-SETUP.md
++# 認証・ユーザーDBのセットアップ
++
++現在の状態: ローカル実装・自動検証済み、修正版の独立レビューとAstra受入待ち。外部Supabaseへの適用・実OAuthは未確認。設計は [認証・DB設計](AUTH-DB-DESIGN-20260930.md)。
++
++## 使用するサービス
++
++通常ユーザーの認証はSupabase Auth経由でGoogle/GitHubに任せ、アプリにはパスワード入力・保存機能を設けない。プロフィールはSupabaseのPostgreSQLに保存する。ログインしなくてもゲームは利用できる。
++
++停止中の旧Supabaseプロジェクトからデータを引き継がないことを利用者が指定済み。新規プロジェクトを使用する。旧プロジェクトの削除は不要。
++
++2026-09-30に利用者が新規作成: [Supabaseダッシュボード](https://supabase.com/dashboard/project/fqzvthxzupjjkhpuwvst)。標準API URLは`https://fqzvthxzupjjkhpuwvst.supabase.co`。公開キーとDB/OAuth設定は準備中。
++
++## 新しいSupabaseプロジェクト
++
++1. Supabaseダッシュボードで新規プロジェクトを作成する。DB管理用パスワードは利用者が設定・保管する。これはゲーム利用者のパスワードではなく、アプリの環境変数にも保存しない。
++2. プロジェクトのURLと公開用のPublishable key（旧形式ならanon key）を取得する。secret key、service_role key、DBパスワードをブラウザ用設定に入れない。
++3. 新規DBでは [sql/initial-setup.sql](../sql/initial-setup.sql) をSQL Editorで実行する。今回の新プロジェクトはこちらを使用する。過去の旧初期SQLが適用済みのDBだけ [sql/migrate-legacy-profiles.sql](../sql/migrate-legacy-profiles.sql) を使用する。両方を続けて実行しない。実Supabaseへの適用結果は未確認。
++4. ローカルの`.env.local`へURLと公開キーを設定する。`VITE_SUPABASE_URL`にURL、`VITE_SUPABASE_ANON_KEY`にPublishable keyまたは従来のanon keyを入れる。`.env.local`はコミットしない。
++
++初期SQLはプロフィールに加え、既存設計のスコア/リプレイ用テーブルも用意する。今回の画面にスコア同期・クラウドリプレイ保存を追加するものではない。プロフィールは本人だけが閲覧・表示名変更でき、旧メール入りusernameを公開する構成には戻さない。
++
++```dotenv
++VITE_SUPABASE_URL=https://<project-ref>.supabase.co
++VITE_SUPABASE_ANON_KEY=<publishable-key-or-anon-key>
++```
++
++設定後は開発サーバーを再起動する。接続先の変更だけで旧プロジェクトのデータが移ることはない。
++
++## GoogleとGitHub
++
++Supabase側のプロバイダー設定には、それぞれのサービスで作成したOAuthアプリのClient IDとClient Secretが必要。Client SecretはSupabase側へ設定し、このアプリのVITE_環境変数やリポジトリには入れない。
++
++- Google: Google Auth PlatformでWeb applicationのOAuthクライアントを用意し、許可するユーザーと基本プロフィールのscopeを設定。SupabaseのGoogle設定画面に表示されるcallback URLをGoogleのAuthorized redirect URIsへ登録する。
++- GitHub: Developer settingsのOAuth Appsでアプリを用意し、Authorization callback URLにSupabaseのcallback URLを登録する。リポジトリ操作権限は要求しない。
++- 一般的なプロバイダー側callbackは `https://<project-ref>.supabase.co/auth/v1/callback`。実際のプロジェクト画面の値を確認する。
++- SupabaseのAuthentication設定でGoogle/GitHubを有効化する。OAuthだけを利用するためメール/パスワードのEmail providerは無効化する。これは既存ユーザーのいる環境で無断変更しない。
++- Supabaseからこのアプリへ戻るURLは別設定。AuthenticationのURL Configurationへ正確なアプリcallbackを登録する。現在の開発環境では`http://127.0.0.1:5175/?auth_callback=1`。localhostでも利用する場合は`http://localhost:5175/?auth_callback=1`も登録する。Site URLはアプリの通常URLとし、本番公開時には本番originと配信pathのcallbackを別途登録する。
++
++OAuthアプリ作成・認証情報入力・アクセス許可はサービス管理画面で利用者の操作が必要になる場合がある。外部設定ができるまで、ローカル管理者とゲストプレイで開発できる。
++
++Google認証は埋め込みブラウザで拒否されることがある。Codex内ブラウザで拒否された場合、Chrome/EdgeでアプリのURLを開き、そこからログインを最初から開始する。PKCEの情報は開始したブラウザに保存されるため、途中の認証URLだけを別ブラウザへ移さない。[Googleのブラウザ要件](https://developers.google.com/identity/protocols/oauth2/policies#browsers)。
++
++## ローカル管理者の扱い
++
++ローカル管理者は開発サーバーだけのアカウントで、クラウドのユーザーや管理者権限とは別。プロフィールはローカルSQLiteに保存する。パスワードは持たない。サーバーを再起動するとログインセッションは失効し、プロフィールは残る。
++
++Node 22.18.0でnode:sqliteの動作を確認済み。このNode版ではExperimentalWarningが出る。公開/LAN向けbind・本番build・previewではローカル管理者APIを利用できない。
++
++`bun run dev`で起動し、ヘッダー右のアカウントから「ローカル管理者でログイン」を選ぶ。プロフィールは`.local/auth.sqlite`に保存される。`.local/`はgitとViteのファイル配信から除外する。`bun --bun run dev`による実行ランタイム変更は検証していない。
++
++検証コマンドは `bun run type-check`、`bun run type-check:server`、`bun run type-check:scripts`、`bun run test --maxWorkers=2`、`bun run build`。PGliteによるSQLテストとjsdomによる画面テストは開発依存で、本番DBやGoogle/GitHubの代替ではない。
++
++## 動作確認の区別
++
++- ローカル自動テスト: SQLiteの永続化、接続元やセッションの検証、実PostgreSQL実行系での権限検証。
++- ローカル画面: ゲスト、ローカル管理者ログイン、表示名変更、ログアウト、ゲーム中の画面操作。
++- 外部接続: 実SupabaseへSQLを適用し、GoogleとGitHubの両方でログイン/再ログイン/プロフィール変更/ログアウトを確認する。この工程はサービス設定後に実施し、ローカルテスト成功だけで完了扱いにしない。
++
++接続診断は匿名プロフィール読取ではなく[Supabase公式のAuth health endpoint](https://supabase.com/docs/guides/troubleshooting/how-do-i-check-gotrueapi-version-of-a-supabase-project-lQAnOR)を使う。設定不足・通信失敗・公開キー拒否・サービス応答を区別し、疎通成功をSQL設定やOAuth実ログインの完了とは扱わない。
++
++## 公式資料
++
++- [Supabaseの公開キーと秘密キー](https://supabase.com/docs/guides/getting-started/api-keys)
++- [Google設定](https://supabase.com/docs/guides/auth/social-login/auth-google)
++- [GitHub設定](https://supabase.com/docs/guides/auth/social-login/auth-github)
++- [アプリへのリダイレクトURL](https://supabase.com/docs/guides/auth/redirect-urls)
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\package.json" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\package.json"
+index bfc3e76..c11ff8c 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\package.json"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\package.json"
+@@ -6,11 +6,12 @@
+   "main": "index.js",
+   "scripts": {
+     "dev": "vite",
+-    "build": "tsc && vite build",
++    "build": "bun run type-check:server && tsc && vite build",
+     "preview": "vite preview",
+     "test": "vitest run --passWithNoTests",
+     "test:watch": "vitest",
+     "type-check": "tsc --noEmit",
++    "type-check:server": "tsc --project tsconfig.node.json --noEmit",
+     "type-check:scripts": "tsc --project tsconfig.scripts.json",
+     "type-check:benchmark": "tsc --project tsconfig.scripts.json",
+     "benchmark:advisor": "bun scripts/benchmark/benchmark-advisor.ts run",
+@@ -43,9 +44,12 @@
+     "zustand": "^4.5.7"
+   },
+   "devDependencies": {
++    "@electric-sql/pglite": "^0.5.8",
+     "@testing-library/react": "^16.3.0",
++    "@types/jsdom": "^30.0.0",
+     "@types/node": "^24.2.0",
+     "autoprefixer": "^10.4.21",
++    "jsdom": "^30.1.1",
+     "postcss": "^8.5.6",
+     "tailwindcss": "^3.4.17",
+     "vitest": "^3.2.4"
+
+New file: server/localAuth/plugin.test.ts
++import { mkdtempSync, rmSync, writeFileSync, mkdirSync } from 'node:fs'
++import { resolve, join } from 'node:path'
++import { afterEach, expect, it } from 'vitest'
++import { createServer, preview, type ViteDevServer, type PreviewServer } from 'vite'
++import { localAuthPlugin } from './plugin'
++
++let server: ViteDevServer | null = null
++let previewServer: PreviewServer | null = null
++let root: string | null = null
++afterEach(async () => {
++  if (server) { await server.close(); server = null }
++  if (previewServer) { await new Promise<void>(resolve => previewServer!.httpServer.close(() => resolve())); previewServer = null }
++  if (root) { rmSync(root, { recursive: true, force: true }); root = null }
++})
++
++it('does not expose the API on a public bind or production preview', async () => {
++  const testBase = resolve('.local', 'tests')
++  mkdirSync(testBase, { recursive: true })
++  root = mkdtempSync(join(testBase, 'bindings-'))
++  writeFileSync(join(root, 'index.html'), '<html><body>test</body></html>')
++  server = await createServer({ root, configFile: false, plugins: [localAuthPlugin()], server: { host: '0.0.0.0', port: 0 } })
++  await server.listen()
++  const address = server.httpServer!.address()
++  if (!address || typeof address === 'string') throw new Error('No HTTP address')
++  const publicResponse = await fetch(`http://127.0.0.1:${address.port}/api/local-auth/session`)
++  expect(publicResponse.status).toBe(403)
++  await server.close(); server = null
++  mkdirSync(join(root, 'dist'))
++  writeFileSync(join(root, 'dist', 'index.html'), '<html><body>preview</body></html>')
++  previewServer = await preview({ root, configFile: false, plugins: [localAuthPlugin()], preview: { host: '127.0.0.1', port: 0 } })
++  const previewAddress = previewServer.httpServer.address()
++  if (!previewAddress || typeof previewAddress === 'string') throw new Error('No preview address')
++  const previewResponse = await fetch(`http://127.0.0.1:${previewAddress.port}/api/local-auth/session`)
++  expect(previewResponse.headers.get('content-type')).not.toContain('application/json')
++})
++
++it('serves the admin API only with loopback, csrf, session and hidden database', async () => {
++  const testBase = resolve('.local', 'tests')
++  mkdirSync(testBase, { recursive: true })
++  root = mkdtempSync(join(testBase, 'http-'))
++  writeFileSync(join(root, 'index.html'), '<html><body>test</body></html>')
++  server = await createServer({ root, configFile: false, plugins: [localAuthPlugin()], server: {
++    host: '127.0.0.1', port: 0, fs: { deny: ['.env', '.env.*', '*.{crt,pem}', '**/.git/**', '.local', '.local/**', '**/.local/**'] },
++  } })
++  await server.listen()
++  const address = server.httpServer!.address()
++  if (!address || typeof address === 'string') throw new Error('No HTTP address')
++  const base = `http://127.0.0.1:${address.port}`
++  const get = (path: string, headers: Record<string, string> = {}) => fetch(`${base}${path}`, { headers })
++  const post = (path: string, body: object, headers: Record<string, string> = {}) => fetch(`${base}${path}`, {
++    method: 'POST', headers: { Origin: base, 'Content-Type': 'application/json', 'X-GTR-Local-Auth': '1', ...headers }, body: JSON.stringify(body),
++  })
++  const bootstrap = await get('/api/local-auth/session')
++  expect(bootstrap.status).toBe(200)
++  const state = await bootstrap.json() as { available: boolean; csrf: string; profile: null }
++  expect(state).toMatchObject({ available: true, profile: null })
++  expect(await post('/api/local-auth/login', {})).toHaveProperty('status', 403)
++  expect(await post('/api/local-auth/login', { role: 'admin' }, { 'X-GTR-CSRF': state.csrf })).toHaveProperty('status', 400)
++  const login = await post('/api/local-auth/login', {}, { 'X-GTR-CSRF': state.csrf })
++  expect(login.status).toBe(200)
++  const cookie = login.headers.get('set-cookie')!
++  expect(cookie).toContain('HttpOnly')
++  expect(cookie).toContain('SameSite=Strict')
++  expect(cookie).toContain('Path=/api/local-auth')
++  const credentials = await login.json() as { csrf: string; profile: { id: string; role: string } }
++  expect(credentials.profile).toMatchObject({ id: 'system_admin', role: 'admin' })
++  const wrongCsrf = await post('/api/local-auth/profile', { display_name: 'Admin' }, { Cookie: cookie })
++  expect(wrongCsrf.status).toBe(403)
++  expect((await wrongCsrf.json()).code).toBe('CSRF_MISMATCH')
++  expect(await post('/api/local-auth/profile', { display_name: 'Admin', role: 'user' }, { Cookie: cookie, 'X-GTR-CSRF': credentials.csrf })).toHaveProperty('status', 400)
++  const edited = await post('/api/local-auth/profile', { display_name: 'Admin' }, { Cookie: cookie, 'X-GTR-CSRF': credentials.csrf })
++  expect(edited.status).toBe(200)
++  expect((await edited.json()).profile.display_name).toBe('Admin')
++  expect(await post('/api/local-auth/logout', {}, { Cookie: cookie, 'X-GTR-CSRF': credentials.csrf, Origin: 'http://evil.example' })).toHaveProperty('status', 403)
++  expect(await get('/api/local-auth/session', { Host: `localhost:${address.port}`, 'X-Forwarded-For': '127.0.0.1' })).toHaveProperty('status', 403)
++  const secret = await get('/.local/auth.sqlite')
++  expect(await secret.text()).not.toContain('SQLite format 3')
++  const filesystemSecret = await get(`/@fs/${join(root, '.local', 'auth.sqlite').replace(/\\/g, '/')}`)
++  expect(await filesystemSecret.text()).not.toContain('SQLite format 3')
++  expect(await post('/api/local-auth/logout', {}, { Cookie: cookie, 'X-GTR-CSRF': credentials.csrf })).toHaveProperty('status', 200)
++  const staleCookie = await post('/api/local-auth/profile', { display_name: 'No' }, { Cookie: cookie, 'X-GTR-CSRF': credentials.csrf })
++  expect(staleCookie.status).toBe(403)
++  expect((await staleCookie.json()).code).toBe('SESSION_INVALID')
++  const after = await get('/api/local-auth/session', { Cookie: cookie })
++  expect((await after.json()).profile).toBeNull()
++})
+
+New file: server/localAuth/plugin.ts
++import type { Plugin } from 'vite'
++import { resolve } from 'node:path'
++import type { IncomingMessage, ServerResponse } from 'node:http'
++import { LocalAuthStore } from './store'
++import { cookieSession, mutationAllowed, requestAllowed } from './security'
++
++const API = '/api/local-auth'
++const COOKIE = 'gtr_local_session'
++const MAX_BODY = 2048
++
++function json(response: ServerResponse, status: number, body: unknown, cookie?: string): void {
++  response.statusCode = status
++  response.setHeader('Content-Type', 'application/json; charset=utf-8')
++  response.setHeader('Cache-Control', 'no-store')
++  response.setHeader('X-Content-Type-Options', 'nosniff')
++  if (cookie) response.setHeader('Set-Cookie', cookie)
++  response.end(JSON.stringify(body))
++}
++
++async function readBody(request: IncomingMessage): Promise<Record<string, unknown>> {
++  let body = ''
++  for await (const chunk of request) {
++    body += chunk.toString()
++    if (body.length > MAX_BODY) throw new Error('リクエストが大きすぎます')
++  }
++  const result: unknown = JSON.parse(body)
++  if (!result || typeof result !== 'object' || Array.isArray(result)) throw new Error('不正な入力です')
++  return result as Record<string, unknown>
++}
++
++export function localAuthPlugin(): Plugin {
++  return {
++    name: 'local-auth-dev-only',
++    apply: 'serve',
++    configureServer(server) {
++      const store = new LocalAuthStore(resolve(server.config.root, '.local', 'auth.sqlite'))
++      server.httpServer?.once('close', () => store.close())
++      server.middlewares.use(async (request, response, next) => {
++        const path = request.url?.split('?')[0]
++        if (!path?.startsWith(API)) { next(); return }
++        const socketAddress = server.httpServer?.address()
++        const listen = socketAddress && typeof socketAddress !== 'string' ? socketAddress : null
++        if (!requestAllowed(request, listen)) { json(response, 403, { error: 'ローカル専用です' }); return }
++        if (path !== API && !path.startsWith(`${API}/`)) { json(response, 404, { error: '見つかりません' }); return }
++        const sessionId = cookieSession(request.headers.cookie)
++        const session = store.session(sessionId)
++        if (request.method === 'GET' && path === `${API}/session`) {
++          json(response, 200, { available: true, profile: session?.profile ?? null, csrf: session?.csrf ?? store.issueLoginNonce() })
++          return
++        }
++        if (request.method !== 'POST' || !mutationAllowed(request, request.headers.host!)) {
++          json(response, 403, { error: '許可されていません' }); return
++        }
++        try {
++          const body = await readBody(request)
++          if (path === `${API}/login`) {
++            if (Object.keys(body).length !== 0) throw new Error('不正な入力です')
++            if (!store.consumeLoginNonce(request.headers['x-gtr-csrf'])) { json(response, 403, { error: 'CSRF確認に失敗しました' }); return }
++            store.logout(sessionId)
++            const login = store.login()
++            json(response, 200, { profile: login.profile, csrf: login.csrf }, `${COOKIE}=${login.id}; HttpOnly; SameSite=Strict; Path=${API}; Max-Age=28800`)
++            return
++          }
++          if (!session) { json(response, 403, { code: 'SESSION_INVALID', error: 'セッションが無効です' }); return }
++          if (request.headers['x-gtr-csrf'] !== session.csrf) { json(response, 403, { code: 'CSRF_MISMATCH', error: 'セッション確認に失敗しました' }); return }
++          if (path === `${API}/logout`) {
++            if (Object.keys(body).length !== 0) throw new Error('不正な入力です')
++            store.logout(sessionId)
++            json(response, 200, { profile: null }, `${COOKIE}=; HttpOnly; SameSite=Strict; Path=${API}; Max-Age=0`)
++            return
++          }
++          if (path === `${API}/profile`) {
++            if (Object.keys(body).length !== 1 || typeof body.display_name !== 'string') throw new Error('不正な入力です')
++            json(response, 200, { profile: store.updateDisplayName(body.display_name) })
++            return
++          }
++          json(response, 404, { error: '見つかりません' })
++        } catch (error) {
++          json(response, 400, { error: error instanceof Error ? error.message : '不正な入力です' })
++        }
++      })
++    },
++  }
++}
+
+New file: server/localAuth/security.test.ts
++import { expect, it } from 'vitest'
++import type { IncomingMessage } from 'node:http'
++import { cookieSession, isLoopback, mutationAllowed, requestAllowed } from './security'
++
++function request(host = '127.0.0.1:5173', peer = '127.0.0.1', headers: Record<string, string> = {}): IncomingMessage {
++  return { headers: { host, ...headers }, socket: { remoteAddress: peer } } as unknown as IncomingMessage
++}
++
++it('accepts only direct loopback traffic to the actual listening port', () => {
++  const listener = { address: '127.0.0.1', port: 5173 }
++  expect(requestAllowed(request(), listener)).toBe(true)
++  expect(requestAllowed(request('localhost:5173'), listener)).toBe(true)
++  expect(requestAllowed(request('127.0.0.1:5174'), listener)).toBe(false)
++  expect(requestAllowed(request('evil.example:5173'), listener)).toBe(false)
++  expect(requestAllowed(request('%%%'), listener)).toBe(false)
++  expect(requestAllowed(request('127.0.0.1:5173', '192.168.1.8'), listener)).toBe(false)
++  expect(requestAllowed(request('127.0.0.1:5173', '127.0.0.1', { 'x-forwarded-for': '127.0.0.1' }), listener)).toBe(false)
++  expect(requestAllowed(request('127.0.0.1:5173', '127.0.0.1', { origin: 'http://evil.example' }), listener)).toBe(false)
++  expect(requestAllowed(request(), { address: '0.0.0.0', port: 5173 })).toBe(false)
++  expect(isLoopback('192.168.1.8')).toBe(false)
++})
++
++it('requires an exact same origin and dedicated header for mutations', () => {
++  const valid = request('127.0.0.1:5173', '127.0.0.1', { origin: 'http://127.0.0.1:5173', 'content-type': 'application/json', 'x-gtr-local-auth': '1' })
++  expect(mutationAllowed(valid, '127.0.0.1:5173')).toBe(true)
++  expect(mutationAllowed(request(), '127.0.0.1:5173')).toBe(false)
++  expect(cookieSession('a=1; gtr_local_session=abc; b=2')).toBe('abc')
++})
+
+New file: server/localAuth/security.ts
++import type { IncomingMessage } from 'node:http'
++import { isIP } from 'node:net'
++
++export function isLoopback(value: string | undefined): boolean {
++  if (!value) return false
++  const normalized = value.replace(/^::ffff:/, '').replace(/^\[|\]$/g, '')
++  return normalized === 'localhost' || normalized === '127.0.0.1' || normalized === '::1' || (isIP(normalized) === 4 && normalized.startsWith('127.'))
++}
++
++export function requestAllowed(request: IncomingMessage, address: { address: string; port: number } | null): boolean {
++  if (!address || !isLoopback(address.address) || !isLoopback(request.socket.remoteAddress)) return false
++  if (request.headers.forwarded || request.headers['x-forwarded-host'] || request.headers['x-forwarded-proto'] || request.headers['x-forwarded-for']) return false
++  const host = request.headers.host
++  if (typeof host !== 'string' || host.includes(',') || host.includes('@')) return false
++  let url: URL
++  try { url = new URL(`http://${host}`) } catch { return false }
++  if (!isLoopback(url.hostname) || Number(url.port) !== address.port || url.host !== host) return false
++  const origin = request.headers.origin
++  return origin === undefined || origin === `http://${host}`
++}
++
++export function mutationAllowed(request: IncomingMessage, host: string): boolean {
++  return request.headers.origin === `http://${host}` &&
++    request.headers['content-type']?.split(';')[0].trim().toLowerCase() === 'application/json' &&
++    request.headers['x-gtr-local-auth'] === '1'
++}
++
++export function cookieSession(header: string | undefined): string | undefined {
++  return header?.split(';').map(part => part.trim()).find(part => part.startsWith('gtr_local_session='))?.slice('gtr_local_session='.length)
++}
+
+New file: server/localAuth/store.test.ts
++import { mkdtempSync, rmSync } from 'node:fs'
++import { tmpdir } from 'node:os'
++import { join } from 'node:path'
++import { afterEach, expect, it, vi } from 'vitest'
++import { LocalAuthStore } from './store'
++
++const directories: string[] = []
++afterEach(() => { vi.useRealTimers(); for (const path of directories.splice(0)) rmSync(path, { recursive: true, force: true }) })
++
++it('persists the local administrator profile but invalidates sessions on restart', () => {
++  const directory = mkdtempSync(join(tmpdir(), 'gtr-auth-'))
++  directories.push(directory)
++  const path = join(directory, 'auth.sqlite')
++  let store = new LocalAuthStore(path)
++  const issued = store.issueLoginNonce()
++  expect(store.consumeLoginNonce(issued)).toBe(true)
++  expect(store.consumeLoginNonce(issued)).toBe(false)
++  const login = store.login()
++  expect(store.session(login.id)?.profile).toMatchObject({ backend: 'local', id: 'system_admin', role: 'admin' })
++  expect(store.profile().created_at).toBeTruthy()
++  expect(store.session('fake')).toBeNull()
++  expect(store.updateDisplayName('  Local Admin  ').display_name).toBe('Local Admin')
++  expect(() => store.updateDisplayName(' ')).toThrow()
++  expect(() => store.updateDisplayName('a'.repeat(51))).toThrow()
++  store.close()
++  store = new LocalAuthStore(path)
++  expect(store.profile().display_name).toBe('Local Admin')
++  expect(store.session(login.id)).toBeNull()
++  store.close()
++})
++
++it('expires sessions and login nonces', () => {
++  vi.useFakeTimers()
++  const directory = mkdtempSync(join(tmpdir(), 'gtr-auth-'))
++  directories.push(directory)
++  const store = new LocalAuthStore(join(directory, 'auth.sqlite'))
++  try {
++    const nonce = store.issueLoginNonce()
++    const login = store.login()
++    vi.advanceTimersByTime(5 * 60 * 1000 + 1)
++    expect(store.consumeLoginNonce(nonce)).toBe(false)
++    vi.advanceTimersByTime(8 * 60 * 60 * 1000)
++    expect(store.session(login.id)).toBeNull()
++  } finally { store.close() }
++})
++
++it('prunes expired login nonces and evicts the oldest beyond the finite cap', () => {
++  vi.useFakeTimers()
++  const directory = mkdtempSync(join(tmpdir(), 'gtr-auth-'))
++  directories.push(directory)
++  const store = new LocalAuthStore(join(directory, 'auth.sqlite'))
++  try {
++    const expired = store.issueLoginNonce()
++    vi.advanceTimersByTime(5 * 60 * 1000 + 1)
++    const first = store.issueLoginNonce()
++    expect(store.consumeLoginNonce(expired)).toBe(false)
++    const tokens = Array.from({ length: 256 }, () => store.issueLoginNonce())
++    expect((store as unknown as { loginNonces: Map<string, number> }).loginNonces.size).toBeLessThanOrEqual(256)
++    expect(store.consumeLoginNonce(first)).toBe(false)
++    expect(store.consumeLoginNonce(tokens[255])).toBe(true)
++    expect(store.consumeLoginNonce(tokens[255])).toBe(false)
++  } finally { store.close() }
++})
+
+New file: server/localAuth/store.ts
++import { randomBytes } from 'node:crypto'
++import { mkdirSync } from 'node:fs'
++import { dirname } from 'node:path'
++import { DatabaseSync } from 'node:sqlite'
++
++export interface LocalProfile {
++  backend: 'local'
++  id: 'system_admin'
++  display_name: string
++  role: 'admin'
++  created_at: string
++  updated_at: string
++}
++
++const SESSION_MS = 8 * 60 * 60 * 1000
++const LOGIN_NONCE_MS = 5 * 60 * 1000
++const MAX_LOGIN_NONCES = 256
++
++export class LocalAuthStore {
++  private db: DatabaseSync
++  private sessions = new Map<string, { expires: number; csrf: string }>()
++  private loginNonces = new Map<string, number>()
++
++  constructor(path: string) {
++    mkdirSync(dirname(path), { recursive: true })
++    this.db = new DatabaseSync(path)
++    this.db.exec(`CREATE TABLE IF NOT EXISTS local_profiles (
++      id TEXT PRIMARY KEY CHECK (id = 'system_admin'),
++      display_name TEXT NOT NULL CHECK (length(trim(display_name)) BETWEEN 1 AND 50),
++      role TEXT NOT NULL CHECK (role = 'admin'),
++      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
++      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
++    );
++    INSERT OR IGNORE INTO local_profiles (id, display_name, role) VALUES ('system_admin', 'システム管理者', 'admin');`)
++    const columns = this.db.prepare('PRAGMA table_info(local_profiles)').all() as { name: string }[]
++    if (!columns.some(column => column.name === 'created_at')) {
++      this.db.exec('ALTER TABLE local_profiles ADD COLUMN created_at TEXT')
++      this.db.exec('UPDATE local_profiles SET created_at = updated_at WHERE created_at IS NULL')
++    }
++  }
++
++  profile(): LocalProfile {
++    const row = this.db.prepare("SELECT id, display_name, role, created_at, updated_at FROM local_profiles WHERE id = 'system_admin'").get() as { id: 'system_admin'; display_name: string; role: 'admin'; created_at: string; updated_at: string }
++    return { backend: 'local', ...row }
++  }
++
++  updateDisplayName(value: string): LocalProfile {
++    const name = value.trim()
++    if (name.length < 1 || name.length > 50) throw new Error('表示名は1〜50文字で入力してください')
++    this.db.prepare("UPDATE local_profiles SET display_name = ?, updated_at = CURRENT_TIMESTAMP WHERE id = 'system_admin'").run(name)
++    return this.profile()
++  }
++
++  login(): { id: string; csrf: string; expires: number; profile: LocalProfile } {
++    const id = randomBytes(32).toString('base64url')
++    const csrf = randomBytes(32).toString('base64url')
++    const expires = Date.now() + SESSION_MS
++    this.sessions.set(id, { expires, csrf })
++    return { id, csrf, expires, profile: this.profile() }
++  }
++
++  issueLoginNonce(): string {
++    const now = Date.now()
++    this.loginNonces.forEach((expires, token) => {
++      if (expires <= now) this.loginNonces.delete(token)
++    })
++    while (this.loginNonces.size >= MAX_LOGIN_NONCES) {
++      const oldest = this.loginNonces.keys().next().value
++      if (oldest) this.loginNonces.delete(oldest)
++    }
++    const nonce = randomBytes(32).toString('base64url')
++    this.loginNonces.set(nonce, now + LOGIN_NONCE_MS)
++    return nonce
++  }
++
++  consumeLoginNonce(nonce: string | string[] | undefined): boolean {
++    if (typeof nonce !== 'string') return false
++    const expires = this.loginNonces.get(nonce)
++    this.loginNonces.delete(nonce)
++    return !!expires && expires > Date.now()
++  }
++
++  session(id: string | undefined): { csrf: string; profile: LocalProfile } | null {
++    if (!id) return null
++    const session = this.sessions.get(id)
++    if (!session) return null
++    if (session.expires <= Date.now()) { this.sessions.delete(id); return null }
++    return { csrf: session.csrf, profile: this.profile() }
++  }
++
++  logout(id: string | undefined): void { if (id) this.sessions.delete(id) }
++  close(): void { this.sessions.clear(); this.loginNonces.clear(); this.db.close() }
++}
+
+New file: server/publicEnvGuard.test.ts
++import { existsSync, rmSync } from 'node:fs'
++import { resolve, join } from 'node:path'
++import { afterEach, expect, it, vi } from 'vitest'
++import { build, createServer } from 'vite'
++
++const configFile = resolve('vite.config.ts')
++const outputRoot = resolve('.local', 'public-env-guard-test')
++const serviceKey = `header.${Buffer.from(JSON.stringify({ role: 'service_role' })).toString('base64url')}.signature`
++const anonKey = `header.${Buffer.from(JSON.stringify({ role: 'anon' })).toString('base64url')}.signature`
++
++afterEach(() => { vi.unstubAllEnvs(); rmSync(outputRoot, { recursive: true, force: true }) })
++
++function setPublicEnv(key: string): void {
++  vi.stubEnv('VITE_SUPABASE_URL', 'https://example.supabase.co')
++  vi.stubEnv('VITE_SUPABASE_ANON_KEY', key)
++}
++
++async function devStarts(): Promise<void> {
++  const server = await createServer({ configFile, server: { host: '127.0.0.1', port: 0 } })
++  try { await server.listen() }
++  finally { await server.close() }
++}
++
++async function builds(name: string): Promise<void> {
++  await build({ configFile, build: { outDir: join(outputRoot, name), emptyOutDir: true } })
++}
++
++it('rejects secret and service_role keys before dev serving or build output', async () => {
++  for (const [name, key] of [['secret', 'sb_secret_FAKE_FOR_TEST_ONLY'], ['service', serviceKey]]) {
++    setPublicEnv(key)
++    const devError = await devStarts().catch(error => error as Error)
++    expect(devError).toBeInstanceOf(Error)
++    expect(String(devError)).not.toContain(key)
++    const buildError = await builds(name).catch(error => error as Error)
++    expect(buildError).toBeInstanceOf(Error)
++    expect(String(buildError)).not.toContain(key)
++    expect(existsSync(join(outputRoot, name, 'index.html'))).toBe(false)
++  }
++}, 120_000)
++
++it('allows publishable, anon, and unset configuration in dev and build', async () => {
++  for (const key of ['sb_publishable_FAKE_FOR_TEST_ONLY', anonKey, '']) {
++    setPublicEnv(key)
++    await devStarts()
++  }
++  setPublicEnv('sb_publishable_FAKE_FOR_TEST_ONLY')
++  await builds('publishable')
++  expect(existsSync(join(outputRoot, 'publishable', 'index.html'))).toBe(true)
++  setPublicEnv('')
++  await builds('unset')
++  expect(existsSync(join(outputRoot, 'unset', 'index.html'))).toBe(true)
++}, 120_000)
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\sql\\initial-setup.sql" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\sql\\initial-setup.sql"
+index 1ef4498..af9c1c8 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\sql\\initial-setup.sql"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\sql\\initial-setup.sql"
+@@ -1,99 +1,83 @@
+--- ユーザープロフィール拡張テーブル
++-- Run in a NEW Supabase project. Existing projects use migrate-legacy-profiles.sql.
+ CREATE TABLE public.profiles (
+-  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+-  username TEXT UNIQUE,
+-  avatar_url TEXT,
+-  total_gtr_count INTEGER DEFAULT 0,
+-  best_time_5 INTEGER, -- 5GTRの最短時間(ms)
+-  best_time_10 INTEGER, -- 10GTRの最短時間(ms)
+-  best_time_20 INTEGER, -- 20GTRの最短時間(ms)
+-  created_at TIMESTAMP DEFAULT NOW(),
+-  updated_at TIMESTAMP DEFAULT NOW()
++  id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
++  display_name text NOT NULL CHECK (display_name = btrim(display_name) AND char_length(display_name) BETWEEN 1 AND 50),
++  avatar_url text,
++  role text NOT NULL DEFAULT 'user' CHECK (role IN ('user', 'admin')),
++  created_at timestamptz NOT NULL DEFAULT now(),
++  updated_at timestamptz NOT NULL DEFAULT now()
+ );
++ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON public.profiles FROM PUBLIC, anon, authenticated;
++GRANT SELECT ON public.profiles TO authenticated;
++GRANT UPDATE (display_name) ON public.profiles TO authenticated;
++CREATE POLICY profiles_select_self ON public.profiles FOR SELECT TO authenticated
++  USING ((SELECT auth.uid()) = id);
++CREATE POLICY profiles_update_self ON public.profiles FOR UPDATE TO authenticated
++  USING ((SELECT auth.uid()) = id) WITH CHECK ((SELECT auth.uid()) = id);
++
++CREATE FUNCTION public.touch_profile_updated_at() RETURNS trigger
++LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
++BEGIN
++  NEW.created_at := OLD.created_at;
++  NEW.updated_at := now();
++  RETURN NEW;
++END;
++$$;
++CREATE TRIGGER profiles_touch_updated_at BEFORE UPDATE ON public.profiles
++  FOR EACH ROW EXECUTE FUNCTION public.touch_profile_updated_at();
++
++CREATE FUNCTION public.handle_new_user() RETURNS trigger
++LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
++DECLARE raw_name text;
++BEGIN
++  raw_name := btrim(COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'name', ''));
++  IF char_length(raw_name) < 1 OR char_length(raw_name) > 50 THEN raw_name := 'プレイヤー'; END IF;
++  INSERT INTO public.profiles (id, display_name, role) VALUES (NEW.id, raw_name, 'user');
++  RETURN NEW;
++END;
++$$;
++CREATE TRIGGER on_auth_user_created AFTER INSERT ON auth.users
++  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+ 
+--- スコアテーブル
++-- Covers users created before this SQL was installed.
++INSERT INTO public.profiles (id, display_name, role)
++SELECT id, CASE
++  WHEN char_length(btrim(COALESCE(raw_user_meta_data->>'full_name', raw_user_meta_data->>'name', ''))) BETWEEN 1 AND 50
++  THEN btrim(COALESCE(raw_user_meta_data->>'full_name', raw_user_meta_data->>'name', ''))
++  ELSE 'プレイヤー' END, 'user'
++FROM auth.users ON CONFLICT (id) DO NOTHING;
++
++-- Preserve the existing game-record schema without exposing profile names.
+ CREATE TABLE public.scores (
+-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+-  mode TEXT NOT NULL CHECK (mode IN ('5GTR', '10GTR', '20GTR')),
+-  time_ms INTEGER NOT NULL,
+-  score INTEGER NOT NULL,
+-  gtr_count INTEGER NOT NULL,
+-  replay_data JSONB,
+-  created_at TIMESTAMP DEFAULT NOW()
++  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
++  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE,
++  mode text NOT NULL CHECK (mode IN ('5GTR', '10GTR', '20GTR')),
++  time_ms integer NOT NULL,
++  score integer NOT NULL,
++  gtr_count integer NOT NULL,
++  replay_data jsonb,
++  created_at timestamp DEFAULT now()
+ );
+-
+--- リプレイテーブル（大きなデータの分離）
+ CREATE TABLE public.replays (
+-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+-  score_id UUID REFERENCES public.scores(id) ON DELETE CASCADE,
+-  data JSONB NOT NULL,
+-  size INTEGER NOT NULL,
+-  created_at TIMESTAMP DEFAULT NOW()
++  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
++  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE,
++  score_id uuid REFERENCES public.scores(id) ON DELETE CASCADE,
++  data jsonb NOT NULL,
++  size integer NOT NULL,
++  created_at timestamp DEFAULT now()
+ );
+-
+--- パフォーマンス最適化用インデックス
+ CREATE INDEX idx_scores_mode_time ON public.scores(mode, time_ms);
+ CREATE INDEX idx_scores_created_at ON public.scores(created_at DESC);
+ CREATE INDEX idx_scores_user_mode ON public.scores(user_id, mode);
+-CREATE INDEX idx_profiles_username ON public.profiles(username);
+-
+--- ランキング取得用のビュー
+-CREATE VIEW public.rankings AS
+-SELECT 
+-  ROW_NUMBER() OVER (PARTITION BY mode ORDER BY time_ms ASC) as rank,
+-  p.username,
+-  s.mode,
+-  s.time_ms,
+-  s.score,
+-  s.gtr_count,
+-  s.created_at,
+-  s.user_id
+-FROM public.scores s
+-JOIN public.profiles p ON s.user_id = p.id
+-WHERE p.username IS NOT NULL;
+-
+--- Row Level Security (RLS) 設定
+-ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+ ALTER TABLE public.scores ENABLE ROW LEVEL SECURITY;
+ ALTER TABLE public.replays ENABLE ROW LEVEL SECURITY;
+-
+--- プロフィール: 自分のプロフィールは編集可能、他人のは閲覧のみ
+-CREATE POLICY "Public profiles are viewable by everyone" ON public.profiles
+-  FOR SELECT USING (true);
+-
+-CREATE POLICY "Users can insert their own profile" ON public.profiles
+-  FOR INSERT WITH CHECK (auth.uid() = id);
+-
+-CREATE POLICY "Users can update their own profile" ON public.profiles
+-  FOR UPDATE USING (auth.uid() = id);
+-
+--- スコア: 自分のスコアは投稿可能、全てのスコアは閲覧可能
+-CREATE POLICY "Scores are viewable by everyone" ON public.scores
+-  FOR SELECT USING (true);
+-
+-CREATE POLICY "Users can insert own scores" ON public.scores
+-  FOR INSERT WITH CHECK (auth.uid() = user_id);
+-
+--- リプレイ: 自分のリプレイは投稿可能、全てのリプレイは閲覧可能
+-CREATE POLICY "Replays are viewable by everyone" ON public.replays
+-  FOR SELECT USING (true);
+-
+-CREATE POLICY "Users can insert own replays" ON public.replays
+-  FOR INSERT WITH CHECK (auth.uid() = user_id);
+-
+--- プロフィール自動作成のトリガー関数
+-CREATE OR REPLACE FUNCTION public.handle_new_user()
+-RETURNS trigger AS $$
+-BEGIN
+-  INSERT INTO public.profiles (id, username)
+-  VALUES (NEW.id, NEW.email);
+-  RETURN NEW;
+-END;
+-$$ LANGUAGE plpgsql SECURITY DEFINER;
+-
+--- 新規ユーザー登録時にプロフィールを自動作成
+-CREATE TRIGGER on_auth_user_created
+-  AFTER INSERT ON auth.users
+-  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+\ No newline at end of file
++REVOKE ALL ON public.scores, public.replays FROM PUBLIC, anon, authenticated;
++GRANT SELECT ON public.scores, public.replays TO anon, authenticated;
++GRANT INSERT ON public.scores, public.replays TO authenticated;
++CREATE POLICY scores_select_public ON public.scores FOR SELECT TO anon, authenticated USING (true);
++CREATE POLICY scores_insert_self ON public.scores FOR INSERT TO authenticated
++  WITH CHECK ((SELECT auth.uid()) = user_id);
++CREATE POLICY replays_select_public ON public.replays FOR SELECT TO anon, authenticated USING (true);
++CREATE POLICY replays_insert_self ON public.replays FOR INSERT TO authenticated
++  WITH CHECK ((SELECT auth.uid()) = user_id);
+
+New file: sql/migrate-legacy-profiles.sql
++-- Run on an existing database initialized by the historical initial-setup.sql.
++BEGIN;
++DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
++DROP FUNCTION IF EXISTS public.handle_new_user();
++ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS display_name text;
++ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS role text;
++UPDATE public.profiles SET display_name = CASE
++  WHEN username IS NOT NULL AND username !~ '@' AND char_length(btrim(username)) BETWEEN 1 AND 50 THEN btrim(username)
++  ELSE 'プレイヤー' END
++WHERE display_name IS NULL OR char_length(btrim(display_name)) NOT BETWEEN 1 AND 50;
++UPDATE public.profiles SET role = 'user' WHERE role IS NULL OR role NOT IN ('user', 'admin');
++ALTER TABLE public.profiles ALTER COLUMN display_name SET NOT NULL;
++ALTER TABLE public.profiles ALTER COLUMN role SET DEFAULT 'user';
++ALTER TABLE public.profiles ALTER COLUMN role SET NOT NULL;
++ALTER TABLE public.profiles ADD CONSTRAINT profiles_display_name_check CHECK (char_length(btrim(display_name)) BETWEEN 1 AND 50);
++ALTER TABLE public.profiles ADD CONSTRAINT profiles_role_check CHECK (role IN ('user', 'admin'));
++ALTER TABLE public.profiles ALTER COLUMN created_at TYPE timestamptz USING created_at AT TIME ZONE 'UTC';
++ALTER TABLE public.profiles ALTER COLUMN updated_at TYPE timestamptz USING updated_at AT TIME ZONE 'UTC';
++UPDATE public.profiles SET created_at = now() WHERE created_at IS NULL;
++UPDATE public.profiles SET updated_at = now() WHERE updated_at IS NULL;
++ALTER TABLE public.profiles ALTER COLUMN created_at SET NOT NULL;
++ALTER TABLE public.profiles ALTER COLUMN updated_at SET NOT NULL;
++ALTER TABLE public.profiles ALTER COLUMN created_at SET DEFAULT now();
++ALTER TABLE public.profiles ALTER COLUMN updated_at SET DEFAULT now();
++-- Historical username, rankings and game statistics remain stored.
++REVOKE ALL ON public.rankings FROM PUBLIC, anon, authenticated;
++REVOKE ALL ON public.profiles FROM PUBLIC, anon, authenticated;
++DROP POLICY IF EXISTS "Public profiles are viewable by everyone" ON public.profiles;
++DROP POLICY IF EXISTS "Users can insert their own profile" ON public.profiles;
++DROP POLICY IF EXISTS "Users can update their own profile" ON public.profiles;
++ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
++GRANT SELECT (id, display_name, avatar_url, role, created_at, updated_at) ON public.profiles TO authenticated;
++GRANT UPDATE (display_name) ON public.profiles TO authenticated;
++CREATE POLICY profiles_select_self ON public.profiles FOR SELECT TO authenticated
++  USING ((SELECT auth.uid()) = id);
++CREATE POLICY profiles_update_self ON public.profiles FOR UPDATE TO authenticated
++  USING ((SELECT auth.uid()) = id) WITH CHECK ((SELECT auth.uid()) = id);
++CREATE FUNCTION public.touch_profile_updated_at() RETURNS trigger
++LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
++BEGIN
++  NEW.created_at := OLD.created_at;
++  NEW.updated_at := now();
++  RETURN NEW;
++END;
++$$;
++CREATE TRIGGER profiles_touch_updated_at BEFORE UPDATE ON public.profiles
++  FOR EACH ROW EXECUTE FUNCTION public.touch_profile_updated_at();
++CREATE FUNCTION public.handle_new_user() RETURNS trigger
++LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
++DECLARE raw_name text;
++BEGIN
++  raw_name := btrim(COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'name', ''));
++  IF char_length(raw_name) < 1 OR char_length(raw_name) > 50 THEN raw_name := 'プレイヤー'; END IF;
++  INSERT INTO public.profiles (id, display_name, role) VALUES (NEW.id, raw_name, 'user');
++  RETURN NEW;
++END;
++$$;
++CREATE TRIGGER on_auth_user_created AFTER INSERT ON auth.users
++  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
++INSERT INTO public.profiles (id, display_name, role)
++SELECT id, CASE
++  WHEN char_length(btrim(COALESCE(raw_user_meta_data->>'full_name', raw_user_meta_data->>'name', ''))) BETWEEN 1 AND 50
++  THEN btrim(COALESCE(raw_user_meta_data->>'full_name', raw_user_meta_data->>'name', ''))
++  ELSE 'プレイヤー' END, 'user'
++FROM auth.users ON CONFLICT (id) DO NOTHING;
++COMMIT;
+
+New file: sql/profiles.test.ts
++import { readFileSync } from 'node:fs'
++import { resolve } from 'node:path'
++import { afterEach, describe, expect, it } from 'vitest'
++import { PGlite } from '@electric-sql/pglite'
++
++const userA = '11111111-1111-4111-8111-111111111111'
++const userB = '22222222-2222-4222-8222-222222222222'
++const open: PGlite[] = []
++
++async function database(): Promise<PGlite> {
++  const db = new PGlite()
++  open.push(db)
++  await db.exec(`CREATE ROLE anon; CREATE ROLE authenticated; GRANT authenticated TO postgres;
++    CREATE SCHEMA auth; CREATE TABLE auth.users (
++      id uuid PRIMARY KEY, email text, raw_user_meta_data jsonb DEFAULT '{}'::jsonb
++    );
++    CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $$
++      SELECT nullif(current_setting('request.jwt.claim.sub', true), '')::uuid
++    $$;
++    GRANT USAGE ON SCHEMA public, auth TO authenticated, anon;
++    GRANT EXECUTE ON FUNCTION auth.uid() TO authenticated, anon;`)
++  return db
++}
++
++async function asUser<T>(db: PGlite, id: string, callback: () => Promise<T>): Promise<T> {
++  await db.exec(`SET request.jwt.claim.sub = '${id}'; SET ROLE authenticated;`)
++  try { return await callback() }
++  finally { await db.exec('RESET ROLE; RESET request.jwt.claim.sub;') }
++}
++
++afterEach(async () => { await Promise.all(open.splice(0).map(db => db.close())) })
++
++describe('profile SQL', () => {
++  it('preserves game record tables, constraints, indexes and owner-only inserts', async () => {
++    const db = await database()
++    await db.exec(readFileSync(resolve('sql/initial-setup.sql'), 'utf8'))
++    await db.exec(`INSERT INTO auth.users (id,email) VALUES ('${userA}','a@example.test'),('${userB}','b@example.test')`)
++    const columns = await db.query<{ table_name: string; column_name: string }>("SELECT table_name,column_name FROM information_schema.columns WHERE table_schema='public' AND table_name IN ('scores','replays')")
++    expect(columns.rows.filter(row => row.table_name === 'scores').map(row => row.column_name)).toEqual(expect.arrayContaining(['id', 'user_id', 'mode', 'time_ms', 'score', 'gtr_count', 'replay_data', 'created_at']))
++    expect(columns.rows.filter(row => row.table_name === 'replays').map(row => row.column_name)).toEqual(expect.arrayContaining(['id', 'user_id', 'score_id', 'data', 'size', 'created_at']))
++    const indexes = await db.query<{ indexname: string }>("SELECT indexname FROM pg_indexes WHERE schemaname='public' AND tablename='scores'")
++    expect(indexes.rows.map(row => row.indexname)).toEqual(expect.arrayContaining(['idx_scores_mode_time', 'idx_scores_created_at', 'idx_scores_user_mode']))
++    let scoreId = ''
++    await asUser(db, userA, async () => {
++      const score = await db.query<{ id: string }>(`INSERT INTO public.scores (user_id,mode,time_ms,score,gtr_count) VALUES ('${userA}','5GTR',1200,100,5) RETURNING id`)
++      scoreId = score.rows[0].id
++      await db.exec(`INSERT INTO public.replays (user_id,score_id,data,size) VALUES ('${userA}','${scoreId}','{}',2)`)
++      await expect(db.exec(`INSERT INTO public.scores (user_id,mode,time_ms,score,gtr_count) VALUES ('${userA}','INVALID',1200,100,5)`)).rejects.toThrow()
++      await expect(db.exec(`INSERT INTO public.replays (user_id,score_id,data,size) VALUES ('${userA}','33333333-3333-4333-8333-333333333333','{}',2)`)).rejects.toThrow()
++      await expect(db.exec(`UPDATE public.scores SET score=999 WHERE id='${scoreId}'`)).rejects.toThrow()
++      await expect(db.exec(`DELETE FROM public.replays WHERE score_id='${scoreId}'`)).rejects.toThrow()
++    })
++    await asUser(db, userB, async () => {
++      await expect(db.exec(`INSERT INTO public.scores (user_id,mode,time_ms,score,gtr_count) VALUES ('${userA}','5GTR',1200,100,5)`)).rejects.toThrow()
++      await expect(db.exec(`INSERT INTO public.replays (user_id,score_id,data,size) VALUES ('${userA}','${scoreId}','{}',2)`)).rejects.toThrow()
++      expect((await db.query('SELECT id FROM public.scores')).rows).toHaveLength(1)
++      expect((await db.query('SELECT id FROM public.replays')).rows).toHaveLength(1)
++    })
++    await db.exec('SET ROLE anon')
++    expect((await db.query('SELECT id FROM public.scores')).rows).toHaveLength(1)
++    expect((await db.query('SELECT id FROM public.replays')).rows).toHaveLength(1)
++    await expect(db.exec(`INSERT INTO public.scores (user_id,mode,time_ms,score,gtr_count) VALUES ('${userA}','5GTR',1200,100,5)`)).rejects.toThrow()
++    await db.exec('RESET ROLE')
++  })
++
++  it('creates fixed user roles and isolates profile reads/columns', async () => {
++    const db = await database()
++    await db.exec(`INSERT INTO auth.users (id,email,raw_user_meta_data) VALUES ('${userB}', 'b@example.test', '{"full_name":"Bob"}')`)
++    await db.exec(readFileSync(resolve('sql/initial-setup.sql'), 'utf8'))
++    await db.exec(`INSERT INTO auth.users (id,email,raw_user_meta_data) VALUES
++      ('${userA}', 'a@example.test', '{"full_name":"Alice","role":"admin"}')`)
++    const rows = await db.query<{ id: string; role: string; display_name: string }>('SELECT id,role,display_name FROM public.profiles ORDER BY id')
++    expect(rows.rows.map(row => row.role)).toEqual(['user', 'user'])
++    expect(rows.rows[0].display_name).toBe('Alice')
++    await asUser(db, userA, async () => {
++      const self = await db.query('SELECT id,display_name FROM public.profiles')
++      expect(self.rows).toHaveLength(1)
++      const before = await db.query<{ created_at: string; updated_at: string }>('SELECT created_at,updated_at FROM public.profiles')
++      await new Promise(resolve => setTimeout(resolve, 20))
++      await db.exec("UPDATE public.profiles SET display_name = 'Alicia' WHERE id = auth.uid()")
++      const stamp = await db.query<{ created_at: string; updated_at: string }>('SELECT created_at,updated_at FROM public.profiles')
++      expect(stamp.rows[0].created_at).toEqual(before.rows[0].created_at)
++      expect(new Date(stamp.rows[0].updated_at).valueOf()).toBeGreaterThan(new Date(before.rows[0].updated_at).valueOf())
++      await expect(db.exec("UPDATE public.profiles SET role = 'admin' WHERE id = auth.uid()")).rejects.toThrow()
++      await expect(db.exec('UPDATE public.profiles SET created_at = now() WHERE id = auth.uid()')).rejects.toThrow()
++      await expect(db.exec(`INSERT INTO public.profiles (id, display_name) VALUES ('33333333-3333-4333-8333-333333333333', 'Bad')`)).rejects.toThrow()
++      await expect(db.exec(`DELETE FROM public.profiles WHERE id = auth.uid()`)).rejects.toThrow()
++      const other = await db.query(`SELECT * FROM public.profiles WHERE id = '${userB}'`)
++      expect(other.rows).toHaveLength(0)
++    })
++    await db.exec('SET ROLE anon')
++    await expect(db.exec('SELECT * FROM public.profiles')).rejects.toThrow()
++    await db.exec('RESET ROLE')
++  })
++
++  it('migrates legacy stats while closing historical public access', async () => {
++    const db = await database()
++    await db.exec(`CREATE TABLE public.profiles (
++      id uuid PRIMARY KEY REFERENCES auth.users(id), username text UNIQUE, avatar_url text,
++      total_gtr_count integer DEFAULT 0, best_time_5 integer, best_time_10 integer,
++      best_time_20 integer, created_at timestamp DEFAULT now(), updated_at timestamp DEFAULT now());
++      CREATE TABLE public.scores (id uuid PRIMARY KEY, user_id uuid, mode text, time_ms integer, score integer, gtr_count integer, created_at timestamp DEFAULT now());
++      CREATE TABLE public.replays (id uuid PRIMARY KEY, user_id uuid, data jsonb);
++      CREATE VIEW public.rankings AS SELECT p.username,s.mode,s.time_ms FROM public.scores s JOIN public.profiles p ON p.id=s.user_id;
++      GRANT ALL ON public.profiles,public.scores,public.replays TO anon,authenticated;
++      GRANT SELECT ON public.rankings TO anon;
++      ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
++      ALTER TABLE public.scores ENABLE ROW LEVEL SECURITY;
++      ALTER TABLE public.replays ENABLE ROW LEVEL SECURITY;
++      CREATE POLICY "Public profiles are viewable by everyone" ON public.profiles FOR SELECT USING (true);
++      CREATE POLICY "Users can insert their own profile" ON public.profiles FOR INSERT WITH CHECK (auth.uid() = id);
++      CREATE POLICY "Users can update their own profile" ON public.profiles FOR UPDATE USING (auth.uid() = id);
++      CREATE POLICY "Scores are viewable by everyone" ON public.scores FOR SELECT USING (true);
++      CREATE POLICY "Users can insert own scores" ON public.scores FOR INSERT WITH CHECK (auth.uid() = user_id);
++      CREATE POLICY "Replays are viewable by everyone" ON public.replays FOR SELECT USING (true);
++      CREATE POLICY "Users can insert own replays" ON public.replays FOR INSERT WITH CHECK (auth.uid() = user_id);`)
++    await db.exec(`INSERT INTO auth.users (id,email) VALUES ('${userA}','a@example.test'),('${userB}','b@example.test');
++      INSERT INTO public.profiles (id,username,total_gtr_count,created_at,updated_at) VALUES ('${userA}','a@example.test',12,NULL,NULL),('${userB}','Bob',7,now(),now());`)
++    await db.exec(readFileSync(resolve('sql/migrate-legacy-profiles.sql'), 'utf8'))
++    const rows = await db.query<{ username: string; display_name: string; total_gtr_count: number; role: string }>('SELECT username,display_name,total_gtr_count,role FROM public.profiles ORDER BY id')
++    expect(rows.rows[0]).toMatchObject({ username: 'a@example.test', display_name: 'プレイヤー', total_gtr_count: 12, role: 'user' })
++    expect(rows.rows[1]).toMatchObject({ username: 'Bob', display_name: 'Bob', total_gtr_count: 7, role: 'user' })
++    const dates = await db.query<{ created_at: string; updated_at: string }>(`SELECT created_at, updated_at FROM public.profiles WHERE id='${userA}'`)
++    expect(dates.rows[0].created_at).toBeTruthy()
++    expect(dates.rows[0].updated_at).toBeTruthy()
++    await asUser(db, userA, async () => {
++      const self = await db.query('SELECT id,display_name FROM public.profiles')
++      expect(self.rows).toHaveLength(1)
++      await expect(db.exec('SELECT username FROM public.profiles')).rejects.toThrow()
++      await expect(db.exec("UPDATE public.profiles SET role='admin'")).rejects.toThrow()
++      await db.exec('SELECT * FROM public.scores')
++    })
++    await db.exec('SET ROLE anon')
++    await expect(db.exec('SELECT * FROM public.profiles')).rejects.toThrow()
++    await expect(db.exec('SELECT * FROM public.rankings')).rejects.toThrow()
++    await db.exec('RESET ROLE')
++  })
++})
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\src\\App.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\App.tsx"
+index 3d15be5..04aa17d 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\src\\App.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\App.tsx"
+@@ -5,11 +5,18 @@ import GuidedGame from './components/game/GuidedGame'
+ import ScoreAttackGame from './components/game/ScoreAttackGame'
+ import CompletionGallery from './components/gallery/CompletionGallery'
+ import { clearGTRReplayHash, readGTRReplayResultFromLocation } from './game/feedback/GTRIssueReport'
++import AccountDialog from './components/account/AccountDialog'
++import { useAccount } from './auth/useAccount'
+ 
+ export type GameMode = 'top' | 'guided' | 'score-attack' | 'battle' | 'stats'
+ export type MenuMode = GameMode | 'gallery'
+ 
+ function App() {
++  const account = useAccount()
++  const [accountOpen, setAccountOpen] = useState(false)
++  const accountButton = useRef<HTMLElement | null>(null)
++  const closeAccount = useCallback(() => { setAccountOpen(false); requestAnimationFrame(() => accountButton.current?.focus()) }, [])
++  const openAccount = useCallback(() => { accountButton.current = document.activeElement as HTMLElement; setAccountOpen(true) }, [])
+   const initialReplay = useRef(readGTRReplayResultFromLocation())
+   const [currentMode, setCurrentMode] = useState<GameMode>(() => (
+     initialReplay.current.status === 'valid' ? 'guided' : 'top'
+@@ -101,9 +108,9 @@ function App() {
+       case 'top':
+         return <TopPage onSelectMode={handleSelectMode} />
+       case 'guided':
+-        return <GuidedGame key={replayRevision} onExit={handleExitGame} suspended={galleryOpen} />
++        return <GuidedGame key={replayRevision} onExit={handleExitGame} suspended={galleryOpen || accountOpen} />
+       case 'score-attack':
+-        return <ScoreAttackGame onExit={handleExitGame} suspended={galleryOpen} />
++        return <ScoreAttackGame onExit={handleExitGame} suspended={galleryOpen || accountOpen} />
+       case 'battle':
+         return (
+           <div className="text-center py-12 font-puyo">
+@@ -134,9 +141,12 @@ function App() {
+       currentMode={galleryOpen ? 'gallery' : currentMode}
+       onSelectMode={handleSelectMode}
+       onLogoClick={handleLogoClick}
++      onAccountClick={openAccount}
++      accountLabel={account.profile?.display_name || 'ゲスト'}
+     >
+-      <div hidden={galleryOpen} inert={galleryOpen}>{renderContent()}</div>
++      <div hidden={galleryOpen} inert={galleryOpen || accountOpen}>{renderContent()}</div>
+       {galleryOpen && <CompletionGallery onReturn={() => setGalleryOpen(false)} returnLabel={currentMode === 'top' ? 'ホームに戻る' : '練習に戻る'} />}
++      {accountOpen && <AccountDialog account={account} onClose={closeAccount} />}
+     </MainLayout>
+   )
+ }
+
+New file: src/auth/account.test.ts
++import { afterEach, expect, it, vi } from 'vitest'
++import { localLogin, localLogout, retireLocalSessionForCloud } from './account'
++
++vi.mock('../lib/supabase', () => ({ supabase: null }))
++afterEach(() => { vi.unstubAllGlobals(); vi.resetModules() })
++
++it('obtains a fresh CSRF nonce for each login after logout', async () => {
++  const calls: { url: string; csrf: string | null }[] = []
++  let bootstrap = 0
++  vi.stubGlobal('fetch', vi.fn(async (url: string, init: RequestInit) => {
++    const csrf = new Headers(init.headers).get('X-GTR-CSRF')
++    calls.push({ url, csrf })
++    const body = url.endsWith('/session')
++      ? { available: true, profile: null, csrf: `nonce-${++bootstrap}` }
++      : url.endsWith('/login')
++        ? { profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' }, csrf: `session-${bootstrap}` }
++        : { profile: null }
++    return { ok: true, headers: { get: () => 'application/json' }, json: async () => body } as unknown as Response
++  }))
++  await localLogin()
++  await localLogout()
++  await localLogin()
++  expect(calls.map(call => call.url.split('/').pop())).toEqual(['session', 'login', 'logout', 'session', 'login'])
++  expect(calls[1].csrf).toBe('nonce-1')
++  expect(calls[2].csrf).toBe('session-1')
++  expect(calls[4].csrf).toBe('nonce-2')
++})
++
++it('uses an existing shared-cookie session in a second tab without posting login', async () => {
++  const calls: { path: string; csrf: string | null }[] = []
++  let loggedIn = false
++  vi.stubGlobal('fetch', vi.fn(async (url: string, init: RequestInit) => {
++    const path = url.split('/').pop()!
++    const csrf = new Headers(init.headers).get('X-GTR-CSRF')
++    calls.push({ path, csrf })
++    const profile = { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' }
++    let data: unknown
++    if (path === 'session') data = { available: true, profile: loggedIn ? profile : null, csrf: loggedIn ? 'session-csrf' : 'login-nonce' }
++    else if (path === 'login') { loggedIn = true; data = { profile, csrf: 'session-csrf' } }
++    else if (path === 'profile') data = { profile: { ...profile, display_name: 'Updated' } }
++    else { loggedIn = false; data = { profile: null } }
++    return { ok: true, headers: { get: () => 'application/json' }, json: async () => data } as unknown as Response
++  }))
++  vi.resetModules()
++  const tabA = await import('./account')
++  await tabA.localLogin()
++  vi.resetModules()
++  const tabB = await import('./account')
++  expect((await tabB.localLogin()).display_name).toBe('管理者')
++  expect(calls.map(call => call.path)).toEqual(['session', 'login', 'session'])
++  expect((await tabB.localUpdate('Updated')).display_name).toBe('Updated')
++  await tabB.localLogout()
++  expect(calls.filter(call => call.path === 'profile' || call.path === 'logout').map(call => call.csrf)).toEqual(['session-csrf', 'session-csrf'])
++})
++
++it('ends a competing local cookie after cloud callback for reload consistency', async () => {
++  let local = true
++  const calls: string[] = []
++  vi.stubGlobal('fetch', vi.fn(async (url: string) => {
++    calls.push(url)
++    const data = url.endsWith('/session')
++      ? { available: true, profile: local ? { backend: 'local', id: 'system_admin', role: 'admin', display_name: 'Local' } : null, csrf: 'current' }
++      : (local = false, { profile: null })
++    return { ok: true, headers: { get: () => 'application/json' }, json: async () => data } as unknown as Response
++  }))
++  await retireLocalSessionForCloud()
++  expect(calls.map(url => url.split('/').pop())).toEqual(['session', 'logout'])
++  expect(local).toBe(false)
++})
+
+New file: src/auth/account.ts
++import type { User } from '@supabase/supabase-js'
++import { supabase } from '../lib/supabase'
++import { preserveReplayHash } from './oauthCallback'
++
++export interface AccountProfile {
++  backend: 'cloud' | 'local'
++  id: string
++  display_name: string
++  role: 'user' | 'admin'
++  avatar_url?: string | null
++  provider?: string
++}
++
++export function providerOf(user: User): string | undefined {
++  return user.app_metadata?.provider || user.identities?.[0]?.provider
++}
++
++export async function cloudProfile(user: User): Promise<AccountProfile> {
++  if (!supabase) throw new Error('Supabaseが設定されていません')
++  const { data, error } = await supabase.from('profiles').select('id,display_name,avatar_url,role').eq('id', user.id).single()
++  if (error) throw error
++  return { backend: 'cloud', id: data.id, display_name: data.display_name, avatar_url: data.avatar_url, role: data.role, provider: providerOf(user) }
++}
++
++export async function startOAuth(provider: 'google' | 'github'): Promise<void> {
++  if (!supabase) throw new Error('Supabaseが設定されていません')
++  preserveReplayHash()
++  const redirectTo = `${location.origin}${location.pathname}?auth_callback=1`
++  const result = await supabase.auth.signInWithOAuth({ provider, options: { redirectTo } })
++  if (result.error) throw result.error
++}
++
++export async function clearCloudSessionForLocal(): Promise<void> {
++  if (!supabase) return
++  await supabase.auth.signOut({ scope: 'local' })
++  const current = await supabase.auth.getSession()
++  if (current.error || current.data.session) throw new Error('以前のクラウドログインを終了できませんでした')
++}
++
++interface LocalResponse { available?: boolean; profile: AccountProfile | null; csrf?: string | null; error?: string; code?: string }
++export class LocalAuthError extends Error {
++  constructor(message: string, readonly code?: string) { super(message); this.name = 'LocalAuthError' }
++}
++let localCsrf: string | null = null
++
++async function localRequest(path: string, body?: Record<string, unknown>): Promise<LocalResponse> {
++  const response = await fetch(`/api/local-auth/${path}`, {
++    method: body ? 'POST' : 'GET', credentials: 'same-origin',
++    headers: body ? { 'Content-Type': 'application/json', 'X-GTR-Local-Auth': '1', ...(localCsrf ? { 'X-GTR-CSRF': localCsrf } : {}) } : {},
++    body: body ? JSON.stringify(body) : undefined, cache: 'no-store',
++  })
++  if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('ローカル管理者は利用できません')
++  const data = await response.json() as LocalResponse
++  if (!response.ok) throw new LocalAuthError(data.error || 'ローカル管理者の処理に失敗しました', data.code)
++  if (data.csrf !== undefined) localCsrf = data.csrf
++  return data
++}
++
++export async function readLocalSession(): Promise<LocalResponse> { return localRequest('session') }
++export async function localSession(): Promise<LocalResponse> {
++  try { return await readLocalSession() }
++  catch { return { available: false, profile: null } }
++}
++export async function localLogin(): Promise<AccountProfile> {
++  const bootstrap = await localSession()
++  if (bootstrap.profile) return bootstrap.profile
++  if (!bootstrap.available || !bootstrap.csrf) throw new Error('ローカル管理者は利用できません')
++  return (await localRequest('login', {})).profile!
++}
++export async function localUpdate(name: string): Promise<AccountProfile> { return (await localRequest('profile', { display_name: name })).profile! }
++export async function localLogout(): Promise<void> { await localRequest('logout', {}); localCsrf = null }
++
++export async function retireLocalSessionForCloud(): Promise<void> {
++  if (!import.meta.env.DEV) return
++  for (let attempt = 0; attempt < 3; attempt++) {
++    const current = await readLocalSession()
++    if (!current.profile) return
++    try { await localLogout(); return }
++    catch (error) {
++      if (!(error instanceof LocalAuthError) || (error.code !== 'SESSION_INVALID' && error.code !== 'CSRF_MISMATCH')) throw error
++    }
++  }
++  throw new Error('ローカルセッションを終了できませんでした')
++}
++
++export async function cloudUpdate(name: string, id: string): Promise<void> {
++  if (!supabase) throw new Error('Supabaseが設定されていません')
++  const { error } = await supabase.from('profiles').update({ display_name: name.trim() }).eq('id', id).select('id').single()
++  if (error) throw error
++}
+
+New file: src/auth/backendSelection.test.ts
++import { afterEach, expect, it, vi } from 'vitest'
++
++afterEach(() => { vi.unstubAllGlobals(); vi.resetModules() })
++
++it('keeps an explicit cloud choice on the current page when storage can be read but not written', async () => {
++  vi.stubGlobal('sessionStorage', { getItem: () => 'local', setItem: () => { throw new Error('quota') } })
++  const selection = await import('./backendSelection')
++  expect(selection.selectBackend('cloud')).toBe(false)
++  expect(selection.selectedBackend()).toBe('cloud')
++})
+
+New file: src/auth/backendSelection.ts
++export type SelectedBackend = 'cloud' | 'local'
++const KEY = 'gtr.auth.selectedBackend'
++let fallback: SelectedBackend | null = null
++let useFallback = false
++
++export function selectedBackend(): SelectedBackend | null {
++  if (useFallback) return fallback
++  try {
++    const stored = sessionStorage.getItem(KEY)
++    return stored === 'cloud' || stored === 'local' ? stored : null
++  } catch { return fallback }
++}
++
++export function selectBackend(backend: SelectedBackend): boolean {
++  fallback = backend
++  try { sessionStorage.setItem(KEY, backend); useFallback = false; return true }
++  catch { useFallback = true; return false }
++}
+
+New file: src/auth/oauthCallback.test.ts
++import { afterEach, expect, it, vi } from 'vitest'
++import { preserveReplayHash, restoreReplayHashBeforeApp } from './oauthCallback'
++
++afterEach(() => vi.unstubAllGlobals())
++
++it('keeps a replay hash through an OAuth callback before the app parses it', () => {
++  const storage = new Map<string, string>()
++  vi.stubGlobal('location', { hash: '#gtr=replay', search: '?auth_callback=1&code=x', pathname: '/' })
++  vi.stubGlobal('sessionStorage', {
++    setItem: (key: string, value: string) => storage.set(key, value),
++    getItem: (key: string) => storage.get(key) ?? null,
++    removeItem: (key: string) => storage.delete(key),
++  })
++  preserveReplayHash()
++  expect([...storage.values()]).toEqual(['#gtr=replay'])
++  vi.stubGlobal('location', { hash: '', search: '?auth_callback=1&code=x', pathname: '/' })
++  const replace = vi.fn()
++  vi.stubGlobal('history', { replaceState: replace })
++  restoreReplayHashBeforeApp()
++  expect(replace).toHaveBeenCalledWith(null, '', '/?auth_callback=1&code=x#gtr=replay')
++})
++
++it('does not prevent app startup when session storage is blocked', () => {
++  vi.stubGlobal('location', { hash: '#gtr=replay', search: '?auth_callback=1', pathname: '/' })
++  vi.stubGlobal('sessionStorage', { getItem() { throw new Error('blocked') }, setItem() { throw new Error('blocked') } })
++  expect(() => preserveReplayHash()).not.toThrow()
++  expect(() => restoreReplayHashBeforeApp()).not.toThrow()
++})
+
+New file: src/auth/oauthCallback.ts
++import { supabase } from '../lib/supabase'
++
++const HASH_KEY = 'gtr.oauth.replayHash'
++export type CallbackResult = 'absent' | 'success'
++let pending: Promise<CallbackResult> | null = null
++
++export function preserveReplayHash(): void {
++  try {
++    if (location.hash) sessionStorage.setItem(HASH_KEY, location.hash)
++    else sessionStorage.removeItem(HASH_KEY)
++  } catch { /* Storage is optional; OAuth must remain available. */ }
++}
++
++export function restoreReplayHashBeforeApp(): void {
++  const params = new URLSearchParams(location.search)
++  if (params.get('auth_callback') !== '1') return
++  let hash: string | null = null
++  try { hash = sessionStorage.getItem(HASH_KEY); sessionStorage.removeItem(HASH_KEY) }
++  catch { /* Keep the callback usable when storage is blocked. */ }
++  if (hash && !location.hash) history.replaceState(null, '', `${location.pathname}${location.search}${hash}`)
++}
++
++export function processOAuthCallback(): Promise<CallbackResult> {
++  if (pending) return pending
++  const params = new URLSearchParams(location.search)
++  if (params.get('auth_callback') !== '1') return Promise.resolve('absent')
++  pending = (async () => {
++    const code = params.get('code')
++    const error = params.get('error_description') || params.get('error')
++    for (const name of ['auth_callback', 'code', 'error', 'error_code', 'error_description']) params.delete(name)
++    const query = params.toString()
++    history.replaceState(null, '', `${location.pathname}${query ? `?${query}` : ''}${location.hash}`)
++    if (error) throw new Error(error)
++    if (!code || !supabase) throw new Error('ログインを完了できませんでした')
++    const result = await supabase.auth.exchangeCodeForSession(code)
++    if (result.error) throw result.error
++    if (!result.data.session) throw new Error('ログインを完了できませんでした')
++    return 'success' as const
++  })()
++  return pending
++}
+
+New file: src/auth/oauthExchange.test.ts
++import { afterEach, expect, it, vi } from 'vitest'
++
++const exchange = vi.hoisted(() => vi.fn())
++vi.mock('../lib/supabase', () => ({ supabase: { auth: { exchangeCodeForSession: exchange } } }))
++
++afterEach(() => { vi.unstubAllGlobals(); vi.resetModules(); exchange.mockReset() })
++
++it('exchanges a marked callback exactly once and preserves unrelated query/hash', async () => {
++  vi.stubGlobal('location', { search: '?theme=dark&auth_callback=1&code=sample', hash: '#gtr=replay', pathname: '/' })
++  const replace = vi.fn()
++  vi.stubGlobal('history', { replaceState: replace })
++  exchange.mockResolvedValue({ error: null, data: { session: { access_token: 'test' } } })
++  const callback = await import('./oauthCallback')
++  expect(await Promise.all([callback.processOAuthCallback(), callback.processOAuthCallback()])).toEqual(['success', 'success'])
++  expect(exchange).toHaveBeenCalledTimes(1)
++  expect(exchange).toHaveBeenCalledWith('sample')
++  expect(replace).toHaveBeenCalledWith(null, '', '/?theme=dark#gtr=replay')
++})
++
++it('cleans an error callback without exchanging a code', async () => {
++  vi.stubGlobal('location', { search: '?auth_callback=1&error=access_denied&error_description=denied', hash: '#x', pathname: '/' })
++  const replace = vi.fn()
++  vi.stubGlobal('history', { replaceState: replace })
++  const callback = await import('./oauthCallback')
++  await expect(callback.processOAuthCallback()).rejects.toThrow('denied')
++  expect(exchange).not.toHaveBeenCalled()
++  expect(replace).toHaveBeenCalledWith(null, '', '/#x')
++})
+
+New file: src/auth/useAccount.test.tsx
++// @vitest-environment jsdom
++import { act, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react'
++import { afterEach, expect, it, vi } from 'vitest'
++import { useAccount } from './useAccount'
++import AccountDialog from '../components/account/AccountDialog'
++
++const fake = vi.hoisted(() => ({
++  callback: null as null | ((event: string, session: unknown) => void),
++  process: vi.fn(), localSession: vi.fn(), getUser: vi.fn(), cloudProfile: vi.fn(),
++  clearCloud: vi.fn(),
++  localLogout: vi.fn(),
++  localLogin: vi.fn(),
++  localUpdate: vi.fn(),
++  readLocalSession: vi.fn(),
++  cloudUpdate: vi.fn(),
++  signOut: vi.fn(),
++  retireLocal: vi.fn(),
++}))
++vi.mock('./oauthCallback', () => ({ processOAuthCallback: fake.process }))
++vi.mock('./account', () => {
++  class LocalAuthError extends Error {
++    constructor(message: string, readonly code?: string) { super(message) }
++  }
++  return {
++    LocalAuthError, readLocalSession: fake.readLocalSession,
++    clearCloudSessionForLocal: fake.clearCloud, cloudProfile: fake.cloudProfile, cloudUpdate: fake.cloudUpdate, localLogin: fake.localLogin, localLogout: fake.localLogout, localSession: fake.localSession, localUpdate: fake.localUpdate, retireLocalSessionForCloud: fake.retireLocal, startOAuth: vi.fn(),
++  }
++})
++vi.mock('../lib/supabase', () => ({ supabase: { auth: {
++  getUser: fake.getUser,
++  signOut: fake.signOut,
++  onAuthStateChange: (callback: (event: string, session: unknown) => void) => {
++    fake.callback = callback
++    callback('INITIAL_SESSION', null)
++    return { data: { subscription: { unsubscribe() {} } } }
++  },
++} } }))
++
++afterEach(() => { vi.restoreAllMocks(); vi.resetAllMocks(); fake.callback = null; sessionStorage.clear() })
++
++it('keeps the local administrator after the initial empty cloud event', async () => {
++  fake.process.mockResolvedValue(undefined)
++  fake.localSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' }, csrf: 'x' })
++  fake.getUser.mockResolvedValue({ data: { user: null }, error: null })
++  const { result } = renderHook(() => useAccount())
++  await waitFor(() => expect(result.current.status).toBe('ready'))
++  expect(result.current.profile?.backend).toBe('local')
++  expect(result.current.availableLocal).toBe(true)
++  act(() => fake.callback?.('SIGNED_OUT', null))
++  expect(result.current.profile?.backend).toBe('local')
++  act(() => fake.callback?.('TOKEN_REFRESHED', { user: { id: 'cloud' } }))
++  expect(result.current.profile?.backend).toBe('local')
++})
++
++it('clears the prior cloud session before local logout', async () => {
++  fake.process.mockResolvedValue(undefined)
++  fake.localSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' } })
++  fake.clearCloud.mockResolvedValue(undefined)
++  fake.localLogout.mockResolvedValue(undefined)
++  const { result } = renderHook(() => useAccount())
++  await waitFor(() => expect(result.current.status).toBe('ready'))
++  await act(async () => result.current.logout())
++  expect(fake.clearCloud).toHaveBeenCalledOnce()
++  expect(fake.localLogout).toHaveBeenCalledOnce()
++  expect(fake.clearCloud.mock.invocationCallOrder[0]).toBeLessThan(fake.localLogout.mock.invocationCallOrder[0])
++  expect(result.current.profile).toBeNull()
++})
++
++it('does not leave user A editable while user B profile fails', async () => {
++  fake.process.mockResolvedValue(undefined)
++  fake.localSession.mockResolvedValue({ available: true, profile: null })
++  fake.getUser.mockResolvedValue({ data: { user: { id: 'a' } }, error: null })
++  fake.cloudProfile.mockImplementation((user: { id: string }) => user.id === 'a'
++    ? Promise.resolve({ backend: 'cloud', id: 'a', role: 'user', display_name: 'Alice' })
++    : Promise.reject(new Error('B profile unavailable')))
++  const { result } = renderHook(() => useAccount())
++  await waitFor(() => expect(result.current.profile?.id).toBe('a'))
++  act(() => fake.callback?.('SIGNED_IN', { user: { id: 'b' } }))
++  expect(result.current.profile).toBeNull()
++  await waitFor(() => expect(result.current.status).toBe('error'))
++  expect(result.current.profile).toBeNull()
++})
++
++it('discards a stale cloud profile after sign-out', async () => {
++  fake.process.mockResolvedValue(undefined)
++  fake.localSession.mockResolvedValue({ available: true, profile: null, csrf: 'x' })
++  fake.getUser.mockResolvedValue({ data: { user: { id: 'user-a' } }, error: null })
++  let resolveProfile!: (value: unknown) => void
++  fake.cloudProfile.mockImplementation(() => new Promise(resolve => { resolveProfile = resolve }))
++  const { result } = renderHook(() => useAccount())
++  await waitFor(() => expect(fake.cloudProfile).toHaveBeenCalled())
++  act(() => fake.callback?.('SIGNED_OUT', null))
++  await waitFor(() => expect(result.current.status).toBe('guest'))
++  await act(async () => resolveProfile({ backend: 'cloud', id: 'user-a', display_name: 'late', role: 'user' }))
++  expect(result.current.profile).toBeNull()
++})
++
++it('still offers local login when the cloud callback fails', async () => {
++  fake.process.mockRejectedValue(new Error('OAuth denied'))
++  fake.localSession.mockResolvedValue({ available: true, profile: null, csrf: 'x' })
++  fake.getUser.mockResolvedValue({ data: { user: null }, error: null })
++  const { result } = renderHook(() => useAccount())
++  await waitFor(() => expect(result.current.status).toBe('error'))
++  expect(result.current.availableLocal).toBe(true)
++  expect(result.current.error).toContain('OAuth denied')
++})
++
++it('does not replace a newer local login with an older empty cloud response', async () => {
++  fake.process.mockResolvedValue(undefined)
++  fake.localSession.mockResolvedValue({ available: true, profile: null })
++  let resolveUser!: (value: unknown) => void
++  fake.getUser.mockImplementation(() => new Promise(resolve => { resolveUser = resolve }))
++  fake.clearCloud.mockResolvedValue(undefined)
++  fake.localLogin.mockResolvedValue({ backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' })
++  const { result } = renderHook(() => useAccount())
++  await waitFor(() => expect(fake.getUser).toHaveBeenCalled())
++  await act(async () => result.current.loginLocal())
++  expect(result.current.profile?.backend).toBe('local')
++  await act(async () => resolveUser({ data: { user: null }, error: null }))
++  expect(result.current.profile?.backend).toBe('local')
++})
++
++it('returns to guest after local session expiry and permits login without reload', async () => {
++  const { LocalAuthError } = await import('./account')
++  fake.process.mockResolvedValue(undefined)
++  fake.localSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' } })
++  fake.localUpdate.mockRejectedValue(new LocalAuthError('expired', 'SESSION_INVALID'))
++  fake.readLocalSession.mockResolvedValue({ available: true, profile: null, csrf: 'new-nonce' })
++  fake.clearCloud.mockResolvedValue(undefined)
++  fake.localLogin.mockResolvedValue({ backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' })
++  const { result } = renderHook(() => useAccount())
++  await waitFor(() => expect(result.current.status).toBe('ready'))
++  await act(async () => result.current.saveName('Changed'))
++  expect(result.current.status).toBe('guest')
++  expect(result.current.profile).toBeNull()
++  await act(async () => result.current.loginLocal())
++  expect(result.current.status).toBe('ready')
++  expect(result.current.profile?.backend).toBe('local')
++})
++
++it('resynchronizes an active session after a CSRF mismatch while keeping validation errors local', async () => {
++  const { LocalAuthError } = await import('./account')
++  fake.process.mockResolvedValue(undefined)
++  fake.localSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' } })
++  fake.localUpdate.mockRejectedValueOnce(new LocalAuthError('csrf', 'CSRF_MISMATCH')).mockResolvedValueOnce({ backend: 'local', id: 'system_admin', role: 'admin', display_name: 'Changed' })
++  fake.readLocalSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' }, csrf: 'current' })
++  const { result } = renderHook(() => useAccount())
++  await waitFor(() => expect(result.current.status).toBe('ready'))
++  await act(async () => result.current.saveName('Changed'))
++  expect(result.current.status).toBe('ready')
++  expect(result.current.profile?.display_name).toBe('管理者')
++  expect(fake.readLocalSession).toHaveBeenCalledOnce()
++  await act(async () => result.current.saveName('  '))
++  expect(result.current.profile?.display_name).toBe('管理者')
++  expect(fake.readLocalSession).toHaveBeenCalledOnce()
++  await act(async () => result.current.saveName('Changed'))
++  expect(result.current.profile?.display_name).toBe('Changed')
++})
++
++it('discards a delayed session recheck after a newer logout', async () => {
++  const { LocalAuthError } = await import('./account')
++  fake.process.mockResolvedValue(undefined)
++  fake.localSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' } })
++  fake.localUpdate.mockRejectedValue(new LocalAuthError('csrf', 'CSRF_MISMATCH'))
++  let resolveRecheck!: (value: unknown) => void
++  fake.readLocalSession.mockImplementation(() => new Promise(resolve => { resolveRecheck = resolve }))
++  fake.clearCloud.mockResolvedValue(undefined)
++  fake.localLogout.mockResolvedValue(undefined)
++  const { result } = renderHook(() => useAccount())
++  await waitFor(() => expect(result.current.status).toBe('ready'))
++  let save!: Promise<void>
++  act(() => { save = result.current.saveName('Changed') })
++  await waitFor(() => expect(fake.readLocalSession).toHaveBeenCalledOnce())
++  await act(async () => result.current.logout())
++  expect(result.current.status).toBe('guest')
++  await act(async () => { resolveRecheck({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: 'stale' } }); await save })
++  expect(result.current.profile).toBeNull()
++})
++
++it('does not submit user A draft for user B after a batched hook identity change', async () => {
++  fake.process.mockResolvedValue('absent')
++  fake.localSession.mockResolvedValue({ available: true, profile: null })
++  fake.getUser.mockResolvedValue({ data: { user: { id: 'a' } }, error: null })
++  fake.cloudProfile.mockImplementation(async (user: { id: string }) => ({ backend: 'cloud', id: user.id, role: 'user', display_name: 'Same', provider: user.id }))
++  fake.cloudUpdate.mockResolvedValue(undefined)
++  function Harness() { return <AccountDialog account={useAccount()} onClose={vi.fn()} /> }
++  render(<Harness />)
++  await waitFor(() => expect(screen.getByText('(a)')).toBeTruthy())
++  fireEvent.change(screen.getByLabelText('表示名'), { target: { value: 'A unsaved' } })
++  await act(async () => { fake.callback?.('SIGNED_IN', { user: { id: 'b' } }); await Promise.resolve() })
++  await waitFor(() => expect(screen.getByText('(b)')).toBeTruthy())
++  expect((screen.getByLabelText('表示名') as HTMLInputElement).value).toBe('Same')
++  fireEvent.click(screen.getByRole('button', { name: '保存' }))
++  await waitFor(() => expect(fake.cloudUpdate).toHaveBeenCalledWith('Same', 'b'))
++})
++
++it('chooses cloud after a successful callback even when a local cookie existed before it', async () => {
++  fake.process.mockResolvedValue('success')
++  fake.localSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: 'Local' } })
++  fake.getUser.mockResolvedValue({ data: { user: { id: 'cloud-a' } }, error: null })
++  fake.cloudProfile.mockResolvedValue({ backend: 'cloud', id: 'cloud-a', role: 'user', display_name: 'Cloud' })
++  fake.cloudUpdate.mockResolvedValue(undefined)
++  fake.signOut.mockResolvedValue({ error: null })
++  const first = renderHook(() => useAccount())
++  await waitFor(() => expect(first.result.current.profile?.backend).toBe('cloud'))
++  expect(sessionStorage.getItem('gtr.auth.selectedBackend')).toBe('cloud')
++  expect(fake.retireLocal).toHaveBeenCalledOnce()
++  await act(async () => first.result.current.saveName('Renamed'))
++  expect(fake.cloudUpdate).toHaveBeenCalledWith('Renamed', 'cloud-a')
++  first.unmount()
++  fake.process.mockResolvedValue('absent')
++  const reloaded = renderHook(() => useAccount())
++  await waitFor(() => expect(reloaded.result.current.profile?.backend).toBe('cloud'))
++  await act(async () => reloaded.result.current.logout())
++  expect(fake.signOut).toHaveBeenCalledOnce()
++  expect(reloaded.result.current.profile).toBeNull()
++  reloaded.unmount()
++  fake.getUser.mockResolvedValue({ data: { user: null }, error: null })
++  const afterLogout = renderHook(() => useAccount())
++  await waitFor(() => expect(afterLogout.result.current.status).toBe('guest'))
++  expect(afterLogout.result.current.profile).toBeNull()
++})
++
++it('chooses cloud when another tab logs into local during callback exchange', async () => {
++  let completeCallback!: (value: 'success') => void
++  fake.process.mockImplementation(() => new Promise(resolve => { completeCallback = resolve }))
++  let otherTabLoggedIn = false
++  fake.localSession.mockImplementation(async () => ({ available: true, profile: otherTabLoggedIn ? { backend: 'local', id: 'system_admin', role: 'admin', display_name: 'Local' } : null }))
++  fake.getUser.mockResolvedValue({ data: { user: { id: 'cloud-a' } }, error: null })
++  fake.cloudProfile.mockResolvedValue({ backend: 'cloud', id: 'cloud-a', role: 'user', display_name: 'Cloud' })
++  const { result } = renderHook(() => useAccount())
++  expect(result.current.status).toBe('loading')
++  otherTabLoggedIn = true
++  await act(async () => completeCallback('success'))
++  await waitFor(() => expect(result.current.profile?.backend).toBe('cloud'))
++})
++
++it('does not automatically adopt local after a failed callback', async () => {
++  fake.process.mockRejectedValue(new Error('OAuth denied'))
++  fake.localSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: 'Local' } })
++  fake.localLogin.mockResolvedValue({ backend: 'local', id: 'system_admin', role: 'admin', display_name: 'Local' })
++  fake.clearCloud.mockResolvedValue(undefined)
++  const { result } = renderHook(() => useAccount())
++  await waitFor(() => expect(result.current.status).toBe('error'))
++  expect(result.current.profile).toBeNull()
++  expect(result.current.availableLocal).toBe(true)
++  await act(async () => result.current.loginLocal())
++  expect(result.current.profile?.backend).toBe('local')
++})
++
++it('retains cloud on the callback page when storage write fails and retires the local cookie', async () => {
++  sessionStorage.setItem('gtr.auth.selectedBackend', 'local')
++  const setItem = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('quota') })
++  fake.process.mockResolvedValue('success')
++  let localCookie = true
++  fake.retireLocal.mockImplementation(async () => { localCookie = false })
++  fake.localSession.mockImplementation(async () => ({ available: true, profile: localCookie ? { backend: 'local', id: 'system_admin', role: 'admin', display_name: 'Local' } : null }))
++  fake.getUser.mockResolvedValue({ data: { user: { id: 'cloud-a' } }, error: null })
++  fake.cloudProfile.mockResolvedValue({ backend: 'cloud', id: 'cloud-a', role: 'user', display_name: 'Cloud' })
++  const { result } = renderHook(() => useAccount())
++  await waitFor(() => expect(result.current.profile?.backend).toBe('cloud'))
++  expect(fake.retireLocal).toHaveBeenCalledOnce()
++  expect(localCookie).toBe(false)
++  expect(setItem).toHaveBeenCalled()
++})
+
+New file: src/auth/useAccount.ts
++import { useCallback, useEffect, useRef, useState } from 'react'
++import { supabase } from '../lib/supabase'
++import { clearCloudSessionForLocal, cloudProfile, cloudUpdate, LocalAuthError, localLogin, localLogout, localSession, localUpdate, readLocalSession, retireLocalSessionForCloud, startOAuth, type AccountProfile } from './account'
++import { processOAuthCallback } from './oauthCallback'
++import { selectBackend, selectedBackend } from './backendSelection'
++
++export function useAccount() {
++  const [profile, setProfile] = useState<AccountProfile | null>(null)
++  const [availableLocal, setAvailableLocal] = useState(false)
++  const [status, setStatus] = useState<'loading' | 'guest' | 'ready' | 'error'>('loading')
++  const [error, setError] = useState<string | null>(null)
++  const generation = useRef(0)
++  const localActive = useRef(false)
++  const localChecked = useRef(false)
++
++  useEffect(() => {
++    let active = true
++    const version = ++generation.current
++    const refresh = async () => {
++      let callbackError: string | null = null
++      try {
++        try {
++          const callbackResult = await processOAuthCallback()
++          if (callbackResult === 'success') {
++            const persisted = selectBackend('cloud')
++            try { await retireLocalSessionForCloud() }
++            catch (error) { if (!persisted) throw error }
++          }
++        }
++        catch (caught) { callbackError = caught instanceof Error ? caught.message : 'ログインを完了できませんでした' }
++        const local = await localSession()
++        localChecked.current = true
++        if (active) setAvailableLocal(!!local.available)
++        if (!active || version !== generation.current) return
++        if (callbackError) { setProfile(null); setStatus('error'); setError(callbackError); return }
++        if (local.profile && selectedBackend() !== 'cloud') { localActive.current = true; setProfile(local.profile); setStatus('ready'); setError(null); return }
++        if (supabase) {
++          const result = await supabase.auth.getUser()
++          if (!active || version !== generation.current) return
++          if (result.error && result.error.name !== 'AuthSessionMissingError') throw result.error
++          if (result.data.user) {
++            const cloud = await cloudProfile(result.data.user)
++            if (!active || version !== generation.current) return
++            setProfile(cloud); setStatus('ready'); setError(callbackError); return
++          }
++        }
++        setProfile(null); setStatus(callbackError ? 'error' : 'guest'); setError(callbackError)
++      } catch (caught) {
++        if (!active || version !== generation.current) return
++        setError(caught instanceof Error ? caught.message : 'ログインを確認できませんでした')
++        setStatus('error')
++      }
++    }
++    void refresh()
++    const subscription = supabase?.auth.onAuthStateChange((event, session) => {
++      if (event === 'INITIAL_SESSION' || !localChecked.current || localActive.current) return
++      const current = ++generation.current
++      setProfile(null)
++      setError(null)
++      setStatus(session?.user ? 'loading' : 'guest')
++      void (async () => {
++        if (!session?.user) {
++          if (active && current === generation.current) { setProfile(null); setStatus('guest') }
++          return
++        }
++        try {
++          const cloud = await cloudProfile(session.user)
++          if (active && current === generation.current) { setProfile(cloud); setStatus('ready') }
++        } catch (caught) {
++          if (active && current === generation.current) { setError(caught instanceof Error ? caught.message : 'プロフィールを読めませんでした'); setStatus('error') }
++        }
++      })()
++    }).data.subscription
++    return () => { active = false; generation.current++; subscription?.unsubscribe() }
++  }, [])
++
++  const act = useCallback(async (operation: () => Promise<AccountProfile | null>) => {
++    const version = ++generation.current
++    setStatus('loading'); setError(null)
++    try {
++      const next = await operation()
++      if (version === generation.current) {
++        localActive.current = next?.backend === 'local'
++        if (next?.backend === 'local') selectBackend('local')
++        setProfile(next); setStatus(next ? 'ready' : 'guest')
++      }
++    } catch (caught) {
++      if (version !== generation.current) return
++      if (caught instanceof LocalAuthError && (caught.code === 'SESSION_INVALID' || caught.code === 'CSRF_MISMATCH')) {
++        try {
++          const latest = await readLocalSession()
++          if (version !== generation.current) return
++          setAvailableLocal(!!latest.available)
++          localActive.current = latest.profile?.backend === 'local'
++          setProfile(latest.profile)
++          setStatus(latest.profile ? 'ready' : 'guest')
++          setError(latest.profile ? 'セッションを更新しました。もう一度お試しください。' : 'ログイン期限が切れました。もう一度ログインしてください。')
++        } catch (recheckError) {
++          if (version !== generation.current) return
++          localActive.current = false
++          setProfile(null)
++          setStatus('error')
++          setError(recheckError instanceof Error ? recheckError.message : 'セッションを確認できませんでした')
++        }
++        return
++      }
++      setError(caught instanceof Error ? caught.message : '処理に失敗しました')
++      setStatus(profile ? 'ready' : 'error')
++    }
++  }, [profile])
++
++  return {
++    profile, availableLocal, configuredCloud: !!supabase, status, error,
++    loginCloud: startOAuth,
++    loginLocal: () => act(async () => {
++      localActive.current = true
++      try { await clearCloudSessionForLocal(); return await localLogin() }
++      catch (caught) { localActive.current = false; throw caught }
++    }),
++    saveName: (name: string) => act(async () => {
++      const clean = name.trim()
++      if (clean.length < 1 || clean.length > 50) throw new Error('表示名は1〜50文字で入力してください')
++      if (!profile) throw new Error('ログインしてください')
++      if (profile.backend === 'local') return localUpdate(clean)
++      await cloudUpdate(clean, profile.id)
++      return { ...profile, display_name: clean }
++    }),
++    logout: () => act(async () => {
++      if (profile?.backend === 'local') { await clearCloudSessionForLocal(); await localLogout() }
++      else if (supabase) { const result = await supabase.auth.signOut(); if (result.error) throw result.error }
++      return null
++    }),
++  }
++}
+
+New file: src/components/account/AccountDialog.test.tsx
++// @vitest-environment jsdom
++import { fireEvent, render, screen } from '@testing-library/react'
++import { expect, it, vi } from 'vitest'
++import AccountDialog from './AccountDialog'
++import type { useAccount } from '../../auth/useAccount'
++
++type Account = ReturnType<typeof useAccount>
++
++it('offers guest login, edits a profile, logs out, and restores scroll state', () => {
++  const loginLocal = vi.fn()
++  const saveName = vi.fn()
++  const logout = vi.fn()
++  const onClose = vi.fn()
++  const base = {
++    availableLocal: true, configuredCloud: false, status: 'guest', error: null,
++    loginCloud: vi.fn(), loginLocal, saveName, logout,
++  }
++  const previous = document.body.style.overflow
++  const view = render(<AccountDialog account={{ ...base, profile: null } as Account} onClose={onClose} />)
++  expect(screen.getByText('クラウドログインは設定されていません。')).toBeTruthy()
++  fireEvent.click(screen.getByRole('button', { name: 'ローカル管理者でログイン' }))
++  expect(loginLocal).toHaveBeenCalledOnce()
++  expect(document.body.style.overflow).toBe('hidden')
++  view.rerender(<AccountDialog account={{ ...base, status: 'ready', profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' } } as Account} onClose={onClose} />)
++  fireEvent.change(screen.getByLabelText('表示名'), { target: { value: '新しい名前' } })
++  fireEvent.click(screen.getByRole('button', { name: '保存' }))
++  expect(saveName).toHaveBeenCalledWith('新しい名前')
++  fireEvent.click(screen.getByRole('button', { name: 'ログアウト' }))
++  expect(logout).toHaveBeenCalledOnce()
++  fireEvent.keyDown(document, { key: 'Escape' })
++  expect(onClose).toHaveBeenCalledOnce()
++  view.unmount()
++  expect(document.body.style.overflow).toBe(previous)
++})
++
++it('keeps an unsaved draft only for the same backend and id', () => {
++  const saveName = vi.fn()
++  const base = {
++    availableLocal: true, configuredCloud: true, status: 'ready', error: null,
++    loginCloud: vi.fn(), loginLocal: vi.fn(), saveName, logout: vi.fn(),
++  }
++  const profile = (backend: 'cloud' | 'local', id: string) => ({ backend, id, role: 'user', display_name: 'Same' })
++  const view = render(<AccountDialog account={{ ...base, profile: profile('cloud', 'user-a') } as Account} onClose={vi.fn()} />)
++  fireEvent.change(screen.getByLabelText('表示名'), { target: { value: 'unsaved A' } })
++  view.rerender(<AccountDialog account={{ ...base, profile: profile('cloud', 'user-a') } as Account} onClose={vi.fn()} />)
++  expect((screen.getByLabelText('表示名') as HTMLInputElement).value).toBe('unsaved A')
++  view.rerender(<AccountDialog account={{ ...base, profile: profile('cloud', 'user-b') } as Account} onClose={vi.fn()} />)
++  expect((screen.getByLabelText('表示名') as HTMLInputElement).value).toBe('Same')
++  fireEvent.change(screen.getByLabelText('表示名'), { target: { value: 'unsaved B' } })
++  view.rerender(<AccountDialog account={{ ...base, profile: profile('local', 'user-b') } as Account} onClose={vi.fn()} />)
++  expect((screen.getByLabelText('表示名') as HTMLInputElement).value).toBe('Same')
++  fireEvent.click(screen.getByRole('button', { name: '保存' }))
++  expect(saveName).toHaveBeenCalledWith('Same')
++})
+
+New file: src/components/account/AccountDialog.tsx
++import { useEffect, useRef, useState } from 'react'
++import { useAccount } from '../../auth/useAccount'
++
++type Account = ReturnType<typeof useAccount>
++
++export default function AccountDialog({ account, onClose }: { account: Account; onClose: () => void }) {
++  const panel = useRef<HTMLDivElement>(null)
++  const identity = account.profile ? `${account.profile.backend}:${account.profile.id}` : null
++  const [draft, setDraft] = useState({ identity, name: account.profile?.display_name ?? '' })
++  const name = draft.identity === identity ? draft.name : account.profile?.display_name ?? ''
++  const [error, setError] = useState<string | null>(null)
++  useEffect(() => { setDraft({ identity, name: account.profile?.display_name ?? '' }) }, [identity, account.profile?.display_name])
++  useEffect(() => {
++    const bodyOverflow = document.body.style.overflow
++    const rootOverflow = document.documentElement.style.overflow
++    document.body.style.overflow = 'hidden'
++    document.documentElement.style.overflow = 'hidden'
++    return () => { document.body.style.overflow = bodyOverflow; document.documentElement.style.overflow = rootOverflow }
++  }, [])
++  useEffect(() => {
++    panel.current?.focus()
++    const keydown = (event: KeyboardEvent) => {
++      if (event.key === 'Escape') { event.preventDefault(); onClose() }
++      if (event.key !== 'Tab' || !panel.current) return
++      const elements = [...panel.current.querySelectorAll<HTMLElement>('button:not([disabled]),input:not([disabled])')]
++      const first = elements[0], last = elements[elements.length - 1]
++      if (event.shiftKey && (document.activeElement === first || document.activeElement === panel.current)) { event.preventDefault(); last?.focus() }
++      else if (!event.shiftKey && (document.activeElement === last || !panel.current.contains(document.activeElement))) { event.preventDefault(); first?.focus() }
++    }
++    document.addEventListener('keydown', keydown)
++    return () => document.removeEventListener('keydown', keydown)
++  }, [onClose])
++
++  const button = 'min-h-11 border border-[#8f80b5] bg-[#332b4a] px-4 py-2 text-sm text-[#f2ecff] shadow-pixel hover:bg-[#49395f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#f0d675] disabled:opacity-50'
++  const oauth = async (provider: 'google' | 'github') => {
++    setError(null)
++    try { await account.loginCloud(provider) }
++    catch (caught) { setError(caught instanceof Error ? caught.message : 'ログインを開始できませんでした') }
++  }
++
++  return <div className="fixed inset-0 z-[70] grid place-items-center bg-[#100d1bcc] p-4" onMouseDown={event => { if (event.target === event.currentTarget) onClose() }}>
++    <div ref={panel} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="account-title" className="w-full max-w-md border-2 border-[#8f80b5] bg-[#211d33] p-5 text-[#f2ecff] shadow-pixel focus:outline-none">
++      <div className="flex items-start justify-between gap-4"><h2 id="account-title" className="font-puyo text-xl">アカウント</h2><button type="button" onClick={onClose} className={button} aria-label="アカウント画面を閉じる">×</button></div>
++      {account.status === 'loading' && <p role="status" className="mt-4">確認中...</p>}
++      {(error || account.error) && <p role="alert" className="mt-4 text-[#ff9aa5]">{error || account.error}</p>}
++      {account.profile ? <div className="mt-5 space-y-4">
++        <p>{account.profile.display_name} <span className="text-sm text-[#c4bfd3]">({account.profile.backend === 'local' ? 'ローカル管理者' : account.profile.provider || 'ログイン中'})</span></p>
++        <form onSubmit={event => { event.preventDefault(); void account.saveName(name) }} className="space-y-2">
++          <label htmlFor="account-name" className="block text-sm">表示名</label>
++          <input id="account-name" value={name} maxLength={50} onChange={event => setDraft({ identity, name: event.target.value })} className="min-h-11 w-full border border-[#8f80b5] bg-[#171426] px-3 text-[#f2ecff] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#f0d675]" />
++          <button type="submit" disabled={account.status === 'loading'} className={button}>保存</button>
++        </form>
++        <button type="button" disabled={account.status === 'loading'} onClick={() => void account.logout()} className={button}>ログアウト</button>
++      </div> : <div className="mt-5 space-y-4">
++        <p className="text-sm text-[#c4bfd3]">ゲストとしてこのまま遊べます。Google/GitHubでログインするとページを離れるため、プレイ途中の状態は失われます。</p>
++        {account.configuredCloud ? <div className="flex flex-wrap gap-3"><button type="button" onClick={() => void oauth('google')} className={button}>Googleでログイン</button><button type="button" onClick={() => void oauth('github')} className={button}>GitHubでログイン</button></div> : <p className="text-sm text-[#c4bfd3]">クラウドログインは設定されていません。</p>}
++        {account.availableLocal && <button type="button" onClick={() => void account.loginLocal()} className={button}>ローカル管理者でログイン</button>}
++      </div>}
++    </div>
++  </div>
++}
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\src\\components\\layout\\Header.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\layout\\Header.tsx"
+index 4ac6219..74851e8 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\src\\components\\layout\\Header.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\layout\\Header.tsx"
+@@ -1,6 +1,6 @@
+-interface HeaderProps { onLogoClick: () => void; onMenuClick: () => void; menuOpen: boolean }
++interface HeaderProps { onLogoClick: () => void; onMenuClick: () => void; menuOpen: boolean; onAccountClick: () => void; accountLabel: string }
+ 
+-export default function Header({ onLogoClick, onMenuClick, menuOpen }: HeaderProps) {
++export default function Header({ onLogoClick, onMenuClick, menuOpen, onAccountClick, accountLabel }: HeaderProps) {
+   return (
+     <header className="fixed inset-x-0 top-0 z-50 flex h-16 items-center border-b border-[#6f648d] bg-[#211d33] px-4  sm:px-6">
+       <button id="mobile-menu-trigger" onClick={onMenuClick} aria-expanded={menuOpen} aria-controls="side-menu" className="mr-3 grid h-12 w-12 place-items-center rounded-none text-[#c4bfd3] hover:bg-[#211d33] md:hidden" aria-label="メニューを開く">
+@@ -12,7 +12,7 @@ export default function Header({ onLogoClick, onMenuClick, menuOpen }: HeaderPro
+       </button>
+       <div className="ml-auto flex items-center gap-3">
+         <span className="hidden rounded-none bg-[#211d33] px-3 py-1.5 text-xs font-normal text-[#c4bfd3] sm:block">β version</span>
+-        <span className="grid h-9 w-9 place-items-center rounded-none border border-[#6f648d] bg-[#211d33] text-sm font-normal text-[#c4bfd3] shadow-pixel" aria-label="アカウント機能は準備中" role="img">●</span>
++        <button type="button" onClick={onAccountClick} className="grid h-11 w-11 place-items-center rounded-none border border-[#6f648d] bg-[#211d33] text-sm font-normal text-[#c4bfd3] shadow-pixel hover:bg-[#332b4a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#f0d675]" aria-label={`アカウントを開く: ${accountLabel}`}>●</button>
+       </div>
+     </header>
+   )
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\src\\components\\layout\\MainLayout.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\layout\\MainLayout.tsx"
+index 2204506..81f3239 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\src\\components\\layout\\MainLayout.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\layout\\MainLayout.tsx"
+@@ -3,9 +3,9 @@ import Header from './Header'
+ import SideMenu from './SideMenu'
+ import type { MenuMode } from '../../App'
+ 
+-interface MainLayoutProps { currentMode: MenuMode; onSelectMode: (mode: MenuMode) => void; onLogoClick: () => void; children: ReactNode }
++interface MainLayoutProps { currentMode: MenuMode; onSelectMode: (mode: MenuMode) => void; onLogoClick: () => void; onAccountClick: () => void; accountLabel: string; children: ReactNode }
+ 
+-export default function MainLayout({ currentMode, onSelectMode, onLogoClick, children }: MainLayoutProps) {
++export default function MainLayout({ currentMode, onSelectMode, onLogoClick, onAccountClick, accountLabel, children }: MainLayoutProps) {
+   const [menuOpen, setMenuOpen] = useState(false)
+   const closeMenu = () => { setMenuOpen(false); document.getElementById('mobile-menu-trigger')?.focus() }
+   const selectMode = (mode: MenuMode) => { onSelectMode(mode); setMenuOpen(false) }
+@@ -16,7 +16,7 @@ export default function MainLayout({ currentMode, onSelectMode, onLogoClick, chi
+   }, [menuOpen])
+   return (
+     <div className="min-h-screen bg-[#171426]">
+-      <Header onLogoClick={onLogoClick} onMenuClick={() => setMenuOpen(true)} menuOpen={menuOpen} />
++      <Header onLogoClick={onLogoClick} onMenuClick={() => setMenuOpen(true)} menuOpen={menuOpen} onAccountClick={onAccountClick} accountLabel={accountLabel} />
+       {menuOpen && <button className="fixed inset-0 z-30 bg-[#211d33]  md:hidden" onClick={closeMenu} aria-label="メニューを閉じる" />}
+       <SideMenu currentMode={currentMode} onSelectMode={selectMode} open={menuOpen} />
+       <main className="min-h-screen pt-16 md:ml-56"><div className="min-w-0 p-4 sm:p-6 lg:p-8">{children}</div></main>
+
+New file: src/lib/supabase.test.ts
++import { afterEach, expect, it, vi } from 'vitest'
++
++afterEach(() => { vi.unstubAllEnvs(); vi.resetModules() })
++
++it.each(['', 'not-a-url', 'https://', 'http://project.example', 'https://user:pass@project.example'])('keeps guest mode for an invalid Supabase URL: %s', async url => {
++  vi.stubEnv('VITE_SUPABASE_URL', url)
++  vi.stubEnv('VITE_SUPABASE_ANON_KEY', 'sb_publishable_test')
++  const module = await import('./supabase')
++  expect(module.supabase).toBeNull()
++})
++
++it('does not construct a client from a secret key', async () => {
++  vi.stubEnv('VITE_SUPABASE_URL', 'https://project.example')
++  vi.stubEnv('VITE_SUPABASE_ANON_KEY', 'sb_secret_test')
++  expect((await import('./supabase')).supabase).toBeNull()
++})
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\src\\lib\\supabase.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\lib\\supabase.ts"
+index c1d7f0f..fcaae4c 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\src\\lib\\supabase.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\lib\\supabase.ts"
+@@ -1,6 +1,9 @@
+ import { createClient } from '@supabase/supabase-js'
++import { publicSupabaseKey, validSupabaseUrl } from './supabaseConfig'
+ 
+-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
+-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
++const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim()
++const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim()
+ 
+-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+\ No newline at end of file
++export const supabase = validSupabaseUrl(supabaseUrl) && publicSupabaseKey(supabaseAnonKey)
++  ? createClient(supabaseUrl, supabaseAnonKey, { auth: { flowType: 'pkce', detectSessionInUrl: false } })
++  : null
+
+New file: src/lib/supabaseConfig.ts
++export function validSupabaseUrl(value: string | undefined): value is string {
++  if (!value) return false
++  try {
++    const url = new URL(value)
++    return url.protocol === 'https:' && !!url.hostname && !url.username && !url.password && !url.search && !url.hash
++  } catch { return false }
++}
++
++export function publicSupabaseKey(value: string | undefined): value is string {
++  if (!value) return false
++  if (value.startsWith('sb_publishable_')) return value.length > 'sb_publishable_'.length
++  if (value.startsWith('sb_secret_')) return false
++  const parts = value.split('.')
++  if (parts.length !== 3) return false
++  try {
++    const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/'))) as { role?: string }
++    return payload.role === 'anon'
++  } catch { return false }
++}
+
+New file: src/lib/test-connection.test.ts
++import { afterEach, expect, it, vi } from 'vitest'
++
++const anonKey = `header.${Buffer.from(JSON.stringify({ role: 'anon' })).toString('base64url')}.signature`
++afterEach(() => { vi.unstubAllEnvs(); vi.unstubAllGlobals(); vi.resetModules() })
++
++async function diagnostic(key: string, response?: Response) {
++  vi.stubEnv('VITE_SUPABASE_URL', 'https://example.supabase.co')
++  vi.stubEnv('VITE_SUPABASE_ANON_KEY', key)
++  const fetchMock = vi.fn(async () => response ?? { ok: true, status: 200 } as Response)
++  vi.stubGlobal('fetch', fetchMock)
++  const module = await import('./test-connection')
++  return { result: await module.testSupabaseConnection(), env: module.checkEnvironmentVariables(), fetchMock }
++}
++
++it('reports missing configuration without querying protected profiles', async () => {
++  vi.stubEnv('VITE_SUPABASE_URL', '')
++  vi.stubEnv('VITE_SUPABASE_ANON_KEY', '')
++  const fetchMock = vi.fn()
++  vi.stubGlobal('fetch', fetchMock)
++  const module = await import('./test-connection')
++  expect(await module.testSupabaseConnection()).toMatchObject({ connected: false, kind: 'configuration' })
++  expect(fetchMock).not.toHaveBeenCalled()
++})
++
++it.each(['sb_publishable_FAKE_FOR_TEST_ONLY', anonKey])('uses Auth health for public key %s', async key => {
++  const { result, env, fetchMock } = await diagnostic(key)
++  expect(env).toMatchObject({ hasUrl: true, hasKey: true, urlFormat: true, keyFormat: true })
++  expect(result).toMatchObject({ connected: true, kind: 'ok' })
++  expect(fetchMock).toHaveBeenCalledWith('https://example.supabase.co/auth/v1/health', expect.objectContaining({ headers: { apikey: key } }))
++})
++
++it('separates authorization refusal from network failure', async () => {
++  const denied = await diagnostic('sb_publishable_FAKE_FOR_TEST_ONLY', { ok: false, status: 401 } as Response)
++  expect(denied.result).toMatchObject({ connected: false, kind: 'authorization' })
++  vi.resetModules()
++  vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('offline') }))
++  const module = await import('./test-connection')
++  expect(await module.testSupabaseConnection()).toMatchObject({ connected: false, kind: 'network' })
++})
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\src\\lib\\test-connection.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\lib\\test-connection.ts"
+index 4a9091c..c5f6637 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\src\\lib\\test-connection.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\lib\\test-connection.ts"
+@@ -1,57 +1,40 @@
+ import { supabase } from './supabase'
++import { publicSupabaseKey, validSupabaseUrl } from './supabaseConfig'
+ 
+-export async function testSupabaseConnection(): Promise<{
++export interface ConnectionResult {
+   connected: boolean
++  kind: 'ok' | 'configuration' | 'network' | 'authorization' | 'service'
+   error?: string
+-  details?: any
+-}> {
+-  try {
+-    // 1. 基本的な接続テスト
+-    const { error: healthError } = await supabase
+-      .from('profiles')
+-      .select('count')
+-      .limit(0)
+-
+-    if (healthError) {
+-      // テーブルが存在しない場合は接続は成功
+-      if (healthError.code === 'PGRST116' || 
+-          healthError.message?.includes('does not exist') ||
+-          healthError.message?.includes('relation') && healthError.message?.includes('does not exist')) {
+-        return {
+-          connected: true,
+-          details: 'テーブルが未作成ですが、Supabase接続は成功しています'
+-        }
+-      }
+-      
+-      return {
+-        connected: false,
+-        error: healthError.message,
+-        details: healthError
+-      }
+-    }
+-
+-    return {
+-      connected: true,
+-      details: 'Supabase接続成功'
+-    }
+-  } catch (err: any) {
+-    return {
+-      connected: false,
+-      error: err.message || 'Unknown error',
+-      details: err
+-    }
+-  }
++  details?: string
+ }
+ 
+-// 環境変数の確認
+ export function checkEnvironmentVariables() {
+-  const url = import.meta.env.VITE_SUPABASE_URL
+-  const key = import.meta.env.VITE_SUPABASE_ANON_KEY
+-
++  const url = import.meta.env.VITE_SUPABASE_URL?.trim()
++  const key = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim()
+   return {
+     hasUrl: !!url,
+     hasKey: !!key,
+-    urlFormat: url?.startsWith('https://') && url?.includes('.supabase.co'),
+-    keyFormat: key?.startsWith('eyJ') && key?.length > 100
++    urlFormat: validSupabaseUrl(url),
++    keyFormat: publicSupabaseKey(key),
++  }
++}
++
++export async function testSupabaseConnection(): Promise<ConnectionResult> {
++  const url = import.meta.env.VITE_SUPABASE_URL?.trim()
++  const key = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim()
++  if (!validSupabaseUrl(url) || !publicSupabaseKey(key) || !supabase) {
++    return { connected: false, kind: 'configuration', error: 'Supabaseの公開設定が不足または不正です' }
++  }
++  try {
++    const response = await fetch(`${url.replace(/\/$/, '')}/auth/v1/health`, {
++      headers: { apikey: key }, cache: 'no-store', signal: AbortSignal.timeout(5000),
++    })
++    if (response.ok) return { connected: true, kind: 'ok', details: 'Supabase Authに接続できました' }
++    if (response.status === 401 || response.status === 403) {
++      return { connected: false, kind: 'authorization', error: '公開キーが認証サービスに拒否されました' }
++    }
++    return { connected: false, kind: 'service', error: '認証サービスが正常な応答を返しませんでした' }
++  } catch {
++    return { connected: false, kind: 'network', error: '認証サービスへ接続できませんでした' }
+   }
+ }
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\src\\main.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\main.tsx"
+index ed9897a..636e283 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\src\\main.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\main.tsx"
+@@ -2,7 +2,9 @@ import ReactDOM from 'react-dom/client'
+ import App from './App.tsx'
+ import './index.css'
+ import { loadUIFont } from './ui/loadFont'
++import { restoreReplayHashBeforeApp } from './auth/oauthCallback'
+ 
++restoreReplayHashBeforeApp()
+ const root = document.getElementById('root')!
+ void loadUIFont().then(() => {
+   ReactDOM.createRoot(root).render(<App />)
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\tsconfig.json" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\tsconfig.json"
+index e022bc5..5eea49b 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\tsconfig.json"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\tsconfig.json"
+@@ -26,6 +26,5 @@
+       "@/*": ["./src/*"]
+     }
+   },
+-  "include": ["src"],
+-  "references": [{ "path": "./tsconfig.node.json" }]
+-}
+\ No newline at end of file
++  "include": ["src"]
++}
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\tsconfig.node.json" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\tsconfig.node.json"
+index 099658c..e562d3e 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\tsconfig.node.json"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\tsconfig.node.json"
+@@ -6,5 +6,5 @@
+     "moduleResolution": "bundler",
+     "allowSyntheticDefaultImports": true
+   },
+-  "include": ["vite.config.ts"]
+-}
+\ No newline at end of file
++  "include": ["vite.config.ts", "server/**/*.ts", "src/lib/supabaseConfig.ts"]
++}
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\vite.config.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\vite.config.ts"
+index aed1582..5cf5c49 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-auth-db-before-3414eabfaa2145b58d8cb540e5e1f57c\\vite.config.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\vite.config.ts"
+@@ -1,12 +1,25 @@
+ import { defineConfig } from 'vite'
+ import react from '@vitejs/plugin-react'
++import { localAuthPlugin } from './server/localAuth/plugin'
++import { publicSupabaseKey } from './src/lib/supabaseConfig'
++
++const publicEnvGuard = () => ({
++  name: 'public-supabase-key-guard',
++  configResolved(config: { env: Record<string, string> }) {
++    const key = config.env.VITE_SUPABASE_ANON_KEY?.trim()
++    if (key && !publicSupabaseKey(key)) {
++      throw new Error('VITE_SUPABASE_ANON_KEY must contain a public publishable or anon key')
++    }
++  },
++})
+ 
+ // https://vitejs.dev/config/
+ export default defineConfig({
+-  plugins: [react()],
++  plugins: [publicEnvGuard(), react(), localAuthPlugin()],
++  server: { fs: { deny: ['.env', '.env.*', '*.{crt,pem}', '**/.git/**', '.local', '.local/**', '**/.local/**'] } },
+   resolve: {
+     alias: {
+       '@': '/src',
+     },
+   },
+-})
+\ No newline at end of file
++})

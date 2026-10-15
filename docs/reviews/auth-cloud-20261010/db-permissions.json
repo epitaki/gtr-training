@@ -1,0 +1,85 @@
+{
+  "tables": [
+    {
+      "name": "profiles",
+      "rls": true
+    },
+    {
+      "name": "replays",
+      "rls": true
+    },
+    {
+      "name": "score_attack_games",
+      "rls": true
+    },
+    {
+      "name": "scores",
+      "rls": true
+    }
+  ],
+  "policies": [
+    {
+      "tablename": "profiles",
+      "policyname": "profiles_select_self",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "qual": "(( SELECT auth.uid() AS uid) = id)",
+      "with_check": null
+    },
+    {
+      "tablename": "profiles",
+      "policyname": "profiles_update_self",
+      "roles": "{authenticated}",
+      "cmd": "UPDATE",
+      "qual": "(( SELECT auth.uid() AS uid) = id)",
+      "with_check": "(( SELECT auth.uid() AS uid) = id)"
+    },
+    {
+      "tablename": "replays",
+      "policyname": "replays_insert_self",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "(( SELECT auth.uid() AS uid) = user_id)"
+    },
+    {
+      "tablename": "replays",
+      "policyname": "replays_select_public",
+      "roles": "{anon,authenticated}",
+      "cmd": "SELECT",
+      "qual": "true",
+      "with_check": null
+    },
+    {
+      "tablename": "score_attack_games",
+      "policyname": "score_attack_games_select_self",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "qual": "(( SELECT auth.uid() AS uid) = user_id)",
+      "with_check": null
+    },
+    {
+      "tablename": "scores",
+      "policyname": "scores_insert_self",
+      "roles": "{authenticated}",
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "(( SELECT auth.uid() AS uid) = user_id)"
+    },
+    {
+      "tablename": "scores",
+      "policyname": "scores_select_public",
+      "roles": "{anon,authenticated}",
+      "cmd": "SELECT",
+      "qual": "true",
+      "with_check": null
+    }
+  ],
+  "profile_grants": [],
+  "users": [
+    {
+      "users": 0,
+      "local_admin": 0
+    }
+  ]
+}

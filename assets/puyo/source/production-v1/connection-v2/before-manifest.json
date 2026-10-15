@@ -1,0 +1,3557 @@
+{
+  "schema": 1,
+  "atlas": "atlas.png",
+  "atlasSize": [
+    448,
+    336
+  ],
+  "gutter": 2,
+  "colors": [
+    "red",
+    "green",
+    "blue",
+    "yellow"
+  ],
+  "timing": {
+    "fall": {
+      "driver": "gravity",
+      "frames": [
+        0,
+        1
+      ],
+      "unit": "individual animation time"
+    },
+    "land": {
+      "driver": "land",
+      "totalMs": 80,
+      "intervalConvention": "[startMs,endMs)",
+      "frames": [
+        {
+          "frame": "land/0",
+          "startMs": 0,
+          "endMs": 40
+        },
+        {
+          "frame": "land/1",
+          "startMs": 40,
+          "endMs": 64
+        },
+        {
+          "frame": "land/2",
+          "startMs": 64,
+          "endMs": 80
+        }
+      ]
+    },
+    "clear": {
+      "driver": "emphasis then fade",
+      "emphasis": {
+        "durationMs": 120,
+        "frame": 0
+      },
+      "fade": {
+        "durationMs": 180,
+        "frames": [
+          {
+            "frame": 1,
+            "startMs": 0,
+            "endMs": 60
+          },
+          {
+            "frame": 2,
+            "startMs": 60,
+            "endMs": 120
+          },
+          {
+            "frame": "particle/*",
+            "startMs": 120,
+            "endMs": 180
+          }
+        ]
+      }
+    },
+    "connectEnter": {
+      "driver": "existing land or emphasis phase",
+      "intervalConvention": "[startMs,endMs)",
+      "newPhysicsDelayMs": 0,
+      "eligibility": "new real-individual same-color adjacency after gravity; exclude moving individuals; include stationary neighbours whose adjacency increases",
+      "priority": [
+        "clear",
+        "land/0 or land/1",
+        "connect-enter",
+        "connect"
+      ],
+      "land": {
+        "phase": "land",
+        "enterStartMs": 64,
+        "enterEndMs": 80,
+        "stableFromMs": 80,
+        "oldConnections": "connect"
+      },
+      "emphasisWithoutLand": {
+        "phase": "emphasis",
+        "clearTargetFrame": "clear/0",
+        "enterStartMs": 0,
+        "enterEndMs": 40,
+        "stableFromMs": 40
+      },
+      "zeroChain": {
+        "phase": "none",
+        "frame": "connect",
+        "delayMs": 0
+      },
+      "invalidateOn": [
+        "clear",
+        "cancel",
+        "board change"
+      ],
+      "everyRenderFrameObserved": false
+    }
+  },
+  "connectionComposition": {
+    "baseFrame": "{color}/connect/{currentMask}",
+    "shoulderSourceFrame": "{color}/connect-enter/{currentMask}",
+    "newMaskField": "newAdjacencyMask",
+    "newMaskRule": "subset of currentMask; derive from actual neighboring individual relationships, not a difference of color masks",
+    "shoulderRects": {
+      "1": [
+        8,
+        2,
+        8,
+        1
+      ],
+      "2": [
+        21,
+        8,
+        1,
+        8
+      ],
+      "4": [
+        8,
+        21,
+        8,
+        1
+      ],
+      "8": [
+        2,
+        8,
+        1,
+        8
+      ]
+    },
+    "newMaskZero": "use baseFrame unchanged",
+    "newMaskEqualsCurrent": "the full shoulderSourceFrame is equivalent",
+    "examples": [
+      {
+        "priorMask": 2,
+        "currentMask": 3,
+        "newAdjacencyMask": 1,
+        "meaning": "new upper relationship; retain stable right shoulder"
+      },
+      {
+        "priorMask": 3,
+        "currentMask": 3,
+        "newAdjacencyMask": 1,
+        "meaning": "upper neighboring individual replaced; the color mask stayed the same but the relationship is new"
+      }
+    ],
+    "scope": "asset contract and static QA only; gameplay composition belongs to 015-C"
+  },
+  "source": {
+    "editablePixels": "../../../assets/puyo/source/production-v1/pixels.json",
+    "masters": {
+      "motion-master.png": "df91f41efb0aa2a1a9b42c902253d5407e071612bcded48b9598c459767176a5",
+      "parts-master.png": "2e0a7dd230ef6ebcb7dc14c4c03157c495597b47cc4b4d5dbcbd389a5343d63f"
+    },
+    "rectangles": {
+      "red": {
+        "motion/idle": [
+          58,
+          89,
+          241,
+          239
+        ],
+        "motion/fall": [
+          311,
+          57,
+          457,
+          249
+        ],
+        "motion/land": [
+          534,
+          124,
+          738,
+          239
+        ],
+        "motion/bright": [
+          794,
+          89,
+          976,
+          239
+        ],
+        "motion/split": [
+          1054,
+          74,
+          1231,
+          248
+        ],
+        "motion/particle": [
+          1309,
+          93,
+          1477,
+          246
+        ],
+        "parts/body": [
+          64,
+          102,
+          273,
+          278
+        ],
+        "parts/cross": [
+          350,
+          70,
+          590,
+          295
+        ],
+        "parts/mini12": [
+          684,
+          102,
+          881,
+          279
+        ],
+        "parts/mini8": [
+          999,
+          100,
+          1174,
+          276
+        ],
+        "motion/particle/0": [
+          1376,
+          164,
+          1422,
+          209
+        ],
+        "motion/particle/1": [
+          1309,
+          139,
+          1347,
+          173
+        ],
+        "motion/particle/2": [
+          1429,
+          120,
+          1460,
+          149
+        ]
+      },
+      "green": {
+        "motion/idle": [
+          58,
+          339,
+          241,
+          494
+        ],
+        "motion/fall": [
+          310,
+          302,
+          457,
+          505
+        ],
+        "motion/land": [
+          542,
+          377,
+          734,
+          500
+        ],
+        "motion/bright": [
+          794,
+          339,
+          976,
+          494
+        ],
+        "motion/split": [
+          1052,
+          322,
+          1246,
+          505
+        ],
+        "motion/particle": [
+          1321,
+          342,
+          1474,
+          511
+        ],
+        "parts/body": [
+          64,
+          388,
+          273,
+          566
+        ],
+        "parts/cross": [
+          351,
+          357,
+          590,
+          583
+        ],
+        "parts/mini12": [
+          683,
+          392,
+          883,
+          568
+        ],
+        "parts/mini8": [
+          999,
+          392,
+          1174,
+          566
+        ],
+        "motion/particle/0": [
+          1378,
+          431,
+          1426,
+          478
+        ],
+        "motion/particle/1": [
+          1321,
+          391,
+          1354,
+          425
+        ],
+        "motion/particle/2": [
+          1371,
+          342,
+          1403,
+          371
+        ]
+      },
+      "blue": {
+        "motion/idle": [
+          58,
+          581,
+          241,
+          736
+        ],
+        "motion/fall": [
+          310,
+          542,
+          457,
+          738
+        ],
+        "motion/land": [
+          534,
+          625,
+          742,
+          745
+        ],
+        "motion/bright": [
+          794,
+          581,
+          976,
+          736
+        ],
+        "motion/split": [
+          1055,
+          565,
+          1255,
+          752
+        ],
+        "motion/particle": [
+          1322,
+          584,
+          1474,
+          748
+        ],
+        "parts/body": [
+          63,
+          679,
+          275,
+          859
+        ],
+        "parts/cross": [
+          351,
+          650,
+          590,
+          876
+        ],
+        "parts/mini12": [
+          683,
+          679,
+          883,
+          859
+        ],
+        "parts/mini8": [
+          999,
+          686,
+          1174,
+          860
+        ],
+        "motion/particle/0": [
+          1381,
+          657,
+          1432,
+          707
+        ],
+        "motion/particle/1": [
+          1322,
+          627,
+          1358,
+          661
+        ],
+        "motion/particle/2": [
+          1438,
+          615,
+          1473,
+          649
+        ]
+      },
+      "yellow": {
+        "motion/idle": [
+          58,
+          822,
+          241,
+          980
+        ],
+        "motion/fall": [
+          310,
+          777,
+          457,
+          988
+        ],
+        "motion/land": [
+          534,
+          857,
+          737,
+          982
+        ],
+        "motion/bright": [
+          794,
+          822,
+          976,
+          980
+        ],
+        "motion/split": [
+          1052,
+          802,
+          1250,
+          988
+        ],
+        "motion/particle": [
+          1309,
+          829,
+          1474,
+          982
+        ],
+        "parts/body": [
+          63,
+          970,
+          275,
+          1149
+        ],
+        "parts/cross": [
+          350,
+          938,
+          590,
+          1163
+        ],
+        "parts/mini12": [
+          680,
+          971,
+          881,
+          1149
+        ],
+        "parts/mini8": [
+          999,
+          970,
+          1174,
+          1146
+        ],
+        "motion/particle/0": [
+          1379,
+          900,
+          1425,
+          944
+        ],
+        "motion/particle/1": [
+          1309,
+          863,
+          1341,
+          898
+        ],
+        "motion/particle/2": [
+          1431,
+          859,
+          1462,
+          890
+        ]
+      }
+    },
+    "faceSampling": {
+      "red": {
+        "mini12": {
+          "sourceCellRect": [
+            684,
+            102,
+            881,
+            279
+          ],
+          "samples": [
+            {
+              "role": "leftEye",
+              "sourceRect": [
+                735,
+                179,
+                764,
+                228
+              ],
+              "destinationRect": [
+                4,
+                6,
+                2,
+                3
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "rightEye",
+              "sourceRect": [
+                810,
+                166,
+                842,
+                215
+              ],
+              "destinationRect": [
+                7,
+                5,
+                2,
+                3
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "mouth",
+              "sourceRect": [
+                769,
+                225,
+                806,
+                244
+              ],
+              "destinationRect": [
+                5,
+                9,
+                2,
+                2
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            }
+          ]
+        },
+        "mini8": {
+          "sourceCellRect": [
+            999,
+            100,
+            1174,
+            276
+          ],
+          "samples": [
+            {
+              "role": "leftEye",
+              "sourceRect": [
+                1047,
+                171,
+                1065,
+                217
+              ],
+              "destinationRect": [
+                2,
+                3,
+                1,
+                2
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "rightEye",
+              "sourceRect": [
+                1111,
+                171,
+                1127,
+                217
+              ],
+              "destinationRect": [
+                5,
+                3,
+                1,
+                2
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "mouth",
+              "sourceRect": [
+                1071,
+                222,
+                1104,
+                239
+              ],
+              "destinationRect": [
+                3,
+                6,
+                2,
+                1
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            }
+          ]
+        }
+      },
+      "green": {
+        "mini12": {
+          "sourceCellRect": [
+            683,
+            392,
+            883,
+            568
+          ],
+          "samples": [
+            {
+              "role": "leftEye",
+              "sourceRect": [
+                727,
+                477,
+                765,
+                493
+              ],
+              "destinationRect": [
+                4,
+                6,
+                2,
+                1
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "rightEye",
+              "sourceRect": [
+                807,
+                477,
+                845,
+                493
+              ],
+              "destinationRect": [
+                7,
+                6,
+                2,
+                1
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "mouth",
+              "sourceRect": [
+                767,
+                508,
+                803,
+                528
+              ],
+              "destinationRect": [
+                5,
+                7,
+                2,
+                2
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            }
+          ]
+        },
+        "mini8": {
+          "sourceCellRect": [
+            999,
+            392,
+            1174,
+            566
+          ],
+          "samples": [
+            {
+              "role": "leftEye",
+              "sourceRect": [
+                1041,
+                475,
+                1069,
+                490
+              ],
+              "destinationRect": [
+                1,
+                4,
+                2,
+                1
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "rightEye",
+              "sourceRect": [
+                1103,
+                475,
+                1131,
+                490
+              ],
+              "destinationRect": [
+                5,
+                4,
+                2,
+                1
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "mouth",
+              "sourceRect": [
+                1071,
+                506,
+                1104,
+                525
+              ],
+              "destinationRect": [
+                3,
+                5,
+                2,
+                2
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            }
+          ]
+        }
+      },
+      "blue": {
+        "mini12": {
+          "sourceCellRect": [
+            683,
+            679,
+            883,
+            859
+          ],
+          "samples": [
+            {
+              "role": "leftEye",
+              "sourceRect": [
+                727,
+                765,
+                767,
+                794
+              ],
+              "destinationRect": [
+                4,
+                6,
+                2,
+                2
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "rightEye",
+              "sourceRect": [
+                805,
+                766,
+                845,
+                794
+              ],
+              "destinationRect": [
+                7,
+                6,
+                2,
+                2
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "mouth",
+              "sourceRect": [
+                772,
+                798,
+                798,
+                812
+              ],
+              "destinationRect": [
+                5,
+                8,
+                2,
+                1
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            }
+          ]
+        },
+        "mini8": {
+          "sourceCellRect": [
+            999,
+            686,
+            1174,
+            860
+          ],
+          "samples": [
+            {
+              "role": "leftEye",
+              "sourceRect": [
+                1035,
+                772,
+                1069,
+                797
+              ],
+              "destinationRect": [
+                1,
+                4,
+                2,
+                2
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "rightEye",
+              "sourceRect": [
+                1105,
+                772,
+                1139,
+                797
+              ],
+              "destinationRect": [
+                5,
+                4,
+                2,
+                2
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "mouth",
+              "sourceRect": [
+                1072,
+                803,
+                1102,
+                815
+              ],
+              "destinationRect": [
+                3,
+                6,
+                2,
+                1
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            }
+          ]
+        }
+      },
+      "yellow": {
+        "mini12": {
+          "sourceCellRect": [
+            680,
+            971,
+            881,
+            1149
+          ],
+          "samples": [
+            {
+              "role": "leftEye",
+              "sourceRect": [
+                725,
+                1047,
+                767,
+                1077
+              ],
+              "destinationRect": [
+                3,
+                5,
+                3,
+                2
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "rightEye",
+              "sourceRect": [
+                802,
+                1046,
+                843,
+                1075
+              ],
+              "destinationRect": [
+                7,
+                5,
+                3,
+                2
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "mouth",
+              "sourceRect": [
+                767,
+                1082,
+                801,
+                1106
+              ],
+              "destinationRect": [
+                5,
+                7,
+                2,
+                2
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            }
+          ]
+        },
+        "mini8": {
+          "sourceCellRect": [
+            999,
+            970,
+            1174,
+            1146
+          ],
+          "samples": [
+            {
+              "role": "leftEye",
+              "sourceRect": [
+                1036,
+                1047,
+                1069,
+                1071
+              ],
+              "destinationRect": [
+                1,
+                3,
+                2,
+                2
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "rightEye",
+              "sourceRect": [
+                1106,
+                1047,
+                1138,
+                1071
+              ],
+              "destinationRect": [
+                5,
+                3,
+                2,
+                2
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            },
+            {
+              "role": "mouth",
+              "sourceRect": [
+                1071,
+                1079,
+                1102,
+                1100
+              ],
+              "destinationRect": [
+                3,
+                5,
+                2,
+                2
+              ],
+              "method": "nearest-neighbor dark-ink mask; source RGB channels < 95"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "frames": {
+    "red/idle": {
+      "name": "red/idle",
+      "rect": [
+        2,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect/0": {
+      "name": "red/connect/0",
+      "rect": [
+        2,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "red/idle"
+    },
+    "red/connect-enter/0": {
+      "name": "red/connect-enter/0",
+      "rect": [
+        2,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "red/idle"
+    },
+    "red/connect/1": {
+      "name": "red/connect/1",
+      "rect": [
+        86,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect-enter/1": {
+      "name": "red/connect-enter/1",
+      "rect": [
+        114,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect/2": {
+      "name": "red/connect/2",
+      "rect": [
+        142,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect-enter/2": {
+      "name": "red/connect-enter/2",
+      "rect": [
+        170,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect/3": {
+      "name": "red/connect/3",
+      "rect": [
+        198,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect-enter/3": {
+      "name": "red/connect-enter/3",
+      "rect": [
+        226,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect/4": {
+      "name": "red/connect/4",
+      "rect": [
+        254,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect-enter/4": {
+      "name": "red/connect-enter/4",
+      "rect": [
+        282,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect/5": {
+      "name": "red/connect/5",
+      "rect": [
+        310,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect-enter/5": {
+      "name": "red/connect-enter/5",
+      "rect": [
+        338,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect/6": {
+      "name": "red/connect/6",
+      "rect": [
+        366,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect-enter/6": {
+      "name": "red/connect-enter/6",
+      "rect": [
+        394,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect/7": {
+      "name": "red/connect/7",
+      "rect": [
+        422,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect-enter/7": {
+      "name": "red/connect-enter/7",
+      "rect": [
+        2,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect/8": {
+      "name": "red/connect/8",
+      "rect": [
+        30,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect-enter/8": {
+      "name": "red/connect-enter/8",
+      "rect": [
+        58,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect/9": {
+      "name": "red/connect/9",
+      "rect": [
+        86,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect-enter/9": {
+      "name": "red/connect-enter/9",
+      "rect": [
+        114,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect/10": {
+      "name": "red/connect/10",
+      "rect": [
+        142,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect-enter/10": {
+      "name": "red/connect-enter/10",
+      "rect": [
+        170,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect/11": {
+      "name": "red/connect/11",
+      "rect": [
+        198,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect-enter/11": {
+      "name": "red/connect-enter/11",
+      "rect": [
+        226,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect/12": {
+      "name": "red/connect/12",
+      "rect": [
+        254,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect-enter/12": {
+      "name": "red/connect-enter/12",
+      "rect": [
+        282,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect/13": {
+      "name": "red/connect/13",
+      "rect": [
+        310,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect-enter/13": {
+      "name": "red/connect-enter/13",
+      "rect": [
+        338,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect/14": {
+      "name": "red/connect/14",
+      "rect": [
+        366,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect-enter/14": {
+      "name": "red/connect-enter/14",
+      "rect": [
+        394,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect/15": {
+      "name": "red/connect/15",
+      "rect": [
+        422,
+        30,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/connect-enter/15": {
+      "name": "red/connect-enter/15",
+      "rect": [
+        2,
+        58,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/fall/0": {
+      "name": "red/fall/0",
+      "rect": [
+        2,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "red/idle"
+    },
+    "red/fall/1": {
+      "name": "red/fall/1",
+      "rect": [
+        58,
+        58,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/land/0": {
+      "name": "red/land/0",
+      "rect": [
+        86,
+        58,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/land/1": {
+      "name": "red/land/1",
+      "rect": [
+        114,
+        58,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/land/2": {
+      "name": "red/land/2",
+      "rect": [
+        2,
+        2,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "red/idle"
+    },
+    "red/clear/0": {
+      "name": "red/clear/0",
+      "rect": [
+        170,
+        58,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/clear/1": {
+      "name": "red/clear/1",
+      "rect": [
+        198,
+        58,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/clear/2": {
+      "name": "red/clear/2",
+      "rect": [
+        226,
+        58,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "red/mini12": {
+      "name": "red/mini12",
+      "rect": [
+        254,
+        58,
+        12,
+        12
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 12
+    },
+    "red/mini8": {
+      "name": "red/mini8",
+      "rect": [
+        282,
+        58,
+        8,
+        8
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 8
+    },
+    "red/particle/0": {
+      "name": "red/particle/0",
+      "rect": [
+        310,
+        58,
+        6,
+        6
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 6
+    },
+    "red/particle/1": {
+      "name": "red/particle/1",
+      "rect": [
+        338,
+        58,
+        6,
+        6
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 6
+    },
+    "red/particle/2": {
+      "name": "red/particle/2",
+      "rect": [
+        366,
+        58,
+        6,
+        6
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 6
+    },
+    "green/idle": {
+      "name": "green/idle",
+      "rect": [
+        394,
+        58,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect/0": {
+      "name": "green/connect/0",
+      "rect": [
+        394,
+        58,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "green/idle"
+    },
+    "green/connect-enter/0": {
+      "name": "green/connect-enter/0",
+      "rect": [
+        394,
+        58,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "green/idle"
+    },
+    "green/connect/1": {
+      "name": "green/connect/1",
+      "rect": [
+        30,
+        86,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect-enter/1": {
+      "name": "green/connect-enter/1",
+      "rect": [
+        58,
+        86,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect/2": {
+      "name": "green/connect/2",
+      "rect": [
+        86,
+        86,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect-enter/2": {
+      "name": "green/connect-enter/2",
+      "rect": [
+        114,
+        86,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect/3": {
+      "name": "green/connect/3",
+      "rect": [
+        142,
+        86,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect-enter/3": {
+      "name": "green/connect-enter/3",
+      "rect": [
+        170,
+        86,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect/4": {
+      "name": "green/connect/4",
+      "rect": [
+        198,
+        86,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect-enter/4": {
+      "name": "green/connect-enter/4",
+      "rect": [
+        226,
+        86,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect/5": {
+      "name": "green/connect/5",
+      "rect": [
+        254,
+        86,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect-enter/5": {
+      "name": "green/connect-enter/5",
+      "rect": [
+        282,
+        86,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect/6": {
+      "name": "green/connect/6",
+      "rect": [
+        310,
+        86,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect-enter/6": {
+      "name": "green/connect-enter/6",
+      "rect": [
+        338,
+        86,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect/7": {
+      "name": "green/connect/7",
+      "rect": [
+        366,
+        86,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect-enter/7": {
+      "name": "green/connect-enter/7",
+      "rect": [
+        394,
+        86,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect/8": {
+      "name": "green/connect/8",
+      "rect": [
+        422,
+        86,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect-enter/8": {
+      "name": "green/connect-enter/8",
+      "rect": [
+        2,
+        114,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect/9": {
+      "name": "green/connect/9",
+      "rect": [
+        30,
+        114,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect-enter/9": {
+      "name": "green/connect-enter/9",
+      "rect": [
+        58,
+        114,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect/10": {
+      "name": "green/connect/10",
+      "rect": [
+        86,
+        114,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect-enter/10": {
+      "name": "green/connect-enter/10",
+      "rect": [
+        114,
+        114,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect/11": {
+      "name": "green/connect/11",
+      "rect": [
+        142,
+        114,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect-enter/11": {
+      "name": "green/connect-enter/11",
+      "rect": [
+        170,
+        114,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect/12": {
+      "name": "green/connect/12",
+      "rect": [
+        198,
+        114,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect-enter/12": {
+      "name": "green/connect-enter/12",
+      "rect": [
+        226,
+        114,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect/13": {
+      "name": "green/connect/13",
+      "rect": [
+        254,
+        114,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect-enter/13": {
+      "name": "green/connect-enter/13",
+      "rect": [
+        282,
+        114,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect/14": {
+      "name": "green/connect/14",
+      "rect": [
+        310,
+        114,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect-enter/14": {
+      "name": "green/connect-enter/14",
+      "rect": [
+        338,
+        114,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect/15": {
+      "name": "green/connect/15",
+      "rect": [
+        366,
+        114,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/connect-enter/15": {
+      "name": "green/connect-enter/15",
+      "rect": [
+        394,
+        114,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/fall/0": {
+      "name": "green/fall/0",
+      "rect": [
+        394,
+        58,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "green/idle"
+    },
+    "green/fall/1": {
+      "name": "green/fall/1",
+      "rect": [
+        2,
+        142,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/land/0": {
+      "name": "green/land/0",
+      "rect": [
+        30,
+        142,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/land/1": {
+      "name": "green/land/1",
+      "rect": [
+        58,
+        142,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/land/2": {
+      "name": "green/land/2",
+      "rect": [
+        394,
+        58,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "green/idle"
+    },
+    "green/clear/0": {
+      "name": "green/clear/0",
+      "rect": [
+        114,
+        142,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/clear/1": {
+      "name": "green/clear/1",
+      "rect": [
+        142,
+        142,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/clear/2": {
+      "name": "green/clear/2",
+      "rect": [
+        170,
+        142,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "green/mini12": {
+      "name": "green/mini12",
+      "rect": [
+        198,
+        142,
+        12,
+        12
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 12
+    },
+    "green/mini8": {
+      "name": "green/mini8",
+      "rect": [
+        226,
+        142,
+        8,
+        8
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 8
+    },
+    "green/particle/0": {
+      "name": "green/particle/0",
+      "rect": [
+        254,
+        142,
+        6,
+        6
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 6
+    },
+    "green/particle/1": {
+      "name": "green/particle/1",
+      "rect": [
+        282,
+        142,
+        6,
+        6
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 6
+    },
+    "green/particle/2": {
+      "name": "green/particle/2",
+      "rect": [
+        310,
+        142,
+        6,
+        6
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 6
+    },
+    "blue/idle": {
+      "name": "blue/idle",
+      "rect": [
+        338,
+        142,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect/0": {
+      "name": "blue/connect/0",
+      "rect": [
+        338,
+        142,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "blue/idle"
+    },
+    "blue/connect-enter/0": {
+      "name": "blue/connect-enter/0",
+      "rect": [
+        338,
+        142,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "blue/idle"
+    },
+    "blue/connect/1": {
+      "name": "blue/connect/1",
+      "rect": [
+        422,
+        142,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect-enter/1": {
+      "name": "blue/connect-enter/1",
+      "rect": [
+        2,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect/2": {
+      "name": "blue/connect/2",
+      "rect": [
+        30,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect-enter/2": {
+      "name": "blue/connect-enter/2",
+      "rect": [
+        58,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect/3": {
+      "name": "blue/connect/3",
+      "rect": [
+        86,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect-enter/3": {
+      "name": "blue/connect-enter/3",
+      "rect": [
+        114,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect/4": {
+      "name": "blue/connect/4",
+      "rect": [
+        142,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect-enter/4": {
+      "name": "blue/connect-enter/4",
+      "rect": [
+        170,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect/5": {
+      "name": "blue/connect/5",
+      "rect": [
+        198,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect-enter/5": {
+      "name": "blue/connect-enter/5",
+      "rect": [
+        226,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect/6": {
+      "name": "blue/connect/6",
+      "rect": [
+        254,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect-enter/6": {
+      "name": "blue/connect-enter/6",
+      "rect": [
+        282,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect/7": {
+      "name": "blue/connect/7",
+      "rect": [
+        310,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect-enter/7": {
+      "name": "blue/connect-enter/7",
+      "rect": [
+        338,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect/8": {
+      "name": "blue/connect/8",
+      "rect": [
+        366,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect-enter/8": {
+      "name": "blue/connect-enter/8",
+      "rect": [
+        394,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect/9": {
+      "name": "blue/connect/9",
+      "rect": [
+        422,
+        170,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect-enter/9": {
+      "name": "blue/connect-enter/9",
+      "rect": [
+        2,
+        198,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect/10": {
+      "name": "blue/connect/10",
+      "rect": [
+        30,
+        198,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect-enter/10": {
+      "name": "blue/connect-enter/10",
+      "rect": [
+        58,
+        198,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect/11": {
+      "name": "blue/connect/11",
+      "rect": [
+        86,
+        198,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect-enter/11": {
+      "name": "blue/connect-enter/11",
+      "rect": [
+        114,
+        198,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect/12": {
+      "name": "blue/connect/12",
+      "rect": [
+        142,
+        198,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect-enter/12": {
+      "name": "blue/connect-enter/12",
+      "rect": [
+        170,
+        198,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect/13": {
+      "name": "blue/connect/13",
+      "rect": [
+        198,
+        198,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect-enter/13": {
+      "name": "blue/connect-enter/13",
+      "rect": [
+        226,
+        198,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect/14": {
+      "name": "blue/connect/14",
+      "rect": [
+        254,
+        198,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect-enter/14": {
+      "name": "blue/connect-enter/14",
+      "rect": [
+        282,
+        198,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect/15": {
+      "name": "blue/connect/15",
+      "rect": [
+        310,
+        198,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/connect-enter/15": {
+      "name": "blue/connect-enter/15",
+      "rect": [
+        338,
+        198,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/fall/0": {
+      "name": "blue/fall/0",
+      "rect": [
+        338,
+        142,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "blue/idle"
+    },
+    "blue/fall/1": {
+      "name": "blue/fall/1",
+      "rect": [
+        394,
+        198,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/land/0": {
+      "name": "blue/land/0",
+      "rect": [
+        422,
+        198,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/land/1": {
+      "name": "blue/land/1",
+      "rect": [
+        2,
+        226,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/land/2": {
+      "name": "blue/land/2",
+      "rect": [
+        338,
+        142,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "blue/idle"
+    },
+    "blue/clear/0": {
+      "name": "blue/clear/0",
+      "rect": [
+        58,
+        226,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/clear/1": {
+      "name": "blue/clear/1",
+      "rect": [
+        86,
+        226,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/clear/2": {
+      "name": "blue/clear/2",
+      "rect": [
+        114,
+        226,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "blue/mini12": {
+      "name": "blue/mini12",
+      "rect": [
+        142,
+        226,
+        12,
+        12
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 12
+    },
+    "blue/mini8": {
+      "name": "blue/mini8",
+      "rect": [
+        170,
+        226,
+        8,
+        8
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 8
+    },
+    "blue/particle/0": {
+      "name": "blue/particle/0",
+      "rect": [
+        198,
+        226,
+        6,
+        6
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 6
+    },
+    "blue/particle/1": {
+      "name": "blue/particle/1",
+      "rect": [
+        226,
+        226,
+        6,
+        6
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 6
+    },
+    "blue/particle/2": {
+      "name": "blue/particle/2",
+      "rect": [
+        254,
+        226,
+        6,
+        6
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 6
+    },
+    "yellow/idle": {
+      "name": "yellow/idle",
+      "rect": [
+        282,
+        226,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect/0": {
+      "name": "yellow/connect/0",
+      "rect": [
+        282,
+        226,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "yellow/idle"
+    },
+    "yellow/connect-enter/0": {
+      "name": "yellow/connect-enter/0",
+      "rect": [
+        282,
+        226,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "yellow/idle"
+    },
+    "yellow/connect/1": {
+      "name": "yellow/connect/1",
+      "rect": [
+        366,
+        226,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect-enter/1": {
+      "name": "yellow/connect-enter/1",
+      "rect": [
+        394,
+        226,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect/2": {
+      "name": "yellow/connect/2",
+      "rect": [
+        422,
+        226,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect-enter/2": {
+      "name": "yellow/connect-enter/2",
+      "rect": [
+        2,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect/3": {
+      "name": "yellow/connect/3",
+      "rect": [
+        30,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect-enter/3": {
+      "name": "yellow/connect-enter/3",
+      "rect": [
+        58,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect/4": {
+      "name": "yellow/connect/4",
+      "rect": [
+        86,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect-enter/4": {
+      "name": "yellow/connect-enter/4",
+      "rect": [
+        114,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect/5": {
+      "name": "yellow/connect/5",
+      "rect": [
+        142,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect-enter/5": {
+      "name": "yellow/connect-enter/5",
+      "rect": [
+        170,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect/6": {
+      "name": "yellow/connect/6",
+      "rect": [
+        198,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect-enter/6": {
+      "name": "yellow/connect-enter/6",
+      "rect": [
+        226,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect/7": {
+      "name": "yellow/connect/7",
+      "rect": [
+        254,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect-enter/7": {
+      "name": "yellow/connect-enter/7",
+      "rect": [
+        282,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect/8": {
+      "name": "yellow/connect/8",
+      "rect": [
+        310,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect-enter/8": {
+      "name": "yellow/connect-enter/8",
+      "rect": [
+        338,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect/9": {
+      "name": "yellow/connect/9",
+      "rect": [
+        366,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect-enter/9": {
+      "name": "yellow/connect-enter/9",
+      "rect": [
+        394,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect/10": {
+      "name": "yellow/connect/10",
+      "rect": [
+        422,
+        254,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect-enter/10": {
+      "name": "yellow/connect-enter/10",
+      "rect": [
+        2,
+        282,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect/11": {
+      "name": "yellow/connect/11",
+      "rect": [
+        30,
+        282,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect-enter/11": {
+      "name": "yellow/connect-enter/11",
+      "rect": [
+        58,
+        282,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect/12": {
+      "name": "yellow/connect/12",
+      "rect": [
+        86,
+        282,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect-enter/12": {
+      "name": "yellow/connect-enter/12",
+      "rect": [
+        114,
+        282,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect/13": {
+      "name": "yellow/connect/13",
+      "rect": [
+        142,
+        282,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect-enter/13": {
+      "name": "yellow/connect-enter/13",
+      "rect": [
+        170,
+        282,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect/14": {
+      "name": "yellow/connect/14",
+      "rect": [
+        198,
+        282,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect-enter/14": {
+      "name": "yellow/connect-enter/14",
+      "rect": [
+        226,
+        282,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect/15": {
+      "name": "yellow/connect/15",
+      "rect": [
+        254,
+        282,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/connect-enter/15": {
+      "name": "yellow/connect-enter/15",
+      "rect": [
+        282,
+        282,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/fall/0": {
+      "name": "yellow/fall/0",
+      "rect": [
+        282,
+        226,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "yellow/idle"
+    },
+    "yellow/fall/1": {
+      "name": "yellow/fall/1",
+      "rect": [
+        338,
+        282,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/land/0": {
+      "name": "yellow/land/0",
+      "rect": [
+        366,
+        282,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/land/1": {
+      "name": "yellow/land/1",
+      "rect": [
+        394,
+        282,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/land/2": {
+      "name": "yellow/land/2",
+      "rect": [
+        282,
+        226,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24,
+      "aliasOf": "yellow/idle"
+    },
+    "yellow/clear/0": {
+      "name": "yellow/clear/0",
+      "rect": [
+        2,
+        310,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/clear/1": {
+      "name": "yellow/clear/1",
+      "rect": [
+        30,
+        310,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/clear/2": {
+      "name": "yellow/clear/2",
+      "rect": [
+        58,
+        310,
+        24,
+        24
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 24
+    },
+    "yellow/mini12": {
+      "name": "yellow/mini12",
+      "rect": [
+        86,
+        310,
+        12,
+        12
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 12
+    },
+    "yellow/mini8": {
+      "name": "yellow/mini8",
+      "rect": [
+        114,
+        310,
+        8,
+        8
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 8
+    },
+    "yellow/particle/0": {
+      "name": "yellow/particle/0",
+      "rect": [
+        142,
+        310,
+        6,
+        6
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 6
+    },
+    "yellow/particle/1": {
+      "name": "yellow/particle/1",
+      "rect": [
+        170,
+        310,
+        6,
+        6
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 6
+    },
+    "yellow/particle/2": {
+      "name": "yellow/particle/2",
+      "rect": [
+        198,
+        310,
+        6,
+        6
+      ],
+      "origin": [
+        0.5,
+        0.5
+      ],
+      "size": 6
+    }
+  }
+}

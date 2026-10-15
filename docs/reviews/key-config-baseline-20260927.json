@@ -1,0 +1,1202 @@
+{
+  "stage": "pre-implementation",
+  "baselineCopy": "C:/Users/sunpe/AppData/Local/Temp/gtr-key-config-baseline-98790c932d064b4faed97b3b95df0b4e",
+  "files": [
+    {
+      "sha256": "6CE65E252B2A6A0A1A0C082679E4CF8A0D67C98B01488C68ED3AD86686EA3E6B",
+      "path": "AGENTS.md"
+    },
+    {
+      "sha256": "2DE7C729C6B21A6381820EECE4955476E43CFF4112325BA0B353B2C05254A30A",
+      "path": "docs/ADVISOR-CONSTRUCTION-20260922.md"
+    },
+    {
+      "sha256": "3EEE679738449B817BCF1472FEA8F01AFAA10089929A4B2CE1FB679F825447D6",
+      "path": "docs/ADVISOR-CONTINUOUS-20260924.md"
+    },
+    {
+      "sha256": "B2370A7905A938AB4EF6166942E3ADA14ED71D30FED08F3C7C40A4FB4B150555",
+      "path": "docs/ADVISOR-FAILURE-PATTERNS-20260920.md"
+    },
+    {
+      "sha256": "603F3172BD9649349E0AAD7FEE08F337923D1EDE90E453181AA43BCAC5DF8C6E",
+      "path": "docs/ADVISOR-FOLD-GUARD-20260925.md"
+    },
+    {
+      "sha256": "143AF651940940484617659CFBB3B0AAB22EF0B2C777377CD7DC9D10C5279597",
+      "path": "docs/ADVISOR-FOUNDATION-PREPARATION-20260924.md"
+    },
+    {
+      "sha256": "253C63EDE4047EEB54D934B8116D6FA8A939C9996226A79E46FC4A48A2461AC2",
+      "path": "docs/ADVISOR-FOUNDATION-SHAPES-20260927.md"
+    },
+    {
+      "sha256": "B060294E542FBC68FAAA740325BB339D5D3789C34FCEB269FF8EB133753C8428",
+      "path": "docs/ADVISOR-FOUNDATION70-20260924.md"
+    },
+    {
+      "sha256": "514FA04393C7C9D797E8D644D4D3ABDD5BE20FAF39E7A1C0437D7EB333431C6A",
+      "path": "docs/ADVISOR-GOAL70-REVIEW.md"
+    },
+    {
+      "sha256": "8A84BE11FF618B13D294E6902C849DBD4E2993AB734A8BB42DD1B7CF147AF3C9",
+      "path": "docs/ADVISOR-HEAD-CONSTRUCTION-20260926.md"
+    },
+    {
+      "sha256": "ED8B2DF23A405CEA3F2DF1A0B43AAE64C8CEF4654861417F785A2D2229705AD7",
+      "path": "docs/ADVISOR-HEAD-EXTENSION-20260922.md"
+    },
+    {
+      "sha256": "7B841C29B799866D4BCBBC9234C60A42ED7D7B93C2EFB78EBB5BDBAB4029356A",
+      "path": "docs/ADVISOR-HEAD-SCAFFOLDS-20260925.md"
+    },
+    {
+      "sha256": "2237102815DC35EFCD8B9D80A1F4CF3161AC60D63587F26ADD8C2FB1498C07FF",
+      "path": "docs/ADVISOR-LEARNING-500-20260922.md"
+    },
+    {
+      "sha256": "0FE056031EC52D0CBB3B11241561219EBCA81DC3CCA1F98578F0FA66BC030C0D",
+      "path": "docs/ADVISOR-LEFT-CONNECTION-20260922.md"
+    },
+    {
+      "sha256": "FB474C24DF8A3E569F67C51D6CF3DD5C28641AE90E771F0FC309F53DE96854EB",
+      "path": "docs/ADVISOR-LOWER-TAIL-20260922.md"
+    },
+    {
+      "sha256": "511247EC5FA8CCF63A6DADD60DFD7893FEC9F83FC7C8FFFF9D47C1DCFF351A6B",
+      "path": "docs/ADVISOR-NATURAL-1000-20260919.md"
+    },
+    {
+      "sha256": "CF5471C7B47A20F08D7510F4694CB75304B59645B7AAB6A755F134F6386E2C70",
+      "path": "docs/ADVISOR-PAIR-USE-20260922.md"
+    },
+    {
+      "sha256": "7DFC87AA1FFA4FB322249D3F5B4AF4A97AAF1AAAA33737ED76A83D0E32A71355",
+      "path": "docs/ADVISOR-PERFECT-FOUNDATION-20260925.md"
+    },
+    {
+      "sha256": "7F3359CD6B0E1367881E89ACF0EA614D7C3FA688E4914B864E5EC665C9B4F8E4",
+      "path": "docs/ADVISOR-QUALITY-20260918.md"
+    },
+    {
+      "sha256": "0B5D8EA4380D88833606F826096C72B2E850BCA73027BED084C422CC9C1221CC",
+      "path": "docs/ADVISOR-READY-MAIN-FIRE-20260920.md"
+    },
+    {
+      "sha256": "F9AB171361DD48F0B5D78CBE4458DEC7C417680CF5309049E62BB5A774CD65DD",
+      "path": "docs/ADVISOR-SPARE-ALLOCATION-20260925.md"
+    },
+    {
+      "sha256": "1EBF64D9372F628759A63430905D22A8BD29B8AE4B4B583CA2CCA94613919B9D",
+      "path": "docs/ADVISOR-SPARE-PUYO-20260924.md"
+    },
+    {
+      "sha256": "E9B81F85D4A3299CE6789B4DBAC4F3257EADFA8716C4A6A687439FF19E8AC8D4",
+      "path": "docs/ADVISOR-SPARE-PUYO-DESIGN-20260924.md"
+    },
+    {
+      "sha256": "7FD713E6B65D1996302D45877D8D0DE43A125C2B2BAB59E0EAB28A956C3287B9",
+      "path": "docs/ADVISOR-SPARE5-20260924.md"
+    },
+    {
+      "sha256": "E2D76D968A25CAC7A6FC7AE22BBDC2E2C790424FFD4CA007D36BB35816E8DB0E",
+      "path": "docs/ADVISOR-SURFACE-20260922.md"
+    },
+    {
+      "sha256": "CEA5E318B7C0F940682AE6AEAED521AD5210425F6F70BB053925416C6BD4F6BB",
+      "path": "docs/ADVISOR-TAIL-CASCADE-20260924.md"
+    },
+    {
+      "sha256": "054E1E62E06E5F8184527D50CB0901534E0C426516C85660586BA87980F4FF01",
+      "path": "docs/ADVISOR-TAIL-WAIT-20260922.md"
+    },
+    {
+      "sha256": "7E1B1DA008E117C4F441CCA504C0C6E5D071D93E936A3DBF7D2D6F46AD56A35E",
+      "path": "docs/ADVISOR-TALL-WELLS-20260922.md"
+    },
+    {
+      "sha256": "2184B403A53B4EE0AB2DC3E8BAED048F6BCD43C816542ECEA73ADD4FC82B4F78",
+      "path": "docs/ASTRA-SOL-DEVELOPMENT.md"
+    },
+    {
+      "sha256": "D5A8DF07EEDE881CE01818F2F5C98A401B20216D6E43E4479D34151ABF81A550",
+      "path": "docs/CHAIN-ANIMATION-CHECK.md"
+    },
+    {
+      "sha256": "D443715825685E61650445D03605A4BCE87E066C6FC3E02958CA9530D343B681",
+      "path": "docs/CHAIN-ANIMATION-DESIGN.md"
+    },
+    {
+      "sha256": "05CF88BD5A92D0DBB807A44C84374A281838FC5D5E6EE7720BF00BBCAC2DD8D6",
+      "path": "docs/FOUNDATION-SCORE-20260925.md"
+    },
+    {
+      "sha256": "E0C5EDED4C8B70E3D3A2870983F7DF7964F9A181D670B6DFBB6B6067A2D74F5A",
+      "path": "docs/GAME-MODES.md"
+    },
+    {
+      "sha256": "90A3E984F388A640888D7193E63E527A3BE854D162C34918906B561E29CC61D4",
+      "path": "docs/GTR-AVALANCHE-RESEARCH.md"
+    },
+    {
+      "sha256": "E1F80257602FB83D4A87846AE6DAC1BD910631C8314613A7AC64E351D1575D7D",
+      "path": "docs/GTR-COMPLETION-GALLERY.md"
+    },
+    {
+      "sha256": "129E494E8CE89C9CFE4DF0444B3A9FBDE6E68BC5C37AAD44BE5C112528A615E1",
+      "path": "docs/GTR-COMPLETION-VIDEO-20260927.md"
+    },
+    {
+      "sha256": "1414CE15ACE9B76D50205293CFA5DB0B72EC160779DAA040C34323FBC7EE15E9",
+      "path": "docs/GTR-EVALUATION-RANGE-20260924.md"
+    },
+    {
+      "sha256": "80FE485FFC5042CB13472F26C1FADBD645516FFE386A1CF5EA335BBFCEC1AEF0",
+      "path": "docs/GTR-HEAD-EXTENSION-RESEARCH.md"
+    },
+    {
+      "sha256": "E383749FCBCDD05FF41723CDB10D6606623A19D2A8A5231C1FF795A6BB976E5A",
+      "path": "docs/GTR-HEAD-SCAFFOLDS-20260925.md"
+    },
+    {
+      "sha256": "5B40FCCA1D25833EE61EA6E4619A719FAF2CF13FB06162DEC318B6BBF0C00117",
+      "path": "docs/GTR-HUMAN-PLAY-STUDY.md"
+    },
+    {
+      "sha256": "B5781A50E7026ECDEEA49FE959D803E23874924FBD93FE17CDCF493411CFE18D",
+      "path": "docs/GTR-OPENING-RESEARCH.md"
+    },
+    {
+      "sha256": "159DFF699DEEC623D546519EEAC8AD5E1EBACF88FB35D610A2A17720BB3ED3B9",
+      "path": "docs/GTR-PATTERNS.md"
+    },
+    {
+      "sha256": "3A02550CF030B7A32158BA76E40776EFAAD09D882FBA4C863B8915929AA74EA0",
+      "path": "docs/GTR-QUALITY-CRITERIA.md"
+    },
+    {
+      "sha256": "911AF43DB52CAF8FD7238C99BB996AA7075A7E23BAF53205E9E71352DA191D42",
+      "path": "docs/GTR-RESEARCH.md"
+    },
+    {
+      "sha256": "D9C06115C4E9433F46700097AEDA2163FAFA83FA8C88E0D285931ECF998E7D83",
+      "path": "docs/GTR-SCORING-SYSTEM.md"
+    },
+    {
+      "sha256": "B694FC127F7542E9EC4FB20715710378EB5611B5A9E7C4C561E7513BBD5711AF",
+      "path": "docs/GTR-SOURCE-CATALOG.md"
+    },
+    {
+      "sha256": "9FFF8AB9060508E84AE28D7A95607D4D26C1EC263496B0EB9FF98DDB98E72005",
+      "path": "docs/GTR-SPARE-ALLOCATION-RESEARCH-20260925.md"
+    },
+    {
+      "sha256": "ABD7398422E5A64F305392F10FEE0D28C6E491D5C5C81CFA1F821A154F6EA04F",
+      "path": "docs/GTR-SURFACE-QUALITY-20260927.md"
+    },
+    {
+      "sha256": "552703F56DA7094A8F2BF53492691D64E09F5899D005FDDBC3C29830F081DEC5",
+      "path": "docs/GTR-VISUAL-GUIDE.md"
+    },
+    {
+      "sha256": "0D109BDB8105FBA8266EEA2C10DFAD63960157AD70150496D19ECCD4C0E2E367",
+      "path": "docs/GTR-Y-TAIL-PREFERENCE.md"
+    },
+    {
+      "sha256": "E7835DD61948ECB9342867AC5A042126BE96BC1BDC5544315A19E7228687772A",
+      "path": "docs/INPUT-PIXEL-THEME-PLAN-20260927.md"
+    },
+    {
+      "sha256": "E0B7A6A1E8894A44F46A56F5490C9A6DFBABB7596EAA2D2D2FF30FC2672AEC5F",
+      "path": "docs/KEY-CONFIG-DESIGN-20260927.md"
+    },
+    {
+      "sha256": "67707AA37280DDB919EB9C542585047422B02DFFB0DC7354379F3D2D64B754DA",
+      "path": "docs/layout-design.md"
+    },
+    {
+      "sha256": "48B6CC39F1A4225E0D33E55A7C6D6EEEB00CC4DF90361106E5069246388DC0F0",
+      "path": "docs/PLACEMENT-ADVISOR.md"
+    },
+    {
+      "sha256": "3FB56881C66D7428E2607A559AAB4DA11892014C8958EC817A0C59FA91B2302F",
+      "path": "docs/progress-report.md"
+    },
+    {
+      "sha256": "6141B03F474E0B0AD7349BDE51E082E0907C598C776017E70C1584F538F5C0CD",
+      "path": "docs/PROJECT-STRUCTURE.md"
+    },
+    {
+      "sha256": "3634148D0D70EAD2D9EC514CFABF9EC21074DCC3E289BC50C0CAFAB5F0026B6D",
+      "path": "docs/PUYO-CONNECTION-JOIN-FIX.md"
+    },
+    {
+      "sha256": "5D55F4C719315F43F1E51B8DB2F86FF3BCEEBA540D9E64387D489B1504BFCFC2",
+      "path": "docs/PUYO-GENERATION.md"
+    },
+    {
+      "sha256": "916960650B119CE73DC62C708CA7E9171FAF9935AFDFA7A008948286E9C6C791",
+      "path": "docs/PUYO-PIXEL-ART-DESIGN.md"
+    },
+    {
+      "sha256": "D251395C0DE061566408EA4D138DD2966063A2CEBB1FD9C191D782676A41BAF9",
+      "path": "docs/PUYO-PIXEL-INTEGRATION-CHECK.md"
+    },
+    {
+      "sha256": "B9E33B64523656CF21963E7D4EE4EA833A71D1C992A53B2F36FFB1791F5AD8C1",
+      "path": "docs/PUYO-PIXEL-INTEGRATION.md"
+    },
+    {
+      "sha256": "C1071C3C0823DA97B8074D48DC31C963279E440CEA8A96856A1002CB1B13FBAD",
+      "path": "docs/PUYO-PIXEL-PRODUCTION.md"
+    },
+    {
+      "sha256": "62CC620EA2526F33139C49A294511F607F6E405E98D6969BCE40E5D143811B60",
+      "path": "docs/README.md"
+    },
+    {
+      "sha256": "E260049455FB64A3F7E6FA1A21E50FD403BE659BA83E9F5F0D4AA951E70491F5",
+      "path": "docs/research/animation-five-chain-fixture.json"
+    },
+    {
+      "sha256": "463ED0AFB76F84B5E3EF6A66608B268B15F08B815F0D0142015D464605808A76",
+      "path": "docs/research/gtr-head-extension-cases.json"
+    },
+    {
+      "sha256": "4D426CAC3413A2DC0F00B429BC458698B7A68E9D63E02882262618990EB28E24",
+      "path": "docs/research/gtr-head-scaffolds-20260925.json"
+    },
+    {
+      "sha256": "47EF97243DBE4A096CDAB53A4BEAF006F90475B60E74DEBDFC99C65CDB2C8CC1",
+      "path": "docs/research/gtr-spare-allocation-videos-20260925.json"
+    },
+    {
+      "sha256": "FD0F3F378720818A63C665E6A19A1059F6E85566C3F25BDFEBCE60DDF5256499",
+      "path": "docs/research/head-construction-feedback-20260926.json"
+    },
+    {
+      "sha256": "F4C2D25176D901853C92C8789ECD06748B0D4777E1ED0783EE4F84272FD09E66",
+      "path": "docs/research/puyo-animation-videos-20260926.json"
+    },
+    {
+      "sha256": "C196570478E1E1618B3C93353D184220D1A41F1DDD7E2F71DF32751A7393EE91",
+      "path": "docs/RESULT-CHAIN-PREVIEW.md"
+    },
+    {
+      "sha256": "0DD446C09CF38221942E0F553254EF899AFD7D034839D4CFC92860A1951C814E",
+      "path": "index.html"
+    },
+    {
+      "sha256": "8554A2635EE760A0598DB4CA072464C5F15700F9C7180B32A7ACF59D473FC716",
+      "path": "package.json"
+    },
+    {
+      "sha256": "D8F3AC3D323BBEF8DF615DC7326AFB009B6B96055EA466C047BC679EE2AAB22A",
+      "path": "scripts/analysis/analyze-advisor-failures.ts"
+    },
+    {
+      "sha256": "6CB6E24183C62B2A2D6DBF67AAF2C7EA137724701215517C012E8D69459CAC77",
+      "path": "scripts/analysis/analyze-advisor-quality.ts"
+    },
+    {
+      "sha256": "A3DB3DD86A80A9A8CC4D45027642A60C2FF6DC25D80015ABFE9BD614D4A3C209",
+      "path": "scripts/analysis/analyze-completion-waits.ts"
+    },
+    {
+      "sha256": "B790C138721E15FAB7AF0416CD4958597D2CBEF4200F5EBA60A55B44516707AF",
+      "path": "scripts/analysis/analyze-construction-stalls.ts"
+    },
+    {
+      "sha256": "8CDA4EBDD0C41E31C9E8609A739BA01594FEFB99D7D6C25E609CF4B77EE92434",
+      "path": "scripts/analysis/analyze-left-connection.ts"
+    },
+    {
+      "sha256": "54203D148B4FAB69A28BEA4CA9830BE6CA9419CD10FBEFE759D8DF1BB8B0A2B0",
+      "path": "scripts/analysis/analyze-spare-puyos.ts"
+    },
+    {
+      "sha256": "28B3B12B1979792564AC146C4729587DBFE1132CBBDC58EECA505874E1DE8D93",
+      "path": "scripts/analysis/analyze-tall-wells.ts"
+    },
+    {
+      "sha256": "A3DE5D0C5E61B7B9286F3F2052FD631C10AC474290C047925425BEA738CC1920",
+      "path": "scripts/analysis/audit-foundation-fire-opportunities.ts"
+    },
+    {
+      "sha256": "C345B64F46946299307D36D365E62C0D33845034C9C88A7D21D4C7D9F43D2EF5",
+      "path": "scripts/analysis/audit-perfect-foundation-routes.ts"
+    },
+    {
+      "sha256": "CF79E3EF7DE217BA1C2E30BA590DF2862BFCBBE56F622DE5B4912EA46C540E01",
+      "path": "scripts/analysis/audit-spare-allocation.ts"
+    },
+    {
+      "sha256": "BCB5C1770E7DA6D8866E464B01E184D8197C5F9DA525DC4D31E10C19C3D7AACE",
+      "path": "scripts/analysis/check-fold-feedback.ts"
+    },
+    {
+      "sha256": "6D9853128BA8453E67BFB3E59A907960AAA5FBE9FAFB673706EA74A763356152",
+      "path": "scripts/analysis/check-head-guide-feedback.ts"
+    },
+    {
+      "sha256": "5EDB44251D333857EBDEE32EBD1AAEEA657C8CDFEE75EF2211D6F5BCF01F8FD3",
+      "path": "scripts/analysis/compare-continuous-foundations.test.ts"
+    },
+    {
+      "sha256": "751161D81E6FC3956240170300A7DDEDC7E92A12FA9464C5CC454FCF65161AF9",
+      "path": "scripts/analysis/compare-continuous-foundations.ts"
+    },
+    {
+      "sha256": "1FA9DEE86A73181A0784B25D441712986A73ACCA646BE2AE6718764DFCAB3503",
+      "path": "scripts/analysis/compare-foundation-quality.ts"
+    },
+    {
+      "sha256": "828D1194869ACF4907F3CD5CF3CBBC0FCEF2E3EAABA4D41DB08C9742AC50B539",
+      "path": "scripts/analysis/compare-guided-tail-completion.ts"
+    },
+    {
+      "sha256": "AE8722932F8401FC41B4C52FB64561A2BE33F73C314F99C746D0A4D653A540FF",
+      "path": "scripts/analysis/compare-head-scaffolds.ts"
+    },
+    {
+      "sha256": "67E3015023449833B74E055D7274302B98A4A0052197A3391D69FA2166995D06",
+      "path": "scripts/analysis/compare-surface-continuous-parity.ts"
+    },
+    {
+      "sha256": "2B1C6AB819375B07A3DDDB95831FEAB19C117EC4069863FA821FBE32BC06157C",
+      "path": "scripts/analysis/diagnose-advisor-failure-opportunities.ts"
+    },
+    {
+      "sha256": "F1CF5FA0B2B589724DE17E8511AD64E11EF6E4885412702F257498B988EC8CEC",
+      "path": "scripts/analysis/inspect-spare-fixtures.ts"
+    },
+    {
+      "sha256": "8C1D40133F29F19C0392B60B2649CC63535FEF26B964A2C0F5030C07AE1F2DDC",
+      "path": "scripts/analysis/measure-foundation-guide-latency.ts"
+    },
+    {
+      "sha256": "3E8277024260D4ED18E7D9BBBAFA866F493E0BF76D840904CCF55870229D96D3",
+      "path": "scripts/analysis/probe-advisor-failure-counterfactuals.ts"
+    },
+    {
+      "sha256": "C6FD1EE4FB88584099D033FA416485A6DC24DAACB8C3C16A60675BD2C5E0B4C5",
+      "path": "scripts/analysis/probe-spare-strategies.ts"
+    },
+    {
+      "sha256": "A28031FBD45F031DC981992CF565192237E18A0BD2414F0D978B0C34F2F4C2C9",
+      "path": "scripts/analysis/promote-spare-probe.ts"
+    },
+    {
+      "sha256": "C2889339B4D661BA6566109D5715A08803323D5986B3DE19E0E3811F9678C674",
+      "path": "scripts/analysis/trace-completion-wait.ts"
+    },
+    {
+      "sha256": "F492F6FB5BBD02DBB6C6729432C020392ACF692153C084CB83352A8FB7781443",
+      "path": "scripts/analysis/trace-foundation-feedback.ts"
+    },
+    {
+      "sha256": "C48A94D0A5D54F2D36166D9ACE48BF424BDFDF4C2B9422610576A84CE5BA0E4D",
+      "path": "scripts/analysis/verify-head-scaffolds.ts"
+    },
+    {
+      "sha256": "CDBB40A75271D97D98A9C72BA63D301EED6EB4CB6C1B4A2265E3840CA9301A04",
+      "path": "scripts/analysis/verify-spare-target.ts"
+    },
+    {
+      "sha256": "89D120D75FF589979AA675FF5EAC2D109FBD84A0C7618BD95B6BA175DFFC7DFE",
+      "path": "scripts/assets/build_puyo.py"
+    },
+    {
+      "sha256": "C4E90CB5EDC448C77B90FF7F51C09593F1F45EC74833C839693E80C2BB22AF7F",
+      "path": "scripts/assets/test_puyo_assets.py"
+    },
+    {
+      "sha256": "48ECE2CB516D00B496278F1CECAA45408ED5F15B09F0822A2ACBBFE34210BF5C",
+      "path": "scripts/benchmark/benchmark-advisor.ts"
+    },
+    {
+      "sha256": "FEAFB525B1AAAF32A92A678470BB2272EC687FF2C0C92D0CC2351C3A2E4C5DD7",
+      "path": "scripts/benchmark/check-opening-guidance.ts"
+    },
+    {
+      "sha256": "0541F28D47244798869D579EA24A2F9FED1641A92478F5A9A3D0FA4CBFD79DE9",
+      "path": "scripts/benchmark/compare-engine-behavior.ts"
+    },
+    {
+      "sha256": "A244F41518AB78EF6522B735CBE9800988F4F0832193345F08AB557600F6D1F9",
+      "path": "scripts/benchmark/measure-advisor-latency.ts"
+    },
+    {
+      "sha256": "ADA6E187A74EC62E5F84368339222E0C591B59DAA178AED190295A17E3165368",
+      "path": "scripts/benchmark/measure-advisor-range.ts"
+    },
+    {
+      "sha256": "AFD4E269F1572C2096E1C0C58CAF885954B6185945CE2E5F32ABD0B5FF34CA9F",
+      "path": "scripts/benchmark/measure-continuous-guide.test.ts"
+    },
+    {
+      "sha256": "316BDF801FD483A894A41FB390B335C375870CD1F7052C6397E3C10E1F4EED86",
+      "path": "scripts/benchmark/measure-continuous-guide.ts"
+    },
+    {
+      "sha256": "3FC26E7B0D40DD4F7297F8B87227CA705DE8B24CC598759E0A9433AC6BDFFB3F",
+      "path": "scripts/benchmark/merge-continuous-guide.test.ts"
+    },
+    {
+      "sha256": "098EC01AFD7EAC493215CC5284841DD35476D6E0AC62554FB5727F4C012E7159",
+      "path": "scripts/benchmark/merge-continuous-guide.ts"
+    },
+    {
+      "sha256": "562E3BD00C8D626305AB6CEE4FEF0F7B4EE27F38FA5D83A429024D9504E467C8",
+      "path": "scripts/benchmark/reserve-spare-holdout.ts"
+    },
+    {
+      "sha256": "D90DC66C0F6DA0BCA6E7EFAD12AD5A8B7E2316E23410D6DF0A837FA96EC4CF98",
+      "path": "scripts/benchmark/simulate-advisor.ts"
+    },
+    {
+      "sha256": "5B88C0068A71AC780804AB626D08714046E7B9EF2D045191EF6653A27232F7B4",
+      "path": "scripts/benchmark/slice-benchmark-report.ts"
+    },
+    {
+      "sha256": "38485E09D19E9F5455E1FAB376F6770E9D014833490B159AA2A88C4650165D64",
+      "path": "scripts/human/compare-human-openings.ts"
+    },
+    {
+      "sha256": "F6B23FD4FF8C2723C2A8C6EF62ED7DEDFA6BFBE022449DC5E006500B719CEB54",
+      "path": "scripts/human/summarize-human-comparison.ts"
+    },
+    {
+      "sha256": "9D0AA40BF2D577A0A4C7262F943756B56CECC22C5DC3F85B5A6C35B7E6FE22F3",
+      "path": "scripts/README.md"
+    },
+    {
+      "sha256": "0415670848ACFEC95B7115A8DC489708849FC211EA78B9DFE79F3C93B7B2EE0C",
+      "path": "scripts/shared/source-fingerprint.test.ts"
+    },
+    {
+      "sha256": "DF956E3ED091CADB2D81D420772F0AAB7D21E37D1E242170671CA243DB2360F3",
+      "path": "scripts/shared/source-fingerprint.ts"
+    },
+    {
+      "sha256": "2CB1EB2B8FDBB4F2A580E12815B87B39B36CE6CFC134A8B6B71DF8E617C1D1A2",
+      "path": "src/App.tsx"
+    },
+    {
+      "sha256": "8745B42D798801BF54FE22736EDB6D202665CD75163ECB403693F0C669629072",
+      "path": "src/architecture.test.ts"
+    },
+    {
+      "sha256": "1E7532CE0BEAD7A29340663D6E041F8221919ECB1F0711C6B08997C0EA44CE55",
+      "path": "src/assets/puyo/atlas.png"
+    },
+    {
+      "sha256": "92E5508B2BCC94FB61D96234256B459A3E13C054081C4DD1A8B08887A35E128C",
+      "path": "src/assets/puyo/manifest.json"
+    },
+    {
+      "sha256": "03E966458A699BC7125E5F15670B36D6A871DCE1EA6653932B99E444EA997544",
+      "path": "src/assets/puyo/README.md"
+    },
+    {
+      "sha256": "6F2760566826FEC0BB099B419F3B4F4B70280506813163C8C7534CEF735B6BE9",
+      "path": "src/benchmark/AdaptiveTailBenchmark.test.ts"
+    },
+    {
+      "sha256": "3F3CF248B8435960A5A2EFC635370C3A14053D4C07DDA4CDE17EEB6A0D7BEBE0",
+      "path": "src/benchmark/AdvisorBenchmark.test.ts"
+    },
+    {
+      "sha256": "3113CC87AEAD58B6B1011A7092406C61D549FF5E680E705081D6C9D5F98FF1A5",
+      "path": "src/benchmark/AdvisorBenchmark.ts"
+    },
+    {
+      "sha256": "A6ACED232952D78DACC19F225766B8E0B65849C42949A456E450910CDEDAC6A5",
+      "path": "src/benchmark/BenchmarkCliArgs.test.ts"
+    },
+    {
+      "sha256": "987E7F38AA34102A9FAC9D3D106DF3C59B8A5F9885C546E517420C9B388B3ABB",
+      "path": "src/benchmark/BenchmarkCliArgs.ts"
+    },
+    {
+      "sha256": "CA5A29066A02402528CA7F86F4DC7C3B9C732DE00B70EB7D11A60DFC947836AB",
+      "path": "src/benchmark/BenchmarkReportValidation.test.ts"
+    },
+    {
+      "sha256": "027ACF267D5D793AA6D2375648B0279F6197E2AA1061549680CFCD563327E021",
+      "path": "src/benchmark/BenchmarkReportValidation.ts"
+    },
+    {
+      "sha256": "4C67A0D5C16DF06FE80EC247746389088E5C71C8067D35FC075DB2099C5A445D",
+      "path": "src/benchmark/FoundationQuality.test.ts"
+    },
+    {
+      "sha256": "F1C6A437CBF8DD7E7F8EE2FCA0DF4A72D9CB0C90C7E6DDC58FCEFB34E1A2CE76",
+      "path": "src/benchmark/FoundationQuality.ts"
+    },
+    {
+      "sha256": "87B61A9F0ECEC6E93EF4F9B4400800AF0BBD44EEFA7F5E37C2A855D7C01E0E2B",
+      "path": "src/benchmark/HumanReplay.test.ts"
+    },
+    {
+      "sha256": "53D80E8179946A311FD8D7A1595D7D6A9DB4013126CD9ED19909C91598E384C3",
+      "path": "src/benchmark/HumanReplay.ts"
+    },
+    {
+      "sha256": "28D5630B6FD5E30FC84CFA2D133AA2DC86F78456F8E5BECF494788A7F0B950D6",
+      "path": "src/benchmark/HumanReplayLibrary.test.ts"
+    },
+    {
+      "sha256": "D8A77F920EC993BAA485092211EC44EAD44A915072A5BD3D4EFE9023EB5E07CC",
+      "path": "src/benchmark/SparePuyoAnalysis.test.ts"
+    },
+    {
+      "sha256": "2799BA205126C032C102BDD8979AB557A08DA950B413F311D19550F5B516EAD6",
+      "path": "src/benchmark/SparePuyoAnalysis.ts"
+    },
+    {
+      "sha256": "BDEFDC5C870B868876D9EA5409F6809C447669DCE7494EFE009B6F12F85866B4",
+      "path": "src/benchmark/SpareUseRegression.test.ts"
+    },
+    {
+      "sha256": "EA462CA45114E1CD396AC15E24A3D3E9E6F40059F343D08FC4DC587278337F8C",
+      "path": "src/benchmark/TailTutorialReplay.test.ts"
+    },
+    {
+      "sha256": "23B550AD0C23E1A937616EC529A61F62DD000A1A3F3A73EBA386E5D06DDE4FFF",
+      "path": "src/components/feedback/GTRIssueReportPanel.tsx"
+    },
+    {
+      "sha256": "5ED446A7F6511860BA6257C41E5F593455A9DFBB3DF6AFC39DF36BA6F3233B85",
+      "path": "src/components/feedback/PairOrientationPicker.test.tsx"
+    },
+    {
+      "sha256": "BF7EC1F84D0119C1172D6CB6E143A97854E336A4D013462BC3DF2C17568A3502",
+      "path": "src/components/feedback/PairOrientationPicker.tsx"
+    },
+    {
+      "sha256": "16A5ACB2C51C8C29B21B89684F64ED8F46EFBD9AAB5D4F89787C0180A0B961B5",
+      "path": "src/components/gallery/CompletionGallery.tsx"
+    },
+    {
+      "sha256": "5F6F7F6F1CCC03E8F13C2F413FDC521DF3E6FA7CF2E012709330D6B64C63D85C",
+      "path": "src/components/gallery/GalleryBoard.tsx"
+    },
+    {
+      "sha256": "357143847623AB253AF66E6FA0F975803D3DB5CB9922DB8EA2EFD4F12261A7EA",
+      "path": "src/components/game/GameBoard.tsx"
+    },
+    {
+      "sha256": "AFA9A6CBB75E86970AD9F30B6ACFCBB10189112E06AECAE8FAE51245BADE8E2E",
+      "path": "src/components/game/GameControls.tsx"
+    },
+    {
+      "sha256": "479E41D91ED1C8292AE8E0C104713479A34D6206109EDB5468C9352DFDBBE44C",
+      "path": "src/components/game/GameLayout.tsx"
+    },
+    {
+      "sha256": "18511D2A25F86A3E0F60D5C29040017F2DDE0436EDC478102D51A814B360EF1A",
+      "path": "src/components/game/GuidedGame.tsx"
+    },
+    {
+      "sha256": "6AB38278C2337E85420543D4E29E7F0E3ADA3785908D1D1B16C7C25CDA61AECB",
+      "path": "src/components/game/reportStatus.test.ts"
+    },
+    {
+      "sha256": "3E1F7C408D4F0123F6C4664BBAE5B2557EFB2C507B8F87BE20FA3C03AF1906BD",
+      "path": "src/components/game/reportStatus.ts"
+    },
+    {
+      "sha256": "96D86808CE6FF3F36115F941689C31913A14DC5F9BBA207CC4811260FCFED1F8",
+      "path": "src/components/game/ScoreAttackGame.tsx"
+    },
+    {
+      "sha256": "DE8B46EF3930C4FECE8F412D0A179EE2C910F0446B85EE2A74ED02A8020A7454",
+      "path": "src/components/layout/Header.tsx"
+    },
+    {
+      "sha256": "18085259E84973ED22AE732B261CDE20B758B9F3841FFDF0C2BA0518632C74A7",
+      "path": "src/components/layout/MainLayout.tsx"
+    },
+    {
+      "sha256": "35475989807E1CA0CBD6870A720048CF60D02F8164ED8A199053A0B38985716E",
+      "path": "src/components/layout/SideMenu.tsx"
+    },
+    {
+      "sha256": "5C44E312B3AD4D1F586F5706FAECA9C419DE6ECC05DB7B2D0EF56432952E1A62",
+      "path": "src/components/TopMenu.tsx"
+    },
+    {
+      "sha256": "7389249868C13B45E26400959DCB9B61AF8EC1FA5B7EE89A4B7CE92D893A2F35",
+      "path": "src/components/TopPage.tsx"
+    },
+    {
+      "sha256": "4596A89BA7F6E991869D7F3D58577008BE1DD316FB3404127E27F93C53291F5C",
+      "path": "src/game/advisor/BoardSurface.test.ts"
+    },
+    {
+      "sha256": "32A4C8FF45255D9C0D23032C5F8007FF3FF248811ED18DA1F7CAC744FC89E568",
+      "path": "src/game/advisor/BoardSurface.ts"
+    },
+    {
+      "sha256": "C178983B7346D5E0221C0B9AE4E229656DC2D25158A3A76786760261FC3406D1",
+      "path": "src/game/advisor/CompletionWait.test.ts"
+    },
+    {
+      "sha256": "0E741B531229B7FEBC68F61DAB812E27AA1132CC436B242F673D0C3BF4A654D4",
+      "path": "src/game/advisor/CompletionWait.ts"
+    },
+    {
+      "sha256": "789E696DBB0C8D7DDE1CF6CC49D73A2E7AABA2A6ACD2680163E101FF5D222B87",
+      "path": "src/game/advisor/CompletionWaitRegression.test.ts"
+    },
+    {
+      "sha256": "52A2D82E1D4EE1BBCFE85375D03BAD52FF35A8FB46FBD738881171138128010F",
+      "path": "src/game/advisor/ConnectedExtension.ts"
+    },
+    {
+      "sha256": "39166AF30CC72E089167FBCD6323E36051E1D38E3507225BCD072A430FA91FD1",
+      "path": "src/game/advisor/ConstructionAlternatives.test.ts"
+    },
+    {
+      "sha256": "9AF96F9AD6B18E35AFBD6FF561B1F856022CD510EC9E45BC2509361C98088E61",
+      "path": "src/game/advisor/ConstructionUse.test.ts"
+    },
+    {
+      "sha256": "BCF2F80B2351551311B10ECFB7155AC4DA043E2E3C706B66CD48321D2BC9EC1F",
+      "path": "src/game/advisor/ConstructionUse.ts"
+    },
+    {
+      "sha256": "35C21B64FF63C9D6DD7CBB32EE95762C48953D3F582B9375950D32663DC1CD7A",
+      "path": "src/game/advisor/ContinuousAdvisor.test.ts"
+    },
+    {
+      "sha256": "B28D0D85C5B4F73AA5CB80EDEC70560E8E5D9C440BE11648F9D51E8C72F92EE1",
+      "path": "src/game/advisor/ContinuousAdvisor.ts"
+    },
+    {
+      "sha256": "5965AABB81AB96AE83EC469066EF2AD9C12E285C8AFCFD7DB9FF6CB57F7BA0AC",
+      "path": "src/game/advisor/FirePreference.test.ts"
+    },
+    {
+      "sha256": "F10F8DE4877680A55D1C385571E0E8A769B26418B23C49009820A1E7DCBA751E",
+      "path": "src/game/advisor/FirePreference.ts"
+    },
+    {
+      "sha256": "3616F6ECEB83384C59C32FA5971EADA8084F44958291A8CA4C5F4B0FC243F1C6",
+      "path": "src/game/advisor/FiveChainPlanner.test.ts"
+    },
+    {
+      "sha256": "5F6F6516EA622E902F9397098FBD1F71F53348C6B5F814AB9CDC6AB7D532C1EE",
+      "path": "src/game/advisor/FiveChainPlanner.ts"
+    },
+    {
+      "sha256": "A1A52E2CA6829DA45113452ABA9ED6AF368DADF26BC121649E158D9B51EFB858",
+      "path": "src/game/advisor/FiveChainSkeletons.test.ts"
+    },
+    {
+      "sha256": "A037568AAF67AD2A93A916E13FD4CF1AE8810E42E64509C76C097083474A441D",
+      "path": "src/game/advisor/FiveChainSkeletons.ts"
+    },
+    {
+      "sha256": "311A8830A8067013F6B8680847C3DECC94AFE047C76FA0624BD8FC998A72E0C1",
+      "path": "src/game/advisor/fixtures/unrecognized-tail-fires.json"
+    },
+    {
+      "sha256": "8DF127F8CAFE5278C6E51CB144C6613E9AC504FE0D2CBC3FC987CDBE3BE49467",
+      "path": "src/game/advisor/FoldConstruction.test.ts"
+    },
+    {
+      "sha256": "0B3E8089C798B367710BC3B5A0138AF02D160FF0B2369B0D3AAB3C6E38B1178A",
+      "path": "src/game/advisor/FoldConstruction.ts"
+    },
+    {
+      "sha256": "922D02F876DB687F1F10214D9B6C7EFB11B7F4E54FF57E1E476E63CD4F45D07B",
+      "path": "src/game/advisor/FoundationContext.test.ts"
+    },
+    {
+      "sha256": "7AA89AEEEAC307B9F8B4D8101D9F37968E48CEE4B787FD739D5A1D5E74E009EE",
+      "path": "src/game/advisor/FoundationContext.ts"
+    },
+    {
+      "sha256": "06FE8D2A4C12BB1A43D3DC85DC3BC7D8B16873B325318A9EF06565AF1274FD13",
+      "path": "src/game/advisor/FoundationFireConsistency.test.ts"
+    },
+    {
+      "sha256": "CEF7189ABDB85679C983193BB43621D1356F256F8764909D5BEEC0675CEE7423",
+      "path": "src/game/advisor/FoundationPreference.test.ts"
+    },
+    {
+      "sha256": "F6A1E621CF010532B25E2136511AEF10DCA3BB9D471CDEC44E0459045116AF44",
+      "path": "src/game/advisor/FoundationPreference.ts"
+    },
+    {
+      "sha256": "3375AC9B2FB10C2C950443349A3685BA178A4B0A95AE619A43766DA1E9FF9B82",
+      "path": "src/game/advisor/FrontierFlexibility.test.ts"
+    },
+    {
+      "sha256": "1381A61968DA2FDD938176195034A97EA48D3B1E324BB892EBCCF93905DABA14",
+      "path": "src/game/advisor/FrontierFlexibility.ts"
+    },
+    {
+      "sha256": "A42D2C3D74790CA19BC4DE6556BD2884AE9E1A6C40A971F3D468EB221C2E099F",
+      "path": "src/game/advisor/GuidedTail.test.ts"
+    },
+    {
+      "sha256": "0B8872CCA39CD275725DBA86E86775497EDEA7833908BE8ED297E5FCC4D47552",
+      "path": "src/game/advisor/GuidedTail.ts"
+    },
+    {
+      "sha256": "E4A48CE9DC6776966B30BACA7B7DFBEDB74EBADE68B94D55CD1C550F95055AA9",
+      "path": "src/game/advisor/HeadConstruction.test.ts"
+    },
+    {
+      "sha256": "5CD3D64BACBE398A6449A7B83E0FE6D6D0A577DD1475A513A8199792ABEB6174",
+      "path": "src/game/advisor/HeadExtension.test.ts"
+    },
+    {
+      "sha256": "3DBC4820BBB4FF70BF253970BCEC4B1DE2E2B1A981E38673888B1A4729BDDAC3",
+      "path": "src/game/advisor/HeadScaffold.test.ts"
+    },
+    {
+      "sha256": "E8AE7128EFA600BC8B6195889D9A8580EB5A1E49BC44791327E5D2E786F8855E",
+      "path": "src/game/advisor/HeadScaffold.ts"
+    },
+    {
+      "sha256": "8E8D5C0CF0E33E6CD163B2EDDC155A489BB5DCCCC78C198A9064BE8347EB4312",
+      "path": "src/game/advisor/LeftConnection.test.ts"
+    },
+    {
+      "sha256": "749CB15573AF364A3FC25F6CC58CD1BA8E4DA12B08E7E772A77AFEDDA4BFC27E",
+      "path": "src/game/advisor/LowerChainInsertion.test.ts"
+    },
+    {
+      "sha256": "07FAE517F42D9A7629C9179DB53644D67505626506E18CDE7FF0C08E8601583D",
+      "path": "src/game/advisor/LowerChainInsertion.ts"
+    },
+    {
+      "sha256": "6DEEADDA46D120C904B025547970A20ECD94682256ECC547AE8CDA4FAC454360",
+      "path": "src/game/advisor/LowFiveChainSkeletons.test.ts"
+    },
+    {
+      "sha256": "EBF18152B69505A4936106E6B0C96893ED678DC1EA746AC07221363C9C5CF932",
+      "path": "src/game/advisor/LowFiveChainSkeletons.ts"
+    },
+    {
+      "sha256": "C1395F79B02A20F2C283E3908300073180410B42F2BA9C14F856A307E9E85278",
+      "path": "src/game/advisor/MainFireAnalysis.ts"
+    },
+    {
+      "sha256": "0BED3A63AEC73F378C4714F8FC3FBBAFAFAA1812EBBBE78F411B636F7C89A530",
+      "path": "src/game/advisor/NearFoundationTarget.test.ts"
+    },
+    {
+      "sha256": "CED19EFD48E321D73FE3F40F29C8F2D478EDA4212C03B69F2CE2132A89D09B6A",
+      "path": "src/game/advisor/PairPlacementUse.test.ts"
+    },
+    {
+      "sha256": "7E0FA4A7C199E911851CD524EEC52F05E45167159E795FD53E5B34287A5E95DA",
+      "path": "src/game/advisor/PairPlacementUse.ts"
+    },
+    {
+      "sha256": "30775B2ABF641D4D2058778CBB24682B9BD01F5F16F220778E0F306ABC03D380",
+      "path": "src/game/advisor/PairUseRegression.test.ts"
+    },
+    {
+      "sha256": "F4B9D7DA1241379FD7F217BD1D7FE5A04BDD5ECBEEDEA2E2E59D7801215032B1",
+      "path": "src/game/advisor/PerfectFoundationPlanner.test.ts"
+    },
+    {
+      "sha256": "AA41022ACBF37649D54224A596EB50C08E47ED80042889ECBC0EE574EC9E0864",
+      "path": "src/game/advisor/PerfectFoundationPlanner.ts"
+    },
+    {
+      "sha256": "A0B9965B173D07B7F89A153058E824DF9DD989E087F70248352C21EECFDC168C",
+      "path": "src/game/advisor/PlacementAdvisor.test.ts"
+    },
+    {
+      "sha256": "389540137A32841D866BEE7103348A4775E3D003E2DD607CC9238E30B50693AF",
+      "path": "src/game/advisor/PlacementAdvisor.ts"
+    },
+    {
+      "sha256": "3C7B4B0B5234CC2BAE921C34C051FD8488A968B539D5C9E9E48C87FB991EC741",
+      "path": "src/game/advisor/PlacementAdvisorConfig.ts"
+    },
+    {
+      "sha256": "DD63B406B9AFB7DA42894EA70F69EA9842CCBCA56050A07D39FEFA18B85FE201",
+      "path": "src/game/advisor/PlacementAdvisorHumanStyle.test.ts"
+    },
+    {
+      "sha256": "D2427BAE768845B054B209B42739D63FACB76CB6BF2FBB86FF6FBF0CF37F0F76",
+      "path": "src/game/advisor/PlacementAdvisorOpening.test.ts"
+    },
+    {
+      "sha256": "525B1D78D6589E2D2EA06942C7236F16C62A3AA5F502E84101B08F5BAB0AF88C",
+      "path": "src/game/advisor/PlacementAdvisorReadyFire.test.ts"
+    },
+    {
+      "sha256": "955F6BE56CD40014D3F4C65E7211F15316411259595D54EC8064744AD9127376",
+      "path": "src/game/advisor/PlacementAdvisorTailPreference.test.ts"
+    },
+    {
+      "sha256": "AA75CD81C1487D15C9E6541F63E8B55B8B1702385CF902177BCE83EEE60BE0B1",
+      "path": "src/game/advisor/PlacementAdvisorTailProtection.test.ts"
+    },
+    {
+      "sha256": "75EC9D9606ED5660B27D3FF0E2A0CCC65B1B38993F53588682062A51FEEBE220",
+      "path": "src/game/advisor/PlacementAdvisorTerminal.test.ts"
+    },
+    {
+      "sha256": "55297569AB560C6820EBA3D15E45D977808446F157F5FBA9CD33205889E089CA",
+      "path": "src/game/advisor/PlacementAdvisorUnrecognizedTailFire.test.ts"
+    },
+    {
+      "sha256": "BFA5EEC64E7324E9E7F7CC557276BC0C13675260DC1FE4D74B148F87E01D7612",
+      "path": "src/game/advisor/PlacementEffort.test.ts"
+    },
+    {
+      "sha256": "829C181772D2785C2A3AE522DB123F41235226D2AE33A96409D0D41A733DD152",
+      "path": "src/game/advisor/PlacementEffort.ts"
+    },
+    {
+      "sha256": "2A98FEE3C870E7A70BFD387D4AC5E2E23F25D13A461791FA6686D3B3F8E598FD",
+      "path": "src/game/advisor/SkeletonRecovery.test.ts"
+    },
+    {
+      "sha256": "60A14975F126069E0CC0D5AE5D7EA259A38474747ECBFDB93C3D13B8C8DE5CDB",
+      "path": "src/game/advisor/SkeletonRecovery.ts"
+    },
+    {
+      "sha256": "0F97B038E0B388463D16ADF54C16EE35947CCCD8DA8C7BC0D90843CE2E964974",
+      "path": "src/game/advisor/SpareAllocation.test.ts"
+    },
+    {
+      "sha256": "D0E71FBE098733647B1BBCB93513F77C4070F3F9DF53620BE9369916B2A0E41C",
+      "path": "src/game/advisor/SpareAllocation.ts"
+    },
+    {
+      "sha256": "5CDD40FCFF4F97AE9815699DF24C392F09F3A52A32E8FA0D4B5E75DB388BA997",
+      "path": "src/game/advisor/TailCascadeRecovery.test.ts"
+    },
+    {
+      "sha256": "0A8CCF52E361A84FE18B3817490684C245AB210CE442DA39A73B02952CAE811A",
+      "path": "src/game/advisor/TailCascadeRecovery.ts"
+    },
+    {
+      "sha256": "AFB5FA34F8EB345E547980EC3B9320122FBFCF5BC3D27B29034C33FE5892F567",
+      "path": "src/game/advisor/TailPlanner.test.ts"
+    },
+    {
+      "sha256": "71849D68CF6C58B58CC141D3093F02AEDA33B848923F9A506819D8521B5164A6",
+      "path": "src/game/advisor/TailPlanner.ts"
+    },
+    {
+      "sha256": "824C6E342A5C3FEDA98BF82E4E3E77E24FF69FBC619D8ACBA98CEBE034A3A4BE",
+      "path": "src/game/advisor/TailPreference.ts"
+    },
+    {
+      "sha256": "CCFE87623DEC2930F65194C214016C8B15B7B35F412D42C5922313821A61CA33",
+      "path": "src/game/advisor/types.ts"
+    },
+    {
+      "sha256": "34858A9A921FD78D14E08DD0E7BB1C414E12E267E4A945DC09CB7C6D26A173E1",
+      "path": "src/game/advisor/VisibleFireSurface.test.ts"
+    },
+    {
+      "sha256": "5C759788B811E29645134F50A4E290D6266C67ED8450A3433B2F24CA417DB714",
+      "path": "src/game/advisor/VisibleMainFireSearch.test.ts"
+    },
+    {
+      "sha256": "19F88DAA03742CD6A2CBA244C16FABDA10CE42ACC92ABF0451B35828EE752634",
+      "path": "src/game/advisor/VisibleMainFireSearch.ts"
+    },
+    {
+      "sha256": "5392D1E23175AA4F8F04C251B6CCAA8E512F60336D3FC59FC0B138E35798BDB4",
+      "path": "src/game/core/ChainSimulator.test.ts"
+    },
+    {
+      "sha256": "61AAE9B60EFA4773D31D26479477C8C7E587CFDE9DB11B34D865552501C1AA95",
+      "path": "src/game/core/ChainSimulator.ts"
+    },
+    {
+      "sha256": "3DE863F6EB9CB88332543AC6F5ED711729C8FF148DBC43EDE718824321B10FBB",
+      "path": "src/game/core/ChainSimulatorTraversal.test.ts"
+    },
+    {
+      "sha256": "A245622112939A45373A34A37302CF54BC5799D3A338F7CA088D7CA9CFA031F1",
+      "path": "src/game/core/ChainTrace.test.ts"
+    },
+    {
+      "sha256": "8B7F4A93198C3F8C451AAC9CD45E403FDE81B29074A670300DB1D99C8B944AA9",
+      "path": "src/game/core/ChainTrace.ts"
+    },
+    {
+      "sha256": "572949AFE811DA885733FF63AA931D98E84C7A88AB99B8E6BB15471DBD7DB210",
+      "path": "src/game/core/GameField.test.ts"
+    },
+    {
+      "sha256": "0A5010DD637F2003DA665FA1B29CD0C51D6177BEA547BB00AA2E2045FB568101",
+      "path": "src/game/core/GameField.ts"
+    },
+    {
+      "sha256": "DDEC1B880A486845DAC8E3EB3BEF72657E42A3913462AE85C2EB801CA1BC4011",
+      "path": "src/game/core/GameHistory.test.ts"
+    },
+    {
+      "sha256": "10421C99FF8A7B97253924886C1E6F05381B06FEF421BECA495DC83501A05D44",
+      "path": "src/game/core/GameHistory.ts"
+    },
+    {
+      "sha256": "3223FDB208C5DABA036E7013FC2B35F61155C9C1F4123D5C4EC1C71D7047C67C",
+      "path": "src/game/core/PuyoPair.test.ts"
+    },
+    {
+      "sha256": "F45133FD32C083E99434EA4140D7C3FBDC401BD9F06DB6C5E555F91B3378F72C",
+      "path": "src/game/core/PuyoPair.ts"
+    },
+    {
+      "sha256": "E0AE81D1782D6A6692B4FE2AE3BD2F8E13E89265EE8EE4C22D4FDC833A5518E6",
+      "path": "src/game/core/PuyoPairRotation.test.ts"
+    },
+    {
+      "sha256": "95BA2F17E574D801392FAE186BEB2B9D2D5D07CE5F60F7D6961FC4F16081DE1B",
+      "path": "src/game/core/types.ts"
+    },
+    {
+      "sha256": "E49807BAEA27B2DBD2999A401726AC1B6EFC4069F640EF9FA079AB3B80F23488",
+      "path": "src/game/feedback/constants.ts"
+    },
+    {
+      "sha256": "1EB7E1CDD2DE8E8E4B24E312C39A302760581D28911233E30F21AEE22B9322E7",
+      "path": "src/game/feedback/format.ts"
+    },
+    {
+      "sha256": "BF6E84F1ECA901012D53956713C6D64F518FBC6190F57BAD9BFDB0DA779601AC",
+      "path": "src/game/feedback/GTRIssueReport.test.ts"
+    },
+    {
+      "sha256": "48043999B2720C72541BEC6170B290B52BC7F6F204511DAD7832FD3770656CD0",
+      "path": "src/game/feedback/GTRIssueReport.ts"
+    },
+    {
+      "sha256": "F3DD63BD7D57F3797094F6F17F1D1291895E7F82B18428FEC18BB9BCAFB0661A",
+      "path": "src/game/feedback/placementDescription.test.ts"
+    },
+    {
+      "sha256": "2EC42378F114FF6ACFAADCADE3523516208F6EF050602C23794C698B5A543734",
+      "path": "src/game/feedback/placementDescription.ts"
+    },
+    {
+      "sha256": "8A4728AD95C91F95916656524490E5E52B190F3E5C1A42C57017556DA015B38F",
+      "path": "src/game/feedback/replay.ts"
+    },
+    {
+      "sha256": "CAB0C46C0336B315DBC98FCC63291ABE9902BA8353260DA0FE23CFA27A5099C7",
+      "path": "src/game/feedback/snapshot.ts"
+    },
+    {
+      "sha256": "9B0312CB59C01BE7ECA6127DFAB733500439E77DAB1873B82502336A49CBB79A",
+      "path": "src/game/feedback/storage.ts"
+    },
+    {
+      "sha256": "CD8DAEE6E9BADFA4212FF3A457CD28F57A4568878732F67C9196E0F2669A3FAC",
+      "path": "src/game/feedback/types.ts"
+    },
+    {
+      "sha256": "04B4BCB54EFA7098B0B36EBEB47BBD49DBD509A52C7171DEF05D8FB65A96CA5C",
+      "path": "src/game/feedback/validation.ts"
+    },
+    {
+      "sha256": "247A8B7A18E378DAE3C1ABC8A78127F0D46CFD1DB7DF31DB74FFBF5A97F26262",
+      "path": "src/game/GameManager.test.ts"
+    },
+    {
+      "sha256": "37E9819CDAC4AA8F0EC8DB4217ED0E52526B19D6CF85773E0F8D35CD3D72E33F",
+      "path": "src/game/GameManager.ts"
+    },
+    {
+      "sha256": "3C9CCCB1D666E7E49BCAF3546E20373FD2A58F97CE9392016781286CCF238654",
+      "path": "src/game/gtr/EvaluationRange.test.ts"
+    },
+    {
+      "sha256": "4DD0A196618E761C677B60059DF29505270EA4081BCE47E12F264A84C348F39D",
+      "path": "src/game/gtr/EvaluationRange.ts"
+    },
+    {
+      "sha256": "D6BB2AAA44AAF496852FF4E56F9D713F2823923C72F590F8BD697E4A71696307",
+      "path": "src/game/gtr/FoundationExtensionExample.test.ts"
+    },
+    {
+      "sha256": "63E20E43F0BC08E94F5B7240CD25831517F2DC9685EECB51B8B4735FF8BE68CD",
+      "path": "src/game/gtr/FoundationExtensionExample.ts"
+    },
+    {
+      "sha256": "5A2919C4A51D322AEA89EDD5EDA2DB176733592C9BE306042B9C872D5BB6F20B",
+      "path": "src/game/gtr/GTRChainPreview.test.ts"
+    },
+    {
+      "sha256": "8B2159D322FC8122654BB06C23829933C5F31293FCA02C8BC6782236DAB2B39B",
+      "path": "src/game/gtr/GTRChainPreview.ts"
+    },
+    {
+      "sha256": "6FEFCA39B8E196CACDAA6D6D6F6A32E6E3D115792BBFE0B60892BDBA8A8F6933",
+      "path": "src/game/gtr/GTRPatterns.ts"
+    },
+    {
+      "sha256": "2B44ED818D47A6DE8C4AAC9DF928DB13E53DDED1322CD99969220B0053108266",
+      "path": "src/game/gtr/GTRScoring.test.ts"
+    },
+    {
+      "sha256": "5FFEF71313C70904555A2A06F4EB8228B6363800BDAEEA3725A94351117B16A7",
+      "path": "src/game/gtr/GTRScoringConfig.ts"
+    },
+    {
+      "sha256": "3C930E9B1A66D79EF51D53C959A68D22B1E3AA4086A4FC83E5BEF3F3E7B70A66",
+      "path": "src/game/gtr/HeadExtension.ts"
+    },
+    {
+      "sha256": "A8F3ECF84F4BF856065BADB5750F19F015F6A09FE57F4B789B0698C31EB15521",
+      "path": "src/game/gtr/LeftoverEvaluation.test.ts"
+    },
+    {
+      "sha256": "E246C0AFD640112C616184729DC0687476BA614CCCA834F08AE16A264D5339D5",
+      "path": "src/game/gtr/LeftoverEvaluation.ts"
+    },
+    {
+      "sha256": "E8BFB4E088C806ABC5D4C92AC05E85FDD99E22C7B7AEE83F4165395F60DB7EAE",
+      "path": "src/game/guide/GTRCompletionExamples.test.ts"
+    },
+    {
+      "sha256": "7C931A0CA3CC0C756D3D3520F63523FC74E8E37E388FF29E4D58357850B480CF",
+      "path": "src/game/guide/GTRCompletionExamples.ts"
+    },
+    {
+      "sha256": "C2659C07A3971F328BB423E9082FA95EE7098ED5954ABC11671C17EE000CC3EB",
+      "path": "src/game/guide/GTRCompletionGallery.test.ts"
+    },
+    {
+      "sha256": "E8600EBAACF60E6B0DAF0026629326D3276F9EF56E2E02DDDD7F0C70D570CA9E",
+      "path": "src/game/guide/GTRCompletionGallery.ts"
+    },
+    {
+      "sha256": "60D2BBFB745E39FF4ABC655168FCE645C078A59C58CC9BE28D774DB290D32116",
+      "path": "src/game/guide/GTRGuidePatterns.ts"
+    },
+    {
+      "sha256": "FE97EF74BC0AF7935EF00F5DF0ACD129F2A8936556004224BE2D98331275AD28",
+      "path": "src/game/guide/GuideManager.test.ts"
+    },
+    {
+      "sha256": "23BB1325EE7975CD90E7F53BC708AD8CAB8A7F7C866DF0AF859ED84108C74112",
+      "path": "src/game/guide/GuideManager.ts"
+    },
+    {
+      "sha256": "598317FE804FF79ADD903CCA3DE584C1D668966FB1C24079AE783432C3E41F1B",
+      "path": "src/game/rendering/ChainPlayback.test.ts"
+    },
+    {
+      "sha256": "D7A4B1FF53207D9E8FC2245BA89DA23B7994C2899FA7C714FE9E2AFF8BB65905",
+      "path": "src/game/rendering/ChainPlayback.ts"
+    },
+    {
+      "sha256": "190A9686633A7C8237AA7BC02C8FC08197302C689F9EB6F4F47681DEC5E6908D",
+      "path": "src/game/rendering/PuyoBoardRenderer.test.ts"
+    },
+    {
+      "sha256": "75CA16C9C53A652EEF7BADBFC340706D8E679030AECA39455B3F291DF3231229",
+      "path": "src/game/rendering/PuyoBoardRenderer.ts"
+    },
+    {
+      "sha256": "1DB11AC93D0121CA89B22F587927183DC9C226E9425187BE4D7F5B347140A3C2",
+      "path": "src/game/rendering/PuyoConnections.test.ts"
+    },
+    {
+      "sha256": "EF793B8D81D124EC1F24771AA446AF1145E7B78E8BBDA722BCD6F16E0EB4C797",
+      "path": "src/game/rendering/PuyoConnections.ts"
+    },
+    {
+      "sha256": "D41A1AA9F1F37F9D8ED6F593071A25D26AEF26363FC2F5E2455BB04EA8BE06DA",
+      "path": "src/game/rendering/PuyoRenderer.test.ts"
+    },
+    {
+      "sha256": "C9FBEE3985A52E389D94CC7A1065B394CD760D585CE0E787FA043C86DC5A9A5E",
+      "path": "src/game/rendering/PuyoRenderer.ts"
+    },
+    {
+      "sha256": "D71C9F68CE28AD52B0ED3517F58AE5D428F75BB99193D470EDE2ED7151CD9A10",
+      "path": "src/game/rendering/ResultChainPlayback.test.ts"
+    },
+    {
+      "sha256": "BDC1786884FEC61A43EB8B36B71283C9098B48A73F749CF7C8F92CB31429A098",
+      "path": "src/game/rendering/ResultChainPlayback.ts"
+    },
+    {
+      "sha256": "8D4CB33D0F6E16005DEE0D54EC2C07E2F31D0D3ABFCB9E12E336A4A01F213E9A",
+      "path": "src/game/rendering/VisualConfig.test.ts"
+    },
+    {
+      "sha256": "4606368021518B79931ED75745FC1DA87DEAD55533FB8C3977B7B7E0CDD7B6F6",
+      "path": "src/game/rendering/VisualConfig.ts"
+    },
+    {
+      "sha256": "ED9B8A9E95D9C8B58A15A51EE511453633241B5945C095918CBEAA4A386B4A34",
+      "path": "src/game/scenes/ChainAnimationScenes.test.ts"
+    },
+    {
+      "sha256": "A5CF7B516ECD3B852FEECC2A1C19DFA0FCC817D0439EDADD5DB209D265032E26",
+      "path": "src/game/scenes/GuidedPracticeScene.test.ts"
+    },
+    {
+      "sha256": "A739C2F1A03A6168EFC1575B10F224F7F908FE9B77BE9E38E66CC4B11143FC78",
+      "path": "src/game/scenes/GuidedPracticeScene.ts"
+    },
+    {
+      "sha256": "589CB9C6896F24D08A3CC2BBEF2892C30CF6703EE43C0907DEB6A6D8B2E6AB1D",
+      "path": "src/game/scenes/MenuScene.ts"
+    },
+    {
+      "sha256": "51A587BD7B0D7D6D8DC1DED773158C3BFE105CBAA05728B0FF76E948FF01B033",
+      "path": "src/game/scenes/PairRotationInput.test.ts"
+    },
+    {
+      "sha256": "88DFB74D2E03BC72F0292B9D6F5486E371021DF3D8AF1584D9C33F7694C2034D",
+      "path": "src/game/scenes/PuyoGame.ts"
+    },
+    {
+      "sha256": "83E71F96250A2E2E96A6624961A3DC3C7954FF997745E4E24D2F09A05A3E519F",
+      "path": "src/index.css"
+    },
+    {
+      "sha256": "8C3FE3D12A1A9FC3CA2F59B9E3D010534E60C5F852C2217F22BE7DBA62E04260",
+      "path": "src/lib/supabase.ts"
+    },
+    {
+      "sha256": "CF6A411AC2C0E00434BFB982CFE0EC9F70877806271E3BA40F5E63DF9666ACF9",
+      "path": "src/lib/test-connection.ts"
+    },
+    {
+      "sha256": "D49885020E28E6F69D8FF94EB2EF917F6E701AB8D2FD8D13C5C66F5A2C1219A2",
+      "path": "src/main.tsx"
+    },
+    {
+      "sha256": "6FA8F7718C6585F4866203718715358DD0E1CEEC085E5C21E699C2A6A27CD16A",
+      "path": "src/vite-env.d.ts"
+    },
+    {
+      "sha256": "AFDDD0E31B1E182433616F32DB4406BD391F47ACD31931AE695EE3BF512FD3A9",
+      "path": "tailwind.config.js"
+    },
+    {
+      "sha256": "5A8F9AAD166147616182A5A8B2E809BC4138BBC0A95CA6BE5D19F174B40BBE49",
+      "path": "tsconfig.json"
+    },
+    {
+      "sha256": "8004ADF076D2449AEE7869D9AA713FBB9C176D8D1DFF85BB7F89ED21F88A4D83",
+      "path": "tsconfig.scripts.json"
+    },
+    {
+      "sha256": "77DBC76F27A3DF2B3585E24490124BCDA7E0FD220F99A6D810ECF242902C3DBE",
+      "path": "vite.config.ts"
+    }
+  ]
+}

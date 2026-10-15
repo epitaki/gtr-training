@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "datasetId": "piropuyo-tail-20260924-v1",
+  "sourceUrl": "https://piropuyo.com/puyopuyo-chaintail/",
+  "author": "piropuyo",
+  "capturedAt": "2026-09-24",
+  "kind": "tutorial-examples-not-matches",
+  "isCorrectMoveLabel": false,
+  "verification": "Article link codes decoded and all placed moves replayed with the shared simulator. No video or frame-by-frame image audit. Colors renamed without changing equality relationships.",
+  "records": [
+    {
+      "id": "piropuyo-tsurukame-1",
+      "section": "ステップ5：鶴亀連鎖尾・参考ぷよ譜①",
+      "record": "_0mkonyny2kc8mMeS0Q3KcIjCmMim4Enkdca0c0",
+      "replayUrl": "https://www.puyop.com/s/_0mkonyny2kc8mMeS0Q3KcIjCmMim4Enkdca0c0",
+      "placedMoves": 17,
+      "observedClears": [{ "turn": 17, "chains": 8 }]
+    },
+    {
+      "id": "piropuyo-tsurukame-2",
+      "section": "ステップ5：鶴亀連鎖尾・参考ぷよ譜②",
+      "record": "_9u4coq28eI7y0m0QoQ4E7wcclicwkE2keSaacI489Goc6w1AaM4g2010",
+      "replayUrl": "https://www.puyop.com/s/_9u4coq28eI7y0m0QoQ4E7wcclicwkE2keSaacI489Goc6w1AaM4g2010",
+      "placedMoves": 26,
+      "observedClears": [{ "turn": 26, "chains": 10 }]
+    },
+    {
+      "id": "piropuyo-tsurukame-3",
+      "section": "ステップ5：鶴亀連鎖尾・参考ぷよ譜③",
+      "record": "_bihcdubilG6A6MeIlujSiMeIbQbkeAoMnS9gg8mog89888hi98gggE7i9090",
+      "replayUrl": "https://www.puyop.com/s/_bihcdubilG6A6MeIlujSiMeIbQbkeAoMnS9gg8mog89888hi98gggE7i9090",
+      "placedMoves": 28,
+      "observedClears": [{ "turn": 28, "chains": 10 }]
+    },
+    {
+      "id": "piropuyo-avalanche-1",
+      "section": "ステップ1：雪崩・参考ぷよ譜①",
+      "record": "_0mkmnqnq2mcmmCeC0Q3IcQjumQiu4mn8dSamcceSoEmMiQnQeGnSjEdS2oiMjEoQmSoMnS38fQn0h0",
+      "replayUrl": "https://www.puyop.com/s/_0mkmnqnq2mcmmCeC0Q3IcQjumQiu4mn8dSamcceSoEmMiQnQeGnSjEdS2oiMjEoQmSoMnS38fQn0h0",
+      "placedMoves": 37,
+      "observedClears": [
+        { "turn": 21, "chains": 2 }, { "turn": 26, "chains": 1 },
+        { "turn": 27, "chains": 1 }, { "turn": 28, "chains": 1 },
+        { "turn": 30, "chains": 1 }, { "turn": 32, "chains": 1 },
+        { "turn": 35, "chains": 1 }, { "turn": 37, "chains": 9 }
+      ]
+    }
+  ]
+}

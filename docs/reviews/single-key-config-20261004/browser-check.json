@@ -1,0 +1,549 @@
+{
+  "originalButtons": [
+    "← ×",
+    "→ ×",
+    "Z ×",
+    "X ×",
+    "↓ ×",
+    "↑ ×",
+    "Escape ×",
+    "A ×",
+    "Space ×",
+    "G ×",
+    "F ×",
+    "R ×"
+  ],
+  "afterReloadButtons": [
+    "← ×",
+    "Q ×",
+    "→ ×",
+    "Z ×",
+    "X ×",
+    "↓ ×",
+    "↑ ×",
+    "Escape ×",
+    "A ×",
+    "Space ×",
+    "G ×",
+    "F ×",
+    "R ×"
+  ],
+  "finalButtons": [
+    "← ×",
+    "→ ×",
+    "Z ×",
+    "X ×",
+    "↓ ×",
+    "↑ ×",
+    "Escape ×",
+    "A ×",
+    "Space ×",
+    "G ×",
+    "F ×",
+    "R ×"
+  ],
+  "mouseBoardUnchanged": true,
+  "mouseBefore": {
+    "field": {
+      "grid": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "height": 13,
+      "width": 6
+    },
+    "currentPair": {
+      "falling": true,
+      "main": {
+        "color": "red",
+        "x": 2,
+        "y": 1
+      },
+      "rotation": 0,
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      }
+    },
+    "nextPair": {
+      "falling": true,
+      "main": {
+        "color": "green",
+        "x": 2,
+        "y": 1
+      },
+      "rotation": 0,
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      }
+    },
+    "nextNextPair": {
+      "falling": true,
+      "main": {
+        "color": "blue",
+        "x": 2,
+        "y": 1
+      },
+      "rotation": 0,
+      "sub": {
+        "color": "yellow",
+        "x": 2,
+        "y": 0
+      }
+    },
+    "pairRandomState": 123456,
+    "score": 0,
+    "recentTurns": []
+  },
+  "mouseAfter": {
+    "field": {
+      "grid": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "height": 13,
+      "width": 6
+    },
+    "currentPair": {
+      "falling": true,
+      "main": {
+        "color": "red",
+        "x": 2,
+        "y": 1
+      },
+      "rotation": 0,
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      }
+    },
+    "nextPair": {
+      "falling": true,
+      "main": {
+        "color": "green",
+        "x": 2,
+        "y": 1
+      },
+      "rotation": 0,
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      }
+    },
+    "nextNextPair": {
+      "falling": true,
+      "main": {
+        "color": "blue",
+        "x": 2,
+        "y": 1
+      },
+      "rotation": 0,
+      "sub": {
+        "color": "yellow",
+        "x": 2,
+        "y": 0
+      }
+    },
+    "pairRandomState": 123456,
+    "score": 0,
+    "recentTurns": []
+  },
+  "afterKeyboardPlacement": {
+    "field": {
+      "grid": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          "red",
+          "red",
+          null,
+          null,
+          null
+        ]
+      ],
+      "height": 13,
+      "width": 6
+    },
+    "currentPair": {
+      "falling": true,
+      "main": {
+        "color": "green",
+        "x": 2,
+        "y": 1
+      },
+      "rotation": 0,
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      }
+    },
+    "nextPair": {
+      "falling": true,
+      "main": {
+        "color": "blue",
+        "x": 2,
+        "y": 1
+      },
+      "rotation": 0,
+      "sub": {
+        "color": "yellow",
+        "x": 2,
+        "y": 0
+      }
+    },
+    "nextNextPair": {
+      "falling": true,
+      "main": {
+        "color": "green",
+        "x": 2,
+        "y": 1
+      },
+      "rotation": 0,
+      "sub": {
+        "color": "yellow",
+        "x": 2,
+        "y": 0
+      }
+    },
+    "pairRandomState": 3663255082,
+    "score": 0,
+    "recentTurns": [
+      {
+        "chainCount": 0,
+        "clearedPuyos": 0,
+        "pair": {
+          "falling": true,
+          "main": {
+            "color": "red",
+            "x": 1,
+            "y": 12
+          },
+          "rotation": 1,
+          "sub": {
+            "color": "red",
+            "x": 2,
+            "y": 12
+          }
+        },
+        "placement": {
+          "column": 1,
+          "mainPos": {
+            "x": 1,
+            "y": 12
+          },
+          "rotation": 1,
+          "subPos": {
+            "x": 2,
+            "y": 12
+          }
+        },
+        "turn": 1
+      }
+    ]
+  }
+}

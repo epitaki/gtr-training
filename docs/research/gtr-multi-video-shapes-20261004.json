@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "date": "2026-10-04",
+  "source": {
+    "url": "https://www.youtube.com/watch?v=oPlU9B_MpBc&t=335s",
+    "title": "【ぷよ研究】GTR 多重部分のグルーピング研究！",
+    "observedSeconds": 335,
+    "evidence": "multi-video-20261004/grouping-upper-shapes.jpg",
+    "digitMeaning": "同じ数字は同じ色。消去順ではない。",
+    "scope": "表示された3×3の色同一性だけを転記。全連鎖・ツモ・配置順は未転記。"
+  },
+  "derivedCondition": {
+    "provenance": "以下の土台と配色は本プロジェクトで追加した検算条件。原動画の完成譜ではない。",
+    "baseRows": [".....R", "RGYBBR", "RRGYYB", "GGYRRB"],
+    "projectionOrigin": { "x": 0, "y": 7 },
+    "palettePermutations": "数字1〜4にR/G/B/Yを全24通り割当。土台の色は固定。",
+    "pairProbe": "全16色組×24配置で現在1組の合法着地を確認。上部から元土台へ順序通り接続する消去を別集計。",
+    "limitations": [
+      "上3×3だけでは、その上の仕込みや支持・キー待ちを再現できない。",
+      "単ぷよ1〜2個の仮補充は実際の供給や組ぷよの配置順ではない。",
+      "組ぷよの色を任意に選ぶ検算は未知ツモの完成率ではない。",
+      "配置は共通物理の落下列・回転による合法性。実キー操作経路や空盤面からの構築順は未証明。",
+      "安定した色置換の数は人間の試合数や形の優劣を表さない。"
+    ]
+  },
+  "shapes": [
+    { "id": "grouping-rank7", "sourceRank": 7, "digitRows": ["224", "114", "333"] },
+    { "id": "grouping-rank6", "sourceRank": 6, "digitRows": ["444", "133", "222"] },
+    { "id": "grouping-rank5", "sourceRank": 5, "digitRows": ["114", "133", "222"] },
+    { "id": "grouping-rank4", "sourceRank": 4, "digitRows": ["144", "133", "222"] }
+  ],
+  "isCorrectMoveLabel": false
+}

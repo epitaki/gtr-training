@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="ja"><meta charset="utf-8"><title>Puyo joins before and after</title>
+<style>body{margin:0;padding:16px;background:#101320;color:#f4f5ff;font:16px sans-serif}
+img{display:block;width:1920px;max-width:none;image-rendering:pixelated}
+.viewport{overflow:auto;max-height:90vh;border:1px solid #656e87}
+button{margin:0 8px 12px 0;padding:8px 12px}</style>
+<h1>接続部の比較：4色、6形、暗い盤面と明るい盤面</h1>
+<p>各セルは実際の盤面と同じ48px。各組の左が修正前、右が修正後。</p>
+<button onclick="document.querySelector('img').style.width='1920px'">原寸</button>
+<button onclick="document.querySelector('img').style.width='3840px'">2倍</button>
+<div class="viewport"><img src="before-after.png" alt="4色の横、縦、L、2×2、T、十字の接続を修正前後で比較"></div>
+</html>

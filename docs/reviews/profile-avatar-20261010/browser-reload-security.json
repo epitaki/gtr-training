@@ -1,0 +1,16 @@
+{
+  "restoredAfterReload": true,
+  "ownerDownload": true,
+  "mime": "image/webp",
+  "bytes": 2588,
+  "dims": {
+    "width": 256,
+    "height": 256
+  },
+  "wrongOwnerUploadDenied": true,
+  "wrongProfilePathDenied": true,
+  "pngUploadDenied": true,
+  "oversizedUploadDenied": true,
+  "publicReadDenied": true,
+  "alerts": []
+}

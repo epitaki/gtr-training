@@ -1,0 +1,139 @@
+--- before/src/game/scenes/GuidedPracticeScene.ts
++++ after/src/game/scenes/GuidedPracticeScene.ts
+@@ -809,23 +809,24 @@
+     overlay.setDepth(1000)
+     this.resultOverlay = overlay
+ 
+-    const container = this.add.container(canvasW / 2, 40)
++    const container = this.add.container(canvasW / 2, 0)
+     container.setDepth(1001)
+     this.resultContainer = container
+ 
+     // スコア
+-    const score = addResultText(this, 0, 0, `SCORE: ${result.totalScore}点`, {
+-      fontSize: '32px',
++    const score = addResultText(this, 0, Math.round(canvasH * 0.09), `SCORE: ${result.totalScore}点`, {
++      fontSize: '48px',
+       color: '#ffe99b',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+     }).setOrigin(0.5, 0)
+     container.add(score)
+-    const previewTop = score.y + (score.height || 38) + 40
++    const previewTop = Math.round(canvasH * 0.325)
++    const previewX = -Math.round(canvasW / 4)
+ 
+     // GTRフィールド表示
+     const grid = this.gameField.getField().grid
+     const preview = createGTRChainPreview(grid)
+-    const renderPreview = this.displayGTRField(container, -180, previewTop)
++    const renderPreview = this.displayGTRField(container, previewX, previewTop)
+     renderPreview?.({ grid: preview.initialGrid, fading: [], alpha: 1,
+       chainIndex: null, starterPosition: preview.starter, phase: 'initial' })
+ 
+@@ -845,34 +846,34 @@
+       const icon = check.checked ? '○' : '×'
+       const color = check.checked ? '#91ecc2' : '#ff9aa5'
+       const text = addResultText(this, xOffset, yOffset, `${icon} ${check.label}`, {
+-        fontSize: '16px',
++        fontSize: '24px',
+         color: color,
+         fontFamily: TEXT_STYLES.title.fontFamily,
+-        wordWrap: { width: 300, useAdvancedWrap: true },
++        wordWrap: { width: 330, useAdvancedWrap: true },
+       })
+       container.add(text)
+-      yOffset += (text.height || 20) + 8
++      yOffset += (text.height || 28) + 16
+     })
+ 
+-    const playbackStatus = addResultText(this, -180, previewTop + 160,
+-      preview.unavailableReason ?? '仮想発火：再生待ち', {
+-        fontSize: '16px', color: '#d7c8ff', fontFamily: TEXT_STYLES.title.fontFamily,
+-      wordWrap: { width: 300, useAdvancedWrap: true },
++    const playbackStatus = addResultText(this, previewX, previewTop + 4 * 48 + 24,
++      preview.unavailableReason ?? '仮発火：再生待ち', {
++        fontSize: '24px', color: '#d7c8ff', fontFamily: TEXT_STYLES.title.fontFamily,
++      wordWrap: { width: 330, useAdvancedWrap: true },
+       }).setOrigin(0.5, 0)
+     container.add(playbackStatus)
+-    const replayTop = playbackStatus.y + (playbackStatus.height || 20) + 8
++    const replayTop = playbackStatus.y + (playbackStatus.height || 28) + 16
+     if (preview.trace) {
+       this.resultPlayback = new ResultChainPlayback(preview.trace, {
+         frame: frame => {
+           renderPreview?.(frame)
+           playbackStatus.setText?.(frame.phase === 'complete'
+-            ? `仮想発火：${preview.trace!.result.chainCount}連鎖 終了`
+-            : frame.chainIndex === null ? '仮想発火：再生待ち'
+-              : `仮想発火：${frame.chainIndex}連鎖目`)
++            ? `仮発火：${preview.trace!.result.chainCount}連鎖 終了`
++            : frame.chainIndex === null ? '仮発火：再生待ち'
++              : `仮発火：${frame.chainIndex}連鎖目`)
+         },
+       }, preview.trace.initial.ids[preview.starter!.y][preview.starter!.x] ?? undefined)
+-      const replayButton = addResultText(this, -180, replayTop, 'もう一度', {
+-        fontSize: '16px', color: '#e8dcff', backgroundColor: '#40366f',
++      const replayButton = addResultText(this, previewX, replayTop, 'もう一度', {
++        fontSize: '24px', color: '#e8dcff', backgroundColor: '#40366f',
+         padding: { x: 12, y: 12 }, fontFamily: TEXT_STYLES.title.fontFamily,
+       }).setOrigin(0.5, 0)
+       replayButton.setInteractive?.({ useHandCursor: true })
+@@ -882,15 +883,15 @@
+       container.add(replayButton)
+     }
+ 
+-    const scopeNote = addResultText(this, 0, Math.max(yOffset, replayTop + 48) + 24, '点数は評価範囲のみで評価', {
++    const scopeNote = addResultText(this, 0, canvasH - 176, '点数は評価範囲のみで評価', {
+       fontSize: '16px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily,
+       wordWrap: { width: canvasW - 80, useAdvancedWrap: true }, align: 'center',
+     }).setOrigin(0.5, 0)
+     container.add(scopeNote)
+ 
+     // 操作説明
+-    const instruction = addResultText(this, 0, scopeNote.y + (scopeNote.height || 20) + 16, 'Spaceキーで新しいゲームを開始\nEscキーでメニューに戻る', {
+-      fontSize: '16px',
++    const instruction = addResultText(this, 0, canvasH - 112, 'Space 新しいゲーム\nEsc ホーム', {
++      fontSize: '24px',
+       color: '#c4bfd3',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+       align: 'center', wordWrap: { width: canvasW - 80, useAdvancedWrap: true },
+@@ -903,7 +904,7 @@
+   private displayGTRField(
+     container: Phaser.GameObjects.Container, offsetX: number, offsetY: number,
+   ): (frame: ResultChainFrame) => void {
+-    const cellSize = 36
++    const cellSize = 48
+ 
+     const minRow = 9
+     const maxRow = 12
+@@ -923,8 +924,8 @@
+     const activeLayer = this.add.container(0, 0)
+     container.add(activeLayer)
+ 
+-    const label = addResultText(this, offsetX, offsetY - 20, 'GTR評価範囲', {
+-      fontSize: '16px',
++    const label = addResultText(this, offsetX, offsetY - 36, 'GTR評価範囲', {
++      fontSize: '24px',
+       color: '#c4bfd3',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+     }).setOrigin(0.5)
+--- before/src/game/scenes/GuidedPracticeScene.test.ts
++++ after/src/game/scenes/GuidedPracticeScene.test.ts
+@@ -910,7 +910,7 @@
+     expect(addSprite).toHaveBeenCalledTimes(2)
+     expect(addSprite.mock.calls.map(call => call[3])).toEqual(['red/mini12', 'green/mini12'])
+     expect(rectangle.setFillStyle).toHaveBeenCalledWith(0, 0)
+-    expect(addRectangle.mock.calls[1].slice(0, 2)).toEqual([-270, 110])
++    expect(addRectangle.mock.calls[1].slice(0, 2)).toEqual([-300, 116])
+ 
+     const settled = structuredClone(grid)
+     settled[9][0] = null
+@@ -918,7 +918,7 @@
+     settled[11][0] = PuyoColor.RED
+     render({ grid: settled, fading: [{ x: 0, y: 10 }], alpha: 0.5,
+       chainIndex: 1, starterPosition: { x: 0, y: 10 }, phase: 'fade' })
+-    expect(addRectangle.mock.calls[2].slice(0, 2)).toEqual([-270, 146])
++    expect(addRectangle.mock.calls[2].slice(0, 2)).toEqual([-300, 164])
+     render({ grid: settled, fading: [], alpha: 1,
+       chainIndex: 1, starterPosition: null, phase: 'gap' })
+     expect(addRectangle).toHaveBeenCalledTimes(3) // background plus two tracked markers

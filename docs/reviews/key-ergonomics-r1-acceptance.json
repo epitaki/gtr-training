@@ -1,0 +1,27 @@
+{
+  "round": 1,
+  "snapshot": "15dfa84ab169ec743ffcc8c71142978f6c940e7c7b756734df228e017a95ad8b",
+  "reviewer": "gpt-6-astra / key_ergonomics_design",
+  "accepted": true,
+  "requiredFixes": [],
+  "rejectedCandidates": [],
+  "scope": "All 8 changed files, storage/input/both scene source, design, tests, and 3 independent Sol reviews read. 197 hashes and exact baseline scope confirmed at completion.",
+  "validation": {
+    "focusedTests": 124,
+    "fullTests": 1262,
+    "testFiles": 90,
+    "typeCheck": "pass",
+    "build": "pass (7.32s), pre-existing >500kB warning",
+    "hardware": "Finger placement, physical NumLock, real OS IME, touchcancel not verified"
+  },
+  "assumption": "Space/E and A/U adopted after optional preference question received no answer, with assumption explicitly told to user; not described as user-confirmed key choice.",
+  "contracts": [
+    "A/U rewind; Space/E evaluate; U/E remain visible editable bindings",
+    "Valid v1 saved data unchanged; no implicit migration",
+    "Explicit button changes only two draft actions; ordinary save/cancel",
+    "Presets change basic seven only; official Space conflict displayed and save rejected",
+    "Real scene evaluation gates inputs; new Space after keyup handles result",
+    "No score-mode rewind; protected scoring/advisor/physics/RNG/supply unchanged"
+  ],
+  "completion": "Parent to update docs and Habitica added checklist only; leave deferred mouse and main task incomplete."
+}

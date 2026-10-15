@@ -1,0 +1,21 @@
+{
+  "primaryWorktreeServer": true,
+  "cloudMode": true,
+  "githubSessionKeptAfterRestart": true,
+  "profileSettingsVisible": true,
+  "profileViewport360": {
+    "left": 16,
+    "right": 344,
+    "top": 80,
+    "bottom": 504.8,
+    "overflow": false
+  },
+  "profileViewport1280": {
+    "left": 872,
+    "right": 1256,
+    "top": 80,
+    "bottom": 504.8,
+    "overflow": false
+  },
+  "browserAlerts": []
+}

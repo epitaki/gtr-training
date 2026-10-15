@@ -1,0 +1,19 @@
+{
+  "desktop": {
+    "width": 1280,
+    "panelLeft": 872,
+    "panelTop": 80,
+    "panelRight": 1256,
+    "overflow": false
+  },
+  "mobile": {
+    "width": 360,
+    "panelLeft": 16,
+    "panelTop": 80,
+    "panelRight": 344,
+    "overflow": false
+  },
+  "escapeClosed": true,
+  "focusReturnedToAccount": true,
+  "ariaExpandedWhileOpen": true
+}

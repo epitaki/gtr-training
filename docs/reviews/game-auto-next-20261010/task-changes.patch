@@ -1,0 +1,473 @@
+--- src/components/game/ScoreAttackGame.tsx (before)
++++ src/components/game/ScoreAttackGame.tsx (after)
+@@ -77,12 +77,11 @@
+   return (
+     <div className="min-h-[calc(100vh-8rem)] rounded-none bg-[#171426] p-3 shadow-pixel sm:p-4">
+       <div className={progress.finished ? 'hidden' : ''}>
+-        <p className="mx-auto mb-3 max-w-[640px] text-[#ffe99b]">GTR {Math.min(progress.rounds.length + 1, SCORE_ATTACK_ROUNDS)} / {SCORE_ATTACK_ROUNDS}</p>
+-        <p className="mx-auto mb-4 max-w-[640px] text-sm text-[#c4bfd3]">評価キーで採点して次へ。10回分の合計を競います。</p>
+-        <div className="mx-auto mb-2 flex max-w-[640px] flex-wrap justify-end gap-2">
+-          <button type="button" onClick={() => pressToolbarAction(gameManagerRef.current, 'pause', 'button:pause', focusGameSurface)} className="rounded-none bg-[#211d33] px-3 py-2 text-white">停止／再開</button>
+-          <button type="button" onClick={() => setSettingsOpen(true)} className="rounded-none bg-[#b5a8ff] px-3 py-2 text-[#0c0a14]">キー設定</button>
+-          <button type="button" onClick={() => { gameManagerRef.current?.pressAction('exit', 'button:exit'); gameManagerRef.current?.releaseAction('button:exit') }} className="rounded-none bg-rose-800 px-3 py-2 text-white">終了</button>
++        <div className="mx-auto mb-3 flex min-h-[44px] max-w-[640px] flex-wrap items-center justify-end gap-1 text-sm sm:gap-2">
++          <p className="mr-auto whitespace-nowrap text-[#ffe99b]">GTR {Math.min(progress.rounds.length + 1, SCORE_ATTACK_ROUNDS)} / {SCORE_ATTACK_ROUNDS}</p>
++          <button type="button" onClick={() => pressToolbarAction(gameManagerRef.current, 'pause', 'button:pause', focusGameSurface)} className="rounded-none bg-[#211d33] px-2 py-2 sm:px-3 text-white">停止／再開</button>
++          <button type="button" onClick={() => setSettingsOpen(true)} className="rounded-none bg-[#b5a8ff] px-2 py-2 sm:px-3 text-[#0c0a14]">キー設定</button>
++          <button type="button" onClick={() => { gameManagerRef.current?.pressAction('exit', 'button:exit'); gameManagerRef.current?.releaseAction('button:exit') }} className="rounded-none bg-rose-800 px-2 py-2 sm:px-3 text-white">終了</button>
+         </div>
+         {settingsNotice && <p role="status" className="mx-auto max-w-[640px] text-[#ffe99b]">{settingsNotice}</p>}
+         <div className="canvas-scroll">
+--- src/game/scenes/ChainAnimationScenes.test.ts (before)
++++ src/game/scenes/ChainAnimationScenes.test.ts (after)
+@@ -462,8 +462,9 @@
+     expect(scene.pairRandom.getState()).toBe(committedRandom)
+   })
+ 
+-  it('keeps terminal history and turn record when the game-over display fails once', () => {
++  it('commits terminal history despite a guide display failure, then starts a clean game', () => {
+     const scene = prepare(new GuidedPracticeScene() as any)
++    scene.isGravityEnabled = false
+     scene.clearGhostSprites = vi.fn()
+     scene.updateGuideState = vi.fn()
+     scene.updateAdvice = vi.fn()
+@@ -472,7 +473,7 @@
+     scene.captureTurnStart()
+     scene.gameHistory.saveState(scene.gameState)
+     const beforeRandom = scene.pairRandom.getState()
+-    scene.showGameOver = vi.fn().mockImplementationOnce(() => { throw new Error('game-over display failed') })
++    scene.updateGuide = vi.fn().mockImplementationOnce(() => { throw new Error('guide display failed') })
+     vi.spyOn(console, 'error').mockImplementation(() => {})
+     scene.landCurrentPair()
+     finish(scene)
+@@ -481,9 +482,20 @@
+     expect(scene.turnHistory).toHaveLength(1)
+     expect(scene.gameField.getField().grid[0][2]).not.toBe(null)
+     expect(scene.pairRandom.getState()).toBe(beforeRandom)
++    expect(scene.showGameOver).not.toHaveBeenCalled()
++    scene.actionInput.pressPhysical('ArrowLeft')
+     scene.update(10000, 50)
+-    expect(scene.gameHistory.getHistoryLength()).toBe(2)
+-    expect(scene.turnHistory).toHaveLength(1)
++    expect(scene.gameState.gameOver).toBe(false)
++    expect(scene.gameField.getField().grid.flat().every((cell: unknown) => cell === null)).toBe(true)
++    expect(scene.gameHistory.getHistoryLength()).toBe(1)
++    expect(scene.turnHistory).toHaveLength(0)
++    expect(scene.guideManager.getGuideContent().comment).toMatch(/最初|同じ色/)
++    expect(scene.actionInput.isGated()).toBe(true)
++    const newPair = structuredClone(scene.gameState.currentPair)
++    scene.update(10001, 16)
++    expect(scene.gameState.currentPair).toEqual(newPair)
++    scene.actionInput.releasePhysical('ArrowLeft')
++    expect(scene.actionInput.isGated()).toBe(false)
+   })
+ 
+   it('does not re-supply after a post-supply guide display error', () => {
+@@ -1173,6 +1185,63 @@
+     expect(scene.gameState.gameOver).toBe(false)
+   })
+ 
++  it('automatically submits the committed terminal board and steps after animation, suppressing held input', () => {
++    const { scene, onRound } = makeScene()
++    for (let y = 0; y < 13; y++) scene.gameField.getField().grid[y][2] = y % 2 ? PuyoColor.RED : PuyoColor.BLUE
++    scene.landCurrentPair()
++    expect(onRound).not.toHaveBeenCalled()
++    finish(scene)
++    expect(onRound).not.toHaveBeenCalled()
++    expect(scene.gameState.gameOver).toBe(true)
++    expect(scene.showGameOver).not.toHaveBeenCalled()
++    const board = structuredClone(scene.gameField.getField().grid)
++    const moves = scene.placedMoves
++    expect(moves).toHaveLength(3)
++    scene.actionInput.pressPhysical('ArrowLeft')
++    scene.update(10000, 16)
++    expect(onRound).toHaveBeenCalledOnce()
++    expect(onRound.mock.lastCall![0]).toMatchObject({ grid: board, moves })
++    expect(scene.gameState.gameOver).toBe(false)
++    expect(scene.placedMoves).toBe('')
++    expect(scene.gameField.getField().grid.flat().every((cell: unknown) => cell === null)).toBe(true)
++    expect(scene.actionInput.isGated()).toBe(true)
++    const nextPair = structuredClone(scene.gameState.currentPair)
++    scene.update(10001, 16)
++    expect(scene.gameState.currentPair).toEqual(nextPair)
++    expect(onRound).toHaveBeenCalledOnce()
++    scene.actionInput.releasePhysical('ArrowLeft')
++    expect(scene.actionInput.isGated()).toBe(false)
++  })
++
++  it('automatically submits ten terminal rounds and shows results without starting an eleventh', () => {
++    const { scene, onRound } = makeScene()
++    const supplier = vi.spyOn(PuyoPairManager, 'createValidTwoHandCombination')
++    for (let i = 0; i < 10; i++) {
++      const board = field()
++      board.grid[0][2] = PuyoColor.BLUE
++      scene.gameField.setField(board)
++      scene.spawnNextPair()
++      scene.update(500 + i, 16)
++      expect(onRound).toHaveBeenCalledTimes(i + 1)
++      expect(onRound.mock.lastCall![0].grid[0][2]).toBe(PuyoColor.BLUE)
++    }
++    expect(scene.isShowingResult).toBe(true)
++    expect(supplier).toHaveBeenCalledTimes(9)
++    scene.update(1000, 16)
++    expect(onRound).toHaveBeenCalledTimes(10)
++    expect(supplier).toHaveBeenCalledTimes(9)
++  })
++
++  it.each(['isPaused', 'isDisposed', 'isVisualStopped', 'hidden'])('does not auto-submit the terminal board while %s', state => {
++    const { scene, onRound } = makeScene()
++    scene.gameState.gameOver = true
++    if (state === 'hidden') (document as unknown as { hidden: boolean }).hidden = true
++    else scene[state] = true
++    scene.update(501, 16)
++    expect(onRound).not.toHaveBeenCalled()
++    expect(scene.gameState.gameOver).toBe(true)
++  })
++
+   it('rejects evaluation while paused, resolving a chain, hidden or disposed', () => {
+     const { scene, onRound } = makeScene()
+     const board = structuredClone(scene.gameField.getField())
+--- src/game/scenes/GuidedPracticeScene.test.ts (before)
++++ src/game/scenes/GuidedPracticeScene.test.ts (after)
+@@ -429,11 +429,10 @@
+     expect(fallback).not.toHaveBeenCalled()
+   })
+ 
+-  it('updates pause and game-over shortcuts without rebuilding examples or recommendations', () => {
++  it('updates pause shortcuts without rebuilding examples or recommendations', () => {
+     vi.stubGlobal('localStorage', { setItem: vi.fn() })
+     const previous = structuredClone(getBindings())
+     const scene = new GuidedPracticeScene() as unknown as {
+-      gameOverHelpText: { setText: ReturnType<typeof vi.fn> }
+       pauseText: { setText: ReturnType<typeof vi.fn> }
+       isPaused: boolean
+       isShowingResult: boolean
+@@ -449,7 +448,6 @@
+     scene.currentAdvice = advice
+     scene.gameState = { field, pairRandomState: 1234 }
+     scene.turnHistory = [{ turn: 1 }]
+-    scene.gameOverHelpText = { setText: vi.fn() }
+     scene.pauseText = { setText: vi.fn() }
+     scene.isPaused = true
+     scene.isShowingResult = false
+@@ -463,7 +461,6 @@
+       changed.evaluate = ['KeyQ']
+       changed.pause = ['KeyP']
+       saveBindings(changed)
+-      expect(scene.gameOverHelpText.setText).toHaveBeenCalledWith(expect.stringContaining('T'))
+       expect(scene.pauseText.setText).toHaveBeenCalledWith(expect.stringContaining('P'))
+       expect(scene.currentAdvice).toBe(advice)
+       expect({ field: scene.gameState.field, history: scene.turnHistory, random: scene.gameState.pairRandomState }).toEqual(before)
+@@ -774,7 +771,7 @@
+     expect(scene.actionInput.isGated()).toBe(false)
+   })
+ 
+-  it('saves the terminal state so game-over rewind returns exactly one turn', () => {
++  it('records the terminal state without drawing a game-over overlay', () => {
+     const scene = createHarness()
+     const terminalField = { width: 6, height: 13, grid: [] }
+     const saveState = vi.fn()
+@@ -790,7 +787,7 @@
+     expect(scene.gameState.field).toBe(terminalField)
+     expect(scene.gameState.pairRandomState).toBe(987)
+     expect(saveState).toHaveBeenCalledOnce()
+-    expect(scene.showGameOver).toHaveBeenCalledOnce()
++    expect(scene.showGameOver).not.toHaveBeenCalled()
+   })
+ 
+   it('routes result input to the result action without moving the board', () => {
+@@ -1064,15 +1061,33 @@
+     expect(scene.getReportAdvice()).toBeNull()
+   })
+ 
+-  it('allows rewind, but not normal controls, on the game-over screen', () => {
+-    const scene = createHarness()
+-    scene.isShowingResult = false
++  it('automatically starts a new game instead of waiting for game-over rewind', () => {
++    const scene = createHarness() as SceneHarness & { resetGame: ReturnType<typeof vi.fn>; startGame: ReturnType<typeof vi.fn> }
+     scene.gameState = { gameOver: true, field: {} }
+     scene.rewind = vi.fn()
++    scene.resetGame = vi.fn(() => { scene.gameState.gameOver = false })
++    scene.startGame = vi.fn()
++    scene.handleInput = vi.fn()
++    scene.updateFalling = vi.fn()
++    scene.updateDisplay = vi.fn()
+     scene.actionInput.press('rewind', 'key:KeyU')
+-
+     scene.update(501)
+-
+-    expect(scene.rewind).toHaveBeenCalledOnce()
++    expect(scene.rewind).not.toHaveBeenCalled()
++    expect(scene.resetGame).toHaveBeenCalledOnce()
++    expect(scene.startGame).toHaveBeenCalledOnce()
++    expect(scene.handleInput).not.toHaveBeenCalled()
++  })
++
++  it.each(['isPaused', 'isReportPanelOpen', 'isReplayInspection', 'isDisposed', 'isVisualStopped', 'hidden'])('holds the terminal board while %s', state => {
++    const scene = createHarness() as SceneHarness & { resetGame: ReturnType<typeof vi.fn>; startGame: ReturnType<typeof vi.fn> }
++    scene.gameState = { gameOver: true, field: {} }
++    scene.resetGame = vi.fn()
++    scene.startGame = vi.fn()
++    if (state === 'hidden') vi.stubGlobal('document', { hidden: true })
++    else Object.assign(scene, { [state]: true })
++    scene.update(501)
++    expect(scene.resetGame).not.toHaveBeenCalled()
++    expect(scene.startGame).not.toHaveBeenCalled()
++    expect(scene.gameState.gameOver).toBe(true)
+   })
+ })
+--- src/game/scenes/GuidedPracticeScene.ts (before)
++++ src/game/scenes/GuidedPracticeScene.ts (after)
+@@ -111,8 +111,6 @@
+   private pauseText?: Phaser.GameObjects.Text
+   private gravityStatusText?: Phaser.GameObjects.Text
+   private advisorStatusText?: Phaser.GameObjects.Text
+-  private gameOverDisplay?: Phaser.GameObjects.Container
+-  private gameOverHelpText?: Phaser.GameObjects.Text
+   private resultOverlay?: Phaser.GameObjects.Rectangle
+   private resultContainer?: Phaser.GameObjects.Container
+   private resultPlayback?: ResultChainPlayback
+@@ -323,8 +321,15 @@
+       return
+     }
+     if (this.isPaused) return
+-    if (this.isVisualStopped || this.gameState.gameOver) {
++    if (this.isVisualStopped) {
+       if (actions.has('rewind')) this.rewind()
++      return
++    }
++    if (this.gameState.gameOver) {
++      if (!this.isDisposed && !document.hidden) {
++        this.resetGame()
++        this.startGame()
++      }
+       return
+     }
+     if (actions.has('gravity')) { this.toggleGravity(); return }
+@@ -358,16 +363,11 @@
+   private handleWindowBlur = () => { this.actionInput?.releaseAll() }
+ 
+   private refreshBindingLabels(): void {
+-    this.gameOverHelpText?.setText(this.gameOverLabel())
+     if (this.isPaused && !this.isShowingResult) this.pauseText?.setText(this.pauseLabel())
+   }
+   private pauseLabel(): string {
+     return `ポーズ中\n${actionKeys(getBindings(), 'pause')}で再開\n設定・終了は画面のボタンから`
+   }
+-  private gameOverLabel(): string {
+-    return `${actionKeys(getBindings(), 'rewind')} 巻き戻す  /  Esc 戻る`
+-  }
+-
+   private handleVisibilityChange = () => {
+     if (document.hidden) { this.chainPlayback?.pause('hidden'); this.handleWindowBlur() }
+     else { this.chainPlayback?.resume('hidden'); this.lastFallTime = this.time.now; this.suppressHeldInputUntilRelease() }
+@@ -509,9 +509,6 @@
+     if (this.chainPlayback) { this.cancelPendingTurn(); return }
+     const previousState = this.gameHistory.rewind()
+     if (previousState) {
+-      this.gameOverDisplay?.destroy(true)
+-      this.gameOverDisplay = undefined
+-      this.gameOverHelpText = undefined
+       this.gameState.gameOver = false
+       this.gameField.setField(previousState.field)
+       this.gameState.field = this.gameField.getField()
+@@ -657,7 +654,6 @@
+       if (result.chainCount > 0) this.playScorePopup(
+         this.FIELD_X + 3 * this.CELL_SIZE, this.FIELD_Y + 2 * this.CELL_SIZE,
+         `${result.chainCount}連鎖! +${result.clearedPuyos * 10}`)
+-      if (terminal) this.showGameOver()
+     } catch (error) {
+       this.recoverCommittedDisplay(error)
+     } finally {
+@@ -678,7 +674,6 @@
+       this.updateGuideState()
+       this.updateAdvice()
+       this.updateGuide()
+-      if (this.gameState.gameOver) this.showGameOver()
+     } catch (recoveryError) {
+       console.error('盤面表示の復旧に失敗しました', recoveryError)
+       this.isVisualStopped = true
+@@ -771,7 +766,6 @@
+       this.gameState.field = this.gameField.getField()
+       this.gameState.pairRandomState = this.pairRandom.getState()
+       this.gameHistory.saveState(this.gameState)
+-      if (showVisuals) this.showGameOver()
+       return
+     }
+ 
+@@ -1006,44 +1000,10 @@
+     this.resultContainer = undefined
+   }
+ 
+-  private showGameOver() {
+-    const canvasW = LAYOUT_GUIDED.CANVAS_WIDTH
+-    const canvasH = LAYOUT_GUIDED.CANVAS_HEIGHT
+-
+-    this.gameOverDisplay?.destroy(true)
+-    this.gameOverDisplay = this.add.container(0, 0)
+-    const bg = this.add.rectangle(canvasW / 2, canvasH / 2, 400, 200, 0x0a0a1a, 0.92)
+-    bg.setStrokeStyle(2, 0x4444aa)
+-    this.gameOverDisplay.add(bg)
+-
+-    const title = addUIText(this, canvasW / 2, canvasH / 2 - 28, 'Game Over', {
+-      fontSize: '32px',
+-      color: '#ff9aa5',
+-      fontFamily: TEXT_STYLES.title.fontFamily,
+-    }).setOrigin(0.5)
+-    this.gameOverDisplay.add(title)
+-
+-    const score = addUIText(this, canvasW / 2, canvasH / 2 + 14, `スコア: ${this.gameState.score}`, {
+-      fontSize: '18px',
+-      color: '#f6f2ff',
+-      fontFamily: TEXT_STYLES.title.fontFamily,
+-    }).setOrigin(0.5)
+-    this.gameOverDisplay.add(score)
+-    const help = addUIText(this, canvasW / 2, canvasH / 2 + 55, this.gameOverLabel(), {
+-      fontSize: '14px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily
+-    }).setOrigin(0.5)
+-    this.gameOverHelpText = help
+-    this.gameOverDisplay.add(help)
+-    this.gameOverDisplay.setDepth(900)
+-  }
+-
+   private resetGame() {
+     this.cleanupResult()
+     this.cancelChain()
+     this.isVisualStopped = false
+-    this.gameOverDisplay?.destroy(true)
+-    this.gameOverDisplay = undefined
+-    this.gameOverHelpText = undefined
+     this.gameField.clear()
+     this.clearGhostSprites()
+     this.clearAllSprites()
+@@ -1080,9 +1040,7 @@
+     this.updateAdvice()
+     this.updateGuide()
+     this.updateDisplay()
+-    if (this.gameState.gameOver) {
+-      this.showGameOver()
+-    } else if (restoreResult) {
++    if (restoreResult && !this.gameState.gameOver) {
+       const field = this.gameField.getField()
+       this.showDetailedResult(
+         GTRDetector.detectGTR(field.grid),
+--- src/game/scenes/PuyoGame.ts (before)
++++ src/game/scenes/PuyoGame.ts (after)
+@@ -37,7 +37,6 @@
+   private pauseText?: Phaser.GameObjects.Text
+   private submittedRounds = 0
+   private instructionText?: Phaser.GameObjects.Text
+-  private gameOverHelpText?: Phaser.GameObjects.Text
+ 
+   public pressAction(action: GameAction, source: string): void {
+     if (this.canAcceptAction(action)) this.actionInput?.press(action, source)
+@@ -209,7 +208,6 @@
+     const stopInstructions = subscribeBindings(() => {
+       this.instructionText?.setText(this.instructionLabel())
+       this.gtrScoreText?.setText(`${actionKeys(getBindings(), 'evaluate')}で次へ`)
+-      this.gameOverHelpText?.setText(this.gameOverLabel())
+       if (this.isPaused) this.pauseText?.setText(this.pauseLabel())
+     })
+ 
+@@ -239,13 +237,10 @@
+ 
+   private handleWindowBlur = () => { this.actionInput?.releaseAll() }
+   private instructionLabel(): string {
+-    return '操作キーは画面下の一覧を確認'
++    return '操作キーはキー設定で確認'
+   }
+   private pauseLabel(): string {
+     return `ポーズ中\n${actionKeys(getBindings(), 'pause')}で再開\n設定・終了は画面のボタンから`
+-  }
+-  private gameOverLabel(): string {
+-    return `${actionKeys(getBindings(), 'evaluate')}: 採点して次へ  /  Esc: 終了`
+   }
+   private handleVisibilityChange = () => {
+     if (document.hidden) { this.chainPlayback?.pause('hidden'); this.actionInput?.releaseAll() }
+@@ -274,11 +269,11 @@
+       return
+     }
+     if (this.isVisualStopped) return
++    if (this.gameState.gameOver) {
++      if (!document.hidden) this.evaluateAndReset()
++      return
++    }
+     if (actions.has('gravity')) { this.toggleGravity(); return }
+-    if (this.gameState.gameOver) {
+-      if (actions.has('evaluate')) this.evaluateAndReset()
+-      return
+-    }
+     if (actions.has('evaluate')) { this.evaluateAndReset(); this.actionInput?.suppressUntilRelease(); return }
+     if (actions.has('quickDrop')) { this.quickDrop(); return }
+     this.handleInput(actions)
+@@ -411,7 +406,6 @@
+         this.updateGTRDisplay(gtrResult)
+         this.showGTREffect()
+       }
+-      if (terminal) this.showGameOver()
+     } catch (error) {
+       this.recoverCommittedDisplay(error, gtrResult)
+     }
+@@ -423,7 +417,6 @@
+       this.rebuildFieldSprites()
+       this.updateDisplay()
+       if (gtrResult.isGTR) this.updateGTRDisplay(gtrResult)
+-      if (this.gameState.gameOver) this.showGameOver()
+     } catch (recoveryError) {
+       console.error('盤面表示の復旧に失敗しました', recoveryError)
+       this.isVisualStopped = true
+@@ -556,10 +549,9 @@
+     }
+   }
+ 
+-  private spawnNextPair(showVisuals = true, suppliedPair?: PuyoPair) {
++  private spawnNextPair(_showVisuals = true, suppliedPair?: PuyoPair) {
+     if (this.gameField.isGameOver()) {
+       this.gameState.gameOver = true
+-      if (showVisuals) this.showGameOver()
+       return
+     }
+ 
+@@ -569,31 +561,6 @@
+     this.gameState.nextPair = this.gameState.nextNextPair
+     this.gameState.nextNextPair = nextPair
+     this.captureTurnStartPair()
+-  }
+-
+-  private showGameOver() {
+-    const centerX = LAYOUT_SCORE_ATTACK.CANVAS_WIDTH / 2
+-    const centerY = LAYOUT_SCORE_ATTACK.CANVAS_HEIGHT / 2
+-
+-    const bg = this.add.rectangle(centerX, centerY, 400, 200, 0x0a0a1a, 0.92)
+-    bg.setStrokeStyle(2, 0x6f648d)
+-    bg.setDepth(1000)
+-
+-    addUIText(this, centerX, centerY - 30, 'Game Over', {
+-      fontSize: '32px',
+-      color: '#ff9aa5',
+-      fontFamily: TEXT_STYLES.title.fontFamily,
+-    }).setOrigin(0.5).setDepth(1001)
+-
+-    addUIText(this, centerX, centerY + 8, `スコア: ${this.gameState.score}`, {
+-      fontSize: '20px',
+-      color: '#f6f2ff',
+-      fontFamily: TEXT_STYLES.title.fontFamily,
+-    }).setOrigin(0.5).setDepth(1001)
+-
+-    this.gameOverHelpText = addUIText(this, centerX, centerY + 52, this.gameOverLabel(), {
+-      fontSize: '14px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily
+-    }).setOrigin(0.5).setDepth(1001)
+   }
+ 
+   private startGame() {
+@@ -712,10 +679,6 @@
+   private resetGame() {
+     this.cancelChain()
+     this.isVisualStopped = false
+-    this.gameOverHelpText = undefined
+-    this.children.getAll()
+-      .filter(child => (child as Phaser.GameObjects.GameObject & { depth?: number }).depth !== undefined && (child as Phaser.GameObjects.GameObject & { depth: number }).depth >= 1000)
+-      .forEach(child => child.destroy())
+     this.gameField.clear()
+     this.placedMoves = ''
+     this.clearAllSprites()

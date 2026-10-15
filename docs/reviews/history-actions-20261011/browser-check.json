@@ -1,0 +1,31 @@
+{
+  "preparation": {
+    "paused": true,
+    "headingFocused": true,
+    "headerReturnAbsent": true,
+    "savedListPresent": true
+  },
+  "desktop": {
+    "tenRounds": true,
+    "restartAbsent": true,
+    "returnAbsent": true,
+    "historyReturnPresent": true,
+    "noHorizontalOverflow": true
+  },
+  "details": {
+    "detailOpen": true,
+    "detailClosed": true,
+    "listRestored": true,
+    "sameCanvas": true,
+    "resumed": true
+  },
+  "mobile": {
+    "tenRounds": true,
+    "restartAbsent": true,
+    "returnAbsent": true,
+    "historyReturnPresent": true,
+    "noHorizontalOverflow": true
+  },
+  "exceptions": 0,
+  "historyWrites": 0
+}

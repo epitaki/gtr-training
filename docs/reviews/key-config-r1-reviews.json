@@ -1,0 +1,85 @@
+{
+  "snapshot": "20d78ccc3ab945a906a72168853e2e4f12b9c260098d77500e1695263b7a9b36",
+  "allThreeCompleted": true,
+  "reviews": [
+    {
+      "reviewer": "key_config_r1_review_1",
+      "model": "gpt-6-sol",
+      "snapshot": "20d78ccc3ab945a906a72168853e2e4f12b9c260098d77500e1695263b7a9b36",
+      "complete": true,
+      "scope": "変更21ファイルと周辺呼び出し元・テストを確認。21ファイルのハッシュ一致。",
+      "findings": [
+        {
+          "severity": "P2",
+          "title": "Ctrlを押したまま他の操作ができない",
+          "location": "src/game/input/PhaserInputAdapter.ts:19",
+          "body": "Ctrlキー自身以外のkeydownをすべて破棄。おすすめCtrl高速落下中の左右移動、オフィシャルCtrl左回転後Spaceクイックドロップが不可。仕様が除外するのはCtrl修飾付き文字入力。文字キーのみ除外、矢印・Space等を通す。KeyboardEventでCtrl+矢印、Ctrl+Space、Ctrl+文字を回帰テスト。"
+        },
+        {
+          "severity": "P2",
+          "title": "完成形一覧から戻るとキーボード操作を再開できない",
+          "locations": [
+            "src/components/game/GuidedGame.tsx:43",
+            "src/components/game/ScoreAttackGame.tsx:20",
+            "src/App.tsx:138"
+          ],
+          "body": "停止解除後canvas focusを戻さず、Appのhidden後canvas focus必須のadapterに届かない。再クリックまで無反応。両モード復帰後に表示済みcanvas focusを戻し、最初のキー入力が届く回帰テスト。"
+        }
+      ],
+      "limitations": "静的読取りのみ、テスト/ブラウザー未実行。実機NumLock/IME/タッチ取消未確認。"
+    },
+    {
+      "reviewer": "key_config_r1_review_2",
+      "model": "gpt-6-sol",
+      "snapshot": "20d78ccc3ab945a906a72168853e2e4f12b9c260098d77500e1695263b7a9b36",
+      "complete": true,
+      "scope": "固定21ファイルのハッシュ一致。変更全体、App・メニュー・着地処理・関連テストを読取り確認。",
+      "findings": [
+        {
+          "severity": "P2",
+          "title": "画面復帰後にキーボードの焦点が復帰しない",
+          "locations": [
+            "src/game/input/PhaserInputAdapter.ts:46",
+            "src/components/game/ScoreAttackGame.tsx:20",
+            "src/App.tsx:138",
+            "src/components/game/GuidedGame.tsx:153"
+          ],
+          "body": "一覧でゲーム面がhidden/inertになった後の復帰は再開のみでcanvas focusを戻さない。停止/再開ボタンもクリックするとボタンにfocusが残る。canvas再クリックまで一覧復帰直後の操作/ボタン停止後Esc/F1再開が効かない。両モードの一覧復帰と停止ボタン後にfocusを戻し、追加クリックなしのキー操作を検証する。"
+        }
+      ],
+      "limitations": "書込み・テスト・build・画面操作なし。実機NumLock、左右modifier同時押し、IME、タッチ取消は未確認。"
+    },
+    {
+      "reviewer": "key_config_r1_review_3",
+      "model": "gpt-6-sol",
+      "snapshot": "20d78ccc3ab945a906a72168853e2e4f12b9c260098d77500e1695263b7a9b36",
+      "complete": true,
+      "scope": "21対象ファイル、中立仕様、呼び出し元、関連テストを読取り確認。ハッシュ一致。",
+      "findings": [
+        {
+          "severity": "P2",
+          "title": "Ctrl後のShift操作が失われる",
+          "location": "src/game/input/PhaserInputAdapter.ts:19",
+          "body": "Ctrl以外の後続キーを一律拒否し、おすすめCtrl高速落下→Shiftクイックドロップ不可、逆順では両方届く。Ctrl付き文字を除外しつつShiftLeft/Rightを通し、両順序・左右修飾をDOMkeydownで回帰検証。"
+        },
+        {
+          "severity": "P2",
+          "title": "上部の停止/再開ボタン後のキーボードが効かない",
+          "locations": [
+            "src/components/game/GuidedGame.tsx:153",
+            "src/components/game/ScoreAttackGame.tsx:45",
+            "src/game/input/PhaserInputAdapter.ts:46"
+          ],
+          "body": "ボタン処理後にcanvas focusを戻さず、canvas再クリックまでキー移動回転が不可。両モードの停止/再開ボタン後canvas focusと実キー動作を回帰確認。"
+        },
+        {
+          "severity": "P3",
+          "title": "共通操作文書が今回仕様と矛盾",
+          "location": "docs/GAME-MODES.md:144",
+          "body": "共通操作に固定Z/X・EscでTOP退出が残り、63-67行の可変設定・Escポーズと矛盾。初期割当と状態別動作へ更新。文書確認で足りる。"
+        }
+      ],
+      "limitations": "読取りのみ、テスト/build/UI未実行。親の成功結果を前提。実機NumLock/IME/タッチcancel未確認。"
+    }
+  ]
+}

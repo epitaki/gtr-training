@@ -1,0 +1,332 @@
+{
+  "before": {
+    "grid": [
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "red",
+        "green",
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "red",
+        "red",
+        "green",
+        null,
+        null,
+        null
+      ],
+      [
+        "green",
+        "green",
+        "yellow",
+        null,
+        null,
+        null
+      ]
+    ],
+    "current": {
+      "main": {
+        "color": "blue",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "yellow",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "next": {
+      "main": {
+        "color": "yellow",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "blue",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "nextNext": {
+      "main": {
+        "color": "green",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "score": 0,
+    "gtrCount": 0,
+    "gtrScore": 0,
+    "playing": false,
+    "paused": false,
+    "rendererPresent": false,
+    "display": {
+      "total": 35,
+      "chainObjects": 0
+    },
+    "visibility": "visible",
+    "evaluationTexts": []
+  },
+  "after": {
+    "grid": [
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "red",
+        "green",
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        "red",
+        "red",
+        "green",
+        null,
+        null,
+        null
+      ],
+      [
+        "green",
+        "green",
+        "yellow",
+        null,
+        null,
+        null
+      ]
+    ],
+    "current": {
+      "main": {
+        "color": "blue",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "yellow",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "next": {
+      "main": {
+        "color": "yellow",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "blue",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "nextNext": {
+      "main": {
+        "color": "green",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "score": 0,
+    "gtrCount": 0,
+    "gtrScore": 0,
+    "playing": false,
+    "paused": false,
+    "rendererPresent": false,
+    "display": {
+      "total": 41,
+      "chainObjects": 0
+    },
+    "visibility": "visible",
+    "evaluationTexts": [
+      "標準コア完成",
+      "土台スコア: 72点",
+      "土台内の連鎖数: 2連鎖",
+      "本線の発火可能性は未確認。別の色や配置が必要です\n実在ぷよ：コア7／土台参加0／土台余り1\n範囲外：接続見込み0／未接続0（この仮想本線での分類）\n土台の仮想2連鎖・余り1個。100点には安定した19個の5連鎖全消しが必要です",
+      "Space: 続ける / Esc: TOPページへ"
+    ]
+  }
+}

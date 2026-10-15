@@ -1,0 +1,17 @@
+{
+  "completed": 1,
+  "checking": false,
+  "remaining": 0,
+  "elapsedSeconds": 0,
+  "frameSamples": 0,
+  "frameMedianMs": null,
+  "frameP95Ms": null,
+  "idleCounts": {},
+  "failures": [],
+  "events": [
+    "セット: five / 期待5連鎖20消去",
+    "完了: five / 5連鎖 / 200点",
+    "セット: five / 期待5連鎖20消去",
+    "破棄後: 0描画"
+  ]
+}

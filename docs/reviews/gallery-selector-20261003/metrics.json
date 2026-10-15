@@ -1,0 +1,283 @@
+[
+  {
+    "cards": [
+      {
+        "background": "rgb(57, 48, 82)",
+        "boardContained": true,
+        "border": "rgb(181, 168, 255)",
+        "images": 11,
+        "loaded": true,
+        "name": "形1・10例"
+      },
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(73, 66, 87)",
+        "images": 11,
+        "loaded": true,
+        "name": "形2・10例"
+      },
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(73, 66, 87)",
+        "images": 11,
+        "loaded": true,
+        "name": "形3・10例"
+      }
+    ],
+    "documentClient": 1265,
+    "documentScroll": 1265,
+    "examples": 10,
+    "selected": [
+      "形1・10例"
+    ],
+    "viewport": 1280
+  },
+  {
+    "cards": [
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(73, 66, 87)",
+        "images": 11,
+        "loaded": true,
+        "name": "形1・10例"
+      },
+      {
+        "background": "rgb(57, 48, 82)",
+        "boardContained": true,
+        "border": "rgb(181, 168, 255)",
+        "images": 11,
+        "loaded": true,
+        "name": "形2・10例"
+      },
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(73, 66, 87)",
+        "images": 11,
+        "loaded": true,
+        "name": "形3・10例"
+      }
+    ],
+    "documentClient": 1265,
+    "documentScroll": 1265,
+    "examples": 10,
+    "selected": [
+      "形2・10例"
+    ],
+    "viewport": 1280
+  },
+  {
+    "cards": [
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(73, 66, 87)",
+        "images": 11,
+        "loaded": true,
+        "name": "形1・10例"
+      },
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(73, 66, 87)",
+        "images": 11,
+        "loaded": true,
+        "name": "形2・10例"
+      },
+      {
+        "background": "rgb(57, 48, 82)",
+        "boardContained": true,
+        "border": "rgb(181, 168, 255)",
+        "images": 11,
+        "loaded": true,
+        "name": "形3・10例"
+      }
+    ],
+    "documentClient": 1265,
+    "documentScroll": 1265,
+    "examples": 10,
+    "selected": [
+      "形3・10例"
+    ],
+    "viewport": 1280
+  },
+  {
+    "cards": [
+      {
+        "background": "rgb(57, 48, 82)",
+        "boardContained": true,
+        "border": "rgb(181, 168, 255)",
+        "images": 11,
+        "loaded": true,
+        "name": "形1・10例"
+      },
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(73, 66, 87)",
+        "images": 11,
+        "loaded": true,
+        "name": "形2・10例"
+      },
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(73, 66, 87)",
+        "images": 11,
+        "loaded": true,
+        "name": "形3・10例"
+      }
+    ],
+    "documentClient": 1265,
+    "documentScroll": 1265,
+    "examples": 10,
+    "selected": [
+      "形1・10例"
+    ],
+    "viewport": 1280
+  },
+  {
+    "cards": [
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(111, 100, 141)",
+        "images": 11,
+        "loaded": true,
+        "name": "形1・10例"
+      },
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(73, 66, 87)",
+        "images": 11,
+        "loaded": true,
+        "name": "形2・10例"
+      },
+      {
+        "background": "rgb(57, 48, 82)",
+        "boardContained": true,
+        "border": "rgb(181, 168, 255)",
+        "images": 11,
+        "loaded": true,
+        "name": "形3・10例"
+      }
+    ],
+    "documentClient": 1265,
+    "documentScroll": 1265,
+    "examples": 10,
+    "selected": [
+      "形3・10例"
+    ],
+    "viewport": 1280,
+    "keyboard": "Space"
+  },
+  {
+    "cards": [
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(73, 66, 87)",
+        "images": 11,
+        "loaded": true,
+        "name": "形1・10例"
+      },
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(73, 66, 87)",
+        "images": 11,
+        "loaded": true,
+        "name": "形2・10例"
+      },
+      {
+        "background": "rgb(57, 48, 82)",
+        "boardContained": true,
+        "border": "rgb(181, 168, 255)",
+        "images": 11,
+        "loaded": true,
+        "name": "形3・10例"
+      }
+    ],
+    "documentClient": 305,
+    "documentScroll": 305,
+    "examples": 10,
+    "selected": [
+      "形3・10例"
+    ],
+    "viewport": 320
+  },
+  {
+    "cards": [
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(73, 66, 87)",
+        "images": 11,
+        "loaded": true,
+        "name": "形1・10例"
+      },
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(73, 66, 87)",
+        "images": 11,
+        "loaded": true,
+        "name": "形2・10例"
+      },
+      {
+        "background": "rgb(57, 48, 82)",
+        "boardContained": true,
+        "border": "rgb(181, 168, 255)",
+        "images": 11,
+        "loaded": true,
+        "name": "形3・10例"
+      }
+    ],
+    "documentClient": 375,
+    "documentScroll": 375,
+    "examples": 10,
+    "selected": [
+      "形3・10例"
+    ],
+    "viewport": 390
+  },
+  {
+    "cards": [
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(73, 66, 87)",
+        "images": 11,
+        "loaded": true,
+        "name": "形1・10例"
+      },
+      {
+        "background": "rgb(23, 20, 38)",
+        "boardContained": true,
+        "border": "rgb(111, 100, 141)",
+        "images": 11,
+        "loaded": true,
+        "name": "形2・10例"
+      },
+      {
+        "background": "rgb(57, 48, 82)",
+        "boardContained": true,
+        "border": "rgb(181, 168, 255)",
+        "images": 11,
+        "loaded": true,
+        "name": "形3・10例"
+      }
+    ],
+    "documentClient": 753,
+    "documentScroll": 753,
+    "examples": 10,
+    "selected": [
+      "形3・10例"
+    ],
+    "viewport": 768
+  }
+]

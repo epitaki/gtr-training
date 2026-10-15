@@ -1,0 +1,42 @@
+{
+  "round": 4,
+  "date": "2026-09-28",
+  "agent": "key_config_r1_acceptance",
+  "model": "gpt-6-astra",
+  "snapshot": "3b742d5d0e5ecedf88405638527a77031d5650fe6a03bb57ef6c581d7bd8f50d",
+  "verdict": "キーボード先行範囲を受入可",
+  "confirmedRequiredFixes": 0,
+  "previous": "K1〜K12/V1解消。K12は取得の同期無効化、先行Shift誤登録防止、後続Enter/Space非消費をコード・自動試験・UIで確認",
+  "validation": {
+    "hashes": 197,
+    "protected": 113,
+    "mismatch": 0,
+    "files": 90,
+    "tests": 1255,
+    "failed": 0,
+    "typeChecks": "本体/scripts成功",
+    "build": "成功、既存500kB超警告",
+    "ui": "KEY-CONFIG-CHECK R4節",
+    "r3ChangedFiles": 3
+  },
+  "excluded": [
+    {
+      "source": "review1",
+      "candidate": "ゲーム中Shift先行keydownのquickDrop",
+      "behavior": "Shiftの後でframe更新が走ればTab前にquickDropは発生する。Tab自体は非消費でfocus移動可能",
+      "reason": "単独Shiftのゲーム割当・押下edge・移動即時反復を維持する承認契約であり、browser shortcut完全無競合は保証していない。K12の設定不変は取得UIのみ。ゲーム中の先行Shiftの盤面変化を一切禁止するには入力遅延等の新たな優先順位決定が必要。今回は契約違反ではない"
+    },
+    {
+      "source": "review3",
+      "candidate": "gate中新pointer2を待たない",
+      "behavior": "pointer2のpressは保留されず破棄。旧pointer1 release後もpointer2は自動発火せずfresh pressが必要",
+      "reason": "K10は状態変更時点の旧入力元の解除待ち。後続の全pointerまで待ちを広げる要求は採用しない。テストはpointer2 release前にgate=falseを確認しており、review3の試験説明はコードと相違"
+    }
+  ],
+  "limitations": [
+    "物理NumLock/OS実IME/実touch取消は未実施",
+    "画像準拠マウス設定は後段",
+    "元プロジェクト統合・外部記録はこの受入の完了判定外"
+  ],
+  "remaining": "親によるdocs/Habitica最終更新・再取得・確認画面の提示"
+}

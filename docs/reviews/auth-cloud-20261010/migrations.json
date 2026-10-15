@@ -1,0 +1,14 @@
+[
+  {
+    "version": "20260930000000",
+    "name": "initial"
+  },
+  {
+    "version": "20261004000000",
+    "name": "score_attack_history"
+  },
+  {
+    "version": "20261004001000",
+    "name": "compact_score_attack_history"
+  }
+]

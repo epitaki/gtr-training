@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "id": "momoken-2021-1-opening-observation",
+  "datasetId": "gtr-openings-500-v1",
+  "recordId": "momoken-2021-1",
+  "recordedAt": "2026-09-22",
+  "provenance": "Carried forward from the 2026-09-19 study and existing record metadata; no new video inspection on 2026-09-22.",
+  "sourceUrl": "https://puyo-camp.jp/posts/146660",
+  "videoUrl": "https://www.youtube.com/watch?v=zWruR4NGq4U&t=185s",
+  "videoEvidence": {
+    "status": "partial-board-check",
+    "timestampSeconds": 190,
+    "coverage": "Board near 3:10 checked against the first four placements; not a continuous audit of every move.",
+    "transcriptionConfidence": "partial-confirmation",
+    "fullTraceAudited": false,
+    "playerIntentConfirmed": false
+  },
+  "context": {
+    "opponentBoard": null,
+    "incomingGarbage": null,
+    "remainingTime": null,
+    "visibleQueueVerified": false
+  },
+  "judgment": {
+    "status": "unassessed",
+    "isCorrectMoveLabel": false,
+    "alternatives": [],
+    "verificationArtifacts": [],
+    "reason": "Observation establishes limited transcription evidence, not the superiority of these placements."
+  },
+  "references": ["../../../docs/research/GTR-HUMAN-PLAY-STUDY.md"]
+}

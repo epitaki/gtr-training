@@ -1,0 +1,4178 @@
+{
+  "date": "2026-10-04",
+  "scope": "selected five known games; not a full or holdout comparison",
+  "seed": 20260904,
+  "maxTurns": 20,
+  "hashes": {
+    "ContinuousAdvisor": "b28d0d85c5b4f73aa5cb80edec70560e8e5d9c440be11648f9d51e8c72f92ee1",
+    "ConnectedExtension": "52a2d82e1d4ee1bbcfe85375d03bad52ff35a8fb46fbd738881171138128010f",
+    "HeadScaffold": "e8ae7128efa600bc8b6195889d9a8580eb5a1e49bc44791327e5d2e786f8855e",
+    "GuidedTail": "0b8872cca39cd275725dba86e86775497edea7833908be8ed297e5fcc4d47552",
+    "SpareAllocation": "d0e71fbe098733647b1bbcb93513f77c4070f3f9df53620be9369916b2a0e41c",
+    "FoldConstruction": "0b3e8089c798b367710bc3b5a0138af02d160ff0b2369b0d3aab3c6e38b1178a",
+    "FoundationContext": "7aa89aeeeac307b9f8b4d8101d9f37968e48cee4b787fd739d5a1d5e74e009ee",
+    "PerfectFoundationPlanner": "aa41022acbf37649d54224a596eb50c08e47ed80042889ecbc0ee574ec9e0864",
+    "FiveChainPlanner": "5f6f6516ea622e902f9397098fbd1f71f53348c6b5f814ab9cdc6ab7d532c1ee",
+    "FrontierFlexibility": "1381a61968da2fdd938176195034a97ea48d3b1e324bb892ebccf93905daba14",
+    "FiveChainSkeletons": "a037568aaf67ad2a93a916e13fd4cf1ae8810e42e64509c76c097083474a441d",
+    "LowFiveChainSkeletons": "ebf18152b69505a4936106e6b0c96893ed678dc1ea746ac07221363c9c5cf932",
+    "LowerChainInsertion": "07fae517f42d9a7629c9179db53644d67505626506e18cde7ff0c08e8601583d",
+    "PlacementAdvisor": "d81d39680322d765aa212ff4080b83857f5a80b0ac7e2c4c4a3d0c3317e3f1b4",
+    "MainFireAnalysis": "c1395f79b02a20f2c283e3908300073180410b42f2ba9c14f856a307e9e85278",
+    "FirePreference": "f10f8de4877680a55d1c385571e0e8a769b26418b23c49009820a1e7dcba751e",
+    "VisibleMainFireSearch": "19f88daa03742cd6a2cba244c16fabda10ce42acc92abf0451b35828ee752634",
+    "ConstructionUse": "bcf2f80b2351551311b10ecfb7155ac4da043e2e3c706b66cd48321d2bc9ec1f",
+    "HeadExtension": "3c930e9b1a66d79ef51d53c959a68d22b1e3aa4086a4fc83e5bef3f3e7b70a66",
+    "AdvisorTypes": "ccfe87623dec2930f65194c214016c8b15b7b35f412d42c5922313821a61ca33",
+    "PlacementEffort": "829c181772d2785c2a3ae522db123f41235226d2ae33a96409d0d41a733dd152",
+    "BoardSurface": "32a4c8ff45255d9c0d23032c5f8007ff3ff248811ed18da1f7cac744fc89e568",
+    "FoundationPreference": "f6a1e621cf010532b25e2136511aef10dca3bb9d471cdec44e0459045116af44",
+    "PairPlacementUse": "7e0fa4a7c199e911851cd524eec52f05e45167159e795fd53e5b34287a5e95da",
+    "CompletionWait": "0e741b531229b7febc68f61dab812e27aa1132cc436b242f673d0c3bf4a654d4",
+    "SkeletonRecovery": "60a14975f126069e0cc0d5ae5d7ea259a38474747ecbfdb93c3d13b8c8de5cdb",
+    "TailCascadeRecovery": "0a8ccf52e361a84fe18b3817490684c245ab210ce442da39a73b02952cae811a",
+    "ChainSimulator": "61aae9b60efa4773d31d26479477c8c7e587cfde9db11b34d865552501c1aa95",
+    "PlacementAdvisorConfig": "3c7b4b0b5234cc2bae921c34c051fd8488a968b539d5c9e9e48c87fb991ec741",
+    "GTRPatterns": "6fefca39b8e196cacdaa6d6d6f6a32e6e3d115792bbfe0b60892bdba8a8f6933",
+    "EvaluationRange": "4dd0a196618e761c677b60059df29505270ea4081bce47e12f264a84c348f39d",
+    "GTRScoringConfig": "5ffef71313c70904555a2a06f4eb8228b6363800bdaeea3725a94351117b16a7",
+    "LeftoverEvaluation": "e246c0afd640112c616184729dc0687476ba614ccca834f08ae16a264d5339d5",
+    "TailPlanner": "71849d68cf6c58b58cc141d3093f02aeda33b848923f9a506819d8521b5164a6",
+    "TailPreference": "824c6e342a5c3feda98bf82e4e3e77e24ff69fbc619d8acba98cebe034a3a4be",
+    "types": "95ba2f17e574d801392fae186beb2b9d2d5d07ce5f60f7d6961fc4f16081de1b"
+  },
+  "baseline": "guide-surface-20260927-v1-after500.json",
+  "baselineSha256": "6ba54c8cf24972fa605f820b1436c4eddc77c91cd3abe6e49b1803b4eb3a5f64",
+  "comparison": [
+    {
+      "gameIndex": 130,
+      "oldFoundationTurn": 19,
+      "currentFoundationTurn": 19,
+      "oldStop": "no_advice",
+      "currentStop": "no_advice",
+      "placementsAndBoardsMatch": true,
+      "clears": 0,
+      "lostFoundation": false
+    },
+    {
+      "gameIndex": 448,
+      "oldFoundationTurn": null,
+      "currentFoundationTurn": null,
+      "oldStop": "turn_limit",
+      "currentStop": "turn_limit",
+      "placementsAndBoardsMatch": true,
+      "clears": 0,
+      "lostFoundation": false
+    },
+    {
+      "gameIndex": 467,
+      "oldFoundationTurn": null,
+      "currentFoundationTurn": null,
+      "oldStop": "turn_limit",
+      "currentStop": "turn_limit",
+      "placementsAndBoardsMatch": true,
+      "clears": 0,
+      "lostFoundation": false
+    },
+    {
+      "gameIndex": 166,
+      "oldFoundationTurn": 18,
+      "currentFoundationTurn": 18,
+      "oldStop": "turn_limit",
+      "currentStop": "turn_limit",
+      "placementsAndBoardsMatch": true,
+      "clears": 0,
+      "lostFoundation": false
+    },
+    {
+      "gameIndex": 313,
+      "oldFoundationTurn": 17,
+      "currentFoundationTurn": 17,
+      "oldStop": "turn_limit",
+      "currentStop": "turn_limit",
+      "placementsAndBoardsMatch": true,
+      "clears": 0,
+      "lostFoundation": false
+    }
+  ],
+  "games": [
+    {
+      "gameIndex": 130,
+      "gameSeed": 3283963846,
+      "openingKind": "AABC",
+      "maxTurns": 20,
+      "foundationTurn": 19,
+      "perfect": false,
+      "tail": true,
+      "core": true,
+      "postCompletionMoves": 0,
+      "lostFoundation": false,
+      "clears": 0,
+      "stop": "no_advice",
+      "turns": [
+        {
+          "turn": 1,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "red",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "..............................................................................",
+          "placement": {
+            "column": 0,
+            "rotation": 1
+          },
+          "elapsedMs": 105.3368,
+          "gridAfter": "........................................................................BB....",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 2,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "red",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "........................................................................BB....",
+          "placement": {
+            "column": 1,
+            "rotation": 1
+          },
+          "elapsedMs": 14.739300000000014,
+          "gridAfter": "...................................................................G....BBR...",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 3,
+          "visiblePairs": [
+            {
+              "main": "red",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "...................................................................G....BBR...",
+          "placement": {
+            "column": 3,
+            "rotation": 1
+          },
+          "elapsedMs": 24.01660000000001,
+          "gridAfter": "...................................................................G....BBRRR.",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 4,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "...................................................................G....BBRRR.",
+          "placement": {
+            "column": 3,
+            "rotation": 3
+          },
+          "elapsedMs": 29.159999999999997,
+          "gridAfter": "...................................................................GBY..BBRRR.",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 5,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "...................................................................GBY..BBRRR.",
+          "placement": {
+            "column": 1,
+            "rotation": 1
+          },
+          "elapsedMs": 45.71890000000002,
+          "gridAfter": ".............................................................BY....GBY..BBRRR.",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 6,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "blue",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": ".............................................................BY....GBY..BBRRR.",
+          "placement": {
+            "column": 0,
+            "rotation": 1
+          },
+          "elapsedMs": 56.31709999999998,
+          "gridAfter": ".......................................................Y.....BY...GGBY..BBRRR.",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 7,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "blue",
+              "sub": "red"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": ".......................................................Y.....BY...GGBY..BBRRR.",
+          "placement": {
+            "column": 4,
+            "rotation": 1
+          },
+          "elapsedMs": 64.26159999999999,
+          "gridAfter": ".......................................................Y.....BY...GGBYY.BBRRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 8,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "red"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "red",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": ".......................................................Y.....BY...GGBYY.BBRRRB",
+          "placement": {
+            "column": 4,
+            "rotation": 0
+          },
+          "elapsedMs": 29.03570000000002,
+          "gridAfter": ".......................................................Y..R..BY.B.GGBYY.BBRRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 9,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "red",
+              "sub": "red"
+            },
+            {
+              "main": "red",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": ".......................................................Y..R..BY.B.GGBYY.BBRRRB",
+          "placement": {
+            "column": 0,
+            "rotation": 0
+          },
+          "elapsedMs": 46.223299999999995,
+          "gridAfter": "......................................................YY..R.GBY.B.GGBYY.BBRRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 100,
+            "chainTailScore": 20,
+            "totalScore": 62,
+            "chainCount": 2,
+            "leftoverPuyos": 9,
+            "message": "GTR形状確認。連鎖数: 2",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 10,
+          "visiblePairs": [
+            {
+              "main": "red",
+              "sub": "red"
+            },
+            {
+              "main": "red",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "......................................................YY..R.GBY.B.GGBYY.BBRRRB",
+          "placement": {
+            "column": 2,
+            "rotation": 1
+          },
+          "elapsedMs": 145.0591,
+          "gridAfter": "......................................................YYR.R.GBYRB.GGBYY.BBRRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 100,
+            "chainTailScore": 20,
+            "totalScore": 62,
+            "chainCount": 2,
+            "leftoverPuyos": 11,
+            "message": "GTR形状確認。連鎖数: 2",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 11,
+          "visiblePairs": [
+            {
+              "main": "red",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "blue",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "......................................................YYR.R.GBYRB.GGBYY.BBRRRB",
+          "placement": {
+            "column": 2,
+            "rotation": 1
+          },
+          "elapsedMs": 67.31830000000002,
+          "gridAfter": "..................................................R...YYRBR.GBYRB.GGBYY.BBRRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 100,
+            "chainTailScore": 20,
+            "totalScore": 62,
+            "chainCount": 2,
+            "leftoverPuyos": 12,
+            "message": "GTR形状確認。連鎖数: 2",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 12,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "blue",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "..................................................R...YYRBR.GBYRB.GGBYY.BBRRRB",
+          "placement": {
+            "column": 0,
+            "rotation": 0
+          },
+          "elapsedMs": 72.79290000000003,
+          "gridAfter": "..........................................R.....G.R...YYRBR.GBYRB.GGBYY.BBRRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 100,
+            "chainTailScore": 20,
+            "totalScore": 62,
+            "chainCount": 2,
+            "leftoverPuyos": 12,
+            "message": "GTR形状確認。連鎖数: 2",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 13,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "..........................................R.....G.R...YYRBR.GBYRB.GGBYY.BBRRRB",
+          "placement": {
+            "column": 3,
+            "rotation": 3
+          },
+          "elapsedMs": 116.07099999999991,
+          "gridAfter": "..........................................R.R...G.RB..YYRBR.GBYRB.GGBYY.BBRRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 100,
+            "chainTailScore": 20,
+            "totalScore": 62,
+            "chainCount": 2,
+            "leftoverPuyos": 12,
+            "message": "GTR形状確認。連鎖数: 2",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 14,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "..........................................R.R...G.RB..YYRBR.GBYRB.GGBYY.BBRRRB",
+          "placement": {
+            "column": 4,
+            "rotation": 1
+          },
+          "elapsedMs": 113.52800000000002,
+          "gridAfter": "..........................................R.R...G.RBY.YYRBR.GBYRB.GGBYYYBBRRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 4,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 15,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "green",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "..........................................R.R...G.RBY.YYRBR.GBYRB.GGBYYYBBRRRB",
+          "placement": {
+            "column": 1,
+            "rotation": 1
+          },
+          "elapsedMs": 569.5102,
+          "gridAfter": "......................................B...R.R...GYRBY.YYRBR.GBYRB.GGBYYYBBRRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 4,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 16,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "green",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "......................................B...R.R...GYRBY.YYRBR.GBYRB.GGBYYYBBRRRB",
+          "placement": {
+            "column": 3,
+            "rotation": 1
+          },
+          "elapsedMs": 524.6187999999997,
+          "gridAfter": "......................................B...R.RGR.GYRBY.YYRBR.GBYRB.GGBYYYBBRRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 4,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 17,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "blue",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "......................................B...R.RGR.GYRBY.YYRBR.GBYRB.GGBYYYBBRRRB",
+          "placement": {
+            "column": 3,
+            "rotation": 1
+          },
+          "elapsedMs": 1010.2273,
+          "gridAfter": "......................................BGR.R.RGR.GYRBY.YYRBR.GBYRB.GGBYYYBBRRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 4,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 18,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "blue",
+              "sub": "red"
+            },
+            {
+              "main": "blue",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "......................................BGR.R.RGR.GYRBY.YYRBR.GBYRB.GGBYYYBBRRRB",
+          "placement": {
+            "column": 4,
+            "rotation": 3
+          },
+          "elapsedMs": 1004.8265999999999,
+          "gridAfter": ".................................RG...BGR.R.RGR.GYRBY.YYRBR.GBYRB.GGBYYYBBRRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 4,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 19,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "red"
+            },
+            {
+              "main": "blue",
+              "sub": "red"
+            },
+            {
+              "main": "red",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": ".................................RG...BGR.R.RGR.GYRBY.YYRBR.GBYRB.GGBYYYBBRRRB",
+          "placement": {
+            "column": 5,
+            "rotation": 0
+          },
+          "elapsedMs": 1066.4960999999994,
+          "gridAfter": ".................................RG...BGR.R.RGR.GYRBY.YYRBRRGBYRBBGGBYYYBBRRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 68,
+            "totalScore": 90,
+            "chainCount": 5,
+            "leftoverPuyos": 2,
+            "message": "素晴らしい！5連鎖のGTR！",
+            "hasBasicPattern": true,
+            "row10Usage": "moderate",
+            "rightEdgeRaised": false,
+            "leftoverConnected": true
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 20,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "red"
+            },
+            {
+              "main": "red",
+              "sub": "red"
+            },
+            {
+              "main": "blue",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": ".................................RG...BGR.R.RGR.GYRBY.YYRBRRGBYRBBGGBYYYBBRRRB",
+          "placement": null,
+          "elapsedMs": 8.878499999999804,
+          "gridAfter": ".................................RG...BGR.R.RGR.GYRBY.YYRBRRGBYRBBGGBYYYBBRRRB"
+        }
+      ],
+      "finalGrid": ".................................RG...BGR.R.RGR.GYRBY.YYRBRRGBYRBBGGBYYYBBRRRB",
+      "conditionalExtension": null
+    },
+    {
+      "gameIndex": 448,
+      "gameSeed": 3714383529,
+      "openingKind": "AABC",
+      "maxTurns": 20,
+      "foundationTurn": null,
+      "perfect": false,
+      "tail": true,
+      "core": true,
+      "postCompletionMoves": 0,
+      "lostFoundation": false,
+      "clears": 0,
+      "stop": "turn_limit",
+      "turns": [
+        {
+          "turn": 1,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "green"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "..............................................................................",
+          "placement": {
+            "column": 0,
+            "rotation": 1
+          },
+          "elapsedMs": 75.53819999999996,
+          "gridAfter": "........................................................................YY....",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 2,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "green"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "........................................................................YY....",
+          "placement": {
+            "column": 1,
+            "rotation": 1
+          },
+          "elapsedMs": 9.541600000000471,
+          "gridAfter": "...................................................................B....YYG...",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 3,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "red"
+            },
+            {
+              "main": "red",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "...................................................................B....YYG...",
+          "placement": {
+            "column": 2,
+            "rotation": 2
+          },
+          "elapsedMs": 169.20819999999912,
+          "gridAfter": "..............................................................G....BY...YYG...",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 4,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "red"
+            },
+            {
+              "main": "red",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "..............................................................G....BY...YYG...",
+          "placement": {
+            "column": 5,
+            "rotation": 3
+          },
+          "elapsedMs": 250.76559999999972,
+          "gridAfter": "..............................................................G....BY...YYG.RB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 5,
+          "visiblePairs": [
+            {
+              "main": "red",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "..............................................................G....BY...YYG.RB",
+          "placement": {
+            "column": 2,
+            "rotation": 3
+          },
+          "elapsedMs": 36.59220000000005,
+          "gridAfter": "........................................................R....YG....BY...YYG.RB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 6,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "red"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": "........................................................R....YG....BY...YYG.RB",
+          "placement": {
+            "column": 2,
+            "rotation": 1
+          },
+          "elapsedMs": 109.64860000000044,
+          "gridAfter": "..................................................Y.....R....YG....BY...YYGRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 7,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "green"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "..................................................Y.....R....YG....BY...YYGRRB",
+          "placement": {
+            "column": 5,
+            "rotation": 0
+          },
+          "elapsedMs": 27.922099999999773,
+          "gridAfter": "..................................................Y.....R....YG..Y.BY..BYYGRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 8,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "green"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "green",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "..................................................Y.....R....YG..Y.BY..BYYGRRB",
+          "placement": {
+            "column": 4,
+            "rotation": 2
+          },
+          "elapsedMs": 34.03399999999965,
+          "gridAfter": "..................................................Y.....R....YG.BY.BY.GBYYGRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 9,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "green",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": "..................................................Y.....R....YG.BY.BY.GBYYGRRB",
+          "placement": {
+            "column": 5,
+            "rotation": 0
+          },
+          "elapsedMs": 27.682199999999284,
+          "gridAfter": "..................................................Y..Y..R..Y.YG.BY.BY.GBYYGRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 10,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "green"
+            },
+            {
+              "main": "green",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "..................................................Y..Y..R..Y.YG.BY.BY.GBYYGRRB",
+          "placement": {
+            "column": 1,
+            "rotation": 3
+          },
+          "elapsedMs": 34.770300000000134,
+          "gridAfter": "..................................................Y..Y.GR..Y.YG.BYBBY.GBYYGRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 11,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "green"
+            },
+            {
+              "main": "green",
+              "sub": "blue"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "..................................................Y..Y.GR..Y.YG.BYBBY.GBYYGRRB",
+          "placement": {
+            "column": 3,
+            "rotation": 1
+          },
+          "elapsedMs": 20.60030000000006,
+          "gridAfter": "..................................................Y..Y.GR.GY.YG.BYBBYGGBYYGRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 12,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "blue"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": "..................................................Y..Y.GR.GY.YG.BYBBYGGBYYGRRB",
+          "placement": {
+            "column": 0,
+            "rotation": 2
+          },
+          "elapsedMs": 41.01080000000002,
+          "gridAfter": "..................................................Y..YGGR.GYBYG.BYBBYGGBYYGRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 30,
+            "totalScore": 68,
+            "chainCount": 3,
+            "leftoverPuyos": 9,
+            "message": "GTR完成！3連鎖",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 13,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "green"
+            },
+            {
+              "main": "yellow",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": "..................................................Y..YGGR.GYBYG.BYBBYGGBYYGRRB",
+          "placement": {
+            "column": 0,
+            "rotation": 0
+          },
+          "elapsedMs": 66.86579999999958,
+          "gridAfter": "..........................................Y.....B.Y..YGGR.GYBYG.BYBBYGGBYYGRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 30,
+            "totalScore": 68,
+            "chainCount": 3,
+            "leftoverPuyos": 9,
+            "message": "GTR完成！3連鎖",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 14,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "green"
+            },
+            {
+              "main": "yellow",
+              "sub": "green"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "..........................................Y.....B.Y..YGGR.GYBYG.BYBBYGGBYYGRRB",
+          "placement": {
+            "column": 0,
+            "rotation": 1
+          },
+          "elapsedMs": 211.82330000000002,
+          "gridAfter": "....................................Y.....Y.....BGY..YGGR.GYBYG.BYBBYGGBYYGRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 30,
+            "totalScore": 68,
+            "chainCount": 3,
+            "leftoverPuyos": 9,
+            "message": "GTR完成！3連鎖",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 15,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "green"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "red",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": "....................................Y.....Y.....BGY..YGGR.GYBYG.BYBBYGGBYYGRRB",
+          "placement": {
+            "column": 3,
+            "rotation": 1
+          },
+          "elapsedMs": 307.66409999999996,
+          "gridAfter": "....................................Y.....Y.....BGY.GYGGR.GYBYGYBYBBYGGBYYGRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 30,
+            "totalScore": 68,
+            "chainCount": 3,
+            "leftoverPuyos": 10,
+            "message": "GTR完成！3連鎖",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 16,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "red",
+              "sub": "green"
+            },
+            {
+              "main": "green",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "....................................Y.....Y.....BGY.GYGGR.GYBYGYBYBBYGGBYYGRRB",
+          "placement": {
+            "column": 4,
+            "rotation": 1
+          },
+          "elapsedMs": 98.72029999999995,
+          "gridAfter": "....................................Y.....Y...YBBGY.GYGGR.GYBYGYBYBBYGGBYYGRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 30,
+            "totalScore": 68,
+            "chainCount": 3,
+            "leftoverPuyos": 10,
+            "message": "GTR完成！3連鎖",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 17,
+          "visiblePairs": [
+            {
+              "main": "red",
+              "sub": "green"
+            },
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "....................................Y.....Y...YBBGY.GYGGR.GYBYGYBYBBYGGBYYGRRB",
+          "placement": {
+            "column": 5,
+            "rotation": 3
+          },
+          "elapsedMs": 72.22630000000026,
+          "gridAfter": "....................................Y...GRY...YBBGY.GYGGR.GYBYGYBYBBYGGBYYGRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 30,
+            "totalScore": 68,
+            "chainCount": 3,
+            "leftoverPuyos": 10,
+            "message": "GTR完成！3連鎖",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 18,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "....................................Y...GRY...YBBGY.GYGGR.GYBYGYBYBBYGGBYYGRRB",
+          "placement": {
+            "column": 3,
+            "rotation": 2
+          },
+          "elapsedMs": 81.67799999999988,
+          "gridAfter": "....................................Y...GRY...YBBGYGGYGGRRGYBYGYBYBBYGGBYYGRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 30,
+            "totalScore": 68,
+            "chainCount": 3,
+            "leftoverPuyos": 11,
+            "message": "GTR完成！3連鎖",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 19,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "red",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "....................................Y...GRY...YBBGYGGYGGRRGYBYGYBYBBYGGBYYGRRB",
+          "placement": {
+            "column": 3,
+            "rotation": 3
+          },
+          "elapsedMs": 112.74150000000009,
+          "gridAfter": "....................................Y...GRY.BYYBBGYGGYGGRRGYBYGYBYBBYGGBYYGRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 30,
+            "totalScore": 68,
+            "chainCount": 3,
+            "leftoverPuyos": 11,
+            "message": "GTR完成！3連鎖",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 20,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "red",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "....................................Y...GRY.BYYBBGYGGYGGRRGYBYGYBYBBYGGBYYGRRB",
+          "placement": {
+            "column": 1,
+            "rotation": 2
+          },
+          "elapsedMs": 85.76350000000002,
+          "gridAfter": "....................................YG..GRYYBYYBBGYGGYGGRRGYBYGYBYBBYGGBYYGRRB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 30,
+            "totalScore": 68,
+            "chainCount": 3,
+            "leftoverPuyos": 11,
+            "message": "GTR完成！3連鎖",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        }
+      ],
+      "finalGrid": "....................................YG..GRYYBYYBBGYGGYGGRRGYBYGYBYBBYGGBYYGRRB",
+      "conditionalExtension": null
+    },
+    {
+      "gameIndex": 467,
+      "gameSeed": 3940988937,
+      "openingKind": "AAAA",
+      "maxTurns": 20,
+      "foundationTurn": null,
+      "perfect": false,
+      "tail": true,
+      "core": true,
+      "postCompletionMoves": 0,
+      "lostFoundation": false,
+      "clears": 0,
+      "stop": "turn_limit",
+      "turns": [
+        {
+          "turn": 1,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "blue"
+            },
+            {
+              "main": "blue",
+              "sub": "blue"
+            },
+            {
+              "main": "red",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "..............................................................................",
+          "placement": {
+            "column": 0,
+            "rotation": 1
+          },
+          "elapsedMs": 51.03350000000046,
+          "gridAfter": "........................................................................BB....",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 2,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "blue"
+            },
+            {
+              "main": "red",
+              "sub": "blue"
+            },
+            {
+              "main": "blue",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": "........................................................................BB....",
+          "placement": {
+            "column": 5,
+            "rotation": 0
+          },
+          "elapsedMs": 27.971300000000156,
+          "gridAfter": ".......................................................................BBB...B",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 3,
+          "visiblePairs": [
+            {
+              "main": "red",
+              "sub": "blue"
+            },
+            {
+              "main": "blue",
+              "sub": "green"
+            },
+            {
+              "main": "blue",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": ".......................................................................BBB...B",
+          "placement": {
+            "column": 1,
+            "rotation": 0
+          },
+          "elapsedMs": 16.754399999999805,
+          "gridAfter": ".............................................................B.....R...BBB...B",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 4,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "green"
+            },
+            {
+              "main": "blue",
+              "sub": "green"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": ".............................................................B.....R...BBB...B",
+          "placement": {
+            "column": 2,
+            "rotation": 2
+          },
+          "elapsedMs": 37.1229000000003,
+          "gridAfter": ".............................................................B.....RB..BBBG..B",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 5,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "green"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": ".............................................................B.....RB..BBBG..B",
+          "placement": {
+            "column": 4,
+            "rotation": 0
+          },
+          "elapsedMs": 115.04559999999947,
+          "gridAfter": ".............................................................B.....RB.GBBBG.BB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 6,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "blue",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": ".............................................................B.....RB.GBBBG.BB",
+          "placement": {
+            "column": 1,
+            "rotation": 3
+          },
+          "elapsedMs": 12.570399999999609,
+          "gridAfter": ".......................................................Y.....B....RRB.GBBBG.BB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 7,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "blue",
+              "sub": "blue"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": ".......................................................Y.....B....RRB.GBBBG.BB",
+          "placement": {
+            "column": 5,
+            "rotation": 3
+          },
+          "elapsedMs": 9.291200000000572,
+          "gridAfter": ".......................................................Y.....B..BYRRB.GBBBG.BB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 8,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "blue"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": ".......................................................Y.....B..BYRRB.GBBBG.BB",
+          "placement": {
+            "column": 5,
+            "rotation": 0
+          },
+          "elapsedMs": 3.609200000000783,
+          "gridAfter": ".....................................................B.Y...B.B..BYRRB.GBBBG.BB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 9,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "green"
+            },
+            {
+              "main": "green",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": ".....................................................B.Y...B.B..BYRRB.GBBBG.BB",
+          "placement": {
+            "column": 0,
+            "rotation": 2
+          },
+          "elapsedMs": 25.277600000000348,
+          "gridAfter": ".....................................................BYY...BRB..BYRRB.GBBBG.BB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 100,
+            "chainTailScore": 20,
+            "totalScore": 62,
+            "chainCount": 2,
+            "leftoverPuyos": 8,
+            "message": "GTR形状確認。連鎖数: 2",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 10,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "green"
+            },
+            {
+              "main": "green",
+              "sub": "green"
+            },
+            {
+              "main": "red",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": ".....................................................BYY...BRB..BYRRB.GBBBG.BB",
+          "placement": {
+            "column": 3,
+            "rotation": 0
+          },
+          "elapsedMs": 79.25669999999991,
+          "gridAfter": ".....................................................BYY...BRB..BYRRBGGBBBGYBB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 100,
+            "chainTailScore": 20,
+            "totalScore": 62,
+            "chainCount": 2,
+            "leftoverPuyos": 10,
+            "message": "GTR形状確認。連鎖数: 2",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 11,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "green"
+            },
+            {
+              "main": "red",
+              "sub": "green"
+            },
+            {
+              "main": "red",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": ".....................................................BYY...BRB..BYRRBGGBBBGYBB",
+          "placement": {
+            "column": 2,
+            "rotation": 0
+          },
+          "elapsedMs": 29.51380000000063,
+          "gridAfter": ".....................................................BYYG..BRBG.BYRRBGGBBBGYBB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 3,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 12,
+          "visiblePairs": [
+            {
+              "main": "red",
+              "sub": "green"
+            },
+            {
+              "main": "red",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": ".....................................................BYYG..BRBG.BYRRBGGBBBGYBB",
+          "placement": {
+            "column": 0,
+            "rotation": 0
+          },
+          "elapsedMs": 66.6926999999996,
+          "gridAfter": "..........................................G.....R....BYYG..BRBG.BYRRBGGBBBGYBB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 3,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 13,
+          "visiblePairs": [
+            {
+              "main": "red",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": "..........................................G.....R....BYYG..BRBG.BYRRBGGBBBGYBB",
+          "placement": {
+            "column": 2,
+            "rotation": 3
+          },
+          "elapsedMs": 243.09049999999934,
+          "gridAfter": "..........................................G.....RYR..BYYG..BRBG.BYRRBGGBBBGYBB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 3,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 14,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "green"
+            },
+            {
+              "main": "green",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "..........................................G.....RYR..BYYG..BRBG.BYRRBGGBBBGYBB",
+          "placement": {
+            "column": 2,
+            "rotation": 0
+          },
+          "elapsedMs": 125.64519999999993,
+          "gridAfter": "......................................B...G.B...RYR..BYYG..BRBG.BYRRBGGBBBGYBB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 3,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 15,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "green"
+            },
+            {
+              "main": "green",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "......................................B...G.B...RYR..BYYG..BRBG.BYRRBGGBBBGYBB",
+          "placement": {
+            "column": 2,
+            "rotation": 0
+          },
+          "elapsedMs": 337.2413000000006,
+          "gridAfter": "..........................G.....G.....B...G.B...RYR..BYYG..BRBG.BYRRBGGBBBGYBB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 3,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 16,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "..........................G.....G.....B...G.B...RYR..BYYG..BRBG.BYRRBGGBBBGYBB",
+          "placement": {
+            "column": 3,
+            "rotation": 2
+          },
+          "elapsedMs": 560.1884999999984,
+          "gridAfter": "..........................G.....G.....B...G.B...RYR..BYYGG.BRBGBBYRRBGGBBBGYBB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 4,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 17,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "..........................G.....G.....B...G.B...RYR..BYYGG.BRBGBBYRRBGGBBBGYBB",
+          "placement": {
+            "column": 4,
+            "rotation": 2
+          },
+          "elapsedMs": 75.39530000000013,
+          "gridAfter": "..........................G.....G.....B...G.B...RYR.GBYYGGRBRBGBBYRRBGGBBBGYBB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 5,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 18,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "..........................G.....G.....B...G.B...RYR.GBYYGGRBRBGBBYRRBGGBBBGYBB",
+          "placement": {
+            "column": 3,
+            "rotation": 2
+          },
+          "elapsedMs": 69.36139999999978,
+          "gridAfter": "..........................G.....G.....B...G.BY..RYRRGBYYGGRBRBGBBYRRBGGBBBGYBB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 5,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 19,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "red"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "..........................G.....G.....B...G.BY..RYRRGBYYGGRBRBGBBYRRBGGBBBGYBB",
+          "placement": {
+            "column": 4,
+            "rotation": 1
+          },
+          "elapsedMs": 90.04169999999976,
+          "gridAfter": "..........................G.....G.....B...G.BYYRRYRRGBYYGGRBRBGBBYRRBGGBBBGYBB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 5,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 20,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": "..........................G.....G.....B...G.BYYRRYRRGBYYGGRBRBGBBYRRBGGBBBGYBB",
+          "placement": {
+            "column": 2,
+            "rotation": 1
+          },
+          "elapsedMs": 67.04689999999937,
+          "gridAfter": "....................G.....G.....G.....BY..G.BYYRRYRRGBYYGGRBRBGBBYRRBGGBBBGYBB",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 5,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        }
+      ],
+      "finalGrid": "....................G.....G.....G.....BY..G.BYYRRYRRGBYYGGRBRBGBBYRRBGGBBBGYBB",
+      "conditionalExtension": null
+    },
+    {
+      "gameIndex": 166,
+      "gameSeed": 3945895180,
+      "openingKind": "AABC",
+      "maxTurns": 20,
+      "foundationTurn": 18,
+      "perfect": false,
+      "tail": true,
+      "core": true,
+      "postCompletionMoves": 2,
+      "lostFoundation": false,
+      "clears": 0,
+      "stop": "turn_limit",
+      "turns": [
+        {
+          "turn": 1,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "red",
+              "sub": "red"
+            },
+            {
+              "main": "green",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "..............................................................................",
+          "placement": {
+            "column": 4,
+            "rotation": 1
+          },
+          "elapsedMs": 67.86269999999968,
+          "gridAfter": "............................................................................GY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 2,
+          "visiblePairs": [
+            {
+              "main": "red",
+              "sub": "red"
+            },
+            {
+              "main": "green",
+              "sub": "blue"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "............................................................................GY",
+          "placement": {
+            "column": 0,
+            "rotation": 1
+          },
+          "elapsedMs": 3.1947999999993044,
+          "gridAfter": "........................................................................RR..GY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 3,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "blue"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "........................................................................RR..GY",
+          "placement": {
+            "column": 1,
+            "rotation": 1
+          },
+          "elapsedMs": 6.459199999999328,
+          "gridAfter": "...................................................................G....RRB.GY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 4,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "blue"
+            },
+            {
+              "main": "red",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "...................................................................G....RRB.GY",
+          "placement": {
+            "column": 4,
+            "rotation": 1
+          },
+          "elapsedMs": 4.3233000000000175,
+          "gridAfter": "...................................................................G..YYRRB.GY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 5,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "blue"
+            },
+            {
+              "main": "red",
+              "sub": "yellow"
+            },
+            {
+              "main": "green",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": "...................................................................G..YYRRB.GY",
+          "placement": {
+            "column": 3,
+            "rotation": 0
+          },
+          "elapsedMs": 6.365300000001298,
+          "gridAfter": "...................................................................G.BYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 6,
+          "visiblePairs": [
+            {
+              "main": "red",
+              "sub": "yellow"
+            },
+            {
+              "main": "green",
+              "sub": "green"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "...................................................................G.BYYRRBBGY",
+          "placement": {
+            "column": 1,
+            "rotation": 0
+          },
+          "elapsedMs": 2.657199999999648,
+          "gridAfter": ".......................................................Y.....R.....G.BYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 7,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "green"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": ".......................................................Y.....R.....G.BYYRRBBGY",
+          "placement": {
+            "column": 0,
+            "rotation": 0
+          },
+          "elapsedMs": 2.330199999998513,
+          "gridAfter": ".......................................................Y....GR....GG.BYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 8,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": ".......................................................Y....GR....GG.BYYRRBBGY",
+          "placement": {
+            "column": 0,
+            "rotation": 0
+          },
+          "elapsedMs": 11.152000000000044,
+          "gridAfter": "................................................Y.....YY....GR....GG.BYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 9,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "................................................Y.....YY....GR....GG.BYYRRBBGY",
+          "placement": {
+            "column": 4,
+            "rotation": 2
+          },
+          "elapsedMs": 2.0070999999989,
+          "gridAfter": "................................................Y.....YY..Y.GR..B.GG.BYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 10,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "................................................Y.....YY..Y.GR..B.GG.BYYRRBBGY",
+          "placement": {
+            "column": 3,
+            "rotation": 3
+          },
+          "elapsedMs": 5.579800000001342,
+          "gridAfter": "................................................Y.....YY..Y.GR.GB.GGRBYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 100,
+            "chainTailScore": 20,
+            "totalScore": 62,
+            "chainCount": 2,
+            "leftoverPuyos": 10,
+            "message": "GTR形状確認。連鎖数: 2",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 11,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "blue"
+            },
+            {
+              "main": "red",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "................................................Y.....YY..Y.GR.GB.GGRBYYRRBBGY",
+          "placement": {
+            "column": 3,
+            "rotation": 1
+          },
+          "elapsedMs": 62.84050000000025,
+          "gridAfter": "................................................Y...Y.YY.YY.GR.GB.GGRBYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 100,
+            "chainTailScore": 20,
+            "totalScore": 62,
+            "chainCount": 2,
+            "leftoverPuyos": 11,
+            "message": "GTR形状確認。連鎖数: 2",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 12,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "blue"
+            },
+            {
+              "main": "red",
+              "sub": "blue"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "................................................Y...Y.YY.YY.GR.GB.GGRBYYRRBBGY",
+          "placement": {
+            "column": 2,
+            "rotation": 1
+          },
+          "elapsedMs": 26.654500000000553,
+          "gridAfter": "................................................Y..BY.YY.YY.GRBGB.GGRBYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 4,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 13,
+          "visiblePairs": [
+            {
+              "main": "red",
+              "sub": "blue"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "green",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "................................................Y..BY.YY.YY.GRBGB.GGRBYYRRBBGY",
+          "placement": {
+            "column": 3,
+            "rotation": 1
+          },
+          "elapsedMs": 64.98070000000007,
+          "gridAfter": ".............................................RB.Y..BY.YY.YY.GRBGB.GGRBYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 4,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 14,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "green",
+              "sub": "blue"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": ".............................................RB.Y..BY.YY.YY.GRBGB.GGRBYYRRBBGY",
+          "placement": {
+            "column": 3,
+            "rotation": 1
+          },
+          "elapsedMs": 57.14730000000054,
+          "gridAfter": ".......................................BY....RB.Y..BY.YY.YY.GRBGB.GGRBYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 4,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 15,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "blue"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "red",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": ".......................................BY....RB.Y..BY.YY.YY.GRBGB.GGRBYYRRBBGY",
+          "placement": {
+            "column": 5,
+            "rotation": 0
+          },
+          "elapsedMs": 72.384399999999,
+          "gridAfter": ".......................................BY....RB.Y..BY.YY.YYBGRBGBGGGRBYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 6,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 16,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "red",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": ".......................................BY....RB.Y..BY.YY.YYBGRBGBGGGRBYYRRBBGY",
+          "placement": {
+            "column": 5,
+            "rotation": 0
+          },
+          "elapsedMs": 103.0023000000001,
+          "gridAfter": ".......................................BY....RBYY..BYBYY.YYBGRBGBGGGRBYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 6,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 17,
+          "visiblePairs": [
+            {
+              "main": "red",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": ".......................................BY....RBYY..BYBYY.YYBGRBGBGGGRBYYRRBBGY",
+          "placement": {
+            "column": 5,
+            "rotation": 0
+          },
+          "elapsedMs": 124.70629999999983,
+          "gridAfter": "...................................B...BYR...RBYY..BYBYY.YYBGRBGBGGGRBYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 40,
+            "totalScore": 74,
+            "chainCount": 4,
+            "leftoverPuyos": 6,
+            "message": "良いGTR！4連鎖達成",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 18,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "green"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "...................................B...BYR...RBYY..BYBYY.YYBGRBGBGGGRBYYRRBBGY",
+          "placement": {
+            "column": 2,
+            "rotation": 0
+          },
+          "elapsedMs": 139.67339999999967,
+          "gridAfter": "...................................B...BYR...RBYY.YBYBYYGYYBGRBGBGGGRBYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 50,
+            "totalScore": 79,
+            "chainCount": 5,
+            "leftoverPuyos": 3,
+            "message": "素晴らしい！5連鎖のGTR！",
+            "hasBasicPattern": true,
+            "row10Usage": "moderate",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 19,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "green"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "...................................B...BYR...RBYY.YBYBYYGYYBGRBGBGGGRBYYRRBBGY",
+          "placement": {
+            "column": 3,
+            "rotation": 0
+          },
+          "elapsedMs": 327.6419999999998,
+          "gridAfter": "...........................G.....B.B...BYR...RBYY.YBYBYYGYYBGRBGBGGGRBYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 50,
+            "totalScore": 79,
+            "chainCount": 5,
+            "leftoverPuyos": 3,
+            "message": "素晴らしい！5連鎖のGTR！",
+            "hasBasicPattern": true,
+            "row10Usage": "moderate",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 20,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "...........................G.....B.B...BYR...RBYY.YBYBYYGYYBGRBGBGGGRBYYRRBBGY",
+          "placement": {
+            "column": 2,
+            "rotation": 0
+          },
+          "elapsedMs": 270.96069999999963,
+          "gridAfter": "...........................G.....B.B..RBYR..YRBYY.YBYBYYGYYBGRBGBGGGRBYYRRBBGY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 50,
+            "totalScore": 79,
+            "chainCount": 5,
+            "leftoverPuyos": 3,
+            "message": "素晴らしい！5連鎖のGTR！",
+            "hasBasicPattern": true,
+            "row10Usage": "moderate",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        }
+      ],
+      "finalGrid": "...........................G.....B.B..RBYR..YRBYY.YBYBYYGYYBGRBGBGGGRBYYRRBBGY",
+      "conditionalExtension": null
+    },
+    {
+      "gameIndex": 313,
+      "gameSeed": 3224421038,
+      "openingKind": "AABB",
+      "maxTurns": 20,
+      "foundationTurn": 17,
+      "perfect": false,
+      "tail": true,
+      "core": true,
+      "postCompletionMoves": 3,
+      "lostFoundation": false,
+      "clears": 0,
+      "stop": "turn_limit",
+      "turns": [
+        {
+          "turn": 1,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "green"
+            },
+            {
+              "main": "blue",
+              "sub": "blue"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "..............................................................................",
+          "placement": {
+            "column": 0,
+            "rotation": 1
+          },
+          "elapsedMs": 59.86309999999867,
+          "gridAfter": "........................................................................GG....",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 2,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "blue"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": "........................................................................GG....",
+          "placement": {
+            "column": 0,
+            "rotation": 0
+          },
+          "elapsedMs": 26.34150000000045,
+          "gridAfter": "............................................................B.....B.....GG....",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 3,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "green"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "............................................................B.....B.....GG....",
+          "placement": {
+            "column": 3,
+            "rotation": 1
+          },
+          "elapsedMs": 94.86509999999907,
+          "gridAfter": "............................................................B.....B.....GG.YY.",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 4,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "green"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "............................................................B.....B.....GG.YY.",
+          "placement": {
+            "column": 1,
+            "rotation": 0
+          },
+          "elapsedMs": 44.0630000000001,
+          "gridAfter": "............................................................BG....BB....GG.YY.",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 5,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "............................................................BG....BB....GG.YY.",
+          "placement": {
+            "column": 4,
+            "rotation": 1
+          },
+          "elapsedMs": 37.178499999999985,
+          "gridAfter": "............................................................BG....BB..B.GG.YYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 6,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "............................................................BG....BB..B.GG.YYY",
+          "placement": {
+            "column": 5,
+            "rotation": 0
+          },
+          "elapsedMs": 12.436799999999494,
+          "gridAfter": "............................................................BG...YBB..BGGG.YYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 7,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "............................................................BG...YBB..BGGG.YYY",
+          "placement": {
+            "column": 5,
+            "rotation": 0
+          },
+          "elapsedMs": 8.255300000000716,
+          "gridAfter": ".....................................................Y.....YBG...YBB..BGGG.YYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 8,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": ".....................................................Y.....YBG...YBB..BGGG.YYY",
+          "placement": {
+            "column": 2,
+            "rotation": 3
+          },
+          "elapsedMs": 72.1931999999997,
+          "gridAfter": ".....................................................Y.Y...YBG...YBB..BGGGBYYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 9,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "red",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": ".....................................................Y.Y...YBG...YBB..BGGGBYYY",
+          "placement": {
+            "column": 0,
+            "rotation": 2
+          },
+          "elapsedMs": 21.775900000000547,
+          "gridAfter": "................................................B....YYY...YBG...YBB..BGGGBYYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 0,
+            "chainTailScore": 0,
+            "totalScore": 0,
+            "chainCount": 0,
+            "leftoverPuyos": 0,
+            "message": "GTRの必須折り返しがありません",
+            "hasBasicPattern": false,
+            "row10Usage": "heavy",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 10,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "yellow"
+            },
+            {
+              "main": "red",
+              "sub": "yellow"
+            },
+            {
+              "main": "green",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "................................................B....YYY...YBG...YBB..BGGGBYYY",
+          "placement": {
+            "column": 2,
+            "rotation": 3
+          },
+          "elapsedMs": 10.921000000000276,
+          "gridAfter": "................................................BY...YYY...YBG...YBBG.BGGGBYYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 100,
+            "chainTailScore": 20,
+            "totalScore": 62,
+            "chainCount": 2,
+            "leftoverPuyos": 8,
+            "message": "GTR形状確認。連鎖数: 2",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 11,
+          "visiblePairs": [
+            {
+              "main": "red",
+              "sub": "yellow"
+            },
+            {
+              "main": "green",
+              "sub": "blue"
+            },
+            {
+              "main": "red",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": "................................................BY...YYY...YBG...YBBG.BGGGBYYY",
+          "placement": {
+            "column": 0,
+            "rotation": 2
+          },
+          "elapsedMs": 107.97210000000086,
+          "gridAfter": "....................................R.....Y.....BY...YYY...YBG...YBBG.BGGGBYYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 100,
+            "chainTailScore": 20,
+            "totalScore": 62,
+            "chainCount": 2,
+            "leftoverPuyos": 8,
+            "message": "GTR形状確認。連鎖数: 2",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 12,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "blue"
+            },
+            {
+              "main": "red",
+              "sub": "green"
+            },
+            {
+              "main": "red",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "....................................R.....Y.....BY...YYY...YBG...YBBG.BGGGBYYY",
+          "placement": {
+            "column": 4,
+            "rotation": 3
+          },
+          "elapsedMs": 58.67479999999887,
+          "gridAfter": "....................................R.....Y.....BY...YYY...YBG..GYBBGBBGGGBYYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 100,
+            "chainTailScore": 20,
+            "totalScore": 62,
+            "chainCount": 2,
+            "leftoverPuyos": 10,
+            "message": "GTR形状確認。連鎖数: 2",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 13,
+          "visiblePairs": [
+            {
+              "main": "red",
+              "sub": "green"
+            },
+            {
+              "main": "red",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            }
+          ],
+          "gridBefore": "....................................R.....Y.....BY...YYY...YBG..GYBBGBBGGGBYYY",
+          "placement": {
+            "column": 3,
+            "rotation": 2
+          },
+          "elapsedMs": 64.98559999999998,
+          "gridAfter": "....................................R.....Y.....BY...YYY.R.YBG.GGYBBGBBGGGBYYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 100,
+            "chainTailScore": 20,
+            "totalScore": 62,
+            "chainCount": 2,
+            "leftoverPuyos": 12,
+            "message": "GTR形状確認。連鎖数: 2",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 14,
+          "visiblePairs": [
+            {
+              "main": "red",
+              "sub": "yellow"
+            },
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": "....................................R.....Y.....BY...YYY.R.YBG.GGYBBGBBGGGBYYY",
+          "placement": {
+            "column": 5,
+            "rotation": 0
+          },
+          "elapsedMs": 56.404999999998836,
+          "gridAfter": "....................................R....YY....RBY...YYY.R.YBG.GGYBBGBBGGGBYYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": false,
+            "quality": 100,
+            "chainTailScore": 20,
+            "totalScore": 62,
+            "chainCount": 2,
+            "leftoverPuyos": 12,
+            "message": "GTR形状確認。連鎖数: 2",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 15,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "yellow"
+            },
+            {
+              "main": "yellow",
+              "sub": "red"
+            },
+            {
+              "main": "green",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "....................................R....YY....RBY...YYY.R.YBG.GGYBBGBBGGGBYYY",
+          "placement": {
+            "column": 2,
+            "rotation": 1
+          },
+          "elapsedMs": 88.78960000000006,
+          "gridAfter": "....................................R....YY....RBY.Y.YYY.R.YBGBGGYBBGBBGGGBYYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 30,
+            "totalScore": 68,
+            "chainCount": 3,
+            "leftoverPuyos": 9,
+            "message": "GTR完成！3連鎖",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 16,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "red"
+            },
+            {
+              "main": "green",
+              "sub": "blue"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            }
+          ],
+          "gridBefore": "....................................R....YY....RBY.Y.YYY.R.YBGBGGYBBGBBGGGBYYY",
+          "placement": {
+            "column": 5,
+            "rotation": 0
+          },
+          "elapsedMs": 428.65090000000055,
+          "gridAfter": ".............................R.....YR....YY....RBY.Y.YYY.R.YBGBGGYBBGBBGGGBYYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 30,
+            "totalScore": 68,
+            "chainCount": 3,
+            "leftoverPuyos": 9,
+            "message": "GTR完成！3連鎖",
+            "hasBasicPattern": true,
+            "row10Usage": "minimal",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 17,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "blue"
+            },
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": ".............................R.....YR....YY....RBY.Y.YYY.R.YBGBGGYBBGBBGGGBYYY",
+          "placement": {
+            "column": 4,
+            "rotation": 0
+          },
+          "elapsedMs": 151.261199999999,
+          "gridAfter": ".............................R.....YR....YY....RBY.YBYYY.RGYBGBGGYBBGBBGGGBYYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 68,
+            "totalScore": 90,
+            "chainCount": 5,
+            "leftoverPuyos": 1,
+            "message": "素晴らしい！5連鎖のGTR！",
+            "hasBasicPattern": true,
+            "row10Usage": "moderate",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 18,
+          "visiblePairs": [
+            {
+              "main": "yellow",
+              "sub": "blue"
+            },
+            {
+              "main": "green",
+              "sub": "green"
+            },
+            {
+              "main": "blue",
+              "sub": "red"
+            }
+          ],
+          "gridBefore": ".............................R.....YR....YY....RBY.YBYYY.RGYBGBGGYBBGBBGGGBYYY",
+          "placement": {
+            "column": 1,
+            "rotation": 2
+          },
+          "elapsedMs": 338.4354999999996,
+          "gridAfter": ".............................R.....YRY...YYB...RBY.YBYYY.RGYBGBGGYBBGBBGGGBYYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 68,
+            "totalScore": 90,
+            "chainCount": 5,
+            "leftoverPuyos": 1,
+            "message": "素晴らしい！5連鎖のGTR！",
+            "hasBasicPattern": true,
+            "row10Usage": "moderate",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 19,
+          "visiblePairs": [
+            {
+              "main": "green",
+              "sub": "green"
+            },
+            {
+              "main": "blue",
+              "sub": "red"
+            },
+            {
+              "main": "blue",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": ".............................R.....YRY...YYB...RBY.YBYYY.RGYBGBGGYBBGBBGGGBYYY",
+          "placement": {
+            "column": 0,
+            "rotation": 1
+          },
+          "elapsedMs": 240.01419999999962,
+          "gridAfter": ".............................RGG...YRY...YYB...RBY.YBYYY.RGYBGBGGYBBGBBGGGBYYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 68,
+            "totalScore": 90,
+            "chainCount": 5,
+            "leftoverPuyos": 1,
+            "message": "素晴らしい！5連鎖のGTR！",
+            "hasBasicPattern": true,
+            "row10Usage": "moderate",
+            "rightEdgeRaised": false,
+            "leftoverConnected": false
+          },
+          "physicalChains": 0
+        },
+        {
+          "turn": 20,
+          "visiblePairs": [
+            {
+              "main": "blue",
+              "sub": "red"
+            },
+            {
+              "main": "blue",
+              "sub": "green"
+            },
+            {
+              "main": "green",
+              "sub": "green"
+            }
+          ],
+          "gridBefore": ".............................RGG...YRY...YYB...RBY.YBYYY.RGYBGBGGYBBGBBGGGBYYY",
+          "placement": {
+            "column": 3,
+            "rotation": 3
+          },
+          "elapsedMs": 353.47490000000107,
+          "gridAfter": ".............................RGG...YRY...YYB.B.RBY.YBYYYRRGYBGBGGYBBGBBGGGBYYY",
+          "evaluation": {
+            "scoringVersion": "masked-foundation-minimal-v2",
+            "minimalFoundationComplete": false,
+            "isGTR": true,
+            "quality": 100,
+            "chainTailScore": 68,
+            "totalScore": 90,
+            "chainCount": 5,
+            "leftoverPuyos": 2,
+            "message": "素晴らしい！5連鎖のGTR！",
+            "hasBasicPattern": true,
+            "row10Usage": "moderate",
+            "rightEdgeRaised": false,
+            "leftoverConnected": true
+          },
+          "physicalChains": 0
+        }
+      ],
+      "finalGrid": ".............................RGG...YRY...YYB.B.RBY.YBYYYRRGYBGBGGYBBGBBGGGBYYY",
+      "conditionalExtension": {
+        "chainCount": 7,
+        "needed": 2,
+        "triggerColumn": 2,
+        "triggerColor": "blue",
+        "headSteps": 2,
+        "realLeftovers": 9
+      }
+    }
+  ]
+}

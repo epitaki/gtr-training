@@ -1,0 +1,2687 @@
+New file: docs/PIXEL-UI-DESIGN-20260928.md
++# 全画面8bit UI統一 — 2026-09-28
++
++状態: Astra設計・Sol実装と実装後検証まで完了。独立レビュー・Astra受入・利用者の視覚確認は未完了。利用者の指定によりUI改善を先に実施し、マウス割当は既存タスクの未完了項目としてUI後へ延期する。
++Habitica: `78b67ce5-e604-4279-bedb-dff0dccdd4d8`。既存計画: [INPUT-PIXEL-THEME-PLAN-20260927.md](INPUT-PIXEL-THEME-PLAN-20260927.md)。開始時点: [baseline](reviews/pixel-ui-baseline-20260928.json)。
++
++## 目的・範囲
++
++結果画面の文字のぼやけ・太さの不統一を解消し、ホーム、メニュー、ガイド練習、スコアアタック、結果、停止、完成形一覧／詳細、共有、キー設定、再現エラーを既存の独自ぷよドット絵に合うUIへ統一する。表示のみの変更とし、採点・推薦・供給・乱数・連鎖物理・replay・保存・入力契約・順次消去を維持する。設定1／設定2の名称と手元へボタンの削除を維持する。
++
++## Astra設計
++
++背景#171426、盤面／入力#0c0a14、パネル#211d33、枠#6f648d、本文#f6f2ff、補足#c4bfd3。主操作#b5a8ff＋暗色文字、成功#91ecc2、注意#ffe99b、失敗#ff9aa5。直角2px枠・4pxの硬い影、余白4/8/12/16/24/32pxを基本とする。疑似bold・ぼかし・グラデーション・大きな丸角を整理する。本文16px、補足14px、見出し24/32px、得点32px、短い英字ラベルのみ12px。操作領域は原則44px以上、明瞭なfocus-visibleを備える。
++
++DotGothic16 Regularをローカル配布し、React／Phaserのfamily順を共通化する。PhaserのTextStyleはnormal、resolution 2、役割別共通スタイルを基本とし、全canvasへのpixelatedやpixelArt指定は追加しない。
++
++main.tsxでReact描画前にFontFace.loadを一度だけ待つ。期限2秒以内の成功のみdocument.fonts.addし、失敗・非対応・timeoutは同じ日本語fallbackで起動する。遅れて成功しても登録しない。同名のCSS @font-faceや無期限のfonts.ready待ちは使わない。初期待機はrole=statusで表示する。GameManagerの同期APIや開始timer／suspension契約には非同期処理を持ち込まない。
++
++guided 900×800、score 640×800、セル48pxとScale.NONEを維持し、canvas領域だけ横スクロールを許す。toolbar・共有・設定はviewport内で折り返し、galleryは320pxで1列、GameControlsは小画面で3列×2行を許す。長いキー名・コメント・URLを折り返し、診断JSONは独立したスクロールを許す。結果画面・COACHは前要素のbottom＋gapで長文を配置し、説明の切捨てや文字縮小で重なりを隠さない。教材図だけ必要に応じ表示セルを36pxまで縮小可能。
++
++アプリから未参照のTopMenu／GameLayout／GameBoardを新たなルートへ接続しない。既存pointer handlersを維持し、マウス割当の追加は行わない。既存PNG／atlas／manifestを再生成しない。
++
++## 追加設計: 操作一覧をDOMへ移動
++
++固定canvas内で長い割当一覧が盤面／COACHに重なるため、Astra追加設計でcanvas直下かつcanvas-scroll外に表示専用の共通DOM一覧を置くことを承認した。viewport内幅、canvas幅を上限とし、各操作・キー群を省略せず折り返す。左移動／右移動／左回転／右回転は個別に示す。getBindings／subscribeBindingsとACTION_LABELS／actionKeysを再利用し、保存した設定だけを反映、購読解除も行う。保存失敗でも今回のみ適用の設定は反映する。
++
++ガイドは基本7＋巻戻し・評価・ガイド・自由落下・共有、スコアは基本7＋評価・自由落下を表示。見出しは「通常プレイのキー操作」、停止中・結果表示中などは画面内の案内を確認と添える。一覧は説明専用で状態同期やキー送信を追加しない。結果の固定Space／Escと停止・終了・復旧の局所案内、Sceneの設定購読は維持する。
++
++canvasの一覧は固定一行「操作キーは画面下の一覧を確認」へ変更できる。タイトルおよびy=78付近の連鎖／復旧通知と重ねず、Text boundsで確認する。最大8キーの長い割当、保存／取消／保存失敗、モード別一覧と購読を小規模な意味ある検証で確認する。実装では既存のタッチ操作を盤面に近い位置に維持し、その後にDOM操作一覧を置く。
++
++追加設計ではDPR／zoomの操作手段が使えない条件を未実測として残すことを了承。viewport変更はzoom検証の代替にはしない。利用者の視覚確認は別途必要。
++
++## フォント出典・権利・収録文字
++
++Fontworks公式の[README](https://github.com/fontworks-fonts/DotGothic16/blob/master/README-JP.md)、[OFL本文](https://github.com/fontworks-fonts/DotGothic16/blob/master/OFL.txt)、[配布TTF](https://github.com/fontworks-fonts/DotGothic16/tree/master/fonts/ttf)を確認。SIL OFL 1.1。未改変TTFと著作権を含むOFL本文を同梱し、本番配布物にもOFLを含める。
++
++取得TTF: DotGothic16-Regular.ttf、2,069,236bytes、SHA256 `155DA8F318553C11D9DFFC2AFFBC7C2114C6A46F9740BCF639ED5568AF92BE71`。OFL SHA256 `B6630C61EA078CACD7FABE37D14FFE557A0B45B06683374A9AA9E24262993E33`。
++TTF cmap format4/12の直接検査で「GTR練習評価結果巻戻し設定完成形共有操作再開終了保存取消読み込みエラー0123456789←→↑↓×●■◆★□＋−！？：／（）「」ー・」を収録確認。✓／✗は未収録。意味を保った日本語または収録記号に表示層で置換し、読み上げ名を維持する。追加使用記号も確認する。
++
++## 受入・検証
++
++- 開始時330ファイルを退避。直前受入197ソースのhash一致。直前同一ソースで型検査・90files/1,262tests・build成功済み。
++- loaderの期限内成功、拒否、timeout、非対応、timeout後成功でも未登録、各経路の起動継続を検証する。
++- 必須: bun run type-check / bun run test / bun run build。CLI変更時のみtype-check:scripts。
++- 同一replay／盤面で前後の点数・チェック・助言・供給と結果図の順次再生を確認する。
++- ホーム・両ゲーム・結果・gallery詳細・共有・設定・再現エラーを320/390/768/desktop、DPR1/2、100/125/200%で可能な手段により確認し、未実施条件は明記する。
++- 日本語・数字・記号・長い助言／キー名／コメント、fallback、focus、設定取消と復帰、共有／gallery中の停止、連鎖停止と再開を確認する。
++- 保護対象とatlasの開始時hash一致、本番フォント／OFL配布と外部フォント通信の除去を確認する。
++- Sol実装→固定した今回差分を新規Sol3人が独立レビュー→Astra受入。指摘があれば修正して再度新規3人とAstra。
++- 代表のホーム・ガイド・結果・設定を利用者に提示して視覚品質の確認を得る。未確認ならタスク全体を完了にしない。
++
++## 進捗
++
++- 2026-09-28: Astra設計後にSolがテーマ、フォント起動待ち、React／Phaser表示、DOM操作一覧を実装。親の画面確認で判明した狭幅のはみ出し、長いキー設定を保存した直後のCOACH重なり、入力欄のfocus表示も修正。実装後検証の詳細は[検証記録](PIXEL-UI-VALIDATION-20260928.md)。レビュー・Astra受入・利用者視覚確認は未完了。
++- マウス: Habitica `4a6ca92f-cfe3-4f5f-9588-1e3ea42f0b01` の既存未完了項目 `e30bf2d6-e819-45ca-a405-4ea0387d121e` をUI後に延期。重複タスクは作成しない。
++- Habitica開始更新: 対象2件のみ更新し再取得。notes／checklist完全一致を確認。キー設定9/10・本体未完了、マウス項目は「後回し（UI改善後）」かつ未完了。UI2/7・本体未完了（開始文書化／Astra設計のみ完了）。
+
+New file: docs/PIXEL-UI-VALIDATION-20260928.md
++# UI統一の検証記録 — 2026-09-28
++
++状態: Sol実装後の基本検証・画面検証完了（未実測条件は下記）。独立レビュー・Astra受入・利用者の視覚確認は未完了。
++設計: [PIXEL-UI-DESIGN-20260928.md](PIXEL-UI-DESIGN-20260928.md)。
++
++## 変更前
++
++作業用別タブでホーム、ガイド、スコアアタック評価、共有、再現エラーを確認。実機ブラウザのviewportは1280×720、DPR1.25。guided canvasの内部／CSS寸法は900×800、document.scrollWidth1265（縦scrollbar分）。
++ホームは明るい外側と丸角・グラデーション、ゲームは暗色の混在。結果は小さい字・淡い補足・異なる太さが混在する。固定盤面の変更前評価を画面キャプチャで確認した。
++
++比較用の完成盤面: [pixel-ui-complete-replay.json](reviews/pixel-ui-complete-replay.json)。既存Y字教材の19個を13行盤面下4行へ配置した試験fixture。乱数状態／ツモは共有画面に表示された診断データ由来。全体評価の実験用としてgravity off、paused/showingResultをtrueとし、履歴を空にした。実際の利用者プレイ記録ではない。
++変更前表示はGTR Complete、土台100点、土台5連鎖（基本形2＋連鎖尾3）、各達成項目合格、余りなし1個・同色連結、範囲外0個。実発火の状態は作らず、既存の仮想発火による結果図を使用する。
++
++未完成の縦積み盤面でも土台0点・必須折返し不足・範囲外6個を確認。比較の主fixtureは上の完成盤面に固定する。
++
++## 実装後チェック
++
++- 最終ソースで `bun run type-check` 成功、`bun run test --maxWorkers=2` は92files/1,275tests成功（112.58秒）、`bun run build` 成功（7.95秒）。既存の500kB超chunk警告あり。初回テスト起動はsandboxの親ディレクトリ読込制限で失敗したが、承認された同一コマンドの実行で成功。CLIは変更なし。
++- 同一の完成fixtureで土台100点・5連鎖（基本形2＋連鎖尾3）・達成項目・余りなし1個／同色・範囲外0個が変更前後で一致。フォント404時も同値を表示。供給・推薦・物理の保護はソースhashと既存回帰テストで確認する。完成形Y字1の実際の再生を操作し「5連鎖・全消し」まで確認。
++- ホーム: 幅320/390/768/desktopで全体の横はみ出しなし。最小時document client/scrollとも305px（縦scrollbar15px）。6列の飾り盤面、モード選択、文章を確認。
++- ガイド: 幅320でdocument305/305、canvas-scroll249/900、canvas内部・CSS900×800維持。タッチ操作は一覧より先、長いキー一覧はviewport内に折返す。通常・完成結果・長いCOACH説明を確認。
++- スコア: 幅390でページ横はみ出しなし、canvas640×800維持。操作一覧9項目、巻戻し・ガイド・共有を含まない。ポーズ表示と復帰を操作。連鎖途中の手動停止／再開、非表示tabの手動タイミング試験は未実施（既存回帰テストで検証）。
++- 設定: 幅320のdialog client/scrollとも290px。設定1／設定2、不要な手元へボタンなし。巻戻し8キーと評価8キーを追加し、保存前はDOM説明を変更せず、保存後に全件反映、取消は適用済み設定を維持。長いキー名が切れず、保存直後にもCOACH説明・完成見本・自動配置ボタンが重ならずcanvas内に収まる。回帰テストを追加。
++- 共有: 幅320の長いコメント（8回繰返し）・向き選択・ボタンが収まり、textarea／selectの明瞭な3px focusを最終buildで確認。診断欄は独立scroll。
++- Gallery: 幅320で1列、詳細幅約267px、長文は縦scrollで読める。再生完了と閉じた後の起点へのfocus復帰、ゲームへ戻る動作を確認。
++- 再現エラー: 幅320、ページclient/scrollとも320px。理由とホームへ戻るを表示し、実際にホームへ復帰。
++- 日本語・数字・矢印・長文・結果の○／×、薄い補足、主操作のコントラストを画面で確認。TTF cmapから未収録だった✓／✗等を表示層で置換。
++- フォント: 本番distをlocalhost専用の通常／font404／font4秒遅延serverで表示。全経路で起動し、404でも設定・完成結果を操作できる。ホームの同一badge幅は通常194.40px、404と遅延完了後201.53pxで、期限超過後もfallbackを維持。loader8テストで期限内成功・拒否・2秒timeout・遅い成功の未登録・非対応・例外の起動継続を確認。
++- 配布: TTFとOFLのpublic／distのSHA256は設計書記載値に一致。Google Fontsの外部参照を除去。2,069,236bytesの未改変TTFと4,492bytesのOFLを同梱。
++- 保護hash: core／advisor／gtr／guide／feedback／input／GameManager／assets／CLIの開始時172ファイルについて変更・削除0件。
++
++## 検証の制約と残件
++
++- viewport指定時のDPRは約1、通常環境は1.25。APIはwidth/height指定のみでDPR2を設定できず未実測。
++- 通常zoomで確認。125%／200%は利用可能な操作で変更を確認できず未実測。viewport変更をzoom検証の代わりにしていない。
++- 横scrollは初期のwheel操作では変化を得られなかったが、盤面下のバーをdragしてscrollLeft0→651.20（client249/内容900の右端）→0を実測。右側COACH表示まで到達し、左へ戻れることを確認済み。
++- 全画面を全viewport条件で総当たりしたわけではない。上記の画面と条件を実測した。
++- 最終ソースに対する新規Sol3人の独立レビュー／Astra受入: 未実施。各回の詳細履歴は別のレビュー記録で管理する。
++- 代表画面の利用者視覚確認: 未実施。技術受入後も確認まではHabitica本体を未完了とする。
++
++## 追加の実測
++
++長いキー設定の保存直後にCOACHを再配置しても、推薦再計算・盤面・評価を変更しないことを回帰テストで確認。
++
++幅320のGalleryBoard実測で一覧6列は全て15px（セル座標差15）、詳細6列は全て36px（差36）、左右insetはともに約9.6px。document client/scrollとも305px、詳細盤面幅235.20pxで収まる。再生直後の左上発火枠と、5連鎖・全消しまでの表示も確認した。
+
+New file: docs/reviews/pixel-ui-complete-replay.json
++{
++  "kind": "gtr-replay",
++  "version": 1,
++  "sourceCapturedAt": "2026-09-28T00:23:12.426Z",
++  "field": {
++    "width": 6,
++    "height": 13,
++    "grid": [
++      [
++        null,
++        null,
++        null,
++        null,
++        null,
++        null
++      ],
++      [
++        null,
++        null,
++        null,
++        null,
++        null,
++        null
++      ],
++      [
++        null,
++        null,
++        null,
++        null,
++        null,
++        null
++      ],
++      [
++        null,
++        null,
++        null,
++        null,
++        null,
++        null
++      ],
++      [
++        null,
++        null,
++        null,
++        null,
++        null,
++        null
++      ],
++      [
++        null,
++        null,
++        null,
++        null,
++        null,
++        null
++      ],
++      [
++        null,
++        null,
++        null,
++        null,
++        null,
++        null
++      ],
++      [
++        null,
++        null,
++        null,
++        null,
++        null,
++        null
++      ],
++      [
++        null,
++        null,
++        null,
++        null,
++        null,
++        null
++      ],
++      [
++        null,
++        null,
++        null,
++        null,
++        null,
++        "red"
++      ],
++      [
++        "red",
++        "blue",
++        "green",
++        "yellow",
++        "yellow",
++        "red"
++      ],
++      [
++        "red",
++        "red",
++        "blue",
++        "green",
++        "green",
++        "yellow"
++      ],
++      [
++        "blue",
++        "blue",
++        "green",
++        "red",
++        "red",
++        "yellow"
++      ]
++    ]
++  },
++  "currentPair": {
++    "main": {
++      "color": "red",
++      "x": 2,
++      "y": 1
++    },
++    "sub": {
++      "color": "red",
++      "x": 2,
++      "y": 0
++    },
++    "rotation": 0,
++    "falling": true
++  },
++  "nextPair": {
++    "main": {
++      "color": "green",
++      "x": 2,
++      "y": 1
++    },
++    "sub": {
++      "color": "blue",
++      "x": 2,
++      "y": 0
++    },
++    "rotation": 0,
++    "falling": true
++  },
++  "nextNextPair": {
++    "main": {
++      "color": "yellow",
++      "x": 2,
++      "y": 1
++    },
++    "sub": {
++      "color": "green",
++      "x": 2,
++      "y": 0
++    },
++    "rotation": 0,
++    "falling": true
++  },
++  "openingPairs": {
++    "pair1": {
++      "main": {
++        "color": "blue",
++        "x": 2,
++        "y": 1
++      },
++      "sub": {
++        "color": "red",
++        "x": 2,
++        "y": 0
++      },
++      "rotation": 0,
++      "falling": true
++    },
++    "pair2": {
++      "main": {
++        "color": "blue",
++        "x": 2,
++        "y": 1
++      },
++      "sub": {
++        "color": "yellow",
++        "x": 2,
++        "y": 0
++      },
++      "rotation": 0,
++      "falling": true
++    }
++  },
++  "score": 0,
++  "gtrCount": 0,
++  "gtrScore": 0,
++  "gameOver": false,
++  "pairRandomState": 2035149345,
++  "trainingPlan": {
++    "colorA": "red",
++    "colorB": "blue",
++    "colorC": "green",
++    "colorD": "yellow"
++  },
++  "sourceSettings": {
++    "gravityEnabled": false,
++    "advisorEnabled": true,
++    "paused": true,
++    "showingResult": true
++  },
++  "recentTurns": []
++}
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\index.html" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\index.html"
+index 2b2c2df..55671aa 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\index.html"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\index.html"
+@@ -4,13 +4,10 @@
+     <meta charset="UTF-8" />
+     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-    <link rel="preconnect" href="https://fonts.googleapis.com">
+-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+     <title>GTRトレーニング</title>
+   </head>
+   <body>
+-    <div id="root"></div>
++    <div id="root"><p role="status">画面を準備しています…</p></div>
+     <script type="module" src="/src/main.tsx"></script>
+   </body>
+-</html>
+\ No newline at end of file
++</html>
+
+Binary asset: public/fonts/DotGothic16-Regular.ttf; SHA256 155DA8F318553C11D9DFFC2AFFBC7C2114C6A46F9740BCF639ED5568AF92BE71
+
+New file: public/fonts/OFL.txt
++Copyright 2020 The DotGothic16 Project Authors (https://github.com/fontworks-fonts/DotGothic16)
++
++This Font Software is licensed under the SIL Open Font License, Version 1.1.
++This license is copied below, and is also available with a FAQ at:
++http://scripts.sil.org/OFL
++
++
++-----------------------------------------------------------
++SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
++-----------------------------------------------------------
++
++PREAMBLE
++The goals of the Open Font License (OFL) are to stimulate worldwide
++development of collaborative font projects, to support the font creation
++efforts of academic and linguistic communities, and to provide a free and
++open framework in which fonts may be shared and improved in partnership
++with others.
++
++The OFL allows the licensed fonts to be used, studied, modified and
++redistributed freely as long as they are not sold by themselves. The
++fonts, including any derivative works, can be bundled, embedded, 
++redistributed and/or sold with any software provided that any reserved
++names are not used by derivative works. The fonts and derivatives,
++however, cannot be released under any other type of license. The
++requirement for fonts to remain under this license does not apply
++to any document created using the fonts or their derivatives.
++
++DEFINITIONS
++"Font Software" refers to the set of files released by the Copyright
++Holder(s) under this license and clearly marked as such. This may
++include source files, build scripts and documentation.
++
++"Reserved Font Name" refers to any names specified as such after the
++copyright statement(s).
++
++"Original Version" refers to the collection of Font Software components as
++distributed by the Copyright Holder(s).
++
++"Modified Version" refers to any derivative made by adding to, deleting,
++or substituting -- in part or in whole -- any of the components of the
++Original Version, by changing formats or by porting the Font Software to a
++new environment.
++
++"Author" refers to any designer, engineer, programmer, technical
++writer or other person who contributed to the Font Software.
++
++PERMISSION & CONDITIONS
++Permission is hereby granted, free of charge, to any person obtaining
++a copy of the Font Software, to use, study, copy, merge, embed, modify,
++redistribute, and sell modified and unmodified copies of the Font
++Software, subject to the following conditions:
++
++1) Neither the Font Software nor any of its individual components,
++in Original or Modified Versions, may be sold by itself.
++
++2) Original or Modified Versions of the Font Software may be bundled,
++redistributed and/or sold with any software, provided that each copy
++contains the above copyright notice and this license. These can be
++included either as stand-alone text files, human-readable headers or
++in the appropriate machine-readable metadata fields within text or
++binary files as long as those fields can be easily viewed by the user.
++
++3) No Modified Version of the Font Software may use the Reserved Font
++Name(s) unless explicit written permission is granted by the corresponding
++Copyright Holder. This restriction only applies to the primary font name as
++presented to the users.
++
++4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
++Software shall not be used to promote, endorse or advertise any
++Modified Version, except to acknowledge the contribution(s) of the
++Copyright Holder(s) and the Author(s) or with their explicit written
++permission.
++
++5) The Font Software, modified or unmodified, in part or in whole,
++must be distributed entirely under this license, and must not be
++distributed under any other license. The requirement for fonts to
++remain under this license does not apply to any document created
++using the Font Software.
++
++TERMINATION
++This license becomes null and void if any of the above conditions are
++not met.
++
++DISCLAIMER
++THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
++MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
++OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
++COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
++INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
++DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
++OTHER DEALINGS IN THE FONT SOFTWARE.
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\App.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\App.tsx"
+index 00e2815..3d15be5 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\App.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\App.tsx"
+@@ -79,10 +79,10 @@ function App() {
+   const renderContent = () => {
+     if (replayError) {
+       return (
+-        <div role="alert" className="mx-auto max-w-xl rounded-2xl border border-rose-400/30 bg-rose-400/10 p-6 text-center font-puyo">
+-          <h2 className="text-xl font-extrabold text-rose-200">再現URLを開けません</h2>
+-          <p className="mt-3 text-sm text-white/70">{replayError}</p>
+-          <p className="mt-2 text-xs text-white/45">URLが途中で切れていないか、共有元からもう一度コピーしてください。</p>
++        <div role="alert" className="mx-auto max-w-xl rounded-none border border-rose-400/30 bg-rose-400/10 p-6 text-center font-puyo">
++          <h2 className="text-xl font-normal text-[#ff9aa5]">再現URLを開けません</h2>
++          <p className="mt-3 text-sm text-[#c4bfd3]">{replayError}</p>
++          <p className="mt-2 text-xs text-[#c4bfd3]">URLが途中で切れていないか、共有元からもう一度コピーしてください。</p>
+           <button
+             type="button"
+             onClick={() => {
+@@ -90,7 +90,7 @@ function App() {
+               setReplayError(null)
+               setCurrentMode('top')
+             }}
+-            className="mt-5 rounded-xl bg-rose-400 px-4 py-2 text-sm font-bold text-[#171426] hover:bg-rose-300"
++            className="mt-5 rounded-none bg-rose-400 px-4 py-2 text-sm font-normal text-[#171426] hover:bg-rose-300"
+           >
+             ホームへ戻る
+           </button>
+@@ -108,7 +108,7 @@ function App() {
+         return (
+           <div className="text-center py-12 font-puyo">
+             <div className="text-6xl mb-4">⚔️</div>
+-            <h2 className="text-2xl font-extrabold text-puyo-dark mb-2">
++            <h2 className="text-2xl font-normal text-puyo-dark mb-2">
+               対戦モード
+             </h2>
+             <p className="text-puyo-dark/50">この機能は開発中です</p>
+@@ -118,7 +118,7 @@ function App() {
+         return (
+           <div className="text-center py-12 font-puyo">
+             <div className="text-6xl mb-4">📊</div>
+-            <h2 className="text-2xl font-extrabold text-puyo-dark mb-2">
++            <h2 className="text-2xl font-normal text-puyo-dark mb-2">
+               統計情報
+             </h2>
+             <p className="text-puyo-dark/50">この機能は開発中です</p>
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\feedback\\GTRIssueReportPanel.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\feedback\\GTRIssueReportPanel.tsx"
+index b537a81..fbe6f58 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\feedback\\GTRIssueReportPanel.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\feedback\\GTRIssueReportPanel.tsx"
+@@ -261,22 +261,22 @@ export default function GTRIssueReportPanel({
+   return createPortal(
+     <div
+       ref={panelRef}
+-      className="fixed inset-0 z-[2000] flex items-start justify-center overflow-y-auto bg-[#080711]/90 p-3 backdrop-blur-sm sm:p-6"
++      className="fixed inset-0 z-[2000] flex items-start justify-center overflow-y-auto bg-[#080711]/90 p-3  sm:p-6"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="gtr-report-title"
+     >
+-      <div className="w-full max-w-5xl rounded-2xl border border-violet-400/30 bg-[#19162a] text-[#f6f2ff] shadow-2xl">
+-        <header className="sticky top-0 z-10 flex items-start justify-between gap-4 rounded-t-2xl border-b border-white/10 bg-[#19162a]/95 px-5 py-4 backdrop-blur">
++      <div className="w-full max-w-5xl rounded-none border border-[#6f648d] bg-[#19162a] text-[#f6f2ff] shadow-pixel">
++        <header className="sticky top-0 z-10 flex flex-wrap items-start justify-between gap-4 rounded-none-2xl border-b border-[#6f648d] bg-[#19162a]/95 px-5 py-4 ">
+           <div>
+-            <p className="text-xs font-bold tracking-[0.22em] text-violet-300">GTR ISSUE REPORT</p>
+-            <h2 id="gtr-report-title" className="mt-1 text-xl font-extrabold">この手順のおかしい点を共有</h2>
+-            <p className="mt-1 text-sm text-white/55">{snapshot.turnNumber}手目の盤面・ツモ・推薦・乱数状態を固定して取得済みです。</p>
++            <p className="text-xs font-normal tracking-[0.22em] text-[#b5a8ff]">GTR ISSUE REPORT</p>
++            <h2 id="gtr-report-title" className="mt-1 text-xl font-normal">この手順のおかしい点を共有</h2>
++            <p className="mt-1 text-sm text-[#c4bfd3]">{snapshot.turnNumber}手目の盤面・ツモ・推薦・乱数状態を固定して取得済みです。</p>
+           </div>
+           <button
+             type="button"
+             onClick={onClose}
+-            className="rounded-lg border border-white/15 px-3 py-2 text-sm text-white/70 hover:bg-white/10"
++            className="rounded-none border border-[#6f648d] px-3 py-2 text-sm text-[#c4bfd3] hover:bg-[#211d33]"
+             aria-label="報告画面を閉じる"
+           >
+             閉じる Esc
+@@ -286,7 +286,7 @@ export default function GTRIssueReportPanel({
+         <div className="grid gap-6 p-5 lg:grid-cols-[minmax(0,1fr)_320px]">
+           <main className="min-w-0 space-y-5">
+             <section className="space-y-3">
+-              <label htmlFor="gtr-report-comment" className="block text-sm font-bold text-violet-200">
++              <label htmlFor="gtr-report-comment" className="block text-sm font-normal text-[#b5a8ff]">
+                 どこがおかしいですか？
+               </label>
+               <textarea
+@@ -297,12 +297,12 @@ export default function GTRIssueReportPanel({
+                 onChange={event => setFeedback(current => ({ ...current, comment: event.target.value }))}
+                 rows={5}
+                 placeholder="例: Y字にするなら青が下ではなく、緑が下になる配置を優先してほしい"
+-                className="w-full resize-y rounded-xl border border-white/15 bg-[#0f0d1b] px-4 py-3 text-sm leading-6 text-white outline-none placeholder:text-white/30 focus:border-violet-400"
++                className="w-full resize-y rounded-none border border-[#6f648d] bg-[#0f0d1b] px-4 py-3 text-sm leading-6 text-white placeholder:text-[#c4bfd3]"
+               />
+             </section>
+ 
+             <section className="grid gap-3">
+-              <label className="text-sm font-bold text-violet-200">
++              <label className="text-sm font-normal text-[#b5a8ff]">
+                 期待する列・軸ぷよの列（任意）
+                 <select
+                   value={feedback.expectedColumn ?? ''}
+@@ -310,7 +310,7 @@ export default function GTRIssueReportPanel({
+                     ...current,
+                     expectedColumn: event.target.value === '' ? null : Number(event.target.value),
+                   }))}
+-                  className="mt-2 w-full rounded-xl border border-white/15 bg-[#0f0d1b] px-3 py-3 text-white outline-none focus:border-violet-400"
++                  className="mt-2 w-full rounded-none border border-[#6f648d] bg-[#0f0d1b] px-3 py-3 text-white"
+                 >
+                   <option value="">指定しない</option>
+                   {Array.from({ length: 6 }, (_, column) => (
+@@ -323,12 +323,12 @@ export default function GTRIssueReportPanel({
+             </section>
+ 
+             <section>
+-              <h3 className="mb-3 text-sm font-bold text-violet-200">共有する</h3>
++              <h3 className="mb-3 text-sm font-normal text-[#b5a8ff]">共有する</h3>
+               <div className="grid gap-2 sm:grid-cols-2">
+                 <button
+                   type="button"
+                   onClick={() => runAction(() => copyText(markdown), 'Codex向けレポートをコピーしました。')}
+-                  className="rounded-xl bg-violet-500 px-4 py-3 text-sm font-extrabold text-white hover:bg-violet-400"
++                  className="rounded-none bg-[#b5a8ff] px-4 py-3 text-sm font-normal text-[#0c0a14] hover:bg-[#b5a8ff]"
+                 >
+                   Codex向けレポートをコピー
+                 </button>
+@@ -336,7 +336,7 @@ export default function GTRIssueReportPanel({
+                   type="button"
+                   onClick={() => replayUrl && runAction(() => copyText(replayUrl), '同じ盤面を開ける再現URLをコピーしました。')}
+                   disabled={!replayUrl}
+-                  className="rounded-xl border border-violet-400/50 bg-violet-400/10 px-4 py-3 text-sm font-bold hover:bg-violet-400/20 disabled:cursor-not-allowed disabled:opacity-40"
++                  className="rounded-none border border-[#6f648d] bg-[#b5a8ff] px-4 py-3 text-sm font-normal hover:bg-[#b5a8ff] disabled:cursor-not-allowed disabled:opacity-40 text-[#0c0a14]"
+                 >
+                   再現URLをコピー
+                 </button>
+@@ -344,30 +344,30 @@ export default function GTRIssueReportPanel({
+                   type="button"
+                   onClick={handleScreenshot}
+                   disabled={isCapturingScreenshot}
+-                  className="rounded-xl border border-white/15 px-4 py-3 text-sm font-bold hover:bg-white/10 disabled:cursor-wait disabled:opacity-40"
++                  className="rounded-none border border-[#6f648d] px-4 py-3 text-sm font-normal hover:bg-[#211d33] disabled:cursor-wait disabled:opacity-40"
+                 >
+                   {isCapturingScreenshot ? '画像を取得中…' : 'スクリーンショットをコピー'}
+                 </button>
+                 <button
+                   type="button"
+                   onClick={downloadJson}
+-                  className="rounded-xl border border-white/15 px-4 py-3 text-sm font-bold hover:bg-white/10"
++                  className="rounded-none border border-[#6f648d] px-4 py-3 text-sm font-normal hover:bg-[#211d33]"
+                 >
+                   診断JSONを保存
+                 </button>
+               </div>
+               {replayResult.error && (
+-                <p className="mt-3 rounded-lg bg-rose-400/10 px-3 py-2 text-sm text-rose-300" role="alert">
++                <p className="mt-3 rounded-none bg-rose-400/10 px-3 py-2 text-sm text-[#ff9aa5]" role="alert">
+                   {replayResult.error}。Codex向けレポートまたは診断JSONを共有してください。
+                 </p>
+               )}
+               <div
+-                className={`mt-3 rounded-lg px-3 py-2 text-sm ${
++                className={`mt-3 rounded-none px-3 py-2 text-sm ${
+                   status.tone === 'success'
+-                    ? 'bg-emerald-400/10 text-emerald-300'
++                    ? 'bg-emerald-400/10 text-[#91ecc2]'
+                     : status.tone === 'error'
+-                      ? 'bg-rose-400/10 text-rose-300'
+-                      : 'bg-white/5 text-white/60'
++                      ? 'bg-rose-400/10 text-[#ff9aa5]'
++                      : 'bg-[#211d33] text-[#c4bfd3]'
+                 }`}
+                 role="status"
+               >
+@@ -375,11 +375,11 @@ export default function GTRIssueReportPanel({
+               </div>
+             </section>
+ 
+-            <details className="rounded-xl border border-white/10 bg-[#0f0d1b]">
+-              <summary className="cursor-pointer px-4 py-3 text-sm font-bold text-white/70">取得した診断データを確認</summary>
++            <details className="rounded-none border border-[#6f648d] bg-[#0f0d1b]">
++              <summary className="cursor-pointer px-4 py-3 text-sm font-normal text-[#c4bfd3]">取得した診断データを確認</summary>
+               <pre
+                 data-gtr-diagnostics
+-                className="max-h-80 overflow-auto border-t border-white/10 p-4 text-xs leading-5 text-emerald-200"
++                className="max-h-80 overflow-auto border-t border-[#6f648d] p-4 text-xs leading-5 text-[#91ecc2]"
+               >
+                 {JSON.stringify(diagnosticPackage, null, 2)}
+               </pre>
+@@ -387,34 +387,34 @@ export default function GTRIssueReportPanel({
+           </main>
+ 
+           <aside className="space-y-5">
+-            <section className="rounded-xl border border-white/10 bg-[#0f0d1b] p-4">
+-              <h3 className="text-sm font-bold text-violet-200">取得内容</h3>
++            <section className="rounded-none border border-[#6f648d] bg-[#0f0d1b] p-4">
++              <h3 className="text-sm font-normal text-[#b5a8ff]">取得内容</h3>
+               <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 text-xs">
+-                <dt className="text-white/45">手数</dt><dd>{snapshot.turnNumber}手目</dd>
+-                <dt className="text-white/45">推薦</dt>
++                <dt className="text-[#c4bfd3]">手数</dt><dd>{snapshot.turnNumber}手目</dd>
++                <dt className="text-[#c4bfd3]">推薦</dt>
+                 <dd>
+                   {snapshot.advice?.bestPlacement
+                     ? `${snapshot.advice.bestPlacement.placement.column + 1}列・${getRotationLabel(snapshot.advice.bestPlacement.placement.rotation)}`
+                     : 'なし'}
+                 </dd>
+-                <dt className="text-white/45">フェーズ</dt><dd>{snapshot.advice?.phase ?? '不明'}</dd>
+-                <dt className="text-white/45">履歴</dt><dd>直前{snapshot.recentTurns.length}手</dd>
+-                <dt className="text-white/45">将来ツモ</dt><dd>乱数状態を保存済み</dd>
++                <dt className="text-[#c4bfd3]">フェーズ</dt><dd>{snapshot.advice?.phase ?? '不明'}</dd>
++                <dt className="text-[#c4bfd3]">履歴</dt><dd>直前{snapshot.recentTurns.length}手</dd>
++                <dt className="text-[#c4bfd3]">将来ツモ</dt><dd>乱数状態を保存済み</dd>
+               </dl>
+               <button
+                 type="button"
+                 onClick={onRefresh}
+-                className="mt-4 w-full rounded-lg border border-white/15 px-3 py-2 text-xs font-bold hover:bg-white/10"
++                className="mt-4 w-full rounded-none border border-[#6f648d] px-3 py-2 text-xs font-normal hover:bg-[#211d33]"
+               >
+                 現在の状態を再取得
+               </button>
+             </section>
+ 
+-            <section className="rounded-xl border border-white/10 bg-[#0f0d1b] p-4">
++            <section className="rounded-none border border-[#6f648d] bg-[#0f0d1b] p-4">
+               <div className="flex items-center justify-between gap-3">
+-                <h3 className="text-sm font-bold text-violet-200">報告履歴</h3>
++                <h3 className="text-sm font-normal text-[#b5a8ff]">報告履歴</h3>
+                 {history.length > 0 && (
+-                  <button type="button" onClick={clearHistory} className="text-xs text-rose-300 hover:underline">
++                  <button type="button" onClick={clearHistory} className="text-xs text-[#ff9aa5] hover:underline">
+                     全削除
+                   </button>
+                 )}
+@@ -423,34 +423,34 @@ export default function GTRIssueReportPanel({
+                 type="button"
+                 onClick={saveReport}
+                 disabled={!storage}
+-                className="mt-3 w-full rounded-lg bg-emerald-400/15 px-3 py-2 text-sm font-bold text-emerald-300 hover:bg-emerald-400/25"
++                className="mt-3 w-full rounded-none bg-emerald-400/15 px-3 py-2 text-sm font-normal text-[#91ecc2] hover:bg-emerald-400/25"
+               >
+                 {storage ? 'この報告を履歴に保存' : '履歴保存は利用できません'}
+               </button>
+               <div className="mt-3 max-h-72 space-y-2 overflow-y-auto">
+                 {history.length === 0 ? (
+-                  <p className="py-3 text-center text-xs text-white/35">保存した報告はありません</p>
++                  <p className="py-3 text-center text-xs text-[#c4bfd3]">保存した報告はありません</p>
+                 ) : historyWithReplayUrls.map(({ report, replayUrl: historyReplayUrl }) => {
+                   return (
+-                    <article key={report.id} className="rounded-lg border border-white/10 p-3 text-xs">
+-                      <p className="line-clamp-2 text-white/80">{report.feedback.comment || 'コメントなし'}</p>
+-                      <p className="mt-1 text-white/35">{formatSavedAt(report.savedAt)}・{report.snapshot.turnNumber}手目</p>
++                    <article key={report.id} className="rounded-none border border-[#6f648d] p-3 text-xs">
++                      <p className="break-words text-[#c4bfd3]">{report.feedback.comment || 'コメントなし'}</p>
++                      <p className="mt-1 text-[#c4bfd3]">{formatSavedAt(report.savedAt)}・{report.snapshot.turnNumber}手目</p>
+                       {historyReplayUrl ? (
+                         <a
+                           href={historyReplayUrl}
+                           target="_blank"
+                           rel="noreferrer"
+-                          className="mt-2 inline-block font-bold text-violet-300 hover:underline"
++                          className="mt-2 inline-block font-normal text-[#b5a8ff] hover:underline"
+                         >
+                           この盤面を別タブで開く
+                         </a>
+                       ) : (
+-                        <p className="mt-2 text-rose-300">再現URLが長すぎるため、診断JSONを利用してください</p>
++                        <p className="mt-2 text-[#ff9aa5]">再現URLが長すぎるため、診断JSONを利用してください</p>
+                       )}
+                       <button
+                         type="button"
+                         onClick={() => downloadHistoryJson(report, historyReplayUrl)}
+-                        className="mt-2 block font-bold text-emerald-300 hover:underline"
++                        className="mt-2 block font-normal text-[#91ecc2] hover:underline"
+                       >
+                         この履歴の診断JSONを保存
+                       </button>
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\feedback\\PairOrientationPicker.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\feedback\\PairOrientationPicker.tsx"
+index 81530e9..0944bb6 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\feedback\\PairOrientationPicker.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\feedback\\PairOrientationPicker.tsx"
+@@ -9,17 +9,17 @@ interface Props {
+ }
+ 
+ export default function PairOrientationPicker({ pair, value, onChange }: Props) {
+-  return <fieldset className="min-w-0 rounded-xl border border-white/15 p-3">
+-    <legend className="px-1 text-sm font-bold text-violet-200">期待する向き（任意）</legend>
+-    <p className="mb-3 text-xs text-white/60">実際の色で選べます。「軸」のぷよが指定した列に入ります。</p>
++  return <fieldset className="min-w-0 rounded-none border border-[#6f648d] p-3">
++    <legend className="px-1 text-sm font-normal text-[#b5a8ff]">期待する向き（任意）</legend>
++    <p className="mb-3 text-xs text-[#c4bfd3]">実際の色で選べます。「軸」のぷよが指定した列に入ります。</p>
+     <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+       {[0, 1, 2, 3].map(rotation => {
+         const label = describePairOrientation(pair, rotation)
+         return <button key={rotation} type="button" disabled={!pair}
+           aria-label={`${label}を選ぶ`} aria-pressed={value === rotation}
+           onClick={() => onChange(rotation)}
+-          className={`flex flex-col items-center gap-1 rounded-lg border px-1 py-2 text-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-300 disabled:opacity-40 ${
+-            value === rotation ? 'border-violet-300 bg-violet-500/30 text-white' : 'border-white/15 bg-[#0f0d1b] text-white/70 hover:bg-white/10'
++          className={`flex flex-col items-center gap-1 rounded-none border px-1 py-2 text-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-300 disabled:opacity-40 ${
++            value === rotation ? 'border-[#6f648d] bg-[#b5a8ff] text-[#0c0a14]' : 'border-[#6f648d] bg-[#0f0d1b] text-[#c4bfd3] hover:bg-[#211d33]'
+           }`}>
+           <svg viewBox="0 0 80 80" className="h-20 w-20" aria-hidden="true">
+             {pair && pairPreviewCells(pair, rotation).map(cell => {
+@@ -33,7 +33,7 @@ export default function PairOrientationPicker({ pair, value, onChange }: Props)
+                 <ellipse cx={x + 5} cy={y - 3} rx="4" ry="5" fill="white" />
+                 <circle cx={x - 4} cy={y - 3} r="2" fill="#242033" />
+                 <circle cx={x + 4} cy={y - 3} r="2" fill="#242033" />
+-                {cell.main && <text x={x} y={y + 11} textAnchor="middle" fontSize="10" fontWeight="bold" fill="#242033">軸</text>}
++                {cell.main && <text x={x} y={y + 11} textAnchor="middle" fontSize="14" fontWeight="400" fill="#242033">軸</text>}
+               </g>
+             })}
+           </svg>
+@@ -42,7 +42,7 @@ export default function PairOrientationPicker({ pair, value, onChange }: Props)
+       })}
+     </div>
+     <button type="button" onClick={() => onChange(null)} aria-pressed={value === null}
+-      className={`mt-3 rounded-lg border px-3 py-2 text-xs ${value === null ? 'border-violet-300 text-violet-200' : 'border-white/15 text-white/60'}`}>
++      className={`mt-3 rounded-none border px-3 py-2 text-xs ${value === null ? 'border-[#6f648d] text-[#b5a8ff]' : 'border-[#6f648d] text-[#c4bfd3]'}`}>
+       指定しない
+     </button>
+   </fieldset>
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\gallery\\CompletionGallery.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\gallery\\CompletionGallery.tsx"
+index d15bebe..04f4276 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\gallery\\CompletionGallery.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\gallery\\CompletionGallery.tsx"
+@@ -90,21 +90,21 @@ function GalleryDialog({ example, onClose }: { example: GalleryExample; onClose:
+   }
+ 
+   return (
+-    <dialog ref={dialogRef} aria-labelledby="gallery-dialog-title" onCancel={event => { event.preventDefault(); onClose() }} onClick={event => { if (event.target === dialogRef.current) onClose() }} className="w-[min(96vw,560px)] max-h-[94dvh] overflow-y-auto rounded-3xl border border-white/15 bg-[#171426] p-0 text-white shadow-2xl backdrop:bg-slate-950/75">
+-      <div className="flex items-start justify-between gap-3 border-b border-white/10 px-4 py-3 sm:px-6">
+-        <div><p className="text-xs font-bold text-violet-300">GTR完成形</p><h2 id="gallery-dialog-title" className="text-xl font-extrabold">{example.title}</h2><p className="mt-1 text-xs text-slate-300">土台評価 {example.score}点</p></div>
+-        <button ref={closeRef} type="button" onClick={onClose} className="rounded-lg border border-white/20 px-3 py-1.5 text-sm font-bold hover:bg-white/10">閉じる</button>
++    <dialog ref={dialogRef} aria-labelledby="gallery-dialog-title" onCancel={event => { event.preventDefault(); onClose() }} onClick={event => { if (event.target === dialogRef.current) onClose() }} className="w-[min(96vw,560px)] max-h-[94dvh] overflow-y-auto rounded-none border border-[#6f648d] bg-[#171426] p-0 text-white shadow-pixel backdrop:bg-[#211d33]">
++      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#6f648d] px-4 py-3 sm:px-6">
++        <div><p className="text-xs font-normal text-[#b5a8ff]">GTR完成形</p><h2 id="gallery-dialog-title" className="text-xl font-normal">{example.title}</h2><p className="mt-1 text-xs text-[#c4bfd3]">土台評価 {example.score}点</p></div>
++        <button ref={closeRef} type="button" onClick={onClose} className="rounded-none border border-[#6f648d] px-3 py-1.5 text-sm font-normal hover:bg-[#211d33]">閉じる</button>
+       </div>
+       <div className="flex flex-col items-center gap-3 px-3 py-4 sm:py-6">
+-        <GalleryBoard grid={frame?.grid ?? preview.initialGrid} size={42} fading={frame?.fading} alpha={frame?.alpha} starter={frame ? frame.starterPosition : preview.starter} />
+-        <p className="text-center text-xs leading-5 text-slate-300">明るい枠の1個は仮想の発火ぷよです。消去順を表示します。落下は瞬間切替です。</p>
+-        <div className="w-full rounded-xl bg-white/5 px-3 py-2 text-center text-xs leading-5 text-slate-300"><p className="font-bold text-white">足場の目安</p><p>列高（左から）{surface.heights.join(', ')}。3〜6列の最大隣接段差は{surface.rightMaxStep}段。伸ばしやすさの保証ではありません。</p></div>
+-        <div className="w-full rounded-xl bg-white/5 px-3 py-2 text-center text-xs leading-5 text-slate-300"><p className="font-bold text-white">完成後の伸ばし例（上の再生とは別）</p><p>{extension
++        <GalleryBoard grid={frame?.grid ?? preview.initialGrid} size={36} fading={frame?.fading} alpha={frame?.alpha} starter={frame ? frame.starterPosition : preview.starter} />
++        <p className="text-center text-xs leading-5 text-[#c4bfd3]">明るい枠の1個は仮想の発火ぷよです。消去順を表示します。落下は瞬間切替です。</p>
++        <div className="w-full rounded-none bg-[#211d33] px-3 py-2 text-center text-xs leading-5 text-[#c4bfd3]"><p className="font-normal text-white">足場の目安</p><p>列高（左から）{surface.heights.join(', ')}。3〜6列の最大隣接段差は{surface.rightMaxStep}段。伸ばしやすさの保証ではありません。</p></div>
++        <div className="w-full rounded-none bg-[#211d33] px-3 py-2 text-center text-xs leading-5 text-[#c4bfd3]"><p className="font-normal text-white">完成後の伸ばし例（上の再生とは別）</p><p>{extension
+           ? `${colorLabel[extension.color]}の同色組を${placementLabel(extension.first)}、次の同色組を${placementLabel(extension.second)}。各手の消去なしで、元の5段の消去順を保ち、追加4個のみが第6段で消える6連鎖全消し例です。これは100通り以内の限定した存在例で、実戦での成功率を示しません。`
+           : '4〜6列に同色組2組を置く100通り以内の限定条件では、元5段を保って追加4個のみが第6段で消える接続例は未確認です。接続が不可能という意味ではありません。'} 土台の目標は5連鎖です。</p></div>
+-        <p role="status" aria-live="polite" className="min-h-6 font-bold text-amber-200">{frame?.chainIndex ? `${frame.chainIndex}連鎖目` : frame?.phase === 'complete' ? `${preview.trace?.result.chainCount ?? 0}連鎖・全消し` : playing ? '再生中' : '再生待ち'}</p>
++        <p role="status" aria-live="polite" className="min-h-6 font-normal text-[#ffe99b]">{frame?.chainIndex ? `${frame.chainIndex}連鎖目` : frame?.phase === 'complete' ? `${preview.trace?.result.chainCount ?? 0}連鎖・全消し` : playing ? '再生中' : '再生待ち'}</p>
+         {preview.unavailableReason && <p role="alert">{preview.unavailableReason}</p>}
+-        <button type="button" disabled={!preview.trace} onClick={replay} className="rounded-xl bg-violet-400 px-5 py-2.5 text-sm font-extrabold text-[#171426] hover:bg-violet-300 disabled:opacity-50">もう一度再生</button>
++        <button type="button" disabled={!preview.trace} onClick={replay} className="rounded-none bg-[#b5a8ff] px-5 py-2.5 text-sm font-normal text-[#0c0a14] hover:bg-[#b5a8ff] disabled:opacity-50">もう一度再生</button>
+       </div>
+     </dialog>
+   )
+@@ -123,22 +123,22 @@ export default function CompletionGallery({ onReturn, returnLabel }: CompletionG
+   return (
+     <section className="mx-auto max-w-6xl font-puyo">
+       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+-        <div><p className="text-xs font-black tracking-widest text-violet-500">GTR FORMATION GALLERY</p><h1 className="mt-1 text-2xl font-black text-slate-900 sm:text-3xl">完成形一覧</h1></div>
+-        <button type="button" onClick={onReturn} className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-800 hover:bg-slate-50">{returnLabel}</button>
++        <div><p className="text-xs font-normal tracking-widest text-[#b5a8ff]">GTR FORMATION GALLERY</p><h1 className="mt-1 text-2xl font-normal text-[#c4bfd3] sm:text-3xl">完成形一覧</h1></div>
++        <button type="button" onClick={onReturn} className="rounded-none border border-[#6f648d] bg-[#211d33] px-4 py-2 text-sm font-normal text-[#c4bfd3] hover:bg-[#211d33]">{returnLabel}</button>
+       </div>
+-      <p className="mb-5 max-w-3xl text-sm leading-6 text-slate-600">Y字・座布団・L字の完成形を各10例。図を選ぶと仮想発火の消去順を見られます。表示点数は最小土台の完成評価で、伸ばしやすさや現在の練習盤面から作れることを示すものではありません。列高と段差は後続の足場の目安です。</p>
++      <p className="mb-5 max-w-3xl text-sm leading-6 text-[#c4bfd3]">Y字・座布団・L字の完成形を各10例。図を選ぶと仮想発火の消去順を見られます。表示点数は最小土台の完成評価で、伸ばしやすさや現在の練習盤面から作れることを示すものではありません。列高と段差は後続の足場の目安です。</p>
+       <div className="mb-6 flex flex-wrap gap-2" role="group" aria-label="完成形の種類">
+         {GALLERY_SHAPES.map(item => (
+-          <button key={item} type="button" aria-pressed={shape === item} onClick={() => setShape(item)} className={`rounded-xl px-5 py-2.5 text-sm font-extrabold ${shape === item ? 'bg-[#171426] text-white' : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-100'}`}>{GALLERY_SHAPE_LABELS[item]} <span className="ml-1 opacity-65">10</span></button>
++          <button key={item} type="button" aria-pressed={shape === item} onClick={() => setShape(item)} className={`rounded-none px-5 py-2.5 text-sm font-normal ${shape === item ? 'bg-[#171426] text-white' : 'border border-[#6f648d] bg-[#211d33] text-[#c4bfd3] hover:bg-[#211d33]'}`}>{GALLERY_SHAPE_LABELS[item]} <span className="ml-1 opacity-65">10</span></button>
+         ))}
+       </div>
+-      <div role="region" aria-label={`${GALLERY_SHAPE_LABELS[shape]}の完成形`} className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
++      <div role="region" aria-label={`${GALLERY_SHAPE_LABELS[shape]}の完成形`} className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
+         {examples.map(example => (
+-          <button key={example.id} type="button" onClick={event => { openerRef.current = event.currentTarget; setSelected(example) }} className="flex flex-col items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3 text-slate-900 shadow-sm transition hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-500 sm:p-4">
++          <button key={example.id} type="button" onClick={event => { openerRef.current = event.currentTarget; setSelected(example) }} className="flex flex-col items-center gap-3 rounded-none border border-[#6f648d] bg-[#211d33] p-3 text-[#c4bfd3] shadow-pixel transition hover:-translate-y-0.5 hover:border-[#6f648d] hover:shadow-pixel focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-500 sm:p-4">
+             <GalleryBoard grid={getGalleryGrid(example)} size={15} />
+-            <span className="flex w-full items-center justify-between text-left text-xs font-bold sm:text-sm"><span>{example.title}</span><span className="text-violet-600">見る →</span></span>
+-            <span className="w-full text-left text-xs font-bold text-slate-500">土台評価 {example.score}点</span>
+-            <span className="w-full text-left text-xs text-slate-500">列高 {describeFoundationSurface(getGalleryGrid(example)).heights.join(', ')} · 右側最大段差 {describeFoundationSurface(getGalleryGrid(example)).rightMaxStep}段</span>
++            <span className="flex w-full items-center justify-between text-left text-xs font-normal sm:text-sm"><span>{example.title}</span><span className="text-[#b5a8ff]">見る →</span></span>
++            <span className="w-full text-left text-xs font-normal text-[#c4bfd3]">土台評価 {example.score}点</span>
++            <span className="w-full text-left text-xs text-[#c4bfd3]">列高 {describeFoundationSurface(getGalleryGrid(example)).heights.join(', ')} · 右側最大段差 {describeFoundationSurface(getGalleryGrid(example)).rightMaxStep}段</span>
+           </button>
+         ))}
+       </div>
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\gallery\\GalleryBoard.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\gallery\\GalleryBoard.tsx"
+index 3a2c904..1a14180 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\gallery\\GalleryBoard.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\gallery\\GalleryBoard.tsx"
+@@ -16,14 +16,14 @@ interface GalleryBoardProps {
+ export default function GalleryBoard({ grid, size, fading = [], alpha = 1, starter }: GalleryBoardProps) {
+   const visible = grid.slice(9, 13)
+   return (
+-    <div className="grid grid-cols-6 rounded-xl border border-white/10 bg-[#090a15] p-2 shadow-inner" style={{ width: size * 6 + 18 }} aria-hidden="true">
++    <div className="grid rounded-none border border-[#6f648d] bg-[#090a15] p-2 shadow-pixel" style={{ gridTemplateColumns: `repeat(6, ${size}px)`, width: 'max-content' }} aria-hidden="true">
+       {visible.flatMap((row, localY) => row.map((color, x) => {
+         const y = localY + 9
+         const frame = color ? manifest.frames[`${color}/connect/${cellMask(grid, x, y)}` as keyof typeof manifest.frames] : null
+         const isFading = fading.some(cell => cell.x === x && cell.y === y)
+         const isStarter = starter?.x === x && starter.y === y
+         return (
+-          <span key={`${y}-${x}`} className={`relative block rounded-[3px] bg-white/[.025] ${isStarter ? 'ring-2 ring-amber-200 ring-offset-1 ring-offset-[#090a15]' : ''}`} style={{ width: size, height: size }}>
++          <span key={`${y}-${x}`} className={`relative block rounded-none bg-[#211d33] ${isStarter ? 'ring-2 ring-amber-200 ring-offset-1 ring-offset-[#090a15]' : ''}`} style={{ width: size, height: size }}>
+             {frame && (
+               <span className="absolute inset-0 overflow-hidden">
+                 <img src={atlasUrl} alt="" draggable={false} className="absolute max-w-none" style={{
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\game\\GameControls.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\game\\GameControls.tsx"
+index e5a5720..3edc43d 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\game\\GameControls.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\game\\GameControls.tsx"
+@@ -13,16 +13,16 @@ export default function GameControls({ guided = false, manager }: GameControlsPr
+   const button = (action: GameAction, label: string, aria: string) => (
+     <button key={action} type="button" aria-label={aria}
+       {...pointerHandlers(input, action)}
+-      className="min-h-12 min-w-12 select-none rounded-xl border border-white/10 bg-white/10 px-3 text-sm font-black text-white active:bg-violet-500">
++      className="min-h-12 min-w-12 select-none rounded-none border border-[#6f648d] bg-[#211d33] px-3 text-sm font-normal text-white active:bg-[#b5a8ff] active:text-[#0c0a14]">
+       {label}
+     </button>
+   )
+-  return <div className="sticky left-0 mt-3 w-[calc(100vw-2.5rem)] max-w-lg rounded-2xl border border-white/10 bg-black/20 p-3 md:hidden" aria-label="ゲーム操作">
+-    <div className="flex items-center justify-center gap-2">
++  return <div className="sticky left-0 mt-3 w-full max-w-lg rounded-none border border-[#6f648d] bg-black/20 p-3 md:hidden" aria-label="ゲーム操作">
++    <div className="grid grid-cols-3 gap-2">
+       {button('left', '←', '左へ移動')}{button('softDrop', '↓', '高速落下')}{button('right', '→', '右へ移動')}
+-      {button('rotateLeft', '↶', '左回転')}{button('rotateRight', '↷', '右回転')}{button('quickDrop', '⇩', 'クイックドロップ')}
++      {button('rotateLeft', '左回転', '左回転')}{button('rotateRight', '右回転', '右回転')}{button('quickDrop', '落下', 'クイックドロップ')}
+     </div>
+-    <div className="mt-2 flex items-center justify-center gap-2">
++    <div className="mt-2 grid grid-cols-3 gap-2">
+       {guided && button('rewind', '戻す', '一手戻す')}{guided && button('guide', 'ガイド', 'ガイド切り替え')}
+       {button('evaluate', '評価', 'GTRを評価または再挑戦')}{button('pause', '停止', 'ポーズ')}{button('exit', '終了', 'ゲームを終了')}
+     </div>
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\game\\GuidedGame.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\game\\GuidedGame.tsx"
+index 830100c..5fb0936 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\game\\GuidedGame.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\game\\GuidedGame.tsx"
+@@ -14,6 +14,7 @@ import {
+   type GTRReportUnavailableDetail,
+ } from '../../game/feedback/GTRIssueReport'
+ import GameControls from './GameControls'
++import KeyboardInstructions from './KeyboardInstructions'
+ import GTRIssueReportPanel from '../feedback/GTRIssueReportPanel'
+ import { reportStatusForEvent } from './reportStatus'
+ import KeySettings from '../settings/KeySettings'
+@@ -122,21 +123,21 @@ export default function GuidedGame({ onExit, suspended }: GuidedGameProps) {
+   }, [onExit])
+ 
+   return (
+-    <div className="min-h-[calc(100vh-8rem)] overflow-auto rounded-3xl bg-[#171426] p-3 shadow-2xl shadow-indigo-950/20 sm:p-4">
++    <div className="min-h-[calc(100vh-8rem)] rounded-none bg-[#171426] p-3 shadow-pixel sm:p-4">
+       {replayInspection && replaySource.current?.sourceAnalysis && (
+         <div
+           data-gtr-replay-source
+-          className="sticky left-0 z-20 mx-auto mb-2 w-[calc(100vw-2.5rem)] max-w-[900px] rounded-xl border border-amber-300/25 bg-amber-300/10 px-3 py-2 text-xs text-amber-100"
++          className="sticky left-0 z-20 mx-auto mb-2 w-full max-w-[900px] rounded-none border border-amber-300/25 bg-amber-300/10 px-3 py-2 text-xs text-[#ffe99b]"
+         >
+           報告時 v{replaySource.current.sourceAnalysis.appVersion}：推薦{' '}
+           {reportedAdvice
+             ? `${reportedAdvice.placement.column + 1}列・${getRotationLabel(reportedAdvice.placement.rotation)}向き（score=${reportedAdvice.totalScore.toFixed(1)}）`
+             : 'なし'}
+-          <span className="ml-2 text-white/45">現在のロジックによる推薦はCOACH表示で比較できます。</span>
++          <span className="ml-2 text-[#c4bfd3]">現在のロジックによる推薦はCOACH表示で比較できます。</span>
+         </div>
+       )}
+       <div
+-        className="mx-auto mb-3 hidden w-[900px] min-w-[900px] items-center justify-end md:flex"
++        className="mx-auto mb-3 hidden max-w-[900px] flex-wrap items-center justify-end gap-2 md:flex"
+         onKeyDown={event => event.stopPropagation()}
+         onKeyUp={event => event.stopPropagation()}
+       >
+@@ -145,7 +146,7 @@ export default function GuidedGame({ onExit, suspended }: GuidedGameProps) {
+             type="button"
+             onClick={resumeReplay}
+             disabled={!reportReady}
+-            className="mr-2 rounded-xl border border-emerald-400/40 bg-emerald-400/10 px-4 py-2 text-sm font-bold text-emerald-200 hover:bg-emerald-400/20 disabled:cursor-wait disabled:opacity-40"
++            className="mr-2 rounded-none border border-emerald-400/40 bg-emerald-400/10 px-4 py-2 text-sm font-normal text-[#91ecc2] hover:bg-emerald-400/20 disabled:cursor-wait disabled:opacity-40"
+           >
+             この状態から操作を再開
+           </button>
+@@ -154,27 +155,27 @@ export default function GuidedGame({ onExit, suspended }: GuidedGameProps) {
+           type="button"
+           onClick={requestReport}
+           disabled={!reportReady}
+-          className="rounded-xl border border-violet-400/40 bg-violet-400/10 px-4 py-2 text-sm font-bold text-violet-200 hover:bg-violet-400/20 disabled:cursor-wait disabled:opacity-40"
++          className="rounded-none border border-[#6f648d] bg-[#b5a8ff] px-4 py-2 text-sm font-normal text-[#0c0a14] hover:bg-[#b5a8ff] disabled:cursor-wait disabled:opacity-40"
+         >
+-          この手順を共有 <span className="ml-1 text-xs text-white/40">{shareKeys}</span>
++          この手順を共有 <span className="ml-1 text-xs text-inherit">{shareKeys}</span>
+         </button>
+-        <button type="button" onClick={() => setSettingsOpen(true)} className="ml-2 rounded-xl bg-violet-700 px-4 py-2 text-sm font-bold text-white">キー設定</button>
+-        <button type="button" onClick={() => pressToolbarAction(gameManagerRef.current, 'pause', 'button:pause', focusGameSurface)} className="ml-2 rounded-xl bg-slate-700 px-4 py-2 text-sm font-bold text-white">停止／再開</button>
+-        <button type="button" onClick={() => { gameManagerRef.current?.pressAction('exit', 'button:exit'); gameManagerRef.current?.releaseAction('button:exit') }} className="ml-2 rounded-xl bg-rose-800 px-4 py-2 text-sm font-bold text-white">終了</button>
++        <button type="button" onClick={() => setSettingsOpen(true)} className="ml-2 rounded-none bg-[#b5a8ff] px-4 py-2 text-sm font-normal text-[#0c0a14]">キー設定</button>
++        <button type="button" onClick={() => pressToolbarAction(gameManagerRef.current, 'pause', 'button:pause', focusGameSurface)} className="ml-2 rounded-none bg-[#211d33] px-4 py-2 text-sm font-normal text-white">停止／再開</button>
++        <button type="button" onClick={() => { gameManagerRef.current?.pressAction('exit', 'button:exit'); gameManagerRef.current?.releaseAction('button:exit') }} className="ml-2 rounded-none bg-rose-800 px-4 py-2 text-sm font-normal text-white">終了</button>
+       </div>
+-      <div className="flex min-w-max justify-center">
++      <div className="canvas-scroll">
+       <div
+         ref={containerRef}
+         id="phaser-game"
+         tabIndex={-1}
+-        className="overflow-hidden rounded-2xl border border-white/10 shadow-2xl focus:outline-none"
++        className="overflow-hidden rounded-none border border-[#6f648d] shadow-pixel focus:outline-none"
+         style={{ width: 900, height: 800 }}
+       />
+       </div>
+-      {reportStatus && <p role="status" aria-live="polite" className="mx-auto mb-2 max-w-[900px] text-sm text-amber-200">{reportStatus}</p>}
+-      {settingsNotice && <p role="status" className="mx-auto max-w-[900px] text-sm text-amber-200">{settingsNotice}</p>}
++      {reportStatus && <p role="status" aria-live="polite" className="mx-auto mb-2 max-w-[900px] text-sm text-[#ffe99b]">{reportStatus}</p>}
++      {settingsNotice && <p role="status" className="mx-auto max-w-[900px] text-sm text-[#ffe99b]">{settingsNotice}</p>}
+       <div
+-        className="sticky left-0 mt-3 flex w-[calc(100vw-2.5rem)] max-w-lg justify-end gap-2 md:hidden"
++        className="sticky left-0 mt-3 flex w-full max-w-lg flex-wrap justify-end gap-2 md:hidden"
+         onKeyDown={event => event.stopPropagation()}
+         onKeyUp={event => event.stopPropagation()}
+       >
+@@ -183,7 +184,7 @@ export default function GuidedGame({ onExit, suspended }: GuidedGameProps) {
+             type="button"
+             onClick={resumeReplay}
+             disabled={!reportReady}
+-            className="rounded-xl border border-emerald-400/40 bg-emerald-400/10 px-3 py-2 text-xs font-bold text-emerald-200 disabled:cursor-wait disabled:opacity-40"
++            className="rounded-none border border-emerald-400/40 bg-emerald-400/10 px-3 py-2 text-xs font-normal text-[#91ecc2] disabled:cursor-wait disabled:opacity-40"
+           >
+             操作を再開
+           </button>
+@@ -192,13 +193,14 @@ export default function GuidedGame({ onExit, suspended }: GuidedGameProps) {
+           type="button"
+           onClick={requestReport}
+           disabled={!reportReady}
+-          className="rounded-xl border border-violet-400/40 bg-violet-400/10 px-3 py-2 text-xs font-bold text-violet-200 disabled:cursor-wait disabled:opacity-40"
++          className="rounded-none border border-[#6f648d] bg-[#b5a8ff] px-3 py-2 text-xs font-normal text-[#0c0a14] disabled:cursor-wait disabled:opacity-40"
+         >
+           この手順を共有
+         </button>
+       </div>
+       <GameControls guided manager={gameManagerRef} />
+-      <button type="button" onClick={() => setSettingsOpen(true)} className="mt-2 rounded bg-violet-700 px-3 py-2 text-white md:hidden">キー設定</button>
++      <button type="button" onClick={() => setSettingsOpen(true)} className="mt-2 rounded-none bg-[#b5a8ff] px-3 py-2 text-[#0c0a14] md:hidden">キー設定</button>
++      <KeyboardInstructions guided />
+       {settingsOpen && <KeySettings onClose={() => { setSettingsOpen(false); setSettingsNotice(getSettingsNotice()); focusGameSurface() }} />}
+       {reportSnapshot && (
+         <GTRIssueReportPanel
+
+New file: src/components/game/KeyboardInstructions.test.tsx
++import { afterEach, describe, expect, it, vi } from 'vitest'
++import { renderToStaticMarkup } from 'react-dom/server'
++import { ACTION_LABELS, ACTIONS, actionKeys, defaultBindings } from '../../game/input/bindings'
++import { getBindings, saveBindings } from '../../game/input/settings'
++import KeyboardInstructions from './KeyboardInstructions'
++
++const subscription = vi.hoisted(() => ({ tracking: false, cleanups: [] as Array<() => void>, changed: vi.fn() }))
++// The project has no DOM test environment. Exercise the external-store subscription contract
++// explicitly while using React's real server rendering for the markup and mode-specific content.
++vi.mock('react', async importOriginal => {
++  const react = await importOriginal<typeof import('react')>()
++  return { ...react, useSyncExternalStore: (subscribe: (listener: () => void) => () => void, snapshot: () => unknown, serverSnapshot: () => unknown) => {
++    if (!subscription.tracking) return react.useSyncExternalStore(subscribe, snapshot, serverSnapshot)
++    subscription.cleanups.push(subscribe(subscription.changed))
++    return snapshot()
++  } }
++})
++
++afterEach(() => {
++  subscription.cleanups.splice(0).forEach(cleanup => cleanup())
++  subscription.tracking = false
++  subscription.changed.mockClear()
++  vi.unstubAllGlobals()
++  saveBindings(defaultBindings())
++})
++
++describe('normal-play keyboard instructions', () => {
++  it('shows separate basic actions and all guide actions without interactive controls', () => {
++    const html = renderToStaticMarkup(<KeyboardInstructions guided />)
++    for (const action of ACTIONS) expect(html).toContain(`<dt class="text-sm text-[#c4bfd3]">${ACTION_LABELS[action]}</dt>`)
++    expect(html).toContain('通常プレイのキー操作')
++    expect(html).toContain('停止中・結果表示中などは画面内の案内を確認')
++    expect(html).not.toContain('<button')
++    expect(html).not.toContain('canvas-scroll')
++  })
++  it('shows only the basic controls, evaluation and gravity in score attack', () => {
++    const html = renderToStaticMarkup(<KeyboardInstructions />)
++    expect(html.match(/<dt /g)).toHaveLength(9)
++    for (const action of ['rewind', 'guide', 'share'] as const) expect(html).not.toContain(`<dt class="text-sm text-[#c4bfd3]">${ACTION_LABELS[action]}</dt>`)
++    for (const action of ['left', 'right', 'rotateLeft', 'rotateRight', 'evaluate', 'gravity'] as const) expect(html).toContain(ACTION_LABELS[action])
++  })
++  it('renders all eight applied keys and preserves the published value when a draft is canceled', () => {
++    const applied = defaultBindings()
++    applied.left = ['Numpad0', 'Numpad1', 'Numpad2', 'Numpad3', 'Numpad4', 'Numpad5', 'Numpad7', 'Numpad8']
++    saveBindings(applied)
++    const before = renderToStaticMarkup(<KeyboardInstructions />)
++    expect(before).toContain(actionKeys(applied, 'left'))
++    const draft = structuredClone(getBindings())
++    draft.left = ['KeyT']
++    expect(renderToStaticMarkup(<KeyboardInstructions />)).toBe(before)
++  })
++  it('subscribes to applied settings including a storage failure and releases the subscription', () => {
++    subscription.tracking = true
++    renderToStaticMarkup(<KeyboardInstructions />)
++    vi.stubGlobal('localStorage', { setItem: () => { throw new Error('quota') } })
++    const applied = defaultBindings()
++    applied.left = ['KeyT']
++    expect(saveBindings(applied)).toBe(false)
++    expect(subscription.changed).toHaveBeenCalledOnce()
++    expect(renderToStaticMarkup(<KeyboardInstructions />)).toContain('>T</dd>')
++    subscription.cleanups.splice(0).forEach(cleanup => cleanup())
++    saveBindings(defaultBindings())
++    expect(subscription.changed).toHaveBeenCalledOnce()
++  })
++})
+
+New file: src/components/game/KeyboardInstructions.tsx
++import { useSyncExternalStore } from 'react'
++import { ACTIONS, BASIC_ACTIONS, ACTION_LABELS, actionKeys } from '../../game/input/bindings'
++import { getBindings, subscribeBindings } from '../../game/input/settings'
++
++/** Description of applied bindings only; state-specific controls remain inside the scene. */
++export default function KeyboardInstructions({ guided = false }: { guided?: boolean }) {
++  const bindings = useSyncExternalStore(subscribeBindings, getBindings, getBindings)
++  const actions = guided ? ACTIONS : [...BASIC_ACTIONS, 'evaluate', 'gravity'] as const
++  return <section aria-label="通常プレイのキー操作"
++    className={`mx-auto mt-4 w-full pixel-panel p-4 ${guided ? 'max-w-[900px]' : 'max-w-[640px]'}`}>
++    <h2 className="text-base">通常プレイのキー操作</h2>
++    <p className="mt-1 text-sm text-[#c4bfd3]">停止中・結果表示中などは画面内の案内を確認</p>
++    <dl className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
++      {actions.map(action => <div key={action} className="min-w-0">
++        <dt className="text-sm text-[#c4bfd3]">{ACTION_LABELS[action]}</dt>
++        <dd className="break-words [overflow-wrap:anywhere]">{actionKeys(bindings, action)}</dd>
++      </div>)}
++    </dl>
++  </section>
++}
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\game\\ScoreAttackGame.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\game\\ScoreAttackGame.tsx"
+index 25b08b0..5c0f3d4 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\game\\ScoreAttackGame.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\game\\ScoreAttackGame.tsx"
+@@ -1,6 +1,7 @@
+ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+ import { GameManager } from '../../game/GameManager'
+ import GameControls from './GameControls'
++import KeyboardInstructions from './KeyboardInstructions'
+ import KeySettings from '../settings/KeySettings'
+ import { getSettingsNotice } from '../../game/input/settings'
+ import { focusGameCanvas, pressToolbarAction, restoreFocusOnResume } from './gameFocus'
+@@ -48,22 +49,23 @@ export default function ScoreAttackGame({ onExit, suspended }: ScoreAttackGamePr
+   }, [onExit])
+ 
+   return (
+-    <div className="min-h-[calc(100vh-8rem)] overflow-auto rounded-3xl bg-[#171426] p-3 shadow-2xl shadow-indigo-950/20 sm:p-4">
+-      <div className="mx-auto mb-2 flex max-w-[640px] justify-end gap-2">
+-        <button type="button" onClick={() => pressToolbarAction(gameManagerRef.current, 'pause', 'button:pause', focusGameSurface)} className="rounded bg-slate-700 px-3 py-2 text-white">停止／再開</button>
+-        <button type="button" onClick={() => setSettingsOpen(true)} className="rounded bg-violet-700 px-3 py-2 text-white">キー設定</button>
+-        <button type="button" onClick={() => { gameManagerRef.current?.pressAction('exit', 'button:exit'); gameManagerRef.current?.releaseAction('button:exit') }} className="rounded bg-rose-800 px-3 py-2 text-white">終了</button>
++    <div className="min-h-[calc(100vh-8rem)] rounded-none bg-[#171426] p-3 shadow-pixel sm:p-4">
++      <div className="mx-auto mb-2 flex max-w-[640px] flex-wrap justify-end gap-2">
++        <button type="button" onClick={() => pressToolbarAction(gameManagerRef.current, 'pause', 'button:pause', focusGameSurface)} className="rounded-none bg-[#211d33] px-3 py-2 text-white">停止／再開</button>
++        <button type="button" onClick={() => setSettingsOpen(true)} className="rounded-none bg-[#b5a8ff] px-3 py-2 text-[#0c0a14]">キー設定</button>
++        <button type="button" onClick={() => { gameManagerRef.current?.pressAction('exit', 'button:exit'); gameManagerRef.current?.releaseAction('button:exit') }} className="rounded-none bg-rose-800 px-3 py-2 text-white">終了</button>
+       </div>
+-      {settingsNotice && <p role="status" className="mx-auto max-w-[640px] text-amber-200">{settingsNotice}</p>}
+-      <div className="flex min-w-max justify-center">
++      {settingsNotice && <p role="status" className="mx-auto max-w-[640px] text-[#ffe99b]">{settingsNotice}</p>}
++      <div className="canvas-scroll">
+       <div
+         ref={containerRef}
+         id="phaser-game"
+-        className="overflow-hidden rounded-2xl border border-white/10 shadow-2xl"
++        className="overflow-hidden rounded-none border border-[#6f648d] shadow-pixel"
+         style={{ width: 640, height: 800 }}
+       />
+       </div>
+       <GameControls manager={gameManagerRef} />
++      <KeyboardInstructions />
+       {settingsOpen && <KeySettings onClose={() => { setSettingsOpen(false); setSettingsNotice(getSettingsNotice()); focusGameSurface() }} />}
+     </div>
+   )
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\layout\\Header.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\layout\\Header.tsx"
+index 32563f5..4ac6219 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\layout\\Header.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\layout\\Header.tsx"
+@@ -2,17 +2,17 @@ interface HeaderProps { onLogoClick: () => void; onMenuClick: () => void; menuOp
+ 
+ export default function Header({ onLogoClick, onMenuClick, menuOpen }: HeaderProps) {
+   return (
+-    <header className="fixed inset-x-0 top-0 z-50 flex h-16 items-center border-b border-slate-200/80 bg-white/90 px-4 backdrop-blur-xl sm:px-6">
+-      <button id="mobile-menu-trigger" onClick={onMenuClick} aria-expanded={menuOpen} aria-controls="side-menu" className="mr-3 grid h-10 w-10 place-items-center rounded-xl text-slate-600 hover:bg-slate-100 md:hidden" aria-label="メニューを開く">
+-        <span className="text-xl">☰</span>
++    <header className="fixed inset-x-0 top-0 z-50 flex h-16 items-center border-b border-[#6f648d] bg-[#211d33] px-4  sm:px-6">
++      <button id="mobile-menu-trigger" onClick={onMenuClick} aria-expanded={menuOpen} aria-controls="side-menu" className="mr-3 grid h-12 w-12 place-items-center rounded-none text-[#c4bfd3] hover:bg-[#211d33] md:hidden" aria-label="メニューを開く">
++        <span className="text-xl">≡</span>
+       </button>
+       <button onClick={onLogoClick} className="flex items-center gap-3 text-left">
+-        <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#171426] text-sm font-black text-white shadow-lg shadow-violet-900/20">G</span>
+-        <span><b className="block text-sm font-black tracking-tight text-slate-900">GTR TRAINING</b><span className="hidden text-[10px] font-bold tracking-[.15em] text-slate-400 sm:block">BUILD BETTER CHAINS</span></span>
++        <span className="grid h-9 w-9 place-items-center rounded-none bg-[#171426] text-sm font-normal text-white shadow-pixel">G</span>
++        <span><b className="block text-sm font-normal tracking-tight text-[#c4bfd3]">GTR TRAINING</b><span className="hidden text-xs font-normal tracking-[.15em] text-[#c4bfd3] sm:block">BUILD BETTER CHAINS</span></span>
+       </button>
+       <div className="ml-auto flex items-center gap-3">
+-        <span className="hidden rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-500 sm:block">β version</span>
+-        <span className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-white text-sm font-bold text-slate-300 shadow-sm" aria-label="アカウント機能は準備中" role="img">●</span>
++        <span className="hidden rounded-none bg-[#211d33] px-3 py-1.5 text-xs font-normal text-[#c4bfd3] sm:block">β version</span>
++        <span className="grid h-9 w-9 place-items-center rounded-none border border-[#6f648d] bg-[#211d33] text-sm font-normal text-[#c4bfd3] shadow-pixel" aria-label="アカウント機能は準備中" role="img">●</span>
+       </div>
+     </header>
+   )
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\layout\\MainLayout.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\layout\\MainLayout.tsx"
+index dba3833..2204506 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\layout\\MainLayout.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\layout\\MainLayout.tsx"
+@@ -15,11 +15,11 @@ export default function MainLayout({ currentMode, onSelectMode, onLogoClick, chi
+     return () => window.removeEventListener('keydown', onKeyDown)
+   }, [menuOpen])
+   return (
+-    <div className="min-h-screen bg-[#f5f6fa]">
++    <div className="min-h-screen bg-[#171426]">
+       <Header onLogoClick={onLogoClick} onMenuClick={() => setMenuOpen(true)} menuOpen={menuOpen} />
+-      {menuOpen && <button className="fixed inset-0 z-30 bg-slate-950/40 backdrop-blur-sm md:hidden" onClick={closeMenu} aria-label="メニューを閉じる" />}
++      {menuOpen && <button className="fixed inset-0 z-30 bg-[#211d33]  md:hidden" onClick={closeMenu} aria-label="メニューを閉じる" />}
+       <SideMenu currentMode={currentMode} onSelectMode={selectMode} open={menuOpen} />
+-      <main className="min-h-screen overflow-x-auto pt-16 md:ml-56"><div className="min-w-0 p-4 sm:p-6 lg:p-8">{children}</div></main>
++      <main className="min-h-screen pt-16 md:ml-56"><div className="min-w-0 p-4 sm:p-6 lg:p-8">{children}</div></main>
+     </div>
+   )
+ }
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\layout\\SideMenu.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\layout\\SideMenu.tsx"
+index 861f4df..f7ec1f5 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\layout\\SideMenu.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\layout\\SideMenu.tsx"
+@@ -2,27 +2,27 @@ import type { MenuMode } from '../../App'
+ 
+ interface SideMenuProps { currentMode: MenuMode; onSelectMode: (mode: MenuMode) => void; open: boolean }
+ const menuItems: { id: MenuMode; label: string; icon: string; available: boolean }[] = [
+-  { id: 'top', label: 'ホーム', icon: '⌂', available: true },
+-  { id: 'guided', label: 'ガイド練習', icon: '◈', available: true },
+-  { id: 'score-attack', label: 'スコアアタック', icon: '↗', available: true },
+-  { id: 'gallery', label: '完成形一覧', icon: '▦', available: true },
++  { id: 'top', label: 'ホーム', icon: '□', available: true },
++  { id: 'guided', label: 'ガイド練習', icon: '◆', available: true },
++  { id: 'score-attack', label: 'スコアアタック', icon: '↑', available: true },
++  { id: 'gallery', label: '完成形一覧', icon: '■', available: true },
+   { id: 'battle', label: '対戦', icon: '◇', available: false },
+-  { id: 'stats', label: '統計', icon: '▥', available: false },
++  { id: 'stats', label: '統計', icon: '■', available: false },
+ ]
+ 
+ export default function SideMenu({ currentMode, onSelectMode, open }: SideMenuProps) {
+   return (
+-    <aside id="side-menu" className={`fixed bottom-0 left-0 top-16 z-40 flex w-56 flex-col border-r border-white/5 bg-[#171426] px-3 py-5 text-white transition-transform md:visible md:translate-x-0 ${open ? 'visible translate-x-0' : 'invisible -translate-x-full'}`}>
+-      <p className="mb-3 px-3 text-[10px] font-extrabold tracking-[.2em] text-slate-500">PLAY</p>
++    <aside id="side-menu" className={`fixed bottom-0 left-0 top-16 z-40 flex w-56 flex-col border-r border-[#6f648d] bg-[#171426] px-3 py-5 text-white transition-transform md:visible md:translate-x-0 ${open ? 'visible translate-x-0' : 'invisible -translate-x-full'}`}>
++      <p className="mb-3 px-3 text-xs font-normal tracking-[.2em] text-[#c4bfd3]">PLAY</p>
+       <nav className="space-y-1" aria-label="メインメニュー">
+         {menuItems.map(item => (
+-          <button key={item.id} disabled={!item.available} aria-current={currentMode === item.id ? 'page' : undefined} onClick={() => onSelectMode(item.id)} className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-bold transition ${currentMode === item.id ? 'bg-white text-[#171426] shadow-lg' : item.available ? 'text-slate-400 hover:bg-white/[.06] hover:text-white' : 'cursor-not-allowed text-slate-700'}`}>
+-            <span aria-hidden="true" className="grid h-7 w-7 place-items-center text-lg">{item.icon}</span><span>{item.label}</span>{!item.available && <span className="ml-auto text-[9px] font-bold">SOON</span>}
++          <button key={item.id} disabled={!item.available} aria-current={currentMode === item.id ? 'page' : undefined} onClick={() => onSelectMode(item.id)} className={`flex w-full items-center gap-3 rounded-none px-3 py-3 text-sm font-normal transition ${currentMode === item.id ? 'bg-[#211d33] text-[#171426] shadow-pixel' : item.available ? 'text-[#c4bfd3] hover:bg-[#211d33] hover:text-white' : 'cursor-not-allowed text-[#c4bfd3]'}`}>
++            <span aria-hidden="true" className="grid h-7 w-7 place-items-center text-lg">{item.icon}</span><span>{item.label}</span>{!item.available && <span className="ml-auto text-xs font-normal">SOON</span>}
+           </button>
+         ))}
+       </nav>
+-      <div className="mt-auto rounded-2xl border border-white/[.07] bg-white/[.04] p-4">
+-        <p className="text-xs font-bold text-white">操作に迷ったら</p><p className="mt-1 text-[11px] leading-5 text-slate-500">ガイド練習でおすすめの一手を確認できます。</p>
++      <div className="mt-auto rounded-none border border-[#6f648d] bg-[#211d33] p-4">
++        <p className="text-xs font-normal text-white">操作に迷ったら</p><p className="mt-1 text-xs leading-5 text-[#c4bfd3]">ガイド練習でおすすめの一手を確認できます。</p>
+       </div>
+     </aside>
+   )
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\settings\\KeySettings.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\settings\\KeySettings.tsx"
+index e915113..43ec397 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\settings\\KeySettings.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\settings\\KeySettings.tsx"
+@@ -46,30 +46,30 @@ export default function KeySettings({ onClose }: Props) {
+ 
+   return <div role="dialog" aria-modal="true" aria-label="キー設定"
+     className="fixed inset-0 z-50 overflow-auto bg-black/80 p-4 text-white">
+-    <div className="mx-auto max-w-2xl rounded-2xl border border-violet-300/30 bg-[#221b39] p-5">
+-      <h2 className="mb-3 text-xl font-bold">キー設定</h2>
+-      <p className="mb-4 text-sm text-white/70">ゲーム画面を選ぶとキーボード操作に戻ります。Ctrl・Shiftは左右共通、NumキーはNumLockに関係なく同じ操作です。キー取得中のTab / Shift+Tabは取得だけを取り消し、フォーカスを移動します。</p>
++    <div className="mx-auto max-w-2xl rounded-none border border-[#6f648d] bg-[#211d33] p-5">
++      <h2 className="mb-3 text-xl font-normal">キー設定</h2>
++      <p className="mb-4 text-sm text-[#c4bfd3]">ゲーム画面を選ぶとキーボード操作に戻ります。Ctrl・Shiftは左右共通、NumキーはNumLockに関係なく同じ操作です。キー取得中のTab / Shift+Tabは取得だけを取り消し、フォーカスを移動します。</p>
+       <div className="mb-4 flex flex-wrap gap-2">
+-        <button type="button" onClick={() => preset('official')} className="rounded bg-violet-600 px-3 py-2">設定1</button>
+-        <button type="button" onClick={() => preset('recommended')} className="rounded bg-violet-600 px-3 py-2">設定2</button>
+-        <button type="button" onClick={() => { setDraft(defaultBindings()); setMessage('すべて設定2の初期値に戻しました。') }} className="rounded bg-slate-600 px-3 py-2">すべて初期化</button>
++        <button type="button" onClick={() => preset('official')} className="rounded-none bg-[#b5a8ff] px-3 py-2 text-[#0c0a14]">設定1</button>
++        <button type="button" onClick={() => preset('recommended')} className="rounded-none bg-[#b5a8ff] px-3 py-2 text-[#0c0a14]">設定2</button>
++        <button type="button" onClick={() => { setDraft(defaultBindings()); setMessage('すべて設定2の初期値に戻しました。') }} className="rounded-none bg-[#211d33] px-3 py-2">すべて初期化</button>
+       </div>
+-      <p className="mb-4 text-sm text-white/70">設定1のクイックドロップはSpaceです。評価にもSpaceを割り当てている場合は重複するため、保存前にどちらかの割当を変更してください。</p>
++      <p className="mb-4 text-sm text-[#c4bfd3]">設定1のクイックドロップはSpaceです。評価にもSpaceを割り当てている場合は重複するため、保存前にどちらかの割当を変更してください。</p>
+       <div className="grid gap-2">
+-        {ACTIONS.map(action => <div key={action} className="flex flex-wrap items-center gap-2 rounded bg-white/5 p-2">
+-          <span className="w-32 font-bold">{ACTION_LABELS[action]}</span>
++        {ACTIONS.map(action => <div key={action} className="flex flex-wrap items-center gap-2 rounded-none bg-[#211d33] p-2">
++          <span className="w-32 font-normal">{ACTION_LABELS[action]}</span>
+           {draft[action].map(code => <button key={code} type="button" aria-label={`${ACTION_LABELS[action]}から${displayCode(code)}を削除`}
+             onClick={() => setDraft(old => ({ ...old, [action]: old[action].filter(item => item !== code) }))}
+-            className="rounded border border-white/30 px-2 py-1 text-sm">{displayCode(code)} ×</button>)}
++            className="rounded-none border border-[#6f648d] px-2 py-1 text-sm">{displayCode(code)} ×</button>)}
+           <button type="button" onClick={() => { setCapture(action); setMessage('キーを押してください。Tab / Shift+Tabで取得だけを取り消し、フォーカスを移動できます。') }}
+-            className="rounded border border-violet-300 px-2 py-1 text-sm">追加</button>
++            className="rounded-none border border-[#6f648d] px-2 py-1 text-sm">追加</button>
+         </div>)}
+       </div>
+-      {capture && <button type="button" onClick={() => setCapture(null)} className="mt-3 rounded bg-amber-700 px-3 py-2">キー取得を取消</button>}
+-      {(conflict || message) && <p role="status" className="mt-3 text-amber-200">{conflict ?? message}</p>}
+-      <div className="mt-5 flex gap-3">
+-        <button type="button" disabled={Boolean(conflict) || Boolean(capture)} onClick={save} className="rounded bg-emerald-700 px-5 py-2 disabled:opacity-40">保存</button>
+-        <button type="button" onClick={onClose} className="rounded bg-slate-600 px-5 py-2">取消</button>
++      {capture && <button type="button" onClick={() => setCapture(null)} className="mt-3 rounded-none bg-amber-700 px-3 py-2">キー取得を取消</button>}
++      {(conflict || message) && <p role="status" className="mt-3 text-[#ffe99b]">{conflict ?? message}</p>}
++      <div className="mt-5 flex flex-wrap gap-3">
++        <button type="button" disabled={Boolean(conflict) || Boolean(capture)} onClick={save} className="rounded-none bg-emerald-700 px-5 py-2 disabled:opacity-40">保存</button>
++        <button type="button" onClick={onClose} className="rounded-none bg-[#211d33] px-5 py-2">取消</button>
+       </div>
+     </div>
+   </div>
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\TopPage.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\TopPage.tsx"
+index 3882157..3697bd0 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\components\\TopPage.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\TopPage.tsx"
+@@ -3,55 +3,52 @@ import type { GameMode } from '../App'
+ interface TopPageProps { onSelectMode: (mode: GameMode) => void }
+ 
+ const MiniPuyo = ({ color }: { color: string }) => (
+-  <span className={`block h-7 w-7 rounded-full ${color} shadow-[inset_0_-4px_0_rgba(0,0,0,0.12)] ring-2 ring-white/20`} />
++  <span className={`block aspect-square w-full rounded-none ${color} shadow-pixel ring-2 ring-white/20`} />
+ )
+ 
+ export default function TopPage({ onSelectMode }: TopPageProps) {
+   return (
+     <div className="mx-auto max-w-6xl font-puyo">
+-      <section className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#171426] px-6 py-10 shadow-2xl shadow-indigo-950/20 sm:px-10 lg:px-14 lg:py-14">
+-        <div className="absolute -right-24 -top-32 h-96 w-96 rounded-full bg-violet-500/20 blur-3xl" />
+-        <div className="absolute -bottom-40 left-1/3 h-80 w-80 rounded-full bg-cyan-400/10 blur-3xl" />
++      <section className="relative overflow-hidden rounded-none border border-[#6f648d] bg-[#171426] px-6 py-10 shadow-pixel sm:px-10 lg:px-14 lg:py-14">
+ 
+         <div className="relative grid items-center gap-10 lg:grid-cols-[1.15fr_.85fr]">
+           <div>
+-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-violet-300/15 bg-violet-300/10 px-3 py-1.5 text-xs font-bold tracking-wide text-violet-200">
+-              <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399]" />
++            <div className="mb-5 inline-flex items-center gap-2 rounded-none border border-[#6f648d] bg-[#211d33] px-3 py-1.5 text-xs font-normal tracking-wide text-[#b5a8ff]">
++              <span className="h-2 w-2 rounded-none bg-emerald-400 shadow-pixel" />
+               GTRを、置いて覚える。
+             </div>
+-            <h1 className="max-w-2xl text-4xl font-black leading-[1.12] tracking-tight text-white sm:text-5xl lg:text-6xl">
++            <h1 className="max-w-2xl text-3xl font-normal leading-[1.12] tracking-tight text-white sm:text-3xl">
+               迷わない積み方を、
+-              <span className="bg-gradient-to-r from-violet-300 via-fuchsia-300 to-amber-200 bg-clip-text text-transparent">手の感覚に。</span>
++              <span className="text-[#b5a8ff]">手の感覚に。</span>
+             </h1>
+-            <p className="mt-5 max-w-xl text-base leading-8 text-slate-300 sm:text-lg">
++            <p className="mt-5 max-w-xl text-base leading-8 text-[#c4bfd3] sm:text-lg">
+               次の一手をガイドで確かめながら、ぷよぷよの定番連鎖土台「GTR」を実戦形式で身につけよう。
+             </p>
+             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+-              <button onClick={() => onSelectMode('guided')} className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3.5 font-extrabold text-[#171426] shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:bg-violet-50">
++              <button onClick={() => onSelectMode('guided')} className="group inline-flex items-center justify-center gap-2 rounded-none bg-[#b5a8ff] px-6 py-3.5 font-normal text-[#0c0a14] shadow-pixel transition hover:-translate-y-0.5 hover:bg-[#b5a8ff]">
+                 ガイド練習を始める
+                 <span className="transition-transform group-hover:translate-x-1">→</span>
+               </button>
+-              <button onClick={() => onSelectMode('score-attack')} className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-6 py-3.5 font-bold text-white transition hover:-translate-y-0.5 hover:bg-white/10">
++              <button onClick={() => onSelectMode('score-attack')} className="inline-flex items-center justify-center rounded-none border border-[#6f648d] bg-[#b5a8ff] px-6 py-3.5 font-normal text-[#0c0a14] transition hover:-translate-y-0.5 hover:bg-[#b5a8ff]">
+                 スコアアタック
+               </button>
+             </div>
+           </div>
+ 
+           <div className="relative mx-auto w-full max-w-sm" aria-hidden="true">
+-            <div className="absolute inset-4 rounded-[2rem] bg-violet-500/25 blur-2xl" />
+-            <div className="relative rounded-[1.75rem] border border-white/10 bg-[#0d0b16]/90 p-5 shadow-2xl">
+-              <div className="mb-4 flex items-center justify-between text-xs font-bold text-slate-400">
+-                <span>GTR FORMATION</span><span className="text-emerald-400">GOOD</span>
++            <div className="relative rounded-none border border-[#6f648d] bg-[#0d0b16]/90 p-5 shadow-pixel">
++              <div className="mb-4 flex items-center justify-between text-xs font-normal text-[#c4bfd3]">
++                <span>GTR FORMATION</span><span className="text-[#91ecc2]">GOOD</span>
+               </div>
+-              <div className="grid grid-cols-6 gap-1.5 rounded-2xl border border-white/5 bg-black/30 p-4">
++              <div className="grid grid-cols-6 gap-1.5 rounded-none border border-[#6f648d] bg-black/30 p-4">
+                 {Array.from({ length: 30 }, (_, i) => {
+                   const colors: Record<number, string> = { 18: 'bg-rose-400', 19: 'bg-sky-400', 24: 'bg-rose-400', 25: 'bg-rose-400', 26: 'bg-sky-400', 20: 'bg-amber-300', 27: 'bg-sky-400', 21: 'bg-emerald-400', 22: 'bg-amber-300', 28: 'bg-emerald-400', 29: 'bg-amber-300' }
+-                  return colors[i] ? <MiniPuyo key={i} color={colors[i]} /> : <span key={i} className="h-7 w-7 rounded-full border border-white/[0.04]" />
++                  return colors[i] ? <MiniPuyo key={i} color={colors[i]} /> : <span key={i} className="aspect-square w-full rounded-none border border-[#6f648d]" />
+                 })}
+               </div>
+-              <div className="mt-4 flex items-center justify-between rounded-xl bg-white/[0.04] px-4 py-3">
+-                <span className="text-sm text-slate-400">折り返し進捗</span>
+-                <div className="flex items-center gap-3"><span className="h-1.5 w-24 overflow-hidden rounded-full bg-white/10"><span className="block h-full w-4/5 rounded-full bg-violet-400" /></span><b className="text-sm text-white">80%</b></div>
++              <div className="mt-4 flex items-center justify-between rounded-none bg-[#211d33] px-4 py-3">
++                <span className="text-sm text-[#c4bfd3]">折り返し進捗</span>
++                <div className="flex items-center gap-3"><span className="h-1.5 w-24 overflow-hidden rounded-none bg-[#211d33]"><span className="block h-full w-4/5 rounded-none bg-[#b5a8ff] text-[#0c0a14]" /></span><b className="text-sm text-white">80%</b></div>
+               </div>
+             </div>
+           </div>
+@@ -60,28 +57,28 @@ export default function TopPage({ onSelectMode }: TopPageProps) {
+ 
+       <section className="py-10">
+         <div className="mb-5 flex items-end justify-between">
+-          <div><p className="mb-1 text-xs font-extrabold tracking-[.18em] text-violet-600">TRAINING MODES</p><h2 className="text-2xl font-black text-slate-900">今日の練習を選ぶ</h2></div>
+-          <p className="hidden text-sm text-slate-500 sm:block">まずはガイド練習がおすすめ</p>
++          <div><p className="mb-1 text-xs font-normal tracking-[.18em] text-[#b5a8ff]">TRAINING MODES</p><h2 className="text-2xl font-normal text-[#c4bfd3]">今日の練習を選ぶ</h2></div>
++          <p className="hidden text-sm text-[#c4bfd3] sm:block">まずはガイド練習がおすすめ</p>
+         </div>
+         <div className="grid gap-5 lg:grid-cols-2">
+-          <button onClick={() => onSelectMode('guided')} className="group rounded-3xl border border-slate-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-1 hover:border-violet-300 hover:shadow-xl hover:shadow-violet-900/10 sm:p-7">
+-            <div className="flex items-start justify-between"><span className="grid h-12 w-12 place-items-center rounded-2xl bg-violet-100 text-2xl">◈</span><span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">初心者におすすめ</span></div>
+-            <h3 className="mt-6 text-xl font-black text-slate-900">ガイド付き練習</h3>
+-            <p className="mt-2 leading-7 text-slate-500">おすすめ配置を見ながら、折り返しから連鎖尾まで一手ずつ練習します。</p>
+-            <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-5 text-sm"><span className="text-slate-400">巻き戻し・配置ガイド付き</span><span className="font-extrabold text-violet-600 transition-transform group-hover:translate-x-1">始める →</span></div>
++          <button onClick={() => onSelectMode('guided')} className="group rounded-none border border-[#6f648d] bg-[#211d33] p-6 text-left shadow-pixel transition hover:-translate-y-1 hover:border-[#6f648d] hover:shadow-pixel hover:shadow-pixel sm:p-7">
++            <div className="flex flex-wrap items-start justify-between gap-2"><span className="grid h-12 w-12 place-items-center rounded-none bg-[#b5a8ff] text-[#0c0a14] text-2xl">◆</span><span className="rounded-none bg-[#211d33] px-3 py-1 text-xs font-normal text-[#91ecc2]">初心者におすすめ</span></div>
++            <h3 className="mt-6 text-xl font-normal text-[#c4bfd3]">ガイド付き練習</h3>
++            <p className="mt-2 leading-7 text-[#c4bfd3]">おすすめ配置を見ながら、折り返しから連鎖尾まで一手ずつ練習します。</p>
++            <div className="mt-6 flex flex-wrap items-center justify-between gap-2 border-t border-[#6f648d] pt-5 text-sm"><span className="text-[#c4bfd3]">巻き戻し・配置ガイド付き</span><span className="font-normal text-[#b5a8ff] transition-transform group-hover:translate-x-1">始める →</span></div>
+           </button>
+-          <button onClick={() => onSelectMode('score-attack')} className="group rounded-3xl border border-slate-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-1 hover:border-amber-300 hover:shadow-xl hover:shadow-amber-900/10 sm:p-7">
+-            <div className="flex items-start justify-between"><span className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-100 text-2xl">↗</span><span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">腕試し</span></div>
+-            <h3 className="mt-6 text-xl font-black text-slate-900">スコアアタック</h3>
+-            <p className="mt-2 leading-7 text-slate-500">ガイドなしでGTRを組み、完成速度と形の精度からスコアを測ります。</p>
+-            <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-5 text-sm"><span className="text-slate-400">評価・詳細フィードバック</span><span className="font-extrabold text-amber-600 transition-transform group-hover:translate-x-1">挑戦する →</span></div>
++          <button onClick={() => onSelectMode('score-attack')} className="group rounded-none border border-[#6f648d] bg-[#211d33] p-6 text-left shadow-pixel transition hover:-translate-y-1 hover:border-amber-300 hover:shadow-pixel hover:shadow-pixel sm:p-7">
++            <div className="flex flex-wrap items-start justify-between gap-2"><span className="grid h-12 w-12 place-items-center rounded-none bg-[#211d33] text-[#ffe99b] text-2xl">↑</span><span className="rounded-none bg-[#211d33] px-3 py-1 text-xs font-normal text-[#c4bfd3]">腕試し</span></div>
++            <h3 className="mt-6 text-xl font-normal text-[#c4bfd3]">スコアアタック</h3>
++            <p className="mt-2 leading-7 text-[#c4bfd3]">ガイドなしでGTRを組み、完成速度と形の精度からスコアを測ります。</p>
++            <div className="mt-6 flex flex-wrap items-center justify-between gap-2 border-t border-[#6f648d] pt-5 text-sm"><span className="text-[#c4bfd3]">評価・詳細フィードバック</span><span className="font-normal text-[#ffe99b] transition-transform group-hover:translate-x-1">挑戦する →</span></div>
+           </button>
+         </div>
+       </section>
+ 
+-      <section className="mb-8 grid gap-5 rounded-3xl border border-slate-200/80 bg-white/60 p-6 sm:grid-cols-3 sm:p-8">
++      <section className="mb-8 grid gap-5 rounded-none border border-[#6f648d] bg-[#211d33] p-6 sm:grid-cols-3 sm:p-8">
+         {[['01', '置く', 'ガイドを参考にぷよを配置'], ['02', '振り返る', '評価で形と連鎖尾を確認'], ['03', '身につける', '繰り返して判断を高速化']].map(([n, title, body]) => (
+-          <div key={n} className="flex gap-4"><span className="text-sm font-black text-violet-400">{n}</span><div><h3 className="font-extrabold text-slate-800">{title}</h3><p className="mt-1 text-sm leading-6 text-slate-500">{body}</p></div></div>
++          <div key={n} className="flex gap-4"><span className="text-sm font-normal text-[#b5a8ff]">{n}</span><div><h3 className="font-normal text-[#c4bfd3]">{title}</h3><p className="mt-1 text-sm leading-6 text-[#c4bfd3]">{body}</p></div></div>
+         ))}
+       </section>
+     </div>
+
+New file: src/game/rendering/UIText.ts
++import type * as Phaser from 'phaser'
++import { UI_FONT_FAMILY, UI_COLORS } from '../../ui/theme'
++
++/** All scene text, including recovery notices, uses the same regular face and texture density. */
++export function addUIText(scene: Phaser.Scene, x: number, y: number, text: string | string[], style: Phaser.Types.GameObjects.Text.TextStyle = {}) {
++  return scene.add.text(Math.round(x), Math.round(y), text, {
++    fontSize: '16px', color: UI_COLORS.text, lineSpacing: 4,
++    ...style, fontFamily: UI_FONT_FAMILY, fontStyle: 'normal', resolution: 2,
++    strokeThickness: 0,
++  })
++}
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\game\\rendering\\VisualConfig.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\game\\rendering\\VisualConfig.ts"
+index 6cd3948..460e0ea 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\game\\rendering\\VisualConfig.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\game\\rendering\\VisualConfig.ts"
+@@ -1,3 +1,5 @@
++import { UI_FONT_FAMILY, UI_COLORS } from '../../ui/theme'
++
+ // ゲーム画面の共有ビジュアル設定
+ 
+ export const PUYO_COLORS = {
+@@ -61,10 +63,11 @@ export const ANIMATION_CONFIG = {
+   PARTICLE_COUNT: 12,
+ } as const
+ 
++const regular = { fontFamily: UI_FONT_FAMILY, fontStyle: 'normal', resolution: 2, lineSpacing: 4 } as const
+ export const TEXT_STYLES = {
+-  title: { fontSize: '22px', color: '#ffffff', fontFamily: '"Segoe UI", "Noto Sans JP", sans-serif' },
+-  subtitle: { fontSize: '14px', color: '#8888aa', fontFamily: '"Segoe UI", "Noto Sans JP", sans-serif' },
+-  score: { fontSize: '20px', color: '#ffdd44', fontFamily: '"Segoe UI", "Noto Sans JP", sans-serif', stroke: '#000000', strokeThickness: 2 },
+-  info: { fontSize: '16px', color: '#aaaacc', fontFamily: '"Segoe UI", "Noto Sans JP", sans-serif' },
+-  label: { fontSize: '14px', color: '#8888aa', fontFamily: '"Segoe UI", "Noto Sans JP", sans-serif' },
++  title: { ...regular, fontSize: '24px', color: UI_COLORS.text },
++  subtitle: { ...regular, fontSize: '14px', color: UI_COLORS.muted },
++  score: { ...regular, fontSize: '32px', color: UI_COLORS.warning },
++  info: { ...regular, fontSize: '16px', color: UI_COLORS.text },
++  label: { ...regular, fontSize: '14px', color: UI_COLORS.muted },
+ } as const
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\game\\scenes\\GuidedPracticeScene.test.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\game\\scenes\\GuidedPracticeScene.test.ts"
+index d8eaf2a..4e49229 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\game\\scenes\\GuidedPracticeScene.test.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\game\\scenes\\GuidedPracticeScene.test.ts"
+@@ -30,6 +30,79 @@ import { actionKeys } from '../input/bindings'
+ import { getBindings, saveBindings, subscribeBindings } from '../input/settings'
+ import { GameManager } from '../GameManager'
+ 
++it('remeasures the complete COACH flow when saved shortcuts add lines, including initial long settings', () => {
++  vi.stubGlobal('localStorage', { setItem: vi.fn() })
++  const previous = structuredClone(getBindings())
++  const field: Field = { width: 6, height: 13, grid: Array.from({ length: 13 }, () => Array(6).fill(null)) }
++  const advice = { phaseMessage: '基本形が塞がれています：3列目・下から2段目の赤（必要色は青）。積むだけでは完成できません。', bestPlacement: null } as PlacementAdvice
++  const scene = new GuidedPracticeScene() as unknown as {
++    currentAdvice: PlacementAdvice; guideDisplay: unknown; add: unknown
++    gameField: { getField: () => Field }; guideManager: GuideManager
++    gameState: { field: Field; pairRandomState: number }; turnHistory: unknown[]
++    isPaused: boolean; isInspectionFrozen: boolean; isReplayInspection: boolean
++    time: { paused: boolean }; updateGuide: () => void; refreshBindingLabels: () => void
++  }
++  type Label = { x: number; y: number; height: number; text: string; setOrigin: () => Label; setText: (text: string) => Label }
++  let labels: Label[] = []
++  let autoBottom = 0
++  scene.guideDisplay = { add: vi.fn(), removeAll: () => { labels = []; autoBottom = 0 } }
++  scene.add = {
++    text: (x: number, y: number, text: string, style: { fontSize: string; wordWrap?: { width: number }; lineSpacing?: number }) => {
++      const fontSize = Number.parseInt(style.fontSize)
++      // Model a renderer returning wrapped text heights, rather than fixed test stubs.
++      const measure = (value: string) => Math.ceil([...value].reduce((sum, char) => sum + (char.charCodeAt(0) < 128 ? fontSize / 2 : fontSize), 0) / (style.wordWrap?.width ?? 10000)) * (fontSize + (style.lineSpacing ?? 0))
++      const label: Label = { x, y, text, height: measure(text), setOrigin: () => label,
++        setText: value => { label.text = value; label.height = measure(value); return label } }
++      labels.push(label)
++      return label
++    },
++    rectangle: (_x: number, y: number, width: number, height: number) => {
++      if (width === 160 && height === 44) autoBottom = y + height / 2
++      const shape = { setStrokeStyle: () => shape, setFillStyle: () => shape, setInteractive: () => shape, on: vi.fn() }
++      return shape
++    },
++    sprite: () => ({ setDisplaySize: vi.fn() }),
++  }
++  scene.currentAdvice = advice
++  scene.gameField = { getField: () => field }
++  scene.guideManager = new GuideManager()
++  scene.gameState = { field, pairRandomState: 1234 }
++  scene.turnHistory = [{ turn: 1 }]
++  scene.isPaused = true
++  scene.isInspectionFrozen = true
++  scene.isReplayInspection = true
++  scene.time = { paused: true }
++  const state = () => ({ advice: scene.currentAdvice, field: scene.gameState.field, history: scene.turnHistory,
++    random: scene.gameState.pairRandomState, paused: scene.isPaused, inspection: scene.isInspectionFrozen,
++    replay: scene.isReplayInspection, clock: scene.time.paused })
++  const before = structuredClone(state())
++  const description = () => labels.find(label => label.text.includes('この表示が消えた盤面'))!
++  const example = () => labels.find(label => label.text.startsWith('完成見本'))!
++  const unsubscribe = subscribeBindings(() => scene.refreshBindingLabels())
++  try {
++    saveBindings(defaultBindings())
++    scene.updateGuide()
++    const shortHeight = description().height
++    const shortExampleTop = example().y
++    const long = defaultBindings()
++    long.rewind = ['KeyA', 'KeyU', 'Backspace', 'BracketLeft', 'BracketRight', 'Semicolon', 'Quote', 'Slash']
++    long.evaluate = ['Space', 'KeyE', 'Numpad0', 'Numpad1', 'Numpad2', 'Numpad3', 'Numpad5', 'Numpad7']
++    saveBindings(long)
++    expect(description().height).toBeGreaterThan(shortHeight)
++    expect(example().y).toBeGreaterThan(shortExampleTop)
++    expect(example().y).toBeGreaterThanOrEqual(description().y + description().height + 16)
++    expect(autoBottom + 100).toBeLessThanOrEqual(800)
++    expect(state()).toEqual(before)
++    const updatedTop = example().y
++    scene.updateGuide() // A first draw with already saved long bindings uses the same measured flow.
++    expect(example().y).toBe(updatedTop)
++    expect(autoBottom + 100).toBeLessThanOrEqual(800)
++  } finally {
++    unsubscribe()
++    saveBindings(previous)
++  }
++})
++
+ it('reports an already built tail even while the horizontal head is waiting for its key', () => {
+   const colors: Record<string, PuyoColor> = { R: PuyoColor.RED, G: PuyoColor.GREEN, B: PuyoColor.BLUE, Y: PuyoColor.YELLOW }
+   const grid = [...Array.from({ length: 9 }, () => Array(6).fill(null)),
+@@ -378,7 +451,7 @@ describe('GuidedPracticeScene tail guide', () => {
+       expect(scene.currentAdvice).toBe(advice)
+       expect({ field: scene.gameState.field, history: scene.turnHistory, random: scene.gameState.pairRandomState }).toEqual(before)
+       expect(scene.updateAdvice).not.toHaveBeenCalled()
+-      expect(scene.updateGuide).not.toHaveBeenCalled()
++      expect(scene.updateGuide).toHaveBeenCalledOnce()
+     } finally {
+       unsubscribe()
+       saveBindings(previous)
+@@ -506,10 +579,10 @@ describe('GuidedPracticeScene inspection controls', () => {
+     scene.showDetailedResult(result, true)
+     const labels = text.mock.calls.map(call => call[2])
+     expect(labels).toContain('GTR Complete!')
+-    expect(labels).toContain('✓ 折り返し')
+-    expect(labels).toContain('✓ 連鎖尾基本形')
++    expect(labels).toContain('○ 折り返し')
++    expect(labels).toContain('○ 連鎖尾基本形')
+     expect(labels).toContain('土台の連鎖・余り・点数は評価範囲内のみ')
+-    expect(labels).toContain(`${chainCount >= 5 ? '✓' : '✗'} 5連鎖`)
++    expect(labels).toContain(`${chainCount >= 5 ? '○' : '×'} 5連鎖`)
+     expect(labels.some(label => label.includes('7連鎖'))).toBe(false)
+     expect(result.chainCount).toBe(chainCount)
+   })
+@@ -535,8 +608,8 @@ describe('GuidedPracticeScene inspection controls', () => {
+     scene.showDetailedResult(GTRDetector.detectGTR(grid), perfect)
+     const labels = text.mock.calls.map(call => call[2])
+     expect(labels).toContain(`土台スコア: ${perfect ? 100 : 0}点`)
+-    expect(labels).toContain(`${perfect ? '✓' : '✗'} 余りなし・1個・同色連結`)
+-    expect(labels).toContain(`${perfect ? '✓' : '✗'} 最小土台が完成`)
++    expect(labels).toContain(`${perfect ? '○' : '×'} 余りなし・1個・同色連結`)
++    expect(labels).toContain(`${perfect ? '○' : '×'} 最小土台が完成`)
+   })
+ 
+   it.each([false, undefined])('does not infer minimal completion from the old raised-edge diagnostic (%s)', rightEdgeRaised => {
+@@ -554,7 +627,7 @@ describe('GuidedPracticeScene inspection controls', () => {
+     const result = GTRDetector.detectGTR(Array.from({ length: 13 }, () => Array(6).fill(null)))
+     scene.showDetailedResult({ ...result, row10Usage: 'minimal', rightEdgeRaised }, true)
+     const labels = text.mock.calls.map(call => call[2])
+-    expect(labels).toContain('✗ 最小土台が完成')
++    expect(labels).toContain('× 最小土台が完成')
+   })
+ 
+   it('shows a perfect foundation and an unconfirmed physical connection separately', () => {
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\game\\scenes\\GuidedPracticeScene.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\game\\scenes\\GuidedPracticeScene.ts"
+index 278b2e2..e61108a 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\game\\scenes\\GuidedPracticeScene.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\game\\scenes\\GuidedPracticeScene.ts"
+@@ -1,3 +1,4 @@
++import { addUIText } from '../rendering/UIText'
+ import * as Phaser from 'phaser'
+ import { GameFieldManager } from '../core/GameField'
+ import { PuyoPairManager, PuyoPairRandom } from '../core/PuyoPair'
+@@ -213,27 +214,27 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+     this.add.circle(40, canvasH - 20, 170, 0x3ecf8e, 0.035)
+ 
+     // タイトル
+-    this.add.text(canvasW / 2, 27, 'GUIDED PRACTICE', { ...TEXT_STYLES.label, fontSize: '10px', color: '#9b8cff', letterSpacing: 2 }).setOrigin(0.5)
+-    this.add.text(canvasW / 2, 49, 'ガイド付きGTR練習', {
++    addUIText(this, canvasW / 2, 27, 'GUIDED PRACTICE', { ...TEXT_STYLES.label, fontSize: '14px', color: '#b5a8ff', letterSpacing: 2 }).setOrigin(0.5)
++    addUIText(this, canvasW / 2, 49, 'ガイド付きGTR練習', {
+       ...TEXT_STYLES.title,
+-      fontSize: '23px',
++      fontSize: '24px',
+     }).setOrigin(0.5)
+ 
+     // 操作説明（コンパクト表示）
+-    this.instructionText = this.add.text(canvasW / 2, 77, this.instructionLabel(), {
++    this.instructionText = addUIText(this, this.FIELD_X + FIELD_CONFIG.COLS * this.CELL_SIZE / 2, canvasH - 20, this.instructionLabel(), {
+       ...TEXT_STYLES.subtitle,
+-      fontSize: '12px',
+-    }).setOrigin(0.5)
++      fontSize: '14px',
++    }).setOrigin(0.5, 1)
+     const stopInstructions = subscribeBindings(() => this.refreshBindingLabels())
+ 
+     // フィールド描画
+     this.drawField()
+ 
+-    this.add.text(this.FIELD_X + this.CELL_SIZE * 2.5, this.FIELD_Y + this.CELL_SIZE * 0.5, '×', {
+-      fontSize: '22px', color: '#f47582', fontFamily: TEXT_STYLES.title.fontFamily, fontStyle: 'bold'
++    addUIText(this, this.FIELD_X + this.CELL_SIZE * 2.5, this.FIELD_Y + this.CELL_SIZE * 0.5, '×', {
++      fontSize: '22px', color: '#f47582', fontFamily: TEXT_STYLES.title.fontFamily, 
+     }).setOrigin(0.5).setAlpha(0.72).setDepth(0)
+-    this.add.text(this.FIELD_X, this.FIELD_Y + FIELD_CONFIG.ROWS * this.CELL_SIZE + 18, 'GTR FOUNDATION', {
+-      ...TEXT_STYLES.label, fontSize: '10px', color: '#716a88', letterSpacing: 1
++    addUIText(this, this.FIELD_X, this.FIELD_Y + FIELD_CONFIG.ROWS * this.CELL_SIZE + 18, 'GTR FOUNDATION', {
++      ...TEXT_STYLES.label, fontSize: '14px', color: '#c4bfd3', letterSpacing: 1
+     })
+ 
+     // ガイド表示エリア
+@@ -284,22 +285,18 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+     const nextLayout = this.getNextAreaLayout()
+ 
+     // NEXT欄の下に状態表示をまとめ、ぷよ表示とは重ねない。
+-    this.gravityStatusText = this.add.text(nextLayout.baseX + 12, nextLayout.statusY + 11, this.isGravityEnabled ? '●  自由落下 ON' : '●  自由落下 OFF', {
+-      fontSize: '11px',
++    this.gravityStatusText = addUIText(this, nextLayout.baseX + 12, nextLayout.statusY + 11, this.isGravityEnabled ? '●  自由落下 ON' : '●  自由落下 OFF', {
++      fontSize: '14px',
+       color: this.isGravityEnabled ? '#66e0aa' : '#f47582',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+-      stroke: '#000000',
+-      strokeThickness: 2
+     })
+     this.gravityStatusText.setDepth(100)
+ 
+     // アドバイザー状態表示
+-    this.advisorStatusText = this.add.text(nextLayout.baseX + 12, nextLayout.statusY + 37, this.isAdvisorEnabled ? '●  ガイド ON' : '●  ガイド OFF', {
+-      fontSize: '11px',
++    this.advisorStatusText = addUIText(this, nextLayout.baseX + 12, nextLayout.statusY + 37, this.isAdvisorEnabled ? '●  ガイド ON' : '●  ガイド OFF', {
++      fontSize: '14px',
+       color: this.isAdvisorEnabled ? '#b5a8ff' : '#f47582',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+-      stroke: '#000000',
+-      strokeThickness: 2
+     })
+     this.advisorStatusText.setDepth(100)
+ 
+@@ -370,15 +367,18 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+   private handleWindowBlur = () => { this.actionInput?.releaseAll() }
+ 
+   private instructionLabel(): string {
+-    const keys = getBindings()
+-    return `${actionKeys(keys, 'left')} / ${actionKeys(keys, 'right')} 移動  ${actionKeys(keys, 'rotateLeft')} / ${actionKeys(keys, 'rotateRight')} 回転  ${actionKeys(keys, 'quickDrop')} クイック  ${actionKeys(keys, 'rewind')} 戻す  ${actionKeys(keys, 'pause')} ポーズ  ${actionKeys(keys, 'evaluate')} 評価`
++    return '操作キーは画面下の一覧を確認'
+   }
+   private blockedAdviceDescription(): string {
+     return `${actionKeys(getBindings(), 'rewind')}で戻し、この表示が消えた盤面から積み直してください。戻せる履歴がなければ、${actionKeys(getBindings(), 'evaluate')}で評価して新しく始められます。ガイドは消去を勧めません。`
+   }
+   private refreshBindingLabels(): void {
+     this.instructionText?.setText(this.instructionLabel())
+-    this.blockedAdviceText?.setText(this.blockedAdviceDescription())
++    if (this.blockedAdviceText) {
++      this.blockedAdviceText.setText(this.blockedAdviceDescription())
++      // Saved shortcuts can add lines. Rebuild only the display, keeping advice and input state intact.
++      this.updateGuide()
++    }
+     this.gameOverHelpText?.setText(this.gameOverLabel())
+     if (this.isPaused && !this.isShowingResult) this.pauseText?.setText(this.pauseLabel())
+   }
+@@ -513,11 +513,11 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+ 
+     if (this.isPaused) {
+       this.pauseOverlay = this.add.rectangle(canvasW / 2, canvasH / 2, canvasW, canvasH, 0x000000, 0.7).setDepth(500)
+-      this.pauseText = this.add.text(canvasW / 2, canvasH / 2, this.pauseLabel(), {
++      this.pauseText = addUIText(this, canvasW / 2, canvasH / 2, this.pauseLabel(), {
+         fontSize: '32px',
+-        color: '#ffffff',
++        color: '#f6f2ff',
+         fontFamily: TEXT_STYLES.title.fontFamily,
+-        align: 'center'
++        align: 'center', wordWrap: { width: canvasW - 64, useAdvancedWrap: true },
+       }).setOrigin(0.5).setDepth(501)
+     } else {
+       this.pauseOverlay?.destroy()
+@@ -698,16 +698,17 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+     } catch (recoveryError) {
+       console.error('盤面表示の復旧に失敗しました', recoveryError)
+       this.isVisualStopped = true
+-      try { this.add.text(this.FIELD_X, this.FIELD_Y - 22, '表示を復旧できません。Escで戻れます。', { fontSize: '12px', color: '#ff8888' }) }
++      try { addUIText(this, this.FIELD_X, this.FIELD_Y - 22, '表示を復旧できません。Escで戻れます。', { ...TEXT_STYLES.subtitle, color: '#ff9aa5', wordWrap: { width: LAYOUT_GUIDED.CANVAS_WIDTH - this.FIELD_X - 24, useAdvancedWrap: true } }) }
+       catch { /* The scene is no longer drawable. */ }
+     }
+   }
+ 
+   private showChainNotice() {
+     if (this.chainNotice) return
+-    this.chainNotice = this.add.text(this.FIELD_X, this.FIELD_Y - 22,
++    this.chainNotice = addUIText(this, this.FIELD_X, this.FIELD_Y - 22,
+       '連鎖中は設定・評価を変更できません。終了後に操作してください。', {
+-        fontSize: '12px', color: '#ffdd88', fontFamily: TEXT_STYLES.title.fontFamily,
++        fontSize: '14px', color: '#ffe99b', fontFamily: TEXT_STYLES.title.fontFamily,
++        wordWrap: { width: LAYOUT_GUIDED.CANVAS_WIDTH - this.FIELD_X - 24, useAdvancedWrap: true },
+       }).setDepth(200)
+   }
+ 
+@@ -761,7 +762,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+     this.updateGuide()
+     this.lastFallTime = this.time.now
+     this.suppressHeldInputUntilRelease()
+-    if (message) this.add.text(this.FIELD_X, this.FIELD_Y - 20, message, { fontSize: '12px', color: '#ff8888' })
++    if (message) addUIText(this, this.FIELD_X, this.FIELD_Y - 20, message, { ...TEXT_STYLES.subtitle, color: '#ff9aa5', wordWrap: { width: LAYOUT_GUIDED.CANVAS_WIDTH - this.FIELD_X - 24, useAdvancedWrap: true } })
+   }
+ 
+   private updateGuideState() {
+@@ -827,35 +828,34 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+     overlay.setDepth(1000)
+     this.resultOverlay = overlay
+ 
+-    const container = this.add.container(canvasW / 2, 180)
++    const container = this.add.container(canvasW / 2, 40)
+     container.setDepth(1001)
+     this.resultContainer = container
+ 
+     // タイトル
+     const isGuidedTargetComplete = result.isGTR && tailComplete
+-    const titleColor = isGuidedTargetComplete ? '#44dd88' : '#ff6666'
++    const titleColor = isGuidedTargetComplete ? '#91ecc2' : '#ff9aa5'
+     const titleText = isGuidedTargetComplete ? 'GTR Complete!' : 'GTR未完成'
+-    const title = this.add.text(0, 0, titleText, {
++    const title = addUIText(this, 0, 0, titleText, {
+       fontSize: '32px',
+       color: titleColor,
+       fontFamily: TEXT_STYLES.title.fontFamily,
+-      stroke: '#000000',
+-      strokeThickness: 3,
+-    }).setOrigin(0.5)
++    }).setOrigin(0.5, 0)
+     container.add(title)
+ 
+     // スコア
+-    const score = this.add.text(0, 50, `土台スコア: ${result.totalScore}点`, {
+-      fontSize: '24px',
+-      color: '#ffdd44',
++    const score = addUIText(this, 0, (title.height || 38) + 12, `土台スコア: ${result.totalScore}点`, {
++      fontSize: '32px',
++      color: '#ffe99b',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+-    }).setOrigin(0.5)
++    }).setOrigin(0.5, 0)
+     container.add(score)
++    const previewTop = score.y + (score.height || 38) + 40
+ 
+     // GTRフィールド表示
+     const grid = this.gameField.getField().grid
+     const preview = createGTRChainPreview(grid)
+-    const renderPreview = this.displayGTRField(container, -180, 92)
++    const renderPreview = this.displayGTRField(container, -180, previewTop)
+     renderPreview?.({ grid: preview.initialGrid, fading: [], alpha: 1,
+       chainIndex: null, starterPosition: preview.starter, phase: 'initial' })
+ 
+@@ -870,30 +870,35 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+       { label: '余りなし・1個・同色連結', checked: result.chainCount > 0 && (result.leftoverPuyos <= 1 || result.leftoverConnected) }
+     ]
+ 
+-    let yOffset = 100
++    let yOffset = previewTop
+     const xOffset = 60
+     checks.forEach(check => {
+-      const icon = check.checked ? '✓' : '✗'
+-      const color = check.checked ? '#44dd88' : '#ff6666'
+-      const text = this.add.text(xOffset, yOffset, `${icon} ${check.label}`, {
++      const icon = check.checked ? '○' : '×'
++      const color = check.checked ? '#91ecc2' : '#ff9aa5'
++      const text = addUIText(this, xOffset, yOffset, `${icon} ${check.label}`, {
+         fontSize: '16px',
+         color: color,
+         fontFamily: TEXT_STYLES.title.fontFamily,
++        wordWrap: { width: 300, useAdvancedWrap: true },
+       })
+       container.add(text)
+-      yOffset += 24
++      yOffset += (text.height || 20) + 8
+     })
+ 
+-    const playbackStatus = this.add.text(-180, 263,
++    const playbackStatus = addUIText(this, -180, previewTop + 160,
+       preview.unavailableReason ?? '仮想発火：再生待ち', {
+         fontSize: '14px', color: '#d7c8ff', fontFamily: TEXT_STYLES.title.fontFamily,
+-      }).setOrigin(0.5)
++      wordWrap: { width: 300, useAdvancedWrap: true },
++      }).setOrigin(0.5, 0)
+     container.add(playbackStatus)
+-    container.add(this.add.text(-180, 317, preview.starter
++    const replayTop = playbackStatus.y + (playbackStatus.height || 20) + 8
++    const previewNote = addUIText(this, -180, replayTop + 52, preview.starter
+       ? '同色1個を仮置きして再生（採点とは別）'
+       : '仮置きに必要な発火色がありません（採点とは別）', {
+-      fontSize: '12px', color: '#aaaacc', fontFamily: TEXT_STYLES.title.fontFamily,
+-    }).setOrigin(0.5))
++      fontSize: '14px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily,
++    wordWrap: { width: 300, useAdvancedWrap: true },
++    }).setOrigin(0.5, 0)
++    container.add(previewNote)
+ 
+     if (preview.trace) {
+       this.resultPlayback = new ResultChainPlayback(preview.trace, {
+@@ -905,10 +910,10 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+               : `仮想発火：${frame.chainIndex}連鎖目`)
+         },
+       }, preview.trace.initial.ids[preview.starter!.y][preview.starter!.x] ?? undefined)
+-      const replayButton = this.add.text(-180, 294, 'もう一度', {
++      const replayButton = addUIText(this, -180, replayTop, 'もう一度', {
+         fontSize: '16px', color: '#e8dcff', backgroundColor: '#40366f',
+-        padding: { x: 12, y: 5 }, fontFamily: TEXT_STYLES.title.fontFamily,
+-      }).setOrigin(0.5)
++        padding: { x: 12, y: 12 }, fontFamily: TEXT_STYLES.title.fontFamily,
++      }).setOrigin(0.5, 0)
+       replayButton.setInteractive?.({ useHandCursor: true })
+       replayButton.on?.('pointerdown', () => {
+         if (this.isShowingResult && !this.isDisposed && !document.hidden && !this.isReportPanelOpen && !this.isReplayInspection && !this.actionInput?.isGated()) this.resultPlayback?.replay()
+@@ -917,16 +922,18 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+     }
+ 
+     const parts = GTRDetector.getFoundationChainBreakdown(grid)
+-    const breakdown = this.add.text(0, 338, parts
++    const breakdown = addUIText(this, 0, Math.max(yOffset, previewNote.y + (previewNote.height || 40)) + 16, parts
+       ? `土台${parts.total}連鎖 = 基本形2連鎖 + 連鎖尾${parts.tail}連鎖`
+       : '基本形から連鎖尾への接続を確認しましょう', {
+-      fontSize: '14px', color: '#aaaacc', fontFamily: TEXT_STYLES.title.fontFamily,
+-    }).setOrigin(0.5)
++      fontSize: '14px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily,
++    wordWrap: { width: canvasW - 80, useAdvancedWrap: true }, align: 'center',
++    }).setOrigin(0.5, 0)
+     container.add(breakdown)
+ 
+-    const scopeNote = this.add.text(0, 365, '土台の連鎖・余り・点数は評価範囲内のみ', {
+-      fontSize: '14px', color: '#aaaacc', fontFamily: TEXT_STYLES.title.fontFamily,
+-    }).setOrigin(0.5)
++    const scopeNote = addUIText(this, 0, breakdown.y + (breakdown.height || 20) + 12, '土台の連鎖・余り・点数は評価範囲内のみ', {
++      fontSize: '14px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily,
++    wordWrap: { width: canvasW - 80, useAdvancedWrap: true }, align: 'center',
++    }).setOrigin(0.5, 0)
+     container.add(scopeNote)
+ 
+     const context = assessFoundationContext(grid)
+@@ -936,20 +943,21 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+       : context.status === 'unstable' ? '全盤面：消去前の盤面です'
+       : context.status === 'not-ready' ? '全盤面の伸ばし：土台5連鎖の完成後に確認'
+       : '全盤面：接続未確認。発火口・上部を確認してください'
+-    const contextNote = this.add.text(0, 402,
++    const contextNote = addUIText(this, 0, scopeNote.y + (scopeNote.height || 20) + 12,
+       `範囲外 ${context.outsidePuyos}個（有効活用できるとは限りません）\n${physicalNote}`, {
+-        fontSize: '13px', color: context.status === 'potential' ? '#aaaacc' : '#ddbb88',
++        fontSize: '14px', color: context.status === 'potential' ? '#c4bfd3' : '#ffe99b',
+         fontFamily: TEXT_STYLES.title.fontFamily, align: 'center',
+-      }).setOrigin(0.5)
++        wordWrap: { width: canvasW - 80, useAdvancedWrap: true },
++      }).setOrigin(0.5, 0)
+     container.add(contextNote)
+ 
+     // 操作説明
+-    const instruction = this.add.text(0, 470, 'Spaceキーで新しいゲームを開始\nEscキーでメニューに戻る', {
++    const instruction = addUIText(this, 0, contextNote.y + (contextNote.height || 40) + 16, 'Spaceキーで新しいゲームを開始\nEscキーでメニューに戻る', {
+       fontSize: '16px',
+-      color: '#666688',
++      color: '#c4bfd3',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+-      align: 'center'
+-    }).setOrigin(0.5)
++      align: 'center', wordWrap: { width: canvasW - 80, useAdvancedWrap: true },
++    }).setOrigin(0.5, 0)
+     container.add(instruction)
+ 
+ 
+@@ -978,9 +986,9 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+     const activeLayer = this.add.container(0, 0)
+     container.add(activeLayer)
+ 
+-    const label = this.add.text(offsetX, offsetY - 20, 'GTR評価範囲', {
++    const label = addUIText(this, offsetX, offsetY - 20, 'GTR評価範囲', {
+       fontSize: '14px',
+-      color: '#aaaacc',
++      color: '#c4bfd3',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+     }).setOrigin(0.5)
+     container.add(label)
+@@ -1031,21 +1039,21 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+     bg.setStrokeStyle(2, 0x4444aa)
+     this.gameOverDisplay.add(bg)
+ 
+-    const title = this.add.text(canvasW / 2, canvasH / 2 - 28, 'Game Over', {
++    const title = addUIText(this, canvasW / 2, canvasH / 2 - 28, 'Game Over', {
+       fontSize: '32px',
+-      color: '#ff6666',
++      color: '#ff9aa5',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+     }).setOrigin(0.5)
+     this.gameOverDisplay.add(title)
+ 
+-    const score = this.add.text(canvasW / 2, canvasH / 2 + 14, `スコア: ${this.gameState.score}`, {
++    const score = addUIText(this, canvasW / 2, canvasH / 2 + 14, `スコア: ${this.gameState.score}`, {
+       fontSize: '18px',
+-      color: '#ffffff',
++      color: '#f6f2ff',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+     }).setOrigin(0.5)
+     this.gameOverDisplay.add(score)
+-    const help = this.add.text(canvasW / 2, canvasH / 2 + 55, this.gameOverLabel(), {
+-      fontSize: '13px', color: '#918aa8', fontFamily: TEXT_STYLES.title.fontFamily
++    const help = addUIText(this, canvasW / 2, canvasH / 2 + 55, this.gameOverLabel(), {
++      fontSize: '14px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily
+     }).setOrigin(0.5)
+     this.gameOverHelpText = help
+     this.gameOverDisplay.add(help)
+@@ -1159,22 +1167,21 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+     this.guideDisplay.removeAll(true)
+     this.blockedAdviceText = undefined
+ 
+-    const fieldH = FIELD_CONFIG.ROWS * this.CELL_SIZE
+     const guideW = LAYOUT_GUIDED.GUIDE_WIDTH
+-    const guideH = Math.max(fieldH, 500)
++    const guideH = LAYOUT_GUIDED.CANVAS_HEIGHT - this.GUIDE_Y - 16
+     const bg = this.add.rectangle(0, guideH / 2, guideW, guideH, 0x211d33, 0.96)
+     this.guideDisplay.add(bg)
+ 
+     const border = this.add.rectangle(0, guideH / 2, guideW, guideH)
+-    border.setStrokeStyle(1, 0x51496b)
++    border.setStrokeStyle(2, 0x6f648d)
+     border.setFillStyle()
+     this.guideDisplay.add(border)
+ 
+-    const title = this.add.text(-guideW / 2 + 20, 16, 'COACH', {
+-      fontSize: '11px',
+-      color: '#9b8cff',
++    const title = addUIText(this, -guideW / 2 + 20, 16, 'COACH', {
++      fontSize: '14px',
++      color: '#b5a8ff',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+-      fontStyle: 'bold', letterSpacing: 2
++       letterSpacing: 2
+     }).setOrigin(0, 0)
+     this.guideDisplay.add(title)
+ 
+@@ -1196,9 +1203,9 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+ 
+     const commentTop = 44
+     const textWidth = guideW - 40
+-    const comment = this.add.text(0, commentTop, guideContent.comment, {
+-      fontSize: '14px',
+-      color: '#f3c94f',
++    const comment = addUIText(this, 0, commentTop, guideContent.comment, {
++      fontSize: '16px',
++      color: '#ffe99b',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+       wordWrap: { width: textWidth, useAdvancedWrap: true },
+       align: 'center',
+@@ -1206,10 +1213,10 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+     }).setOrigin(0.5, 0)
+     this.guideDisplay.add(comment)
+ 
+-    const commentBottom = commentTop + comment.height
++    let contentBottom = commentTop + (comment.height || 20)
+     if (guideContent.description) {
+-      const desc = this.add.text(0, commentBottom + 9, guideContent.description, {
+-        fontSize: '11px',
++      const desc = addUIText(this, 0, contentBottom + 8, guideContent.description, {
++        fontSize: '14px',
+         color: '#c4bfd3',
+         fontFamily: TEXT_STYLES.title.fontFamily,
+         wordWrap: { width: textWidth, useAdvancedWrap: true },
+@@ -1217,9 +1224,10 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+         lineSpacing: 2,
+       }).setOrigin(0.5, 0)
+       this.guideDisplay.add(desc)
++      contentBottom = desc.y + (desc.height || 20)
+       if (this.currentAdvice?.phaseMessage.startsWith('基本形が塞がれています')) this.blockedAdviceText = desc
+     }
+-    this.drawCompletionExample()
++    this.drawCompletionExample(contentBottom + 16)
+   }
+ 
+   private canBrowseCompletionExample(): boolean {
+@@ -1234,7 +1242,7 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+     this.updateGuide()
+   }
+ 
+-  private drawCompletionExample(): void {
++  private drawCompletionExample(top = 238): void {
+     const advisedShape = this.isAdvisorEnabled
+       ? this.currentAdvice?.bestPlacement?.tailShape : undefined
+     const shape = getDisplayedCompletionShape(this.manualCompletionShape, advisedShape)
+@@ -1245,36 +1253,40 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+       isCurrentAdvice ? this.currentAdvice?.bestPlacement?.tailColor : undefined)
+     const grid = getCompletionGrid(shape, colors)
+ 
+-    this.guideDisplay?.add(this.add.text(-165, 238, '完成見本  ·  5連鎖の土台', {
++    const exampleTitle = addUIText(this, -165, top, '完成見本  ·  5連鎖の土台', {
+       fontSize: '14px', color: '#f3c94f', fontFamily: TEXT_STYLES.title.fontFamily,
+-    }))
++    })
++    this.guideDisplay?.add(exampleTitle)
+     const relation = this.manualCompletionShape !== null
+       ? `教材を閲覧中：${example.label} ／ 今回の案内：${advisedShape ? GTR_COMPLETION_EXAMPLES[advisedShape].label : this.isAdvisorEnabled ? '型の提示なし' : 'ガイドOFF'}`
+       : advisedShape
+         ? `今回の案内：${GTR_COMPLETION_EXAMPLES[advisedShape].label} ／ 表示中：${example.label}`
+         : `今回の案内：${this.isAdvisorEnabled ? '型の提示なし' : 'ガイドOFF'} ／ 表示中：${example.label}教材`
+-    this.guideDisplay?.add(this.add.text(-165, 266, relation, {
+-      fontSize: '11px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily,
++    const relationText = addUIText(this, -165, exampleTitle.y + (exampleTitle.height || 20) + 4, relation, {
++      fontSize: '14px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily,
+       wordWrap: { width: 330, useAdvancedWrap: true },
+-    }))
++    })
++    this.guideDisplay?.add(relationText)
++    const tabsY = relationText.y + (relationText.height || 36) + 4 + 22
+ 
+     for (const [index, tabShape] of COMPLETION_SHAPES.entries()) {
+       const selected = shape === tabShape
+       const x = -112 + index * 112
+-      const tab = this.add.rectangle(x, 307, 104, 30, selected ? 0x4b3e76 : 0x302a46)
++      const tab = this.add.rectangle(x, tabsY, 104, 44, selected ? 0x4b3e76 : 0x302a46)
+       tab.setStrokeStyle(1, selected ? 0xb5a8ff : 0x51496b)
+       tab.setInteractive({ useHandCursor: true })
+       tab.on('pointerdown', () => this.selectCompletionExample(tabShape))
+       this.guideDisplay?.add(tab)
+-      this.guideDisplay?.add(this.add.text(x, 307, GTR_COMPLETION_EXAMPLES[tabShape].label, {
+-        fontSize: '13px', color: selected ? '#ffffff' : '#b7aecb', fontFamily: TEXT_STYLES.title.fontFamily,
++      this.guideDisplay?.add(addUIText(this, x, tabsY, GTR_COMPLETION_EXAMPLES[tabShape].label, {
++        fontSize: '14px', color: selected ? '#f6f2ff' : '#b7aecb', fontFamily: TEXT_STYLES.title.fontFamily,
+       }).setOrigin(0.5))
+     }
+ 
+-    const cellSize = 48
++    const cellSize = 36
++    const diagramTop = tabsY + 22 + 8
+     for (let y = 0; y < 4; y++) for (let x = 0; x < 6; x++) {
+-      const px = -120 + x * cellSize
+-      const py = 362 + y * cellSize
++      const px = (x - 2.5) * cellSize
++      const py = diagramTop + (y + 0.5) * cellSize
+       const bg = this.add.rectangle(px, py, cellSize - 1, cellSize - 1, 0x10101d)
+       bg.setStrokeStyle(1, 0x38334f)
+       this.guideDisplay?.add(bg)
+@@ -1288,24 +1300,27 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+       }
+     }
+ 
+-    this.guideDisplay?.add(this.add.text(-165, 546,
++    const colorNote = addUIText(this, -165, diagramTop + 4 * cellSize + 4,
+       '折り返し色に合わせた4色例。到達・100点は未保証。', {
+-        fontSize: '11px', color: '#aaa4bb', fontFamily: TEXT_STYLES.title.fontFamily,
++        fontSize: '14px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily,
+         wordWrap: { width: 330, useAdvancedWrap: true },
+-      }))
+-    this.guideDisplay?.add(this.add.text(-165, 575,
++      })
++    this.guideDisplay?.add(colorNote)
++    const chainNote = addUIText(this, -165, colorNote.y + (colorNote.height || 36) + 4,
+       '左上へ1個を仮置きすると5連鎖全消しする教材図。', {
+-        fontSize: '11px', color: '#aaa4bb', fontFamily: TEXT_STYLES.title.fontFamily,
++        fontSize: '14px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily,
+         wordWrap: { width: 330, useAdvancedWrap: true },
+-      }))
+-    const auto = this.add.rectangle(0, 610, 160, 26,
++      })
++    this.guideDisplay?.add(chainNote)
++    const autoY = chainNote.y + (chainNote.height || 36) + 4 + 22
++    const auto = this.add.rectangle(0, autoY, 160, 44,
+       this.manualCompletionShape === null ? 0x4b3e76 : 0x302a46)
+     auto.setStrokeStyle(1, this.manualCompletionShape === null ? 0xb5a8ff : 0x51496b)
+     auto.setInteractive({ useHandCursor: true })
+     auto.on('pointerdown', () => this.selectCompletionExample(null))
+     this.guideDisplay?.add(auto)
+-    this.guideDisplay?.add(this.add.text(0, 610, '案内に合わせる', {
+-      fontSize: '12px', color: '#ffffff', fontFamily: TEXT_STYLES.title.fontFamily,
++    this.guideDisplay?.add(addUIText(this, 0, autoY, '案内に合わせる', {
++      fontSize: '14px', color: '#f6f2ff', fontFamily: TEXT_STYLES.title.fontFamily,
+     }).setOrigin(0.5))
+   }
+ 
+@@ -1445,19 +1460,19 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+     ).setStrokeStyle(1, 0x3f3955)
+ 
+     // ラベルを各ボックス内に収め、上部の操作説明と分離する。
+-    this.add.text(layout.baseX + 9, layout.baseY + 7, 'NEXT', {
+-      fontSize: '11px',
+-      color: '#aaaacc',
++    addUIText(this, layout.baseX + 9, layout.baseY + 7, 'NEXT', {
++      fontSize: '14px',
++      color: '#c4bfd3',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+-      fontStyle: 'bold',
++      
+       letterSpacing: 1,
+     })
+ 
+-    this.add.text(layout.baseX + 9, layout.nnBoxY + 7, 'NEXT 2', {
+-      fontSize: '10px',
++    addUIText(this, layout.baseX + 9, layout.nnBoxY + 7, 'NEXT 2', {
++      fontSize: '14px',
+       color: '#77738d',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+-      fontStyle: 'bold',
++      
+       letterSpacing: 1,
+     })
+   }
+@@ -1523,12 +1538,10 @@ export default class GuidedPracticeScene extends Phaser.Scene {
+ 
+   // スコアフロートアニメーション
+   private playScorePopup(x: number, y: number, text: string) {
+-    const scoreText = this.add.text(x, y, text, {
++    const scoreText = addUIText(this, x, y, text, {
+       fontSize: '20px',
+-      color: '#ffdd44',
++      color: '#ffe99b',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+-      stroke: '#000000',
+-      strokeThickness: 3,
+     }).setOrigin(0.5).setDepth(500)
+ 
+     this.tweens.add({
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\game\\scenes\\MenuScene.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\game\\scenes\\MenuScene.ts"
+index 02e032c..6f0b6ed 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\game\\scenes\\MenuScene.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\game\\scenes\\MenuScene.ts"
+@@ -1,3 +1,4 @@
++import { addUIText } from '../rendering/UIText'
+ import * as Phaser from 'phaser'
+ 
+ export default class MenuScene extends Phaser.Scene {
+@@ -10,20 +11,20 @@ export default class MenuScene extends Phaser.Scene {
+     const centerY = this.cameras.main.height / 2
+ 
+     // 背景
+-    this.add.rectangle(centerX, centerY, 800, 800, 0x1a1a1a)
++    this.add.rectangle(centerX, centerY, 800, 800, 0x171426)
+ 
+     // タイトル
+-    this.add.text(centerX, 150, 'GTRトレーニングツール', {
+-      fontSize: '36px',
+-      color: '#ffffff',
+-      fontFamily: 'Arial, sans-serif'
++    addUIText(this, centerX, 150, 'GTRトレーニングツール', {
++      fontSize: '32px',
++      color: '#f6f2ff',
++      wordWrap: { width: this.cameras.main.width - 80, useAdvancedWrap: true }, align: 'center'
+     }).setOrigin(0.5)
+ 
+     // サブタイトル
+-    this.add.text(centerX, 200, 'ぷよぷよGTR練習ゲーム', {
++    addUIText(this, centerX, 200, 'ぷよぷよGTR練習ゲーム', {
+       fontSize: '18px',
+-      color: '#888888',
+-      fontFamily: 'Arial, sans-serif'
++      color: '#c4bfd3',
++      wordWrap: { width: this.cameras.main.width - 80, useAdvancedWrap: true }, align: 'center'
+     }).setOrigin(0.5)
+ 
+     // メニュー項目
+@@ -38,17 +39,17 @@ export default class MenuScene extends Phaser.Scene {
+ 
+     menuItems.forEach((item, index) => {
+       const y = 350 + index * 80
+-      const text = this.add.text(centerX, y, item.text, {
++      const text = addUIText(this, centerX, y, item.text, {
+         fontSize: '24px',
+-        color: item.enabled ? '#ffffff' : '#555555',
+-        fontFamily: 'Arial, sans-serif'
++        color: item.enabled ? '#f6f2ff' : '#c4bfd3',
++        wordWrap: { width: this.cameras.main.width - 80, useAdvancedWrap: true }, align: 'center'
+       }).setOrigin(0.5)
+ 
+       if (!item.enabled) {
+-        this.add.text(centerX, y + 25, '（後日実装予定）', {
++        addUIText(this, centerX, y + 25, '（後日実装予定）', {
+           fontSize: '14px',
+-          color: '#555555',
+-          fontFamily: 'Arial, sans-serif'
++          color: '#c4bfd3',
++          wordWrap: { width: this.cameras.main.width - 80, useAdvancedWrap: true }, align: 'center'
+         }).setOrigin(0.5)
+       }
+ 
+@@ -70,17 +71,18 @@ export default class MenuScene extends Phaser.Scene {
+     })
+ 
+     // 選択カーソル
+-    const cursor = this.add.text(centerX - 150, 350, '▶', {
++    const cursor = addUIText(this, centerX - 150, 350, '→', {
+       fontSize: '24px',
+       color: '#ffff00',
+-      fontFamily: 'Arial, sans-serif'
++      wordWrap: { width: this.cameras.main.width - 80, useAdvancedWrap: true }, align: 'center'
+     }).setOrigin(0.5)
+ 
+     const updateSelection = () => {
+       if (menuTexts.length > 0) {
+         cursor.y = menuTexts[selectedIndex].y
++        cursor.x = menuTexts[selectedIndex].x - menuTexts[selectedIndex].width / 2 - 24
+         menuTexts.forEach((text, index) => {
+-          text.setColor(index === selectedIndex ? '#ffff00' : '#ffffff')
++          text.setColor(index === selectedIndex ? '#ffff00' : '#f6f2ff')
+         })
+       }
+     }
+@@ -123,10 +125,10 @@ export default class MenuScene extends Phaser.Scene {
+     })
+ 
+     // 操作説明
+-    this.add.text(centerX, 650, '↑↓: 選択  Enter/Space: 決定', {
++    addUIText(this, centerX, 650, '↑↓: 選択  Enter/Space: 決定', {
+       fontSize: '16px',
+-      color: '#888888',
+-      fontFamily: 'Arial, sans-serif'
++      color: '#c4bfd3',
++      wordWrap: { width: this.cameras.main.width - 80, useAdvancedWrap: true }, align: 'center'
+     }).setOrigin(0.5)
+ 
+     updateSelection()
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\game\\scenes\\PuyoGame.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\game\\scenes\\PuyoGame.ts"
+index 66a2824..b427d37 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\game\\scenes\\PuyoGame.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\game\\scenes\\PuyoGame.ts"
+@@ -1,3 +1,4 @@
++import { addUIText } from '../rendering/UIText'
+ import * as Phaser from 'phaser'
+ import { GameFieldManager } from '../core/GameField'
+ import { PuyoPairManager } from '../core/PuyoPair'
+@@ -134,8 +135,8 @@ export default class PuyoGame extends Phaser.Scene {
+     // フィールドグリッド
+     this.drawGrid()
+ 
+-    this.add.text(this.FIELD_X + this.CELL_SIZE * 2.5, this.FIELD_Y + this.CELL_SIZE * 0.5, '×', {
+-      fontSize: '22px', color: '#f47582', fontFamily: TEXT_STYLES.title.fontFamily, fontStyle: 'bold'
++    addUIText(this, this.FIELD_X + this.CELL_SIZE * 2.5, this.FIELD_Y + this.CELL_SIZE * 0.5, '×', {
++      fontSize: '22px', color: '#f47582', fontFamily: TEXT_STYLES.title.fontFamily, 
+     }).setOrigin(0.5).setAlpha(0.72).setDepth(0)
+ 
+     // ネクストぷよ表示エリア
+@@ -145,10 +146,10 @@ export default class PuyoGame extends Phaser.Scene {
+     this.initializeSprites()
+ 
+     // タイトル
+-    this.add.text(this.FIELD_X, 24, 'SCORE ATTACK', { ...TEXT_STYLES.label, fontSize: '11px', color: '#9b8cff' })
+-    this.add.text(this.FIELD_X, 43, 'GTR Training', { ...TEXT_STYLES.title, fontSize: '25px' })
+-    this.add.text(this.FIELD_X, this.FIELD_Y + fieldH + 18, 'BUILD  /  CONNECT  /  CHAIN', {
+-      ...TEXT_STYLES.label, fontSize: '10px', color: '#716a88', letterSpacing: 1
++    addUIText(this, this.FIELD_X, 24, 'SCORE ATTACK', { ...TEXT_STYLES.label, fontSize: '14px', color: '#b5a8ff' })
++    addUIText(this, this.FIELD_X, 43, 'GTR Training', { ...TEXT_STYLES.title, fontSize: '24px' })
++    addUIText(this, this.FIELD_X, this.FIELD_Y + fieldH + 18, 'BUILD  /  CONNECT  /  CHAIN', {
++      ...TEXT_STYLES.label, fontSize: '14px', color: '#c4bfd3', letterSpacing: 1
+     })
+ 
+     // NEXTエリア下にGTR情報パネルを配置
+@@ -166,49 +167,42 @@ export default class PuyoGame extends Phaser.Scene {
+       NEXT_AREA_CONFIG.BG_COLOR
+     ).setStrokeStyle(1, NEXT_AREA_CONFIG.BORDER_COLOR)
+ 
+-    this.add.text(infoPanelX + 10, infoPanelY - 14, 'RESULT', {
+-      ...TEXT_STYLES.label, fontSize: '10px', color: '#8f86a8', letterSpacing: 1
++    addUIText(this, infoPanelX + 10, infoPanelY - 14, 'RESULT', {
++      ...TEXT_STYLES.label, fontSize: '14px', color: '#8f86a8', letterSpacing: 1
+     })
+ 
+-    this.gtrCountText = this.add.text(infoPanelX + 10, infoPanelY + 10, 'GTR: 0回', {
++    this.gtrCountText = addUIText(this, infoPanelX + 10, infoPanelY + 10, 'GTR: 0回', {
+       fontSize: '18px',
+       color: '#f3c94f',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+-      stroke: '#000000',
+-      strokeThickness: 2
+     })
+ 
+-    this.gtrScoreText = this.add.text(infoPanelX + 10, infoPanelY + 38, 'Score: 0', {
++    this.gtrScoreText = addUIText(this, infoPanelX + 10, infoPanelY + 38, 'Score: 0', {
+       fontSize: '16px',
+       color: '#66e0aa',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+-      stroke: '#000000',
+-      strokeThickness: 2
+     })
+ 
+-    this.gtrQualityText = this.add.text(infoPanelX + 10, infoPanelY + 62, '形の質: -', {
++    this.gtrQualityText = addUIText(this, infoPanelX + 10, infoPanelY + 62, '形の質: -', {
+       fontSize: '14px',
+       color: '#b5a8ff',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+-      stroke: '#000000',
+       strokeThickness: 1
+     })
+ 
+     // 自由落下状態表示（情報パネル内）
+-    this.gravityStatusText = this.add.text(infoPanelX + 10, infoPanelY + 90, '自由落下: ON', {
++    this.gravityStatusText = addUIText(this, infoPanelX + 10, infoPanelY + 90, '自由落下: ON', {
+       fontSize: '14px',
+       color: '#66e0aa',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+-      stroke: '#000000',
+-      strokeThickness: 2
+     })
+     this.gravityStatusText.setDepth(100)
+ 
+     // 操作説明（画面下部にコンパクト表示）
+-    this.instructionText = this.add.text(canvasW / 2, canvasH - 12,
++    this.instructionText = addUIText(this, this.FIELD_X + FIELD_CONFIG.COLS * this.CELL_SIZE / 2, canvasH - 20,
+       this.instructionLabel(),
+-      { fontSize: '12px', color: '#827b99', fontFamily: TEXT_STYLES.title.fontFamily }
+-    ).setOrigin(0.5)
++      { ...TEXT_STYLES.subtitle, align: 'center' }
++    ).setOrigin(0.5, 1)
+     const stopInstructions = subscribeBindings(() => {
+       this.instructionText?.setText(this.instructionLabel())
+       this.gameOverHelpText?.setText(this.gameOverLabel())
+@@ -243,8 +237,7 @@ export default class PuyoGame extends Phaser.Scene {
+ 
+   private handleWindowBlur = () => { this.actionInput?.releaseAll() }
+   private instructionLabel(): string {
+-    const keys = getBindings()
+-    return `${actionKeys(keys, 'left')} / ${actionKeys(keys, 'right')} 移動 | ${actionKeys(keys, 'rotateLeft')} / ${actionKeys(keys, 'rotateRight')} 回転 | ${actionKeys(keys, 'quickDrop')} クイック | ${actionKeys(keys, 'evaluate')} 評価`
++    return '操作キーは画面下の一覧を確認'
+   }
+   private pauseLabel(): string {
+     return `ポーズ中\n${actionKeys(getBindings(), 'pause')}で再開\n設定・終了は画面のボタンから`
+@@ -303,8 +296,8 @@ export default class PuyoGame extends Phaser.Scene {
+     if (this.isPaused) {
+       const width = LAYOUT_SCORE_ATTACK.CANVAS_WIDTH, height = LAYOUT_SCORE_ATTACK.CANVAS_HEIGHT
+       this.pauseOverlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.7).setDepth(500)
+-      this.pauseText = this.add.text(width / 2, height / 2, this.pauseLabel(), {
+-        fontSize: '27px', color: '#ffffff', fontFamily: TEXT_STYLES.title.fontFamily, align: 'center',
++      this.pauseText = addUIText(this, width / 2, height / 2, this.pauseLabel(), {
++        fontSize: '32px', wordWrap: { width: width - 64, useAdvancedWrap: true }, color: '#f6f2ff', fontFamily: TEXT_STYLES.title.fontFamily, align: 'center',
+       }).setOrigin(0.5).setDepth(501)
+     } else { this.pauseOverlay?.destroy(); this.pauseText?.destroy() }
+     this.actionInput?.suppressUntilRelease()
+@@ -428,16 +421,16 @@ export default class PuyoGame extends Phaser.Scene {
+     } catch (recoveryError) {
+       console.error('盤面表示の復旧に失敗しました', recoveryError)
+       this.isVisualStopped = true
+-      try { this.add.text(this.FIELD_X, this.FIELD_Y - 22, '表示を復旧できません。Escで戻れます。', { fontSize: '12px', color: '#ff8888' }) }
++      try { addUIText(this, this.FIELD_X, this.FIELD_Y - 22, '表示を復旧できません。Escで戻れます。', { ...TEXT_STYLES.subtitle, color: '#ff9aa5', wordWrap: { width: LAYOUT_SCORE_ATTACK.CANVAS_WIDTH - this.FIELD_X - 24, useAdvancedWrap: true } }) }
+       catch { /* The scene is no longer drawable. */ }
+     }
+   }
+ 
+   private showChainNotice() {
+     if (this.chainNotice) return
+-    this.chainNotice = this.add.text(this.FIELD_X, this.FIELD_Y - 22,
++    this.chainNotice = addUIText(this, this.FIELD_X, this.FIELD_Y - 22,
+       '連鎖中は設定を変更できません。終了後に操作してください。', {
+-        fontSize: '12px', color: '#ffdd88', fontFamily: TEXT_STYLES.title.fontFamily,
++        fontSize: '14px', color: '#ffe99b', fontFamily: TEXT_STYLES.title.fontFamily,
+       }).setDepth(200)
+   }
+ 
+@@ -473,7 +466,7 @@ export default class PuyoGame extends Phaser.Scene {
+     }
+     this.rebuildFieldSprites()
+     this.updateDisplay()
+-    this.add.text(this.FIELD_X, this.FIELD_Y - 20, message, { fontSize: '12px', color: '#ff8888' })
++    addUIText(this, this.FIELD_X, this.FIELD_Y - 20, message, { ...TEXT_STYLES.subtitle, color: '#ff9aa5', wordWrap: { width: LAYOUT_SCORE_ATTACK.CANVAS_WIDTH - this.FIELD_X - 24, useAdvancedWrap: true } })
+     this.lastFallTime = this.time.now
+     this.actionInput?.suppressUntilRelease()
+   }
+@@ -568,9 +561,9 @@ export default class PuyoGame extends Phaser.Scene {
+       const px = centerX + Math.cos(angle) * dist
+       const py = centerY + Math.sin(angle) * dist
+ 
+-      const star = this.add.text(px, py, '★', {
++      const star = addUIText(this, px, py, '★', {
+         fontSize: '18px',
+-        color: '#ffdd44',
++        color: '#ffe99b',
+       }).setOrigin(0.5).setDepth(201)
+ 
+       this.tweens.add({
+@@ -606,23 +599,23 @@ export default class PuyoGame extends Phaser.Scene {
+     const centerY = LAYOUT_SCORE_ATTACK.CANVAS_HEIGHT / 2
+ 
+     const bg = this.add.rectangle(centerX, centerY, 400, 200, 0x0a0a1a, 0.92)
+-    bg.setStrokeStyle(2, 0x4444aa)
++    bg.setStrokeStyle(2, 0x6f648d)
+     bg.setDepth(1000)
+ 
+-    this.add.text(centerX, centerY - 30, 'Game Over', {
++    addUIText(this, centerX, centerY - 30, 'Game Over', {
+       fontSize: '32px',
+-      color: '#ff6666',
++      color: '#ff9aa5',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+     }).setOrigin(0.5).setDepth(1001)
+ 
+-    this.add.text(centerX, centerY + 8, `スコア: ${this.gameState.score}`, {
++    addUIText(this, centerX, centerY + 8, `スコア: ${this.gameState.score}`, {
+       fontSize: '20px',
+-      color: '#ffffff',
++      color: '#f6f2ff',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+     }).setOrigin(0.5).setDepth(1001)
+ 
+-    this.gameOverHelpText = this.add.text(centerX, centerY + 52, this.gameOverLabel(), {
+-      fontSize: '14px', color: '#918aa8', fontFamily: TEXT_STYLES.title.fontFamily
++    this.gameOverHelpText = addUIText(this, centerX, centerY + 52, this.gameOverLabel(), {
++      fontSize: '14px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily
+     }).setOrigin(0.5).setDepth(1001)
+   }
+ 
+@@ -741,8 +734,8 @@ export default class PuyoGame extends Phaser.Scene {
+     const centerY = this.cameras.main.height / 2
+ 
+     // リッチな背景パネル
+-    const bg = this.add.rectangle(centerX, centerY + 50, 480, 300, 0x0a0a1a, 0.92)
+-    bg.setStrokeStyle(2, 0x4444aa)
++    const bg = this.add.rectangle(centerX, centerY + 50, 560, 640, 0x211d33, 0.92)
++    bg.setStrokeStyle(2, 0x6f648d)
+     bg.setDepth(1000)
+ 
+     // スライドインアニメーション
+@@ -756,42 +749,41 @@ export default class PuyoGame extends Phaser.Scene {
+       ease: 'Back.easeOut',
+     })
+ 
+-    const titleColor = result.isGTR ? '#44dd88' : '#ff6666'
++    const titleColor = result.isGTR ? '#91ecc2' : '#ff9aa5'
+     const titleText = result.isGTR ? 'GTR Complete!' : 'GTR未完成'
+-    const title = this.add.text(centerX, centerY - 80, titleText, {
+-      fontSize: '28px',
++    const title = addUIText(this, centerX, centerY - 230, titleText, {
++      fontSize: '32px',
+       color: titleColor,
+       fontFamily: TEXT_STYLES.title.fontFamily,
+-      stroke: '#000000',
+-      strokeThickness: 3,
+     }).setOrigin(0.5).setDepth(1001)
+ 
+     const scoreText = `スコア: ${result.totalScore}点`
+-    const score = this.add.text(centerX, centerY - 40, scoreText, {
+-      fontSize: '22px',
+-      color: '#ffffff',
++    const score = addUIText(this, centerX, title.y + (title.height || 38) / 2 + 16 + 20, scoreText, {
++      fontSize: '32px',
++      color: '#ffe99b',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+     }).setOrigin(0.5).setDepth(1001)
+ 
+     const chainText = `土台内の連鎖数: ${result.chainCount}連鎖`
+-    const chain = this.add.text(centerX, centerY - 10, chainText, {
++    const chain = addUIText(this, centerX, score.y + (score.height || 38) / 2 + 16 + 12, chainText, {
+       fontSize: '18px',
+-      color: '#ffdd44',
++      color: '#ffe99b',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+     }).setOrigin(0.5).setDepth(1001)
+ 
+     let msgEl: Phaser.GameObjects.Text | undefined
+     if (result.message) {
+-      msgEl = this.add.text(centerX, centerY + 20, result.message, {
++      msgEl = addUIText(this, centerX, chain.y + (chain.height || 24) / 2 + 16, result.message, {
+         fontSize: '16px',
+-        color: '#aaaacc',
++        wordWrap: { width: 480, useAdvancedWrap: true }, align: 'center',
++        color: '#c4bfd3',
+         fontFamily: TEXT_STYLES.title.fontFamily,
+-      }).setOrigin(0.5).setDepth(1001)
++      }).setOrigin(0.5, 0).setDepth(1001)
+     }
+ 
+-    const instruction = this.add.text(centerX, centerY + 70, 'Space: 続ける / Esc: TOPページへ', {
++    const instruction = addUIText(this, centerX, (msgEl ? msgEl.y + (msgEl.height || 20) : chain.y + (chain.height || 24) / 2) + 24, 'Space: 続ける / Esc: TOPページへ', {
+       fontSize: '14px',
+-      color: '#666688',
++      color: '#c4bfd3',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+     }).setOrigin(0.5).setDepth(1001)
+ 
+@@ -844,9 +836,9 @@ export default class PuyoGame extends Phaser.Scene {
+     const baseY = this.FIELD_Y
+ 
+     // NEXTラベル
+-    this.add.text(baseX, baseY - 26, 'NEXT', {
++    addUIText(this, baseX, baseY - 26, 'NEXT', {
+       ...TEXT_STYLES.label,
+-      fontSize: '13px',
++      fontSize: '14px',
+       color: '#f8f7ff',
+       letterSpacing: 1,
+     })
+@@ -963,12 +955,10 @@ export default class PuyoGame extends Phaser.Scene {
+ 
+   // スコアフロートアニメーション
+   private playScorePopup(x: number, y: number, text: string) {
+-    const scoreText = this.add.text(x, y, text, {
++    const scoreText = addUIText(this, x, y, text, {
+       fontSize: '20px',
+-      color: '#ffdd44',
++      color: '#ffe99b',
+       fontFamily: TEXT_STYLES.title.fontFamily,
+-      stroke: '#000000',
+-      strokeThickness: 3,
+     }).setOrigin(0.5).setDepth(500)
+ 
+     this.tweens.add({
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\index.css" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\index.css"
+index 1b61bad..be2949b 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\index.css"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\index.css"
+@@ -2,18 +2,39 @@
+ @tailwind components;
+ @tailwind utilities;
+ 
++:root {
++  --ui-background: #171426;
++  --ui-field: #0c0a14;
++  --ui-panel: #211d33;
++  --ui-border: #6f648d;
++  --ui-text: #f6f2ff;
++  --ui-muted: #c4bfd3;
++  --ui-primary: #b5a8ff;
++}
+ @layer base {
+-  html {
+-    background: #f5f6fa;
+-  }
++  html { background: var(--ui-background); color: var(--ui-text); }
+   body {
+-    font-family: 'M PLUS Rounded 1c', sans-serif;
+-    margin: 0;
+-    min-width: 320px;
+-    color: #171426;
+-    -webkit-font-smoothing: antialiased;
+-  }
+-  button {
+-    -webkit-tap-highlight-color: transparent;
++    font-family: "DotGothic16", "Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
++    font-size: 16px; font-weight: 400; font-synthesis: none;
++    margin: 0; width: 100%; line-height: 1.6;
+   }
++  button, input, textarea, select { font: inherit; }
++  button { -webkit-tap-highlight-color: transparent; min-height: 44px; overflow-wrap: anywhere; }
++  input, textarea, select { background: var(--ui-field); color: var(--ui-text); }
++  b, strong { font-weight: 400; }
++  p, h1, h2, h3, dd, a { overflow-wrap: anywhere; }
++  :focus-visible { outline: 3px solid var(--ui-primary); outline-offset: 4px; }
++  dialog::backdrop { background: #0c0a14d9; }
++}
++@layer utilities {
++  .shadow-pixel { box-shadow: 4px 4px 0 #0c0a14; }
++  .text-xs { font-size: 14px; line-height: 1.6; }
++  .pixel-label { font-size: 12px; }
++  .pixel-panel { border: 2px solid var(--ui-border); background: var(--ui-panel); box-shadow: 4px 4px 0 var(--ui-field); }
++  .pixel-primary { background: var(--ui-primary); color: var(--ui-field); border: 2px solid var(--ui-primary); }
++  .canvas-scroll { overflow-x: auto; max-width: 100%; }
++  .canvas-scroll > div { margin-inline: auto; }
+ }
++[class*="border"][class*="rounded-none"] { border-width: 2px; }
++button[aria-current="page"] { background: var(--ui-primary); color: var(--ui-field); }
++button:disabled { opacity: .5; }
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\main.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\main.tsx"
+index 44ed9f0..ed9897a 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\src\\main.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\main.tsx"
+@@ -1,7 +1,9 @@
+ import ReactDOM from 'react-dom/client'
+ import App from './App.tsx'
+ import './index.css'
++import { loadUIFont } from './ui/loadFont'
+ 
+-ReactDOM.createRoot(document.getElementById('root')!).render(
+-  <App />
+-)
++const root = document.getElementById('root')!
++void loadUIFont().then(() => {
++  ReactDOM.createRoot(root).render(<App />)
++})
+
+New file: src/ui/loadFont.test.ts
++import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
++import { loadUIFont } from './loadFont'
++
++describe('bounded local font startup', () => {
++  let resolve: (face: unknown) => void
++  let reject: (error: Error) => void
++  let face: { load: ReturnType<typeof vi.fn> }
++  const add = vi.fn()
++  beforeEach(() => {
++    vi.useFakeTimers()
++    add.mockClear()
++    const pending = new Promise((yes, no) => { resolve = yes; reject = no })
++    face = { load: vi.fn(() => pending) }
++    vi.stubGlobal('FontFace', vi.fn(function () { return face }))
++    vi.stubGlobal('document', { fonts: { add } })
++  })
++  afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals() })
++
++  it('registers the unmodified local regular face before continuing startup', async () => {
++    const start = vi.fn()
++    const gate = loadUIFont().then(result => { start(); return result })
++    expect(start).not.toHaveBeenCalled()
++    expect(FontFace).toHaveBeenCalledWith('DotGothic16', 'url("/fonts/DotGothic16-Regular.ttf")', { weight: '400', style: 'normal' })
++    resolve(face)
++    expect(await gate).toBe('loaded')
++    expect(add).toHaveBeenCalledExactlyOnceWith(face)
++    expect(start).toHaveBeenCalledOnce()
++    expect(vi.getTimerCount()).toBe(0)
++  })
++  it('continues startup without registering after load rejection', async () => {
++    const start = vi.fn()
++    const gate = loadUIFont().then(result => { start(); return result })
++    reject(new Error('offline'))
++    expect(await gate).toBe('failed')
++    expect(start).toHaveBeenCalledOnce()
++    expect(add).not.toHaveBeenCalled()
++    expect(vi.getTimerCount()).toBe(0)
++  })
++  it('continues at two seconds and never registers a late successful face', async () => {
++    const start = vi.fn()
++    const gate = loadUIFont().then(result => { start(); return result })
++    await vi.advanceTimersByTimeAsync(1999)
++    expect(start).not.toHaveBeenCalled()
++    await vi.advanceTimersByTimeAsync(1)
++    expect(await gate).toBe('timeout')
++    expect(start).toHaveBeenCalledOnce()
++    resolve(face)
++    await Promise.resolve()
++    await Promise.resolve()
++    expect(add).not.toHaveBeenCalled()
++    expect(start).toHaveBeenCalledOnce()
++  })
++  it('handles a late rejection after timeout without an unhandled rejection', async () => {
++    const gate = loadUIFont()
++    await vi.advanceTimersByTimeAsync(2000)
++    expect(await gate).toBe('timeout')
++    reject(new Error('late network failure'))
++    await Promise.resolve()
++    expect(add).not.toHaveBeenCalled()
++  })
++  it.each(['FontFace', 'document'])('continues when %s is unavailable', async name => {
++    vi.stubGlobal(name, undefined)
++    const start = vi.fn()
++    expect(await loadUIFont().then(result => { start(); return result })).toBe('unsupported')
++    expect(start).toHaveBeenCalledOnce()
++    expect(add).not.toHaveBeenCalled()
++  })
++  it('continues when font registration is unsupported', async () => {
++    vi.stubGlobal('document', { fonts: {} })
++    expect(await loadUIFont()).toBe('unsupported')
++    expect(face.load).not.toHaveBeenCalled()
++  })
++  it('continues on synchronous construction or registration failure', async () => {
++    vi.stubGlobal('FontFace', vi.fn(() => { throw new Error('unsupported face') }))
++    expect(await loadUIFont()).toBe('failed')
++    expect(add).not.toHaveBeenCalled()
++  })
++})
+
+New file: src/ui/loadFont.ts
++export type FontLoadResult = 'loaded' | 'failed' | 'timeout' | 'unsupported'
++
++/** A bounded startup gate: a face that misses the deadline must never be registered later. */
++export async function loadUIFont(timeoutMs = 2000): Promise<FontLoadResult> {
++  if (typeof FontFace === 'undefined' || typeof document === 'undefined' || !document.fonts?.add) return 'unsupported'
++  let timer: ReturnType<typeof setTimeout> | undefined
++  try {
++    const face = new FontFace('DotGothic16', 'url("/fonts/DotGothic16-Regular.ttf")', { weight: '400', style: 'normal' })
++    const result = await Promise.race([
++      face.load().then(() => 'loaded' as const, () => 'failed' as const),
++      new Promise<'timeout'>(resolve => { timer = setTimeout(() => resolve('timeout'), timeoutMs) }),
++    ])
++    if (result === 'loaded') document.fonts.add(face)
++    return result
++  } catch {
++    return 'failed'
++  } finally {
++    if (timer !== undefined) clearTimeout(timer)
++  }
++}
+
+New file: src/ui/theme.ts
++/** Display-only tokens shared by DOM and canvas. Keep game rules out of this module. */
++export const UI_FONT_FAMILY = '"DotGothic16", "Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif'
++export const UI_COLORS = {
++  background: '#171426', field: '#0c0a14', panel: '#211d33', border: '#6f648d',
++  text: '#f6f2ff', muted: '#c4bfd3', primary: '#b5a8ff',
++  success: '#91ecc2', warning: '#ffe99b', error: '#ff9aa5',
++} as const
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\tailwind.config.js" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\tailwind.config.js"
+index 220b316..1c1d878 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-pixel-ui-before-21eca4d4a2a84af6875d1b2fc0de9022\\tailwind.config.js"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\tailwind.config.js"
+@@ -19,7 +19,7 @@ export default {
+         }
+       },
+       fontFamily: {
+-        puyo: ['"M PLUS Rounded 1c"', 'sans-serif'],
++        puyo: ['"DotGothic16"', '"Yu Gothic"', '"Hiragino Kaku Gothic ProN"', '"Meiryo"', 'sans-serif'],
+       },
+     },
+   },

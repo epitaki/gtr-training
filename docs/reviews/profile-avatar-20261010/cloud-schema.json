@@ -1,0 +1,32 @@
+{
+  "migration": [
+    {
+      "version": "20261010000000",
+      "name": "profile_avatars"
+    }
+  ],
+  "bucket": [
+    {
+      "id": "avatars",
+      "public": false,
+      "file_size_limit": 262144,
+      "allowed_mime_types": [
+        "image/webp"
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "policyname": "avatars_delete_self",
+      "cmd": "DELETE"
+    },
+    {
+      "policyname": "avatars_insert_self",
+      "cmd": "INSERT"
+    },
+    {
+      "policyname": "avatars_select_self",
+      "cmd": "SELECT"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "path": "src/App.tsx",
+    "before": "41899fb541d9e83a928ba9ddab3f4ede80d3829843d9c2c0dcc6ae3ecd417ff7",
+    "after": "13a731779f904b6d341c3af431737ffd934a17d7ff225d69958f97971412c5a0"
+  },
+  {
+    "path": "src/auth/account.ts",
+    "before": "9baad0927a98cb796e4db01f819e7c31b1f5e5e9597d7b307e4bb1d5123b1970",
+    "after": "42ca81010c655ccd5e81384d6b00405fa16487e83102adc0fdc359b4982714c1"
+  },
+  {
+    "path": "src/auth/avatarImage.test.ts",
+    "before": null,
+    "after": "4554acb6c9ffd61ec66fcab2d82935bebe37c44b1c2f15d085b47fcbe3a9df7d"
+  },
+  {
+    "path": "src/auth/avatarImage.ts",
+    "before": null,
+    "after": "269de62617b7884ed51a2e25d459baf9196fec2770c37d953179a091b958832c"
+  },
+  {
+    "path": "src/auth/avatarStorage.test.ts",
+    "before": null,
+    "after": "ac0309b6c308fed9925de2f39d39dc37199a629a0bc9018b77d5cbb827abb347"
+  },
+  {
+    "path": "src/auth/avatarStorage.ts",
+    "before": null,
+    "after": "f6b2e56edc2f75f80b3907befa087e224476f60043d2af06e5b38043b82c2e95"
+  },
+  {
+    "path": "src/auth/useAccount.test.tsx",
+    "before": "dccc1148380775b94a3075ddd26c8bd1f928110d65c315080524c2d90006f906",
+    "after": "8493f680be06db291c3d8418c0c3420da38e836ad2a402e74e4b440006dd1b13"
+  },
+  {
+    "path": "src/auth/useAccount.ts",
+    "before": "9b6bb62aad829e17e673bdf4e12100cb9482c134cd73bc6e462c8088df76db31",
+    "after": "35769eb199c1438a034595698a34e4aa8a4d2294a77de94c4d4923ec3885ad40"
+  },
+  {
+    "path": "src/components/account/AccountDialog.test.tsx",
+    "before": "55bafc1ccfe04f7055116a3c14d60a8595d164ab08bbdced99661e32233724bf",
+    "after": "fea14e2379e449da531a222c6f1289977f559bc12967571df0180c2277e31899"
+  },
+  {
+    "path": "src/components/account/AccountDialog.tsx",
+    "before": "b68e6893c45dd103cd35a8f4a9a20fe476f60b3e692358d862bed78be4b241b5",
+    "after": "6c3c8fb6d6d97aaabf2e913b1d720eb0fe3725991ff5f25898b93bdbb28de1e7"
+  },
+  {
+    "path": "src/components/layout/Header.tsx",
+    "before": "45225bca939f1ea9761e07003ee92c223439d85d9ca8d1c61253c9b86643088e",
+    "after": "7e35d8dc3d67ee438c28ac25465f32f14889742a3986cc47a8091d6b80232274"
+  },
+  {
+    "path": "src/components/layout/MainLayout.tsx",
+    "before": "af270dd645e902cfa726c69a19a248dc13641c1ea913ce50668414feccb6c44e",
+    "after": "3d324de135c7f949a36921de45425305f1f8d3dc9192fd20c411a9eaf4bd8607"
+  },
+  {
+    "path": "sql/profile-avatars.test.ts",
+    "before": null,
+    "after": "62bcc650181828dcdde111b57cd40963437bd7af5cf538f3ec97c8eae2522da1"
+  },
+  {
+    "path": "supabase/migrations/20261010000000_profile_avatars.sql",
+    "before": null,
+    "after": "334a8323b3dce9754f523aaa1a705554372978a323579e745ba9e48d9cc37e56"
+  }
+]

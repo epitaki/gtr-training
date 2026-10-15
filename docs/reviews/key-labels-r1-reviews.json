@@ -1,0 +1,33 @@
+{
+  "round": 1,
+  "snapshot": "4e9b30a0d9482d492de70a071c201f5795e5c075cff3fa5be63a342a4fe206db",
+  "independence": "Fresh gpt-6-sol agents/fork_turns none; all 5 files independently read; executed sequentially due slot limit; no results shared.",
+  "reviews": [
+    {
+      "agent": "gpt-6-sol / key_labels_r1_review_1",
+      "verdict": "指摘なし",
+      "findings": [],
+      "scope": "5 changed files, diff/spec, settings/input/callers/related tests all read; setting1/2 mapping, removed button/helper, Space conflict unchanged. 197 source and 25 generated/cache hashes match.",
+      "validation": "Read-only review. No tests/build/UI executed by reviewer."
+    },
+    {
+      "agent": "gpt-6-sol / key_labels_r1_review_2",
+      "verdict": "指摘なし",
+      "findings": [],
+      "scope": "All 5 changed files, UI callers, settings/input and related tests read. Five changed file hashes match. Display names/basic7-only preset/Space conflict/save format consistent.",
+      "validation": "Read-only; no tests/build/browser execution."
+    },
+    {
+      "agent": "gpt-6-sol / key_labels_r1_review_3",
+      "verdict": "指摘なし",
+      "findings": [],
+      "scope": "All 5 changed files/hashes, UI callers, input adapter, storage/input tests, current docs read. No contract violation or required extra tests.",
+      "validation": "Read-only; no tests/build/UI re-execution; parent success records used."
+    }
+  ],
+  "parent": {
+    "confirmedFindings": [],
+    "rejectedCandidates": [],
+    "notes": "Root read full 5-file patch. Internal binding arrays and defaults unchanged; helper-only behavior removed, Space conflict coverage retained. User's existing unsaved draft checked unchanged via DOM."
+  }
+}

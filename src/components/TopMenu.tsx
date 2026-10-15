@@ -76,7 +76,7 @@ export default function TopMenu({ onSelectMode }: TopMenuProps) {
             onClick={() => onSelectMode('score-attack')}
           >
             GTRスコアアタック
-            <p className="text-sm text-purple-200 mt-1">5回のGTRを作成しタイムを競おう</p>
+            <p className="text-sm text-purple-200 mt-1">10回のGTRの合計点数を競おう</p>
           </button>
         </div>
 

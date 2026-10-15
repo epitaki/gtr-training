@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "recordedAt": "2026-09-25",
+  "kind": "partial-tutorial-observation-index",
+  "purpose": "再視聴用の索引。配置付きぷよ譜、正解ラベル、独立試合の集計ではない。",
+  "fullTraceAudited": false,
+  "validation": { "status": "unassessed", "isCorrectMoveLabel": false },
+  "document": "GTR-SPARE-ALLOCATION-RESEARCH-20260925.md",
+  "limitations": [
+    "ブラウザで部分的な盤面と画面内解説を確認。全編の連続視聴・全手の転記はしていない。",
+    "自動字幕には誤認識がある。音声の逐語引用や正確な配置列の復元には使用しない。",
+    "時刻は再確認の目印。広告後の再開・シークにはずれがあり、近傍の映像も確認する。",
+    "動画や字幕全文は保存しない。既存の500記録に加算しない。"
+  ],
+  "videos": [
+    {
+      "id": "gtr-class-oj-MuY9SIZQ-spare-allocation",
+      "url": "https://www.youtube.com/watch?v=oj-MuY9SIZQ",
+      "author": "ぷよぷよGTR教室〜初心者も分かる10連鎖のコツ〜",
+      "title": "ぷよぷよ10連鎖のコツはGTR折り返し上部の発火点を高く組むこと【ぷよぷよGTR教室】",
+      "transcriptCoverage": "自動字幕全体を読解。専門用語は画面と照合できた部分のみ確定。",
+      "visualSamplesApproxSeconds": [77, 92, 232, 309],
+      "revisitSegments": [
+        { "fromSeconds": 76, "toSeconds": 95, "topic": "赤ゾロと次の赤緑の用途分担" },
+        { "fromSeconds": 217, "toSeconds": 256, "topic": "尾に接続しにくい組を頭へ配分" },
+        { "fromSeconds": 264, "toSeconds": 338, "topic": "横3の準備と尾への振り分け" },
+        { "fromSeconds": 188, "toSeconds": 214, "topic": "後のツモに合わなかった配置の振り返り。字幕のみ確認" }
+      ],
+      "boardBefore": null,
+      "placements": null,
+      "visibleQueueFullyTranscribed": false,
+      "intentEvidence": "画面内解説・自動字幕。後知恵の修正を当時の既知情報と区別する。",
+      "counterexample": "途中消しが含まれるので、非発火ガイドの完成経路へそのまま転用できない。"
+    },
+    {
+      "id": "delta-VSMX52gpB8U-spare-allocation",
+      "url": "https://www.youtube.com/watch?v=VSMX52gpB8U",
+      "author": "delta CHANNEL",
+      "title": "GTRで、1手ごとに考えていることをすべて解説 │delta 【ぷよぷよ】",
+      "transcriptCoverage": "自動字幕の関連語と周辺、主に8〜12分台。誤認識が多く逐語引用不可。",
+      "visualSamplesApproxSeconds": [550, 605],
+      "revisitSegments": [
+        { "fromSeconds": 520, "toSeconds": 655, "topic": "必要色待ちを作る案と、上部・中央へ使う別案の比較" }
+      ],
+      "boardBefore": null,
+      "placements": null,
+      "visibleQueueFullyTranscribed": false,
+      "intentEvidence": "解説用の比較図・画面内の説明・自動字幕。図中の仮置きを実戦の採用手にしない。",
+      "counterexample": "固定先折りの完成優先とは目的が異なり、基本形の完成を見送る根拠へ一般化しない。"
+    },
+    {
+      "id": "momoken--3lJeLp7ApQ-spare-allocation",
+      "url": "https://www.youtube.com/watch?v=-3lJeLp7ApQ",
+      "author": "momoken",
+      "title": "【初級者向け】GTRの連鎖尾部分を徹底解説",
+      "transcriptCoverage": "自動字幕全体を読解。正確な盤面の完全転記ではない。",
+      "visualSampleRangesSeconds": [[455, 475], [519, 521]],
+      "revisitSegments": [
+        { "fromSeconds": 421, "toSeconds": 531, "topic": "青・赤の回収順、相方の受け入れ、右側の高さ" },
+        { "fromSeconds": 744, "toSeconds": 829, "topic": "低い右端と回収用の支持。字幕のみ確認" },
+        { "fromSeconds": 839, "toSeconds": 899, "topic": "必要色が来ない場合の鶴亀。字幕のみ確認" }
+      ],
+      "boardBefore": null,
+      "placements": null,
+      "visibleQueueFullyTranscribed": false,
+      "intentEvidence": "盤面比較・自動字幕。発展形の全てを映像照合したわけではない。",
+      "counterexample": "尾の同色追加が必ず有利ではない。深い溝や接続しづらい3連結も扱っている。"
+    }
+  ]
+}

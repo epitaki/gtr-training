@@ -1,0 +1,14 @@
+{
+  "checkedFiles": 254,
+  "changedFiles": [
+    "src/App.tsx",
+    "src/auth/oauthCallback.test.ts",
+    "src/auth/oauthCallback.ts",
+    "src/auth/oauthExchange.test.ts",
+    "src/components/account/AccountDialog.tsx",
+    "src/components/layout/Header.tsx",
+    "src/components/layout/MainLayout.tsx"
+  ],
+  "unrelatedProductionFilesMatchOriginal": true,
+  "gamePhysicsAdvisorScoringRandomUnchanged": true
+}

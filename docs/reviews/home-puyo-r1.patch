@@ -1,0 +1,72 @@
+New file: docs/HOME-PUYO-DESIGN-20261003.md
++# TOPのGTR図を既存ぷよ絵へ修正
++
++日付: 2026-10-03。状態: Sol6.1設計・実装・検証済み、独立レビュー前。
++Habitica: UIタスク78b67ce5-e604-4279-bedb-dff0dccdd4d8内の追加修正。UI全体の見た目は利用者承認済み。
++
++依頼: TOPの図はGTRの下部が欠けており、四角い表示を実際のぷよへ変更する。
++
++対象はホームの飾り盤面。ゲームと同じ既存atlas/manifestとGTR教材を再利用し、土台の底と全6列まで表示する。320/390/768/desktopで図が切れず、ページの横はみ出しがないことを確認する。ゲーム開始ボタンとテーマを維持し、物理・採点・推薦・乱数・供給・入力・保存を変更しない。素材の再生成や新しい依存は不要。
++
++開始baseline: reviews/home-puyo-baseline-20261003.json。今回開始時点からの差分を評価し、既存未コミット変更を保護する。
++
++担当: 設計・実装・新規独立レビュー3名・最終確認はすべてgpt-6.1-sol。設計結果を追記してから実装する。必要な型検査・全テスト・buildと画面確認後、固定した変更をレビューし、確認済み必須修正0件で受入。Habitica/docsは最終受入後に完了反映する。
++
++## 設計契約
++
++設計担当home_puyo_design（gpt-6.1-sol）の読取確認を採用。TopPage.tsxのMiniPuyoと独自30セル図を撤去し、既存GalleryBoardをそのまま再利用。GTR_COMPLETION_GALLERYのY-01をgetGalleryGridで取得する。13行盤面の9～12行にある完全な4行×6列、19個のぷよを表示し、既存atlas/manifest/cellMaskで顔と同色接続を描く。
++
++盤面を中央配置し、親はmin-w-0。モバイルでカード余白を減らし、24pxセルの盤面全体が収まるようにする。共有GalleryBoard/教材/物理/素材のコードは変更しない。完成教材の表示に合わせ、hero内の飾りの進捗80%は100%へ整合させる。
++
++変更するアプリファイルはTopPage.tsxのみ。既存教材テストが19ぷよ・100点完成・安定配置を、既存接続テストが接続を検証しているため、表示の写経テストを増やさず再利用する。型検査・全テスト・buildと、320/390/768/desktopの画像読込/最下段/6列/overflow/両開始ボタンを実確認する。
++
++## 実装と検証
++
++TopPage.tsxのみ変更。320pxで進捗欄も収まるよう、モバイルのバー幅・gap・左右余白を縮小した。型検査、105ファイル/1,318テスト、build成功。ログは`.local/home-puyo-validation-r1.txt`。buildは既存の大きなチャンク警告のみ。
++
++Codex内ブラウザで320/390/768/1280pxを確認。全24セルと19個のぷよ画像が読み込まれ、最下段と6列がカード内に収まり、ページ横はみ出しなし。両hero開始ボタンでガイド練習とスコアアタックに遷移。console warn/errorなし。viewportをリセットして検証タブを閉じた。画像・計測は`reviews/home-puyo-20261003/`。独立レビュー中はソース・生成物・キャッシュを固定し、書き込み検証を行わない。
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-home-puyo-before-6dc95fe385bd49e39d4e419099afd1a2\\src\\components\\TopPage.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\TopPage.tsx"
+index 3697bd0..9b4b0fa 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-home-puyo-before-6dc95fe385bd49e39d4e419099afd1a2\\src\\components\\TopPage.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\TopPage.tsx"
+@@ -1,10 +1,10 @@
+ import type { GameMode } from '../App'
++import { GTR_COMPLETION_GALLERY, getGalleryGrid } from '../game/guide/GTRCompletionGallery'
++import GalleryBoard from './gallery/GalleryBoard'
+ 
+ interface TopPageProps { onSelectMode: (mode: GameMode) => void }
+ 
+-const MiniPuyo = ({ color }: { color: string }) => (
+-  <span className={`block aspect-square w-full rounded-none ${color} shadow-pixel ring-2 ring-white/20`} />
+-)
++const homeGTRGrid = getGalleryGrid(GTR_COMPLETION_GALLERY.find(example => example.id === 'Y-01')!)
+ 
+ export default function TopPage({ onSelectMode }: TopPageProps) {
+   return (
+@@ -35,20 +35,17 @@ export default function TopPage({ onSelectMode }: TopPageProps) {
+             </div>
+           </div>
+ 
+-          <div className="relative mx-auto w-full max-w-sm" aria-hidden="true">
+-            <div className="relative rounded-none border border-[#6f648d] bg-[#0d0b16]/90 p-5 shadow-pixel">
++          <div className="relative mx-auto min-w-0 w-full max-w-sm" aria-hidden="true">
++            <div className="relative rounded-none border border-[#6f648d] bg-[#0d0b16]/90 p-3 shadow-pixel sm:p-5">
+               <div className="mb-4 flex items-center justify-between text-xs font-normal text-[#c4bfd3]">
+                 <span>GTR FORMATION</span><span className="text-[#91ecc2]">GOOD</span>
+               </div>
+-              <div className="grid grid-cols-6 gap-1.5 rounded-none border border-[#6f648d] bg-black/30 p-4">
+-                {Array.from({ length: 30 }, (_, i) => {
+-                  const colors: Record<number, string> = { 18: 'bg-rose-400', 19: 'bg-sky-400', 24: 'bg-rose-400', 25: 'bg-rose-400', 26: 'bg-sky-400', 20: 'bg-amber-300', 27: 'bg-sky-400', 21: 'bg-emerald-400', 22: 'bg-amber-300', 28: 'bg-emerald-400', 29: 'bg-amber-300' }
+-                  return colors[i] ? <MiniPuyo key={i} color={colors[i]} /> : <span key={i} className="aspect-square w-full rounded-none border border-[#6f648d]" />
+-                })}
++              <div className="flex min-w-0 justify-center">
++                <GalleryBoard grid={homeGTRGrid} size={24} />
+               </div>
+-              <div className="mt-4 flex items-center justify-between rounded-none bg-[#211d33] px-4 py-3">
++              <div className="mt-4 flex items-center justify-between gap-2 rounded-none bg-[#211d33] px-2 py-3 sm:px-4">
+                 <span className="text-sm text-[#c4bfd3]">折り返し進捗</span>
+-                <div className="flex items-center gap-3"><span className="h-1.5 w-24 overflow-hidden rounded-none bg-[#211d33]"><span className="block h-full w-4/5 rounded-none bg-[#b5a8ff] text-[#0c0a14]" /></span><b className="text-sm text-white">80%</b></div>
++                <div className="flex items-center gap-2 sm:gap-3"><span className="h-1.5 w-12 overflow-hidden rounded-none bg-[#211d33] sm:w-24"><span className="block h-full w-full rounded-none bg-[#b5a8ff] text-[#0c0a14]" /></span><b className="text-sm text-white">100%</b></div>
+               </div>
+             </div>
+           </div>

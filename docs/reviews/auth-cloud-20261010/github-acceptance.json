@@ -1,0 +1,15 @@
+{
+  "realProvider": "github",
+  "loginConfirmed": true,
+  "profileAutoCreated": true,
+  "normalRole": true,
+  "uiDisplayNameSave": true,
+  "databaseSaveConfirmed": true,
+  "reloadKeptDisplayName": true,
+  "originalNameRestoredAndReloadConfirmed": true,
+  "logoutReachedGuest": true,
+  "reloginConfirmed": true,
+  "reloginSameUser": true,
+  "browserAlerts": [],
+  "initialExpiredStateRecoveredWithNewOAuthRequest": true
+}

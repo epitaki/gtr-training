@@ -1,0 +1,54 @@
+New file: docs/GALLERY-COUNT-LABEL-20261003.md
++# 骨格選択の件数・選択中文字を削除
++
++2026-10-03。利用者「10例の文字はいらない」「あと選択中の文字もいらない」。既存UIタスク78b67ce5-e604-4279-bedb-dff0dccdd4d8の追加1項目、10/11・本体未完了を保存後GET照合済み。実装前に追加仕様を同項目へ反映。
++
++対象: CompletionGalleryの骨格選択カードの10例と選択中span、読み上げ名の件数、導入文の各10例を削除。図・形1/2/3・明るい選択枠/背景・aria-pressed・黄色focusoutlineを維持。既存表示テストのbutton nameを追随させ、選択中文字のassertionを撤去する。選択1件のariaと各10件/順番の検証は維持し、新しい写経テストは追加しない。教材数/フィルター/配置/順番/詳細再生/keyboard/focus/ゲーム計算は維持。全担当Sol6.1で設計確認、実装と型/全テスト/build、狭幅と選択画面確認、新規独立3レビュー、別最終確認を行う。開始baselineはreviews/gallery-count-baseline-20261003.json、直前同一ソースの検証は106ファイル1,322テスト・型検査・build成功。既存dirty変更を保護。
++
++状態: Sol6.1設計・実装・検証済み、独立レビュー前。設計担当gallery_selector_designが2指定と既存選択/操作の維持を確認。受入条件は件数表記と選択中文字なし、画像・選択1つ・各10件の動作維持、必須検証とレビュー受入成功。
++
++画面確認: IAB1280/320pxで本文/選択ラベルに10例/選択中文字なし。画像各11個読込、カード内に収まり、横overflowなし（client/scroll1265/1265・305/305）。3形の切替で選択1つ・各10件を維持。Enterで形2、Spaceで形3を選択できる。console warn/error0。viewportリセット、検証tab閉鎖済み。画像・計測はreviews/gallery-count-20261003/。詳細再生など未変更箇所の直前受入は維持し、今回は再操作していない。
++
++実装変更2ファイル（CompletionGallery.tsx/GalleryShapeDisplay.test.tsx）のみ。型検査・106files1,322tests・build成功、既存chunk警告のみ。test/build初回sandbox親dir読込拒否後、正規escalationで成功。ログ.local/gallery-count-validation-r1.txt。レビュー中はソース・生成物/cacheを固定し、書込検証とブラウザを実行しない。
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-gallery-count-before-6sktpmh9\\src\\components\\gallery\\CompletionGallery.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\gallery\\CompletionGallery.tsx"
+index 0a5be48..c7c0b4e 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-gallery-count-before-6sktpmh9\\src\\components\\gallery\\CompletionGallery.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\gallery\\CompletionGallery.tsx"
+@@ -127,17 +127,13 @@ export default function CompletionGallery({ onReturn, returnLabel }: CompletionG
+         <div><p className="text-xs font-normal tracking-widest text-[#b5a8ff]">GTR FORMATION GALLERY</p><h1 className="mt-1 text-2xl font-normal text-[#c4bfd3] sm:text-3xl">完成形一覧</h1></div>
+         <button type="button" onClick={onReturn} className="rounded-none border border-[#6f648d] bg-[#211d33] px-4 py-2 text-sm font-normal text-[#c4bfd3] hover:bg-[#211d33]">{returnLabel}</button>
+       </div>
+-      <p className="mb-5 max-w-3xl text-sm leading-6 text-[#c4bfd3]">3つの形の完成形を各10例。骨格を選び、完成形の図を選ぶと仮想発火の消去順を見られます。表示点数は最小土台の完成評価で、伸ばしやすさや現在の練習盤面から作れることを示すものではありません。列高と段差は後続の足場の目安です。</p>
++      <p className="mb-5 max-w-3xl text-sm leading-6 text-[#c4bfd3]">3つの骨格から完成形を選べます。骨格を選び、完成形の図を選ぶと仮想発火の消去順を見られます。表示点数は最小土台の完成評価で、伸ばしやすさや現在の練習盤面から作れることを示すものではありません。列高と段差は後続の足場の目安です。</p>
+       <p className="mb-3 text-xs leading-5 text-[#c4bfd3]">選択用の図は骨格の抜粋です。支えと後続のぷよを省略しています。</p>
+       <div className="mb-6 grid grid-cols-1 gap-2 sm:grid-cols-3" role="group" aria-label="完成形の骨格を選ぶ">
+         {GALLERY_SHAPES.map(item => (
+-          <button key={item} type="button" aria-label={`${GALLERY_DISPLAY_LABELS[item]}・10例`} aria-pressed={shape === item} onClick={() => setShape(item)} className={`flex min-w-0 items-center justify-center gap-3 rounded-none border-2 p-2 text-sm font-normal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ffe99b] sm:flex-col sm:gap-2 ${shape === item ? 'border-[#b5a8ff] bg-[#393052] text-white' : 'border-[#494257] bg-[#171426] text-[#c4bfd3] hover:border-[#6f648d]'}`}>
++          <button key={item} type="button" aria-label={GALLERY_DISPLAY_LABELS[item]} aria-pressed={shape === item} onClick={() => setShape(item)} className={`flex min-w-0 items-center justify-center gap-3 rounded-none border-2 p-2 text-sm font-normal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ffe99b] sm:flex-col sm:gap-2 ${shape === item ? 'border-[#b5a8ff] bg-[#393052] text-white' : 'border-[#494257] bg-[#171426] text-[#c4bfd3] hover:border-[#6f648d]'}`}>
+             <GalleryBoard grid={GALLERY_SHAPE_GRIDS[item]} size={18} />
+-            <span className="flex min-w-0 flex-col items-center gap-1">
+-              <span>{GALLERY_DISPLAY_LABELS[item]}</span>
+-              <span className="text-xs">10例</span>
+-              <span className="h-5 text-xs leading-5 text-[#b5a8ff]">{shape === item ? '選択中' : ''}</span>
+-            </span>
++            <span>{GALLERY_DISPLAY_LABELS[item]}</span>
+           </button>
+         ))}
+       </div>
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-gallery-count-before-6sktpmh9\\src\\components\\gallery\\GalleryShapeDisplay.test.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\gallery\\GalleryShapeDisplay.test.tsx"
+index 81fdb30..207f9a8 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-gallery-count-before-6sktpmh9\\src\\components\\gallery\\GalleryShapeDisplay.test.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\gallery\\GalleryShapeDisplay.test.tsx"
+@@ -29,10 +29,9 @@ describe('gallery skeleton display', () => {
+     render(<CompletionGallery onReturn={() => {}} returnLabel="戻る" />)
+     const group = screen.getByRole('group', { name: '完成形の骨格を選ぶ' })
+     for (const shape of GALLERY_SHAPES) {
+-      const button = within(group).getByRole('button', { name: `${GALLERY_DISPLAY_LABELS[shape]}・10例` })
++      const button = within(group).getByRole('button', { name: GALLERY_DISPLAY_LABELS[shape] })
+       fireEvent.click(button)
+       expect(within(group).getAllByRole('button').filter(item => item.getAttribute('aria-pressed') === 'true')).toEqual([button])
+-      expect(within(group).getAllByText('選択中')).toHaveLength(1)
+       const cards = within(screen.getByRole('region', { name: `${GALLERY_DISPLAY_LABELS[shape]}の完成形` })).getAllByRole('button')
+       expect(cards).toHaveLength(10)
+       cards.forEach((card, index) => expect(card.textContent).toContain(`${GALLERY_DISPLAY_LABELS[shape]} ${index + 1}`))

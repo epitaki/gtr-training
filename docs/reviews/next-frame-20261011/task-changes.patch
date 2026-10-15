@@ -1,0 +1,22 @@
+--- VisualConfig.ts before
++++ VisualConfig.ts after
+@@ -49,7 +49,7 @@
+   AREA_WIDTH: 120,
+   AREA_PADDING: 12,
+   BG_COLOR: 0x211d33,
+-  BORDER_COLOR: 0xb5a8ff,
++  BORDER_COLOR: FIELD_CONFIG.FIELD_BORDER_COLOR,
+ } as const
+ 
+ export const ANIMATION_CONFIG = {
+--- NextPreview.ts before
++++ NextPreview.ts after
+@@ -27,7 +27,7 @@
+ export function drawNextPreview(scene: Phaser.Scene, layout: NextPreviewLayout): void {
+   const frame = scene.add.graphics()
+   frame.fillStyle(NEXT_AREA_CONFIG.BG_COLOR, 1)
+-  frame.lineStyle(3, NEXT_AREA_CONFIG.BORDER_COLOR, 1)
++  frame.lineStyle(1, NEXT_AREA_CONFIG.BORDER_COLOR, 1)
+   frame.beginPath()
+   layout.outline.forEach(([x, y], index) => {
+     if (index === 0) frame.moveTo(layout.baseX + x, layout.baseY + y)

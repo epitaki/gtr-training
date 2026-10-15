@@ -1,0 +1,23 @@
+{
+  "desktop": {
+    "singleCanvasCounter": true,
+    "htmlCounterRemoved": true,
+    "counterAboveBoard": true,
+    "counterText": "GTR: 1 / 10",
+    "totalTitle": "TOTAL SCORE",
+    "totalAtPreviousResultPosition": true,
+    "totalText": "0",
+    "totalBelowTitle": true,
+    "explanationsRemoved": true,
+    "resultHeadingRemoved": true,
+    "gravityActionRejected": true,
+    "gravityToggleRemoved": true,
+    "nextRemains48": true
+  },
+  "mobile": {
+    "width": 360,
+    "noPageOverflow": true,
+    "totalReachable": true,
+    "toolbar44px": true
+  }
+}

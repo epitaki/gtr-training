@@ -1,0 +1,19 @@
+{
+  "modes": [
+    {
+      "mode": "ガイド練習",
+      "noTintedCells": true,
+      "singleBoundary": true,
+      "boundaryAboveGrid": true,
+      "boardBackgroundKept": true
+    },
+    {
+      "mode": "スコアアタック",
+      "noTintedCells": true,
+      "singleBoundary": true,
+      "boundaryAboveGrid": true,
+      "boardBackgroundKept": true
+    }
+  ],
+  "exceptionCount": 0
+}

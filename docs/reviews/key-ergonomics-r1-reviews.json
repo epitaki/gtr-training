@@ -1,0 +1,37 @@
+{
+  "round": 1,
+  "snapshot": "15dfa84ab169ec743ffcc8c71142978f6c940e7c7b756734df228e017a95ad8b",
+  "independence": "Fresh gpt-6-sol leaf agents with fork_turns none, all 8 files each, no results shared; sequential due execution slot limit.",
+  "reviews": [
+    {
+      "reviewer": "gpt-6-sol / key_ergonomics_r1_review_1",
+      "snapshot": "15dfa84ab169ec743ffcc8c71142978f6c940e7c7b756734df228e017a95ad8b",
+      "verdict": "指摘なし",
+      "findings": [],
+      "scope": "8 changed files and callers/storage/input/scenes/help reviewed. All 197 hashes match.",
+      "limitations": "Static read-only review; hardware finger positioning/NumLock/IME/touchcancel not tested."
+    },
+    {
+      "reviewer": "gpt-6-sol / key_ergonomics_r1_review_2",
+      "snapshot": "15dfa84ab169ec743ffcc8c71142978f6c940e7c7b756734df228e017a95ad8b",
+      "verdict": "指摘なし",
+      "findings": [],
+      "scope": "All 8 changed files plus storage/input/both scenes/React callers read. API contracts, evaluation->result and help tracking reviewed; 197 hashes match.",
+      "limitations": "Static read-only review; hardware finger positioning/NumLock/IME/touchcancel not tested."
+    },
+    {
+      "reviewer": "gpt-6-sol / key_ergonomics_r1_review_3",
+      "snapshot": "15dfa84ab169ec743ffcc8c71142978f6c940e7c7b756734df228e017a95ad8b",
+      "verdict": "指摘なし",
+      "findings": [],
+      "scope": "All 8 files and settings/controller/adapter/keyCapture/GameControlInput/GameControls/GameLayout/both scenes read. 197 hashes match; baseline differences exactly specified 8 files. Required fixes none, including test coverage and maintainability.",
+      "limitations": "Read-only; no tests/dev/hardware execution. Parent validation accepted as provided evidence."
+    }
+  ],
+  "parent": {
+    "confirmedFindings": [],
+    "rejectedCandidates": [],
+    "checks": "197 hashes unchanged, 8 scoped source/doc changes, protected 113 files unchanged",
+    "notes": "Scene update evaluation branches call suppressUntilRelease independently; result acceptance callbacks gate physical evaluate and fresh Space as specified."
+  }
+}

@@ -1,0 +1,24 @@
+// Archived rejected trial; original path: src/game/advisor/ConstructionFlexibility.ts
+import type { PuyoColor } from '../core/types'
+
+/**
+ * A small construction tie-breaker, NOT a count of legal next-pair moves.
+ * Call only after verifying that the current columns fit the target skeleton.
+ * Only each column's next missing cell is open; buried colors do not count.
+ */
+export function constructionFlexibility(
+  columns: readonly (readonly PuyoColor[])[],
+  targets: readonly (readonly PuyoColor[])[],
+  tailFilled: boolean,
+): number {
+  // After the connected teaching tail is filled, focus on finishing/firing
+  // the main chain instead of keeping unfinished color entrances available.
+  if (tailFilled) return 0
+  const colors = new Set<PuyoColor>()
+  for (let x = 0; x < targets.length; x++) {
+    const nextColor = targets[x][columns[x].length]
+    if (nextColor) colors.add(nextColor)
+  }
+  // At most 48: less than one useful cell (100) or the Y/other shape gap.
+  return colors.size * 12
+}

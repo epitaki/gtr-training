@@ -1,0 +1,12 @@
+--- before/ScoreAttackGame.tsx
++++ after/ScoreAttackGame.tsx
+@@ -82,8 +82,8 @@
+     <div className="min-h-[calc(100vh-8rem)] rounded-none bg-[#171426] p-3 shadow-pixel sm:p-4">
+       <div className={progress.finished ? 'hidden' : ''}>
+         <div className="mx-auto mb-3 flex min-h-[44px] max-w-[640px] flex-wrap items-center justify-end gap-1 text-sm sm:gap-2">
++          <button type="button" onClick={() => setSettingsOpen(true)} className="rounded-none bg-[#b5a8ff] px-2 py-2 sm:px-3 text-[#0c0a14]">キー設定</button>
+           <button type="button" onClick={() => pressToolbarAction(gameManagerRef.current, 'pause', 'button:pause', focusGameSurface)} className="rounded-none bg-[#211d33] px-2 py-2 sm:px-3 text-white">停止／再開</button>
+-          <button type="button" onClick={() => setSettingsOpen(true)} className="rounded-none bg-[#b5a8ff] px-2 py-2 sm:px-3 text-[#0c0a14]">キー設定</button>
+           <button type="button" onClick={() => { gameManagerRef.current?.pressAction('exit', 'button:exit'); gameManagerRef.current?.releaseAction('button:exit') }} className="rounded-none bg-rose-800 px-2 py-2 sm:px-3 text-white">終了</button>
+         </div>
+         {settingsNotice && <p role="status" className="mx-auto max-w-[640px] text-[#ffe99b]">{settingsNotice}</p>}

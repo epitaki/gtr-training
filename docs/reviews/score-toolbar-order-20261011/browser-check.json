@@ -1,0 +1,29 @@
+{
+  "desktop": [
+    {
+      "mode": "ガイド練習",
+      "order": [
+        "キー設定",
+        "停止／再開",
+        "終了"
+      ]
+    },
+    {
+      "mode": "スコアアタック",
+      "order": [
+        "キー設定",
+        "停止／再開",
+        "終了"
+      ]
+    }
+  ],
+  "controls": {
+    "settingsOpen": true,
+    "settingsClosed": true
+  },
+  "mobile": [
+    "キー設定",
+    "停止／再開",
+    "終了"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "guest": true,
+  "guided": {
+    "chainStarted": true,
+    "automaticallyReset": true,
+    "emptyBoard": true,
+    "historyRestarted": true,
+    "newPairPresent": true,
+    "gameOverAbsent": true
+  },
+  "scoreFirstRound": {
+    "chainStarted": true,
+    "automaticallySubmitted": true,
+    "automaticallyReset": true,
+    "emptyBoard": true,
+    "movesCleared": true,
+    "counterAdvanced": true,
+    "gameOverAbsent": true
+  },
+  "scorePauseHolds": true,
+  "scoreTenRounds": {
+    "submittedExactlyTen": true,
+    "resultState": true,
+    "tenResults": true,
+    "resultsVisible": true,
+    "gameOverAbsent": true,
+    "guestNotSaved": true
+  }
+}

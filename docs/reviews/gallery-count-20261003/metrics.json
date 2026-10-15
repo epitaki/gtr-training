@@ -1,0 +1,70 @@
+[
+  {
+    "boardsContained": true,
+    "client": 1265,
+    "examples": 10,
+    "imagesLoaded": true,
+    "labels": [
+      "形1",
+      "形2",
+      "形3"
+    ],
+    "scroll": 1265,
+    "selected": [
+      "形1"
+    ],
+    "unwantedText": false,
+    "width": 1280
+  },
+  {
+    "boardsContained": true,
+    "client": 1265,
+    "examples": 10,
+    "imagesLoaded": true,
+    "labels": [
+      "形1",
+      "形2",
+      "形3"
+    ],
+    "scroll": 1265,
+    "selected": [
+      "形2"
+    ],
+    "unwantedText": false,
+    "width": 1280
+  },
+  {
+    "boardsContained": true,
+    "client": 1265,
+    "examples": 10,
+    "imagesLoaded": true,
+    "labels": [
+      "形1",
+      "形2",
+      "形3"
+    ],
+    "scroll": 1265,
+    "selected": [
+      "形3"
+    ],
+    "unwantedText": false,
+    "width": 1280
+  },
+  {
+    "boardsContained": true,
+    "client": 305,
+    "examples": 10,
+    "imagesLoaded": true,
+    "labels": [
+      "形1",
+      "形2",
+      "形3"
+    ],
+    "scroll": 305,
+    "selected": [
+      "形3"
+    ],
+    "unwantedText": false,
+    "width": 320
+  }
+]

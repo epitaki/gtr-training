@@ -1,0 +1,7 @@
+[
+  {
+    "path": "src/components/game/ScoreAttackGame.tsx",
+    "before": "138df6163391d5154aac9c7222a7783f5b9556b698241aa3dbce8b38d40a50e7",
+    "after": "8c96a31d5c5b22f3e5ce6e7b5ee258b870d7c15d9a2e344f1df9c0bba3c3db72"
+  }
+]

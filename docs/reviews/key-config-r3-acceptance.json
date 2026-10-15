@@ -1,0 +1,50 @@
+{
+  "round": 3,
+  "agent": "key_config_r1_acceptance",
+  "model": "gpt-6-astra",
+  "snapshot": "28f5a44a744067e3c1bf3e2e14b104354935cf5bda379474d866697dfa6fccb1",
+  "verdict": "受入不可",
+  "validation": {
+    "hashes": 195,
+    "protected": 113,
+    "mismatch": 0,
+    "testFiles": 89,
+    "tests": 1245,
+    "typeChecks": "本体/scripts成功",
+    "build": "成功",
+    "ui": "KEY-CONFIG-CHECK R3節",
+    "hardware": "物理NumLock/OS実IME/実touch未実施"
+  },
+  "previous": "K1〜K11解消。K10/V1の意味入力解除待ち・取消経路・両Scene/連鎖継続回帰を確認",
+  "confirmed": [
+    {
+      "id": "K12",
+      "severity": "P2",
+      "file": "src/components/settings/KeySettings.tsx",
+      "lines": [
+        18,
+        69
+      ],
+      "title": "キー取得中にキーボードで変更せず取消できない",
+      "condition": "追加で取得開始後、Tab/Shift+Tabで取消へ移動",
+      "cause": "許可キー判定前に全keydownの既定動作を抑止。Tabのみ通してもEnter/Spaceが割当として消費。Shift+Tabは先行Shift keydownでShiftを確定してしまう",
+      "contract": "Tab/Shift+Tabで現在のキー取得だけを取消し、既定focus移動を通し、案内に明記する。Shift単独取得はkeyupまで保留する等でShift+Tabの誤割当を防ぐ。Esc/Enter/Space/左右共通Ctrl・Shift単独割当は維持",
+      "regressions": [
+        "追加→Tabで取得終了、下書き/適用設定/保存内容不変、focus移動",
+        "Shift down→Tab down/up→Shift upでもShift追加なし/逆focus移動",
+        "取得終了後の設定全体取消をEnter/Space各々で起動、割当/保存なし",
+        "Esc/Enter/Space/左右Shift・Ctrl単独取得、pointer取消、再取得維持",
+        "実画面で追加から変更なしの取消まで一続きに確認"
+      ]
+    }
+  ],
+  "deduplicated": "3人のTab候補+親のEnter/Space取消候補をK12へ統合",
+  "excluded": [
+    {
+      "candidate": "GameControlsのEnter/Space起動なし",
+      "reason": "開始基準の実コードもpointerイベントのみ。R2判定と同じ既存挙動で今回の回帰外"
+    }
+  ],
+  "progress": "K7〜K11解消、異なる新規K12へ縮小。未収束ではなく進展あり",
+  "remaining": "K12 Sol修正→検証→fresh Sol3→Astra"
+}

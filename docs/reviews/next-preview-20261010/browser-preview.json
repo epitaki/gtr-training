@@ -1,0 +1,116 @@
+{
+  "desktop": [
+    {
+      "mode": "ガイド練習",
+      "boardCellSize": 48,
+      "dimensions": [
+        {
+          "x": 400,
+          "y": 160,
+          "width": 48,
+          "height": 48,
+          "alpha": 1,
+          "frame": "green/idle"
+        },
+        {
+          "x": 400,
+          "y": 208,
+          "width": 48,
+          "height": 48,
+          "alpha": 1,
+          "frame": "green/idle"
+        },
+        {
+          "x": 432,
+          "y": 304,
+          "width": 48,
+          "height": 48,
+          "alpha": 1,
+          "frame": "green/idle"
+        },
+        {
+          "x": 432,
+          "y": 352,
+          "width": 48,
+          "height": 48,
+          "alpha": 1,
+          "frame": "red/idle"
+        }
+      ],
+      "sameSize": true,
+      "sameBrightness": true,
+      "normalArtwork": true,
+      "nextAboveNext2": true,
+      "oneContinuousFrame": true,
+      "labelCount": 2,
+      "noLabelOverlap": true,
+      "noStatusOverlap": true,
+      "allInsideFrame": true,
+      "guideGap": 24
+    },
+    {
+      "mode": "スコアアタック",
+      "boardCellSize": 48,
+      "dimensions": [
+        {
+          "x": 404,
+          "y": 160,
+          "width": 48,
+          "height": 48,
+          "alpha": 1,
+          "frame": "green/idle"
+        },
+        {
+          "x": 404,
+          "y": 208,
+          "width": 48,
+          "height": 48,
+          "alpha": 1,
+          "frame": "green/idle"
+        },
+        {
+          "x": 436,
+          "y": 304,
+          "width": 48,
+          "height": 48,
+          "alpha": 1,
+          "frame": "yellow/idle"
+        },
+        {
+          "x": 436,
+          "y": 352,
+          "width": 48,
+          "height": 48,
+          "alpha": 1,
+          "frame": "red/idle"
+        }
+      ],
+      "sameSize": true,
+      "sameBrightness": true,
+      "normalArtwork": true,
+      "nextAboveNext2": true,
+      "oneContinuousFrame": true,
+      "labelCount": 2,
+      "noLabelOverlap": true,
+      "noStatusOverlap": true,
+      "allInsideFrame": true,
+      "guideGap": null
+    }
+  ],
+  "mobile": [
+    {
+      "mode": "ガイド練習",
+      "width": 360,
+      "noPageOverflow": true,
+      "previewReachable": true,
+      "allFour48px": true
+    },
+    {
+      "mode": "スコアアタック",
+      "width": 360,
+      "noPageOverflow": true,
+      "previewReachable": true,
+      "allFour48px": true
+    }
+  ]
+}

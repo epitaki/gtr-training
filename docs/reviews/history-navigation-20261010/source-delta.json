@@ -1,0 +1,42 @@
+[
+  {
+    "path": "src/App.history.test.tsx",
+    "before": null,
+    "after": "f9cc62e0d681171dc78f7141e0037aaed92c120f1d61399b350973be0d3a854b"
+  },
+  {
+    "path": "src/App.tsx",
+    "before": "13a731779f904b6d341c3af431737ffd934a17d7ff225d69958f97971412c5a0",
+    "after": "d10fa7f471da1de87efbef861d51a398a958acf902efc1cfdfbf52704b39d39f"
+  },
+  {
+    "path": "src/components/game/SavedGamesPage.tsx",
+    "before": null,
+    "after": "cda80cff665c761c1ec94ee7fb679e5f58608e4ef2e084f45974430eabb230a3"
+  },
+  {
+    "path": "src/components/game/ScoreAttackGame.tsx",
+    "before": "6dd4d131e60358abf41f9507a2069c356643f0b67b8838bba01e17071d0720f2",
+    "after": "138df6163391d5154aac9c7222a7783f5b9556b698241aa3dbce8b38d40a50e7"
+  },
+  {
+    "path": "src/components/game/ScoreAttackHistory.tsx",
+    "before": "c23873d53d9e44090cea73349680b46268e6e61c8b5393870a171e0b7621c169",
+    "after": "baf52f1b3a1febe8e80ab2d632273e11c3b4567f963e5169573e0807246dbeab"
+  },
+  {
+    "path": "src/components/game/useScoreAttackSave.test.tsx",
+    "before": "381cde8e3876e3de9a4bb65bcee8648b298626f915a3bf23cd9e5c3654fb467f",
+    "after": "5d5dd99b3d0dd028077cf8ab6d07db37c541d3680300d507eb5985a5987b7c67"
+  },
+  {
+    "path": "src/components/game/useScoreAttackSave.ts",
+    "before": "1b82955fe9ae69ebf204db98b6d1e7ee34a5bd79af5aea356a049ad0e35966c4",
+    "after": "45d567836b6e8b5c2c9d072b19cade9b697033e89bdaee81c9d00cfba63922a0"
+  },
+  {
+    "path": "src/components/layout/SideMenu.tsx",
+    "before": "6dbd3712da5c699073ece29bf28bc8e5108ae3bbe6f72530a974e44f95601238",
+    "after": "7f7bd8767e9f191001c29be201bcf1b7946c3a4930af79e050c406348ce24f05"
+  }
+]

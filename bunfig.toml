@@ -1,0 +1,2 @@
+# Vite selects its environment directory by mode. Bun must not pre-load root .env.local.
+env = false

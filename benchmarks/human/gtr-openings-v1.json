@@ -1,0 +1,412 @@
+{
+  "version": 1,
+  "collectedAt": "2026-09-19",
+  "protocol": {
+    "selection": "10 momoken article games in source order; first 10 exact GTR + 先折 tagged ALF and かめ records (exclude 速攻); chosen before advisor comparisons",
+    "split": "first 7 per player development, remaining 3 holdout; compare at most first 12 placements before first clear; record counts are player traces, not 30 directly watched matches",
+    "colorNormalization": "first appearance maps to red, green, blue, yellow; reject >4 colors in retained prefix",
+    "lookahead": 3
+  },
+  "records": [
+    {
+      "id": "momoken-2021-1",
+      "player": "momoken",
+      "date": "2021-09-13",
+      "split": "development",
+      "source": "https://puyo-camp.jp/posts/146660",
+      "record": "_cmmo2QcykA2g0ccQ1o1c2ElE1k181c5A9Gcsag1geAlMmI9qby7K6yeG5imS9S0I1Qa82mkG6k9GeQmwoA2qbMcc5000",
+      "video": "https://www.youtube.com/watch?v=zWruR4NGq4U&t=185s",
+      "verification": "video frame checked at 3:10 (first 4 placements); full trace not video-audited"
+    },
+    {
+      "id": "momoken-2021-2",
+      "player": "momoken",
+      "date": "2021-09-13",
+      "split": "development",
+      "source": "https://puyo-camp.jp/posts/146660",
+      "record": "_1qcm1IfAgIdu1Q7kdm0CfMaycQ1s8cd88uh80QhyiQ3AdIiAiIhI5o",
+      "video": "https://www.youtube.com/watch?v=zWruR4NGq4U&t=244s",
+      "verification": "article transcription; not video-audited"
+    },
+    {
+      "id": "momoken-2021-3",
+      "player": "momoken",
+      "date": "2021-09-13",
+      "split": "development",
+      "source": "https://puyo-camp.jp/posts/146660",
+      "record": "_mocmbQ2gmIlAaw6Q4a7Ilo48oG4wcQ0AmI6G7Mla2qeEmy6s7M18aMekci582g4qkclglk0cmg1cmuac9ibkka1i2g4ola0Qecc0b0",
+      "video": "https://www.youtube.com/watch?v=zWruR4NGq4U&t=311s",
+      "verification": "article transcription; not video-audited"
+    },
+    {
+      "id": "momoken-2021-4",
+      "player": "momoken",
+      "date": "2021-09-13",
+      "split": "development",
+      "source": "https://puyo-camp.jp/posts/146660",
+      "record": "_ko0m5Q3afg3Klynqlq4M6unciiiq6a5E8y1i6y1i8A6klC5s6qjMkM4SiQfIfE4mlCociQkEfIjC",
+      "video": "https://www.youtube.com/watch?v=zWruR4NGq4U&t=379s",
+      "verification": "article transcription; not video-audited"
+    },
+    {
+      "id": "momoken-2021-5",
+      "player": "momoken",
+      "date": "2021-09-13",
+      "split": "development",
+      "source": "https://puyo-camp.jp/posts/146660",
+      "record": "_6mgo0m6y1afw3I6c7kaa7m6k5McQbIcA7E2S5Qfo1o6G1qiQ2qca3whEhodq0Qhw1GaEisckis2A387AdGiQ6cigiA5070c0f0c0",
+      "video": "https://www.youtube.com/watch?v=zWruR4NGq4U&t=437s",
+      "verification": "article transcription; not video-audited"
+    },
+    {
+      "id": "momoken-2021-6",
+      "player": "momoken",
+      "date": "2021-09-13",
+      "split": "development",
+      "source": "https://puyo-camp.jp/posts/146660",
+      "record": "_mik80moudomwmEnkochoegmc0Q2wiscA3cik38akmSnMmkc0k0j0",
+      "video": "https://www.youtube.com/watch?v=zWruR4NGq4U&t=546s",
+      "verification": "article transcription; not video-audited"
+    },
+    {
+      "id": "momoken-2021-7",
+      "player": "momoken",
+      "date": "2021-09-13",
+      "split": "development",
+      "source": "https://puyo-camp.jp/posts/146660",
+      "record": "_imdo7wcmdajcnglSmscS6S8s6mjAggoGcAg898jGhSdS9AbSdMnans7E8g6q9AnGbQlI8M9s9qgM8Im8gQoAiIeAgAduikgQlIoImi8I9Ebo6qms90c0",
+      "video": "https://www.youtube.com/watch?v=zWruR4NGq4U&t=618s",
+      "verification": "article transcription; not video-audited"
+    },
+    {
+      "id": "momoken-2021-8",
+      "player": "momoken",
+      "date": "2021-09-13",
+      "split": "holdout",
+      "source": "https://puyo-camp.jp/posts/146660",
+      "record": "_8qomoGlS8wdQhQgMcc6cloeg7goceumKb8einymI7klsdIcGeQ8w90l0",
+      "video": "https://www.youtube.com/watch?v=zWruR4NGq4U&t=698s",
+      "verification": "article transcription; not video-audited"
+    },
+    {
+      "id": "momoken-2021-9",
+      "player": "momoken",
+      "date": "2021-09-13",
+      "split": "holdout",
+      "source": "https://puyo-camp.jp/posts/146660",
+      "record": "_6mcma8kqbC7il8ok6GbMckcS1ylc0caE4w4S4A0AlI0AeScQ7slk7o7wac7IkM6Q4AoM5A9Q1050o060",
+      "video": "https://www.youtube.com/watch?v=zWruR4NGq4U&t=752s",
+      "verification": "article transcription; not video-audited"
+    },
+    {
+      "id": "momoken-2021-10",
+      "player": "momoken",
+      "date": "2021-09-13",
+      "split": "holdout",
+      "source": "https://puyo-camp.jp/posts/146660",
+      "record": "_go6mjAfqgg9SoQ6Qfa8c4q88nIoq1E3g6coIiAfmgKkQ1q3gkQ9GnAlI0qgagK1s1qoQiyockS1KnM1wkifu0cf010",
+      "video": "https://www.youtube.com/watch?v=zWruR4NGq4U&t=906s",
+      "verification": "article transcription; timestamp shared with game 11, unverified"
+    },
+    {
+      "id": "pse-619",
+      "player": "ALF",
+      "date": "2011/10/29",
+      "split": "development",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_mkmcl87kbsdwgol89k7SloememiGhA7S",
+      "tags": [
+        "ALF",
+        "GTR",
+        "先折",
+        "ABABAC"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-635",
+      "player": "ALF",
+      "date": "2011/10/29",
+      "split": "development",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_dimcmiooemowlI6MlScweI7geQnEhQhM",
+      "tags": [
+        "ALF",
+        "GTR",
+        "先折",
+        "ABACAC"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-661",
+      "player": "ALF",
+      "date": "2011/10/29",
+      "split": "development",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_9kl86qlqgcfGg8iG8q3wjk0G5igs0woG",
+      "tags": [
+        "ALF",
+        "GTR",
+        "先折",
+        "ABABAA"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-681",
+      "player": "ALF",
+      "date": "2011/10/29",
+      "split": "development",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_lk984c1k0qeSlCkE0GeCo8ki6oawkuku",
+      "tags": [
+        "ALF",
+        "GTR",
+        "先折",
+        "ABABAC"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-711",
+      "player": "ALF",
+      "date": "2011/10/29",
+      "split": "development",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_lijcnu8AlCnmmG7GbSiwgcbueG7ibs8w",
+      "tags": [
+        "ALF",
+        "GTR",
+        "先折",
+        "ABACAC"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-786",
+      "player": "ALF",
+      "date": "2011/10/29",
+      "split": "development",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_8k8c6q589ynC18ginQ8Ago4y68gE9k4g",
+      "tags": [
+        "ALF",
+        "GTR",
+        "先折",
+        "ABABAA"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-856",
+      "player": "ALF",
+      "date": "2011/04/24",
+      "split": "development",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_mkmcoq4c48kw9cowag9G9GkM7ClI9skS",
+      "tags": [
+        "ALF",
+        "GTR",
+        "先折",
+        "ABABAA"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-1006",
+      "player": "ALF",
+      "date": "2011/04/24",
+      "split": "holdout",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_bkeq78bC7meIiMbq7q8Gh8jGhm8k9Gba",
+      "tags": [
+        "ALF",
+        "GTR",
+        "先折",
+        "ABACAB"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-1014",
+      "player": "ALF",
+      "date": "2011/04/24",
+      "split": "holdout",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_5k5coqaC2imEeE2o9M78mwc8lM7S5SkA",
+      "tags": [
+        "ALF",
+        "GTR",
+        "先折",
+        "ABABCC"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-1173",
+      "player": "ALF",
+      "date": "2011/10/16",
+      "split": "holdout",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_hi3c3inkaA3GmsaGhwow0GacaadIks3G",
+      "tags": [
+        "ALF",
+        "GTR",
+        "先折",
+        "ABACAC"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-327",
+      "player": "かめ",
+      "date": "2011/03/21",
+      "split": "development",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_0mca6q2mkC4Ebcc8cE6g6w7y68mQ0wko",
+      "tags": [
+        "かめ",
+        "GTR",
+        "先折",
+        "AABBCC"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-350",
+      "player": "かめ",
+      "date": "2011/03/21",
+      "split": "development",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_jkjch8iqmolwc8hG9S8E68mmeM7wbGj8",
+      "tags": [
+        "かめ",
+        "GTR",
+        "先折",
+        "ABABAC"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-374",
+      "player": "かめ",
+      "date": "2011/03/21",
+      "split": "development",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_6aiaoqlC8m1A6E8Q5klo188kfS1c9Aio",
+      "tags": [
+        "かめ",
+        "GTR",
+        "先折",
+        "AABBCC"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-381",
+      "player": "かめ",
+      "date": "2011/03/21",
+      "split": "development",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_oa6q6abc2c7G08ekeCeG0M7cbCaIlw5M",
+      "tags": [
+        "かめ",
+        "GTR",
+        "先折",
+        "AABBBB"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-405",
+      "player": "かめ",
+      "date": "2011/03/21",
+      "split": "development",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_ia0a28jsfc3u2u3A08kEc84ihieAeIcM",
+      "tags": [
+        "かめ",
+        "GTR",
+        "先折",
+        "AABBBC"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-410",
+      "player": "かめ",
+      "date": "2011/03/21",
+      "split": "development",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_akac2m4sam2amImAo808bcoieyaqlkkI",
+      "tags": [
+        "かめ",
+        "GTR",
+        "先折",
+        "ABABAB"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-431",
+      "player": "かめ",
+      "date": "2011/03/21",
+      "split": "development",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_8kg8jsbchgnAdMhI88esjAjEdS7QgG7M",
+      "tags": [
+        "かめ",
+        "GTR",
+        "先折",
+        "ABABAC"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-451",
+      "player": "かめ",
+      "date": "2011/03/21",
+      "split": "holdout",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_lk98ece8688sm87gl8nkiw6E9kcM8CiM",
+      "tags": [
+        "かめ",
+        "GTR",
+        "先折",
+        "ABABAC"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-470",
+      "player": "かめ",
+      "date": "2011/03/21",
+      "split": "holdout",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_oa6a58nsgylckg6Mkkjo5kgwnw5oks5g",
+      "tags": [
+        "かめ",
+        "GTR",
+        "先折",
+        "AABBBC"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    },
+    {
+      "id": "pse-490",
+      "player": "かめ",
+      "date": "2011/03/21",
+      "split": "holdout",
+      "source": "https://cuboktahedron.github.io/q/pse/",
+      "record": "_dkdcjs6yesggmwb8iMjImAbacalmiw8S",
+      "tags": [
+        "かめ",
+        "GTR",
+        "先折",
+        "ABABAC"
+      ],
+      "verification": "public tagged historical transcription; original video not linked; not video-audited"
+    }
+  ]
+}

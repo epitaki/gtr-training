@@ -1,0 +1,765 @@
+--- before/src/App.history.test.tsx
++++ after/src/App.history.test.tsx
+@@ -14,16 +14,17 @@
+ vi.mock('./lib/scoreAttackHistory', () => ({ listScoreAttackGames: fake.list, setScoreAttackFavorite: fake.favorite }))
+ vi.mock('./components/TopPage', () => ({ default: () => <p>ホーム画面</p> }))
+ vi.mock('./components/gallery/CompletionGallery', () => ({ default: () => <p>完成形ページ</p> }))
+-vi.mock('./components/game/GuidedGame', () => ({ default: ({ suspended }: { suspended: boolean }) => {
++vi.mock('./components/game/GuidedGame', () => ({ default: ({ suspended, practiceSequence }: { suspended: boolean; practiceSequence?: unknown }) => {
+   const [instance] = useState(() => ++fake.instances)
+-  return <div data-testid="guided" data-instance={instance} data-suspended={String(suspended)}>練習ゲーム</div>
++  return <div data-testid="guided" data-sequence={JSON.stringify(practiceSequence)} data-instance={instance} data-suspended={String(suspended)}>練習ゲーム</div>
+ } }))
+ vi.mock('./components/game/ScoreAttackGame', () => ({ default: ({ suspended, savedGameUpdate }: { suspended: boolean; savedGameUpdate?: SavedScoreAttackGame }) => {
+   const [instance] = useState(() => ++fake.instances)
+   return <div data-favorite={String(savedGameUpdate?.favorite)} data-testid="score" data-instance={instance} data-suspended={String(suspended)}>スコアゲーム</div>
+ } }))
+-vi.mock('./components/game/ScoreAttackResults', () => ({ default: ({ state, onExit, onRestart }: any) => <section>
++vi.mock('./components/game/ScoreAttackResults', () => ({ default: ({ state, onExit, onRestart, onPractice }: any) => <section>
+   <p>保存結果 {state.rounds.length}回 {state.totalScore}点</p>
++  {onPractice && <button onClick={() => onPractice([['red', 'blue'], ['green', 'yellow']])}>このツモで練習</button>}
+   <button onClick={onExit}>履歴に戻る</button>{onRestart && <button onClick={onRestart}>もう一度</button>}
+ </section> }))
+ 
+@@ -127,3 +128,27 @@
+   fake.profile = profile(userB); view.rerender(<App />)
+   expect(screen.getByTestId('score').getAttribute('data-favorite')).toBe('undefined')
+ })
++
++it('starts a fresh guided game from history, resumes it after browsing, and clears its sequence on a normal start', async () => {
++  fake.profile = profile(); fake.list.mockResolvedValue([game()])
++  render(<App />)
++  fireEvent.click(menu('ガイド練習'))
++  const previous = screen.getByTestId('guided').getAttribute('data-instance')
++  fireEvent.click(menu('履歴'))
++  fireEvent.click(await screen.findByRole('button', { name: /0点/ }))
++  fireEvent.click(menu('このツモで練習'))
++  const practice = screen.getByTestId('guided')
++  expect(practice.getAttribute('data-sequence')).toBe(JSON.stringify([['red', 'blue'], ['green', 'yellow']]))
++  expect(practice.getAttribute('data-instance')).not.toBe(previous)
++  expect(practice.getAttribute('data-suspended')).toBe('false')
++  expect(menu('ガイド練習').getAttribute('aria-current')).toBe('page')
++  const instance = practice.getAttribute('data-instance')
++  fireEvent.click(menu('履歴'))
++  await screen.findByRole('button', { name: /0点/ })
++  fireEvent.click(menu('ガイド練習'))
++  expect(screen.getByTestId('guided').getAttribute('data-instance')).toBe(instance)
++  expect(screen.getByTestId('guided').getAttribute('data-sequence')).toBe(practice.getAttribute('data-sequence'))
++  fireEvent.click(menu('ホーム'))
++  fireEvent.click(menu('ガイド練習'))
++  expect(screen.getByTestId('guided').getAttribute('data-sequence')).toBeNull()
++})
+--- before/src/App.tsx
++++ after/src/App.tsx
+@@ -7,6 +7,7 @@
+ import CompletionGallery from './components/gallery/CompletionGallery'
+ import { clearGTRReplayHash, readGTRReplayResultFromLocation } from './game/feedback/GTRIssueReport'
+ import AccountDialog from './components/account/AccountDialog'
++import type { PairColors } from './game/core/PairSequence'
+ import type { SavedScoreAttackGame } from './lib/scoreAttackHistory'
+ import { useAccount } from './auth/useAccount'
+ 
+@@ -28,6 +29,7 @@
+   const [replayError, setReplayError] = useState<string | null>(() => (
+     initialReplay.current.status === 'invalid' ? initialReplay.current.message : null
+   ))
++  const [practiceSequence, setPracticeSequence] = useState<readonly PairColors[] | undefined>()
+   const [replayRevision, setReplayRevision] = useState(0)
+   const [galleryOpen, setGalleryOpen] = useState(false)
+   const [historyOpen, setHistoryOpen] = useState(false)
+@@ -36,6 +38,7 @@
+   useEffect(() => {
+     const handleReplayUrl = () => {
+       const result = readGTRReplayResultFromLocation()
++      setPracticeSequence(undefined)
+       setGalleryOpen(false)
+       setHistoryOpen(false)
+       if (result.status === 'valid') {
+@@ -69,6 +72,7 @@
+     setHistoryOpen(false)
+     setReplayError(null)
+     replaySession.current = false
++    setPracticeSequence(undefined)
+     clearGTRReplayHash()
+     if (mode === 'guided') setReplayRevision(revision => revision + 1)
+     setCurrentMode(mode)
+@@ -79,6 +83,7 @@
+     setHistoryOpen(false)
+     setReplayError(null)
+     replaySession.current = false
++    setPracticeSequence(undefined)
+     clearGTRReplayHash()
+     setCurrentMode('top')
+   }
+@@ -86,10 +91,22 @@
+   const handleExitGame = useCallback(() => {
+     console.log('Exiting game, returning to top page')
+     replaySession.current = false
++    setPracticeSequence(undefined)
+     setReplayError(null)
+     clearGTRReplayHash()
+     setCurrentMode('top')
+   }, [])
++
++  const handlePracticeSequence = (sequence: readonly PairColors[]) => {
++    clearGTRReplayHash()
++    replaySession.current = false
++    setReplayError(null)
++    setPracticeSequence(sequence)
++    setGalleryOpen(false)
++    setHistoryOpen(false)
++    setReplayRevision(revision => revision + 1)
++    setCurrentMode('guided')
++  }
+ 
+   // コンテンツエリアのレンダリング
+   const renderContent = () => {
+@@ -117,7 +134,7 @@
+       case 'top':
+         return <TopPage onSelectMode={handleSelectMode} />
+       case 'guided':
+-        return <GuidedGame key={replayRevision} onExit={handleExitGame} suspended={galleryOpen || historyOpen || accountOpen} />
++        return <GuidedGame key={replayRevision} practiceSequence={practiceSequence} onExit={handleExitGame} suspended={galleryOpen || historyOpen || accountOpen} />
+       case 'score-attack':
+         return <ScoreAttackGame onExit={handleExitGame} suspended={galleryOpen || historyOpen || accountOpen} userId={account.profile?.id} savedGameUpdate={historyUpdate?.identity === accountIdentity ? historyUpdate.game : undefined} />
+       case 'battle':
+@@ -160,6 +177,7 @@
+       {galleryOpen && <CompletionGallery onReturn={() => setGalleryOpen(false)} returnLabel={currentMode === 'top' ? 'ホームに戻る' : '練習に戻る'} />}
+       {historyOpen && <div inert={accountOpen}><SavedGamesPage key={accountIdentity}
+         userId={account.profile?.id} checking={account.status === 'loading' && !account.profile}
++        onPractice={handlePracticeSequence}
+         onChanged={game => setHistoryUpdate({ identity: accountIdentity, game })}
+         onLogin={openAccount} onReturn={() => setHistoryOpen(false)} returnLabel={currentMode === 'top' ? 'ホームに戻る' : '練習に戻る'}
+         /></div>}
+--- before/src/game/GameManager.ts
++++ after/src/game/GameManager.ts
+@@ -1,3 +1,4 @@
++import type { PairColors } from './core/PairSequence'
+ import * as Phaser from 'phaser'
+ import PuyoGame from './scenes/PuyoGame'
+ import MenuScene from './scenes/MenuScene'
+@@ -46,7 +47,7 @@
+     this.attachGame(new Phaser.Game(this.config))
+   }
+ 
+-  startGuidedPractice(): void {
++  startGuidedPractice(practiceSequence?: readonly PairColors[]): void {
+     if (this.game) {
+       this.game.destroy(true)
+     }
+@@ -54,7 +55,7 @@
+     const guidedConfig = {
+       ...this.config,
+       width: LAYOUT_GUIDED.CANVAS_WIDTH,
+-      scene: [GuidedPracticeScene]
++      scene: [practiceSequence ? new GuidedPracticeScene(practiceSequence) : GuidedPracticeScene]
+     }
+ 
+     this.attachGame(new Phaser.Game(guidedConfig))
+--- before/src/components/game/GuidedGame.tsx
++++ after/src/components/game/GuidedGame.tsx
+@@ -1,3 +1,4 @@
++import type { PairColors } from '../../game/core/PairSequence'
+ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+ import { GameManager } from '../../game/GameManager'
+ import {
+@@ -22,11 +23,12 @@
+ import { focusGameCanvas, pressToolbarAction, restoreFocusOnResume } from './gameFocus'
+ 
+ interface GuidedGameProps {
++  practiceSequence?: readonly PairColors[]
+   onExit: () => void
+   suspended: boolean
+ }
+ 
+-export default function GuidedGame({ onExit, suspended }: GuidedGameProps) {
++export default function GuidedGame({ onExit, suspended, practiceSequence }: GuidedGameProps) {
+   const gameManagerRef = useRef<GameManager | undefined>(undefined)
+   const containerRef = useRef<HTMLDivElement>(null)
+   const replaySource = useRef(readGTRReplayFromLocation())
+@@ -106,7 +108,7 @@
+ 
+     const timer = setTimeout(() => {
+       gameManagerRef.current?.setSuspended(suspendedRef.current)
+-      gameManagerRef.current?.startGuidedPractice()
++      gameManagerRef.current?.startGuidedPractice(practiceSequence)
+     }, 200)
+ 
+     return () => {
+@@ -119,7 +121,7 @@
+       gameManagerRef.current?.destroy()
+       gameManagerRef.current = undefined
+     }
+-  }, [onExit])
++  }, [onExit, practiceSequence])
+ 
+   return (
+     <div className="min-h-[calc(100vh-8rem)] rounded-none bg-[#171426] p-3 shadow-pixel sm:p-4">
+--- before/src/components/game/PlacementHistoryPreview.test.tsx
++++ after/src/components/game/PlacementHistoryPreview.test.tsx
+@@ -1,5 +1,5 @@
+ // @vitest-environment jsdom
+-import { afterEach, expect, it } from 'vitest'
++import { afterEach, expect, it, vi } from 'vitest'
+ import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+ import { PuyoColor as C, type PuyoPair } from '../../game/core/types'
+ import { encodePlacedPair, replayPlacements } from '../../game/scoreAttack/placementHistory'
+@@ -38,3 +38,19 @@
+   expect(screen.getByRole('alert')).toBeTruthy()
+   expect(screen.queryByRole('group', { name: 'NEXT' })).toBeNull()
+ })
++
++it('starts practice with the selected committed colors and blocks empty or inconsistent records', () => {
++  const onPractice = vi.fn()
++  const before = structuredClone(snapshot)
++  const view = render(<PlacementHistoryPreview snapshot={snapshot} onPractice={onPractice} />)
++  fireEvent.click(screen.getByRole('button', { name: 'このツモで練習' }))
++  expect(onPractice).toHaveBeenCalledWith([[C.RED, C.BLUE], [C.GREEN, C.YELLOW], [C.BLUE, C.RED]])
++  expect(snapshot).toEqual(before)
++  view.rerender(<PlacementHistoryPreview snapshot={{ ...snapshot, moves: '' }} onPractice={onPractice} />)
++  expect((screen.getByRole('button', { name: 'このツモで練習' }) as HTMLButtonElement).disabled).toBe(true)
++  view.rerender(<PlacementHistoryPreview snapshot={{ ...snapshot, grid: replayPlacements('') }} onPractice={onPractice} />)
++  expect((screen.getByRole('button', { name: 'このツモで練習' }) as HTMLButtonElement).disabled).toBe(true)
++  view.rerender(<PlacementHistoryPreview snapshot={{ ...snapshot, moves: undefined }} onPractice={onPractice} />)
++  expect(screen.queryByRole('button', { name: 'このツモで練習' })).toBeNull()
++  expect(onPractice).toHaveBeenCalledOnce()
++})
+--- before/src/components/game/PlacementHistoryPreview.tsx
++++ after/src/components/game/PlacementHistoryPreview.tsx
+@@ -1,5 +1,7 @@
++import type { PairColors } from '../../game/core/PairSequence'
+ import { useMemo, useState } from 'react'
+ import type { ScoreAttackSnapshot } from '../../game/scoreAttack/types'
++import { getPracticeSequence } from '../../game/scoreAttack/practiceSequence'
+ import { encodeBoard, replayPlacements } from '../../game/scoreAttack/placementHistory'
+ import { getPlacementPreviewPairs } from '../../game/scoreAttack/placementPreview'
+ import NextPairPreview from './NextPairPreview'
+@@ -28,13 +30,21 @@
+     </div>
+   </div>
+ }
+-export default function PlacementHistoryPreview({ snapshot }: { snapshot: ScoreAttackSnapshot }) {
++export default function PlacementHistoryPreview({ snapshot, onPractice }: { snapshot: ScoreAttackSnapshot; onPractice?: (sequence: readonly PairColors[]) => void }) {
++  const sequence = useMemo(() => onPractice ? getPracticeSequence(snapshot) : null, [snapshot, onPractice])
+   const [open, setOpen] = useState(false)
+   if (snapshot.moves === undefined) return null
+   return <div className="mt-5 border-t border-[#6f648d] pt-4">
++    <div className="flex flex-wrap gap-3">
+     <button type="button" aria-expanded={open} onClick={() => setOpen(old => !old)} className="border border-[#6f648d] px-3 py-2">
+       {open ? '手順を閉じる' : '手順を見る'}
+     </button>
++    {onPractice && <button type="button" disabled={!sequence}
++      onClick={() => { if (sequence) onPractice(sequence) }}
++      className="border border-[#6f648d] bg-[#b5a8ff] px-3 py-2 text-[#0c0a14] disabled:opacity-40">
++      このツモで練習
++    </button>}
++    </div>
+     {open && <div className="mt-4"><Steps snapshot={snapshot} /></div>}
+   </div>
+ }
+--- before/src/components/game/ScoreAttackResults.tsx
++++ after/src/components/game/ScoreAttackResults.tsx
+@@ -1,3 +1,4 @@
++import type { PairColors } from '../../game/core/PairSequence'
+ import { useEffect, useRef, useState } from 'react'
+ import type { ScoreAttackRound, ScoreAttackState } from '../../game/scoreAttack/types'
+ import GalleryBoard from '../gallery/GalleryBoard'
+@@ -6,7 +7,7 @@
+ import PlacementHistoryPreview from './PlacementHistoryPreview'
+ import { scoreBreakdown } from '../../game/scoreAttack/scoreBreakdown'
+ 
+-function EvaluationDialog({ round, number, onClose }: { round: ScoreAttackRound; number: number; onClose: () => void }) {
++function EvaluationDialog({ round, number, onClose, onPractice }: { round: ScoreAttackRound; number: number; onClose: () => void; onPractice?: (sequence: readonly PairColors[]) => void }) {
+   const dialogRef = useRef<HTMLDialogElement>(null)
+   const closeRef = useRef<HTMLButtonElement>(null)
+   const analysis = round.evaluation!.analysis
+@@ -35,11 +36,12 @@
+         </dl>}
+       </div>
+     </div>
+-    <PlacementHistoryPreview snapshot={round.snapshot} />
++    <PlacementHistoryPreview snapshot={round.snapshot} onPractice={onPractice} />
+   </dialog>
+ }
+ 
+-export default function ScoreAttackResults({ state, onRestart, onExit, onRetry, exitLabel = '終了' }: {
++export default function ScoreAttackResults({ state, onRestart, onExit, onRetry, exitLabel = '終了', onPractice }: {
++  onPractice?: (sequence: readonly PairColors[]) => void
+   state: ScoreAttackState; onRestart?: () => void; onExit: () => void; onRetry: () => void; exitLabel?: string
+ }) {
+   const [selected, setSelected] = useState<number | null>(null)
+@@ -74,7 +76,7 @@
+       {onRestart && <button type="button" onClick={onRestart} className="bg-[#b5a8ff] px-4 py-3 text-[#0c0a14]">もう一度</button>}
+       <button type="button" onClick={onExit} className="border border-[#6f648d] px-4 py-3">{exitLabel}</button>
+     </div>
+-    {selected !== null && state.rounds[selected]?.evaluation && <EvaluationDialog
++    {selected !== null && state.rounds[selected]?.evaluation && <EvaluationDialog onPractice={onPractice}
+       round={state.rounds[selected]} number={selected + 1} onClose={closeDetail} />}
+   </section>
+ }
+--- before/src/components/game/ScoreAttackHistory.tsx
++++ after/src/components/game/ScoreAttackHistory.tsx
+@@ -1,9 +1,11 @@
++import type { PairColors } from '../../game/core/PairSequence'
+ import { useEffect, useMemo, useRef, useState } from 'react'
+ import { decodeScoreAttackGame } from '../../game/scoreAttack/storageCodec'
+ import { listScoreAttackGames, setScoreAttackFavorite, type SavedScoreAttackGame } from '../../lib/scoreAttackHistory'
+ import ScoreAttackResults from './ScoreAttackResults'
+ 
+-export default function ScoreAttackHistory({ userId, onClose, onChanged = () => {}, presentation = 'dialog', returnLabel = '閉じる' }: {
++export default function ScoreAttackHistory({ userId, onClose, onChanged = () => {}, presentation = 'dialog', returnLabel = '閉じる', onPractice }: {
++  onPractice?: (sequence: readonly PairColors[]) => void
+   userId: string; onClose: () => void; onChanged?: (game: SavedScoreAttackGame) => void
+   presentation?: 'dialog' | 'page'; returnLabel?: string
+ }) {
+@@ -66,7 +68,7 @@
+         </li>)}
+       </ul>
+     </>}
+-    {selectedGame && selectedState && <ScoreAttackResults key={selectedGame.id} state={selectedState}
++    {selectedGame && selectedState && <ScoreAttackResults key={selectedGame.id} state={selectedState} onPractice={onPractice}
+       onExit={() => setSelected(null)} exitLabel="履歴に戻る" onRetry={() => {}} />}
+   </>
+   return presentation === 'page' ? <section aria-labelledby="score-history-title" className="mx-auto max-w-5xl border border-[#6f648d] bg-[#171426] p-4 text-white sm:p-6">{content}</section> :
+--- before/src/components/game/SavedGamesPage.tsx
++++ after/src/components/game/SavedGamesPage.tsx
+@@ -1,10 +1,12 @@
++import type { PairColors } from '../../game/core/PairSequence'
+ import type { SavedScoreAttackGame } from '../../lib/scoreAttackHistory'
+ import ScoreAttackHistory from './ScoreAttackHistory'
+ 
+-export default function SavedGamesPage({ userId, checking, onLogin, onReturn, returnLabel, onChanged }: {
++export default function SavedGamesPage({ userId, checking, onLogin, onReturn, returnLabel, onChanged, onPractice }: {
++  onPractice?: (sequence: readonly PairColors[]) => void
+   userId?: string; checking: boolean; onLogin: () => void; onReturn: () => void; returnLabel: string; onChanged: (game: SavedScoreAttackGame) => void
+ }) {
+-  if (userId) return <ScoreAttackHistory userId={userId} onClose={onReturn} onChanged={onChanged} presentation="page" returnLabel={returnLabel} />
++  if (userId) return <ScoreAttackHistory userId={userId} onClose={onReturn} onChanged={onChanged} onPractice={onPractice} presentation="page" returnLabel={returnLabel} />
+   return <section aria-labelledby="saved-games-title" className="mx-auto max-w-5xl border border-[#6f648d] bg-[#171426] p-4 text-white sm:p-6">
+     <h2 id="saved-games-title" className="text-xl">履歴</h2>
+     {checking ? <p role="status" className="mt-4">ログインを確認中...</p> : <>
+--- before/src/game/feedback/GTRIssueReport.test.ts
++++ after/src/game/feedback/GTRIssueReport.test.ts
+@@ -465,3 +465,8 @@
+     expect(loadStoredGTRIssueReports(null)).toEqual([])
+   })
+ })
++
++it.each([[], [['red', 'invalid']], [['red']], Array(10001).fill(['red', 'green'])].map(invalid => ({ invalid })))('rejects malformed practice sequences in shared replays', ({ invalid }) => {
++  const replay = { ...toGTRReplayState(createSnapshot()), practiceSequence: invalid }
++  expect(() => encodeGTRReplayState(replay as ReturnType<typeof toGTRReplayState>)).toThrow('練習ツモ')
++})
+--- before/src/game/feedback/validation.ts
++++ after/src/game/feedback/validation.ts
+@@ -1,3 +1,4 @@
++import { isPairSequence } from '../core/PairSequence'
+ import { PuyoColor, type Position, type PuyoPair, type GameField } from '../core/types'
+ import { GamePhase, type GTRTrainingPlan, type PlacementScore } from '../advisor/types'
+ import type { GTRScore } from '../gtr/GTRPatterns'
+@@ -109,6 +110,9 @@
+ export function assertValidGTRReplayState(value: unknown): asserts value is GTRReplayState {
+   if (!isRecord(value) || value.kind !== 'gtr-replay' || value.version !== GTR_REPORT_VERSION) {
+     throw new Error('対応していない再現コードです')
++  }
++  if (value.practiceSequence !== undefined && !isPairSequence(value.practiceSequence)) {
++    throw new Error('再現コードの練習ツモが不正です')
+   }
+   if (!isField(value.field)) throw new Error('再現コードの盤面が不正です')
+   const field = value.field
+--- before/src/game/feedback/snapshot.ts
++++ after/src/game/feedback/snapshot.ts
+@@ -37,6 +37,7 @@
+ }))
+ 
+ export const createGTRIssueSnapshot = (input: GTRIssueSnapshotInput): GTRIssueSnapshot => ({
++  ...(input.practiceSequence !== undefined ? { practiceSequence: cloneJson(input.practiceSequence) } : {}),
+   kind: 'gtr-issue-snapshot',
+   version: GTR_REPORT_VERSION,
+   appVersion: packageInfo.version,
+@@ -69,6 +70,7 @@
+ })
+ 
+ export const toGTRReplayState = (snapshot: GTRIssueSnapshot): GTRReplayState => ({
++  ...(snapshot.practiceSequence !== undefined ? { practiceSequence: cloneJson(snapshot.practiceSequence) } : {}),
+   kind: 'gtr-replay',
+   version: GTR_REPORT_VERSION,
+   sourceCapturedAt: snapshot.capturedAt,
+--- before/src/game/feedback/types.ts
++++ after/src/game/feedback/types.ts
+@@ -1,3 +1,4 @@
++import type { PairColors } from '../core/PairSequence'
+ import type { GTRScore } from '../gtr/GTRPatterns'
+ import type { GamePhase, GTRTrainingPlan, PlacementAdvice, PlacementScore } from '../advisor/types'
+ import type { TailPlan } from '../advisor/TailPlanner'
+@@ -65,6 +66,7 @@
+   tailPlans: TailPlan[]
+   advice: GTRAdviceSnapshot | null
+   recentTurns: GTRTurnRecord[]
++  practiceSequence?: readonly PairColors[]
+   previousState?: GameHistoryState | null
+ }
+ 
+@@ -85,6 +87,7 @@
+   trainingPlan: GTRTrainingPlan
+   sourceSettings: GTRReportSettings
+   recentTurns: GTRTurnRecord[]
++  practiceSequence?: readonly PairColors[]
+   previousState?: GameHistoryState | null
+   sourceAnalysis?: {
+     appVersion: string
+@@ -124,6 +127,7 @@
+   tailPlans: TailPlan[]
+   advice: PlacementAdvice | null
+   recentTurns: GTRTurnRecord[]
++  practiceSequence?: readonly PairColors[]
+   previousState?: GameHistoryState | null
+ }
+ 
+--- before/src/game/scenes/GuidedPracticeScene.ts
++++ after/src/game/scenes/GuidedPracticeScene.ts
+@@ -1,3 +1,4 @@
++import { isPairSequence, pairFromSequence, type PairColors } from '../core/PairSequence'
+ import { addUIText } from '../rendering/UIText'
+ import * as Phaser from 'phaser'
+ import { GameFieldManager } from '../core/GameField'
+@@ -85,6 +86,7 @@
+   private isAdvisorEnabled: boolean = true
+   private currentAdvice: PlacementAdvice | null = null
+   private trainingPlan?: GTRTrainingPlan
++  private practiceSequence?: readonly PairColors[]
+   private readonly pairRandom = new PuyoPairRandom()
+   private openingPairs!: GTROpeningPairs
+   private turnHistory: GTRTurnRecord[] = []
+@@ -136,13 +138,18 @@
+   // タイマー
+   private lastFallTime = 0
+ 
+-  constructor() {
++  constructor(practiceSequence?: readonly PairColors[]) {
+     super({ key: 'GuidedPracticeScene' })
+     this.gameField = new GameFieldManager()
+     this.guideManager = new GuideManager()
+     this.gameHistory = new GameHistory()
+-    const replay = readGTRReplayFromLocation()
++    if (practiceSequence !== undefined) {
++      if (!isPairSequence(practiceSequence)) throw new Error('練習するツモが正しくありません')
++      this.practiceSequence = practiceSequence.map(pair => [...pair] as PairColors)
++    }
++    const replay = practiceSequence ? null : readGTRReplayFromLocation()
+     if (replay) {
++      this.practiceSequence = replay.practiceSequence?.map(pair => [...pair] as PairColors)
+       this.gameField.setField(replay.field)
+       this.pairRandom.setState(replay.pairRandomState)
+       this.trainingPlan = { ...replay.trainingPlan }
+@@ -176,9 +183,9 @@
+   }
+ 
+   private createInitialGameState(): GameState {
+-    const twoHandCombination = PuyoPairManager.createValidTwoHandCombination(
+-      this.pairRandom.next,
+-    )
++    const twoHandCombination = this.practiceSequence
++      ? { pair1: this.createPracticePair(0), pair2: this.createPracticePair(1) }
++      : PuyoPairManager.createValidTwoHandCombination(this.pairRandom.next)
+     this.trainingPlan = PlacementAdvisor.createTrainingPlan(
+       twoHandCombination.pair1,
+       twoHandCombination.pair2,
+@@ -192,13 +199,17 @@
+       field: this.gameField.getField(),
+       currentPair: twoHandCombination.pair1,
+       nextPair: twoHandCombination.pair2,
+-      nextNextPair: PuyoPairManager.createRandomPair(this.pairRandom.next),
++      nextNextPair: this.createPracticePair(2),
+       score: 0,
+       gtrCount: 0,
+       gtrScore: 0,
+       gameOver: false,
+       pairRandomState: this.pairRandom.getState(),
+     }
++  }
++
++  private createPracticePair(index: number) {
++    return pairFromSequence(this.practiceSequence, index) ?? PuyoPairManager.createRandomPair(this.pairRandom.next)
+   }
+ 
+   preload() {
+@@ -450,6 +461,7 @@
+           field,
+         },
+         openingPairs: this.openingPairs,
++        practiceSequence: this.practiceSequence,
+         pairRandomState: this.pairRandom.getState(),
+         trainingPlan: this.trainingPlan,
+         settings: {
+@@ -618,7 +630,7 @@
+   private commitChain(run: number, result: ReturnType<typeof resolveChainsWithTrace>['result']) {
+     if (run !== this.chainRun || !this.pendingPlacement || this.isDisposed) return
+     const terminal = isSpawnBlocked(result.stableGrid)
+-    const nextPair = terminal ? undefined : PuyoPairManager.createRandomPair(this.pairRandom.next)
++    const nextPair = terminal ? undefined : this.createPracticePair((this.turnHistory[this.turnHistory.length - 1]?.turn ?? 0) + 3)
+     const { pair, mainPos, subPos } = this.pendingPlacement
+     this.pendingPlacement = undefined
+     this.chainPlayback = undefined
+@@ -773,7 +785,7 @@
+ 
+     this.gameState.currentPair = this.gameState.nextPair
+     this.gameState.nextPair = this.gameState.nextNextPair
+-    this.gameState.nextNextPair = suppliedPair ?? PuyoPairManager.createRandomPair(this.pairRandom.next)
++    this.gameState.nextNextPair = suppliedPair ?? this.createPracticePair((this.turnHistory[this.turnHistory.length - 1]?.turn ?? 0) + 2)
+     this.gameState.pairRandomState = this.pairRandom.getState()
+ 
+     // 新ペア生成後に状態を保存: currentPairがトップ位置の新ペアになってから保存することで
+@@ -969,6 +981,7 @@
+     this.gameField.clear()
+     this.clearGhostSprites()
+     this.clearAllSprites()
++    this.practiceSequence = undefined
+     this.gameState = this.createInitialGameState()
+     this.captureTurnStart()
+     this.gameHistory.clear()
+--- before/src/game/core/PairSequence.ts
++++ after/src/game/core/PairSequence.ts
+@@ -0,0 +1,16 @@
++import { PuyoColor, type PuyoPair } from './types'
++
++export type PairColors = readonly [PuyoColor, PuyoColor]
++
++export function isPairSequence(value: unknown): value is readonly PairColors[] {
++  const colors: readonly unknown[] = Object.values(PuyoColor)
++  return Array.isArray(value) && value.length > 0 && value.length <= 10_000 &&
++    value.every(pair => Array.isArray(pair) && pair.length === 2 && pair.every(color => colors.includes(color)))
++}
++
++/** Recorded positions belong to the old board; practice always spawns upright. */
++export function pairFromSequence(sequence: readonly PairColors[] | undefined, index: number): PuyoPair | null {
++  const colors = sequence?.[index]
++  return colors ? { main: { color: colors[0], x: 2, y: 1 }, sub: { color: colors[1], x: 2, y: 0 },
++    rotation: 0, falling: true } : null
++}
+--- before/src/game/scoreAttack/practiceSequence.ts
++++ after/src/game/scoreAttack/practiceSequence.ts
+@@ -0,0 +1,16 @@
++import type { PairColors } from '../core/PairSequence'
++import { decodePlacedPair, encodeBoard, replayPlacements } from './placementHistory'
++import type { ScoreAttackSnapshot } from './types'
++
++/** Only committed moves are fixed; unseen pairs use the normal practice random source. */
++export function getPracticeSequence(snapshot: ScoreAttackSnapshot): PairColors[] | null {
++  const moves = snapshot.moves
++  if (!moves) return null
++  try {
++    if (encodeBoard(replayPlacements(moves)) !== encodeBoard(snapshot.grid)) return null
++    return Array.from({ length: moves.length / 3 }, (_, index) => {
++      const pair = decodePlacedPair(moves.slice(index * 3, index * 3 + 3))
++      return [pair.main.color, pair.sub.color] as const
++    })
++  } catch { return null }
++}
+--- before/src/game/scoreAttack/practiceSequence.test.ts
++++ after/src/game/scoreAttack/practiceSequence.test.ts
+@@ -0,0 +1,34 @@
++import { expect, it } from 'vitest'
++import { PuyoColor as C, type PuyoPair } from '../core/types'
++import { isPairSequence, pairFromSequence } from '../core/PairSequence'
++import { encodePlacedPair, replayPlacements } from './placementHistory'
++import { getPracticeSequence } from './practiceSequence'
++
++const placed: PuyoPair = { main: { color: C.BLUE, x: 0, y: 12 }, sub: { color: C.RED, x: 1, y: 12 }, rotation: 1, falling: true }
++const moves = encodePlacedPair(placed)
++const snapshot = { moves, grid: replayPlacements(moves), currentPair: null }
++
++it('keeps axis/child colors in order while discarding old positions and rotation', () => {
++  const sequence = getPracticeSequence(snapshot)!
++  expect(sequence).toEqual([[C.BLUE, C.RED]])
++  const pair = pairFromSequence(sequence, 0)!
++  expect(pair).toEqual({ main: { color: C.BLUE, x: 2, y: 1 }, sub: { color: C.RED, x: 2, y: 0 }, rotation: 0, falling: true })
++  pair.main.color = C.YELLOW
++  expect(pairFromSequence(sequence, 0)!.main.color).toBe(C.BLUE)
++  expect(pairFromSequence(sequence, 1)).toBeNull()
++})
++
++it.each([undefined, '', '!', 'AAA', 'A'.repeat(30003)])('rejects missing, empty, invalid and oversized saved steps (%s)', moves => {
++  expect(getPracticeSequence({ ...snapshot, moves })).toBeNull()
++})
++
++it('rejects a history whose final board disagrees with its moves', () => {
++  expect(getPracticeSequence({ ...snapshot, grid: replayPlacements('') })).toBeNull()
++})
++
++it('validates externally supplied sequences without accepting malformed colors or unbounded lists', () => {
++  expect(isPairSequence([[C.RED, C.GREEN]])).toBe(true)
++  for (const value of [null, [], ['red'], [['red', 'unknown']], [['red']], Array(10001).fill([C.RED, C.GREEN])]) {
++    expect(isPairSequence(value)).toBe(false)
++  }
++})
+--- before/src/game/scenes/HistoryGuidedPractice.test.ts
++++ after/src/game/scenes/HistoryGuidedPractice.test.ts
+@@ -0,0 +1,106 @@
++import { afterEach, beforeEach, expect, it, vi } from 'vitest'
++vi.mock('phaser', () => ({ Scene: class {} }))
++import GuidedPracticeScene from './GuidedPracticeScene'
++import { PuyoColor as C } from '../core/types'
++import { PuyoPairManager, PuyoPairRandom } from '../core/PuyoPair'
++import { type PairColors } from '../core/PairSequence'
++import { resolveChains } from '../core/ChainSimulator'
++import { createGTRReplayUrl } from '../feedback/GTRIssueReport'
++
++const sequence: readonly PairColors[] = [[C.RED, C.BLUE], [C.GREEN, C.YELLOW], [C.BLUE, C.YELLOW], [C.RED, C.GREEN], [C.YELLOW, C.BLUE]]
++const colors = (pair: any) => [pair.main.color, pair.sub.color]
++const queue = (scene: any) => [scene.gameState.currentPair, scene.gameState.nextPair, scene.gameState.nextNextPair].map(colors)
++beforeEach(() => {
++  vi.stubGlobal('document', { hidden: false })
++  vi.stubGlobal('window', { location: { hash: '', href: 'http://localhost/' }, history: { replaceState: vi.fn() }, dispatchEvent: vi.fn() })
++  vi.stubGlobal('CustomEvent', class { constructor(public type: string, public init: unknown) {} })
++})
++afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals() })
++
++function harness(pairs: readonly PairColors[] = sequence) {
++  const scene = new GuidedPracticeScene(pairs) as any
++  scene.time = { now: 500, paused: false }
++  scene.tweens = { timeScale: 1 }
++  scene.input = { keyboard: { enabled: true, manager: { preventDefault: true } } }
++  for (const method of ['rebuildFieldSprites', 'updateDisplay', 'updateAdvice', 'updateGuide', 'updateGuideState',
++    'suppressHeldInputUntilRelease', 'clearGhostSprites', 'clearAllSprites', 'playScorePopup']) scene[method] = vi.fn()
++  scene.gameHistory.saveState(scene.gameState)
++  scene.captureTurnStart()
++  return scene
++}
++function commit(scene: any) {
++  const pair = structuredClone(scene.gameState.currentPair)
++  // An already resolved stable board exercises the real turn commit and queue without rendering.
++  scene.pendingPlacement = { pair, mainPos: pair.main, subPos: pair.sub }
++  scene.commitChain(scene.chainRun, resolveChains(scene.gameField.getField().grid))
++}
++
++it('starts empty and keeps current/NEXT/NEXT2 through the exact recorded/random boundary', () => {
++  const scene = harness()
++  expect(scene.gameState.field.grid.flat().every((cell: unknown) => cell === null)).toBe(true)
++  expect(queue(scene)).toEqual(sequence.slice(0, 3))
++  const random = new PuyoPairRandom(scene.pairRandom.getState())
++  const randomPairs = Array.from({ length: 6 }, () => colors(PuyoPairManager.createRandomPair(random.next)))
++  const expected = [...sequence, ...randomPairs]
++  for (let turn = 1; turn <= sequence.length + 1; turn++) {
++    commit(scene)
++    expect(queue(scene)).toEqual(expected.slice(turn, turn + 3))
++    expect(scene.turnHistory[scene.turnHistory.length - 1].turn).toBe(turn)
++  }
++})
++
++it.each([1, 2])('uses the normal random source to fill previews after a short %i-pair record', count => {
++  const create = vi.spyOn(PuyoPairManager, 'createRandomPair')
++  const scene = harness(sequence.slice(0, count))
++  expect(queue(scene).slice(0, count)).toEqual(sequence.slice(0, count))
++  expect(create).toHaveBeenCalledTimes(3 - count)
++  commit(scene)
++  expect(create).toHaveBeenCalledTimes(4 - count)
++})
++
++it.each([1, 3, 5])('rewinds and repeats the same queue and random state at turn %i', turn => {
++  const scene = harness()
++  for (let i = 0; i < turn; i++) commit(scene)
++  const after = structuredClone({ state: scene.gameState, turns: scene.turnHistory, random: scene.pairRandom.getState() })
++  scene.rewind()
++  commit(scene)
++  expect({ state: scene.gameState, turns: scene.turnHistory, random: scene.pairRandom.getState() }).toEqual(after)
++})
++
++it('restores a cancelled turn without consuming a recorded pair and resets to normal generation for a new game', () => {
++  const scene = harness()
++  const before = structuredClone({ state: scene.gameState, random: scene.pairRandom.getState() })
++  scene.gameState.currentPair.main.x = 4
++  scene.restoreTurnStart()
++  expect({ state: scene.gameState, random: scene.pairRandom.getState() }).toEqual(before)
++  const normalOpening = vi.spyOn(PuyoPairManager, 'createValidTwoHandCombination')
++  scene.resetGame()
++  expect(scene.practiceSequence).toBeUndefined()
++  expect(normalOpening).toHaveBeenCalledOnce()
++})
++
++it('preserves the remaining recorded pairs when a report URL is reopened', () => {
++  const scene = harness()
++  commit(scene)
++  scene.openIssueReport()
++  const report = (window as any).__GTR_ISSUE_SNAPSHOT__
++  expect(report.practiceSequence).toEqual(sequence)
++  const url = new URL(createGTRReplayUrl(report))
++  Object.assign(window.location, { href: url.href, hash: url.hash })
++  const restored = new GuidedPracticeScene() as any
++  expect(restored.practiceSequence).toEqual(sequence)
++  expect(restored.isReplayInspection).toBe(true)
++  expect(queue(restored)).toEqual(queue(scene))
++  expect(colors(restored.createPracticePair(3))).toEqual(sequence[3])
++})
++
++it('uses absolute turn numbers after the capped move history has dropped old turns', () => {
++  const long = Array.from({ length: 110 }, (_, index) => sequence[index % sequence.length])
++  const scene = harness(long)
++  for (let i = 0; i < 102; i++) commit(scene)
++  expect(scene.turnHistory).toHaveLength(100)
++  expect(queue(scene)).toEqual(long.slice(102, 105))
++  scene.rewind()
++  commit(scene)
++  expect(queue(scene)).toEqual(long.slice(102, 105))
++})
+--- before/src/components/game/ScoreAttackResults.test.tsx
++++ after/src/components/game/ScoreAttackResults.test.tsx
+@@ -5,6 +5,7 @@
+ import { evaluateScoreAttack } from '../../game/scoreAttack/evaluate'
+ import type { ScoreAttackState } from '../../game/scoreAttack/types'
+ import ScoreAttackResults from './ScoreAttackResults'
++import { encodePlacedPair, replayPlacements } from '../../game/scoreAttack/placementHistory'
+ 
+ beforeEach(() => {
+   Object.defineProperty(HTMLDialogElement.prototype, 'showModal', { configurable: true,
+@@ -73,3 +74,15 @@
+   expect(onRetry).toHaveBeenCalledOnce()
+   expect(within(screen.getByRole('alert')).getByText('一部の採点を完了できませんでした。盤面は保存されています。')).toBeTruthy()
+ })
++
++it('offers practice for the selected saved round and passes that round’s colors', () => {
++  const value = state(), onPractice = vi.fn()
++  const moves = encodePlacedPair({ main: { color: PuyoColor.BLUE, x: 0, y: 12 },
++    sub: { color: PuyoColor.GREEN, x: 0, y: 11 }, rotation: 0, falling: true })
++  value.rounds[2].snapshot = { moves, grid: replayPlacements(moves), currentPair: null }
++  render(<ScoreAttackResults state={value} onExit={() => {}} onRetry={() => {}} onPractice={onPractice} />)
++  fireEvent.click(within(screen.getByLabelText('10回のGTRと点数一覧')).getAllByRole('button')[2])
++  const dialog = screen.getByRole('dialog', { name: '3回目の評価' })
++  fireEvent.click(within(dialog).getByRole('button', { name: 'このツモで練習' }))
++  expect(onPractice).toHaveBeenCalledWith([[PuyoColor.BLUE, PuyoColor.GREEN]])
++})
+--- before/tests/browser/history-practice.tsx
++++ after/tests/browser/history-practice.tsx
+@@ -0,0 +1,25 @@
++import { useState } from 'react'
++import { createRoot } from 'react-dom/client'
++import '../../src/index.css'
++import { loadUIFont } from '../../src/ui/loadFont'
++import ScoreAttackResults from '../../src/components/game/ScoreAttackResults'
++import GuidedGame from '../../src/components/game/GuidedGame'
++import { PuyoColor as C } from '../../src/game/core/types'
++import type { PairColors } from '../../src/game/core/PairSequence'
++import { encodePlacedPair, replayPlacements } from '../../src/game/scoreAttack/placementHistory'
++import { evaluateScoreAttack } from '../../src/game/scoreAttack/evaluate'
++
++if (!import.meta.env.DEV) throw new Error('開発用検証ページです')
++const pairs: readonly PairColors[] = [[C.RED, C.BLUE], [C.GREEN, C.YELLOW], [C.BLUE, C.YELLOW], [C.RED, C.GREEN]]
++const moves = pairs.map(([main, sub], i) => encodePlacedPair({ main: { color: main, x: [0, 1, 4, 5][i], y: 12 },
++  sub: { color: sub, x: [0, 1, 4, 5][i], y: 11 }, rotation: 0, falling: true })).join('')
++const snapshot = { moves, grid: replayPlacements(moves), currentPair: null }
++const evaluation = evaluateScoreAttack(snapshot)
++const state = { rounds: Array.from({ length: 10 }, () => ({ snapshot, evaluation, error: null })),
++  finished: true, totalScore: evaluation.analysis.score.totalScore * 10 }
++function Fixture() {
++  const [sequence, setSequence] = useState<readonly PairColors[]>()
++  return sequence ? <GuidedGame practiceSequence={sequence} onExit={() => setSequence(undefined)} suspended={false} />
++    : <ScoreAttackResults state={state} onExit={() => {}} onRetry={() => {}} onPractice={setSequence} />
++}
++void loadUIFont().then(() => createRoot(document.getElementById('root')!).render(<Fixture />))
+--- before/tests/browser/history-practice.html
++++ after/tests/browser/history-practice.html
+@@ -0,0 +1,5 @@
++<!doctype html>
++<html lang="ja">
++<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>履歴からの練習の表示検証</title></head>
++<body class="bg-[#12101d] p-4 text-white"><p class="mb-4">開発用検証：固定した履歴の各回詳細からガイド練習を開始します。履歴への保存は行いません。</p><div id="root"></div><script type="module" src="./history-practice.tsx"></script></body>
++</html>

@@ -1,57 +1,41 @@
 import { supabase } from './supabase'
+import { publicSupabaseKey, validSupabaseUrl } from './supabaseConfig'
 
-export async function testSupabaseConnection(): Promise<{
+export interface ConnectionResult {
   connected: boolean
+  kind: 'ok' | 'configuration' | 'network' | 'authorization' | 'service'
   error?: string
-  details?: any
-}> {
-  try {
-    // 1. 基本的な接続テスト
-    const { error: healthError } = await supabase
-      .from('profiles')
-      .select('count')
-      .limit(0)
-
-    if (healthError) {
-      // テーブルが存在しない場合は接続は成功
-      if (healthError.code === 'PGRST116' || 
-          healthError.message?.includes('does not exist') ||
-          healthError.message?.includes('relation') && healthError.message?.includes('does not exist')) {
-        return {
-          connected: true,
-          details: 'テーブルが未作成ですが、Supabase接続は成功しています'
-        }
-      }
-      
-      return {
-        connected: false,
-        error: healthError.message,
-        details: healthError
-      }
-    }
-
-    return {
-      connected: true,
-      details: 'Supabase接続成功'
-    }
-  } catch (err: any) {
-    return {
-      connected: false,
-      error: err.message || 'Unknown error',
-      details: err
-    }
-  }
+  details?: string
 }
 
-// 環境変数の確認
 export function checkEnvironmentVariables() {
-  const url = import.meta.env.VITE_SUPABASE_URL
-  const key = import.meta.env.VITE_SUPABASE_ANON_KEY
-
+  const url = import.meta.env.VITE_SUPABASE_URL?.trim()
+  const key = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim()
+  const localdev = import.meta.env.DEV && import.meta.env.MODE === 'localdev'
   return {
     hasUrl: !!url,
     hasKey: !!key,
-    urlFormat: url?.startsWith('https://') && url?.includes('.supabase.co'),
-    keyFormat: key?.startsWith('eyJ') && key?.length > 100
+    urlFormat: validSupabaseUrl(url, localdev),
+    keyFormat: publicSupabaseKey(key),
+  }
+}
+
+export async function testSupabaseConnection(): Promise<ConnectionResult> {
+  const url = import.meta.env.VITE_SUPABASE_URL?.trim()
+  const key = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim()
+  if (!validSupabaseUrl(url, import.meta.env.DEV && import.meta.env.MODE === 'localdev') || !publicSupabaseKey(key) || !supabase) {
+    return { connected: false, kind: 'configuration', error: 'Supabaseの公開設定が不足または不正です' }
+  }
+  try {
+    const response = await fetch(`${url.replace(/\/$/, '')}/auth/v1/health`, {
+      headers: { apikey: key }, cache: 'no-store', signal: AbortSignal.timeout(5000),
+    })
+    if (response.ok) return { connected: true, kind: 'ok', details: 'Supabase Authに接続できました' }
+    if (response.status === 401 || response.status === 403) {
+      return { connected: false, kind: 'authorization', error: '公開キーが認証サービスに拒否されました' }
+    }
+    return { connected: false, kind: 'service', error: '認証サービスが正常な応答を返しませんでした' }
+  } catch {
+    return { connected: false, kind: 'network', error: '認証サービスへ接続できませんでした' }
   }
 }

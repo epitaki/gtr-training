@@ -1,0 +1,16 @@
+{
+  "behaviorTask": {
+    "id": "2d094dfa-c432-46a7-a0ac-fe443941144a",
+    "completed": true,
+    "checksCompleted": 5,
+    "checkCount": 5,
+    "notesMatch": true
+  },
+  "uiCleanup": {
+    "id": "55278ef5-e28b-4dc3-bfb4-41ecc71c8259",
+    "completed": false,
+    "checksCompleted": 0,
+    "checkCount": 11,
+    "notesMatch": true
+  }
+}

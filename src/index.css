@@ -2,18 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html {
-    background: #f5f6fa;
-  }
-  body {
-    font-family: 'M PLUS Rounded 1c', sans-serif;
-    margin: 0;
-    min-width: 320px;
-    color: #171426;
-    -webkit-font-smoothing: antialiased;
-  }
-  button {
-    -webkit-tap-highlight-color: transparent;
-  }
+:root {
+  --ui-background: #171426;
+  --ui-field: #0c0a14;
+  --ui-panel: #211d33;
+  --ui-border: #6f648d;
+  --ui-text: #f6f2ff;
+  --ui-muted: #c4bfd3;
+  --ui-primary: #b5a8ff;
 }
+@layer base {
+  html { background: var(--ui-background); color: var(--ui-text); }
+  body {
+    font-family: "DotGothic16", "Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+    font-size: 16px; font-weight: 400; font-synthesis: none;
+    margin: 0; width: 100%; line-height: 1.6;
+  }
+  button, input, textarea, select { font: inherit; }
+  button { -webkit-tap-highlight-color: transparent; min-height: 44px; overflow-wrap: anywhere; }
+  input, textarea, select { background: var(--ui-field); color: var(--ui-text); }
+  b, strong { font-weight: 400; }
+  p, h1, h2, h3, dd, a { overflow-wrap: anywhere; }
+  :focus-visible { outline: 3px solid var(--ui-primary); outline-offset: 4px; }
+  dialog::backdrop { background: #0c0a14d9; }
+}
+@layer utilities {
+  .shadow-pixel { box-shadow: 4px 4px 0 #0c0a14; }
+  .text-xs { font-size: 14px; line-height: 1.6; }
+  .pixel-label { font-size: 12px; }
+  .pixel-panel { border: 2px solid var(--ui-border); background: var(--ui-panel); box-shadow: 4px 4px 0 var(--ui-field); }
+  .pixel-primary { background: var(--ui-primary); color: var(--ui-field); border: 2px solid var(--ui-primary); }
+  .canvas-scroll { overflow-x: auto; max-width: 100%; }
+  .canvas-scroll > div { margin-inline: auto; }
+}
+[class*="border"][class*="rounded-none"] { border-width: 2px; }
+button[aria-current="page"] { background: var(--ui-primary); color: var(--ui-field); }
+button:disabled { opacity: .5; }

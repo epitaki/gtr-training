@@ -1,0 +1,73 @@
+--- src/game/rendering/EvaluationRangeBackground.ts before
++++ src/game/rendering/EvaluationRangeBackground.ts after
+@@ -2,11 +2,24 @@
+ import { isInGTREvaluationRange } from '../gtr/EvaluationRange'
+ import { FIELD_CONFIG } from './VisualConfig'
+ 
+-/** A background only: the shared scoring predicate owns the scope. */
++/** Display-only boundary: the shared scoring predicate still owns the scope. */
+ export function drawEvaluationRange(scene: Phaser.Scene, fieldX: number, fieldY: number, cellSize: number): void {
++  const graphics = scene.add.graphics().setDepth(1)
++  graphics.lineStyle(1, 0x8d82ac, 0.7)
++  const edge = (x1: number, y1: number, x2: number, y2: number) => {
++    const length = Math.hypot(x2 - x1, y2 - y1)
++    const dx = (x2 - x1) / length, dy = (y2 - y1) / length
++    for (let offset = 0; offset < length; offset += 8) {
++      const end = Math.min(offset + 4, length)
++      graphics.lineBetween(x1 + dx * offset, y1 + dy * offset, x1 + dx * end, y1 + dy * end)
++    }
++  }
+   for (let y = 0; y < FIELD_CONFIG.ROWS; y++) for (let x = 0; x < FIELD_CONFIG.COLS; x++) {
+-    if (isInGTREvaluationRange(x, y))
+-      scene.add.rectangle(fieldX + (x + 0.5) * cellSize, fieldY + (y + 0.5) * cellSize,
+-        cellSize, cellSize, 0x272139)
++    if (!isInGTREvaluationRange(x, y)) continue
++    const left = fieldX + x * cellSize, top = fieldY + y * cellSize
++    if (y > 0 && !isInGTREvaluationRange(x, y - 1)) edge(left, top, left + cellSize, top)
++    if (x > 0 && !isInGTREvaluationRange(x - 1, y)) edge(left, top, left, top + cellSize)
++    if (x + 1 < FIELD_CONFIG.COLS && !isInGTREvaluationRange(x + 1, y)) edge(left + cellSize, top, left + cellSize, top + cellSize)
++    if (y + 1 < FIELD_CONFIG.ROWS && !isInGTREvaluationRange(x, y + 1)) edge(left, top + cellSize, left + cellSize, top + cellSize)
+   }
+ }
+--- src/game/rendering/EvaluationRangeBackground.test.ts before
++++ src/game/rendering/EvaluationRangeBackground.test.ts after
+@@ -1,15 +1,20 @@
+ import { expect, it, vi } from 'vitest'
+ import type Phaser from 'phaser'
+ import { drawEvaluationRange } from './EvaluationRangeBackground'
+-import { isInGTREvaluationRange } from '../gtr/EvaluationRange'
+ 
+-it('colors exactly the 22 grading cells at the scene coordinates', () => {
++it('draws only dashed segments along the grading staircase, without filling cells or adding internal borders', () => {
++  const graphics = { setDepth: vi.fn().mockReturnThis(), lineStyle: vi.fn(), lineBetween: vi.fn() }
+   const rectangle = vi.fn()
+-  drawEvaluationRange({ add: { rectangle } } as unknown as Phaser.Scene, 64, 80, 48)
+-  const expected = []
+-  for (let y = 0; y < 13; y++) for (let x = 0; x < 6; x++) {
+-    if (isInGTREvaluationRange(x, y)) expected.push([64 + (x + 0.5) * 48, 80 + (y + 0.5) * 48, 48, 48, 0x272139])
+-  }
+-  expect(rectangle.mock.calls).toEqual(expected)
+-  expect(rectangle).toHaveBeenCalledTimes(22)
++  drawEvaluationRange({ add: { graphics: () => graphics, rectangle } } as unknown as Phaser.Scene, 64, 80, 48)
++  expect(rectangle).not.toHaveBeenCalled()
++  const lines = graphics.lineBetween.mock.calls as number[][]
++  expect(lines.length).toBeGreaterThan(0)
++  const leftTop = ([x1, y1, x2, y2]: number[]) => y1 === 560 && y2 === 560 && x1 >= 64 && x2 <= 160
++  const step = ([x1, y1, x2, y2]: number[]) => x1 === 160 && x2 === 160 && y1 >= 512 && y2 <= 560
++  const rightTop = ([x1, y1, x2, y2]: number[]) => y1 === 512 && y2 === 512 && x1 >= 160 && x2 <= 352
++  expect(lines.every(line => leftTop(line) || step(line) || rightTop(line))).toBe(true)
++  for (const test of [leftTop, step, rightTop]) expect(lines.some(test)).toBe(true)
++  expect(lines.every(([x1, y1, x2, y2]) => Math.hypot(x2 - x1, y2 - y1) <= 4)).toBe(true)
++  const horizontal = lines.filter(leftTop).sort((a, b) => a[0] - b[0])
++  expect(horizontal.slice(1).every((line, index) => line[0] > horizontal[index][2])).toBe(true)
+ })
+--- src/game/scenes/ChainAnimationScenes.test.ts before
++++ src/game/scenes/ChainAnimationScenes.test.ts after
+@@ -686,6 +686,7 @@
+     const scene = new PuyoGame() as any
+     const handlers = new Map<string, () => void>()
+     scene.add = { rectangle: vi.fn(display), circle: vi.fn(display), text: vi.fn(display) }
++    scene.add.graphics = vi.fn(() => ({ setDepth: vi.fn().mockReturnThis(), lineStyle: vi.fn(), lineBetween: vi.fn() }))
+     scene.drawGrid = vi.fn()
+     scene.createNextAreas = vi.fn()
+     scene.initializeSprites = vi.fn()

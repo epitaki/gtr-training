@@ -1,0 +1,110 @@
+--- src/components/gallery/CompletionGallery.tsx before
++++ src/components/gallery/CompletionGallery.tsx after
+@@ -1,7 +1,5 @@
+ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+ import { createGTRChainPreview } from '../../game/gtr/GTRChainPreview'
+-import { describeFoundationSurface, findFoundationExtensionExample } from '../../game/gtr/FoundationExtensionExample'
+-import { PuyoColor } from '../../game/core/types'
+ import { GALLERY_SHAPES, GTR_COMPLETION_GALLERY, getGalleryGrid, type GalleryExample } from '../../game/guide/GTRCompletionGallery'
+ import type { TailShape } from '../../game/advisor/TailPlanner'
+ import { ResultChainPlayback, type ResultChainFrame } from '../../game/rendering/ResultChainPlayback'
+@@ -9,19 +7,10 @@
+ import { GALLERY_DISPLAY_LABELS, GALLERY_SHAPE_GRIDS, galleryExampleLabel } from './GalleryShapeDisplay'
+ 
+ interface CompletionGalleryProps { onReturn: () => void; returnLabel: string }
+-const colorLabel: Record<PuyoColor, string> = {
+-  [PuyoColor.RED]: '赤', [PuyoColor.GREEN]: '緑', [PuyoColor.BLUE]: '青', [PuyoColor.YELLOW]: '黄',
+-}
+-const placementLabel = (placement: { column: number; rotation: number }) => placement.rotation === 1
+-  ? `${placement.column + 1}〜${placement.column + 2}列へ横置き`
+-  : `${placement.column + 1}列へ縦置き`
+-
+ function GalleryDialog({ example, onClose }: { example: GalleryExample; onClose: () => void }) {
+   const dialogRef = useRef<HTMLDialogElement>(null)
+   const closeRef = useRef<HTMLButtonElement>(null)
+   const preview = useMemo(() => createGTRChainPreview(getGalleryGrid(example)), [example])
+-  const surface = useMemo(() => describeFoundationSurface(getGalleryGrid(example)), [example])
+-  const extension = useMemo(() => findFoundationExtensionExample(getGalleryGrid(example)), [example])
+   const [frame, setFrame] = useState<ResultChainFrame | null>(null)
+   const [playing, setPlaying] = useState(false)
+   const playbackRef = useRef<ResultChainPlayback | null>(null)
+@@ -93,16 +82,13 @@
+   return (
+     <dialog ref={dialogRef} aria-labelledby="gallery-dialog-title" onCancel={event => { event.preventDefault(); onClose() }} onClick={event => { if (event.target === dialogRef.current) onClose() }} className="w-[min(96vw,560px)] max-h-[94dvh] overflow-y-auto rounded-none border border-[#6f648d] bg-[#171426] p-0 text-white shadow-pixel backdrop:bg-[#211d33]">
+       <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#6f648d] px-4 py-3 sm:px-6">
+-        <div><p className="text-xs font-normal text-[#b5a8ff]">GTR完成形</p><h2 id="gallery-dialog-title" className="text-xl font-normal">{galleryExampleLabel(example)}</h2><p className="mt-1 text-xs text-[#c4bfd3]">土台評価 {example.score}点</p></div>
++        <h2 id="gallery-dialog-title" className="text-xl font-normal">{galleryExampleLabel(example)}</h2>
+         <button ref={closeRef} type="button" onClick={onClose} className="rounded-none border border-[#6f648d] px-3 py-1.5 text-sm font-normal hover:bg-[#211d33]">閉じる</button>
+       </div>
+       <div className="flex flex-col items-center gap-3 px-3 py-4 sm:py-6">
+-        <GalleryBoard grid={frame?.grid ?? preview.initialGrid} size={36} fading={frame?.fading} alpha={frame?.alpha} starter={frame ? frame.starterPosition : preview.starter} />
+-        <p className="text-center text-xs leading-5 text-[#c4bfd3]">明るい枠の1個は仮想の発火ぷよです。消去順を表示します。落下は瞬間切替です。</p>
+-        <div className="w-full rounded-none bg-[#211d33] px-3 py-2 text-center text-xs leading-5 text-[#c4bfd3]"><p className="font-normal text-white">足場の目安</p><p>列高（左から）{surface.heights.join(', ')}。3〜6列の最大隣接段差は{surface.rightMaxStep}段。伸ばしやすさの保証ではありません。</p></div>
+-        <div className="w-full rounded-none bg-[#211d33] px-3 py-2 text-center text-xs leading-5 text-[#c4bfd3]"><p className="font-normal text-white">完成後の伸ばし例（上の再生とは別）</p><p>{extension
+-          ? `${colorLabel[extension.color]}の同色組を${placementLabel(extension.first)}、次の同色組を${placementLabel(extension.second)}。各手の消去なしで、元の5段の消去順を保ち、追加4個のみが第6段で消える6連鎖全消し例です。これは100通り以内の限定した存在例で、実戦での成功率を示しません。`
+-          : '4〜6列に同色組2組を置く100通り以内の限定条件では、元5段を保って追加4個のみが第6段で消える接続例は未確認です。接続が不可能という意味ではありません。'} 土台の目標は5連鎖です。</p></div>
++        {[36, 48].map(size => <div key={size} className={size === 36 ? 'sm:hidden' : 'hidden sm:block'}>
++          <GalleryBoard grid={frame?.grid ?? preview.initialGrid} size={size} fading={frame?.fading} alpha={frame?.alpha} starter={frame ? frame.starterPosition : preview.starter} />
++        </div>)}
+         <p role="status" aria-live="polite" className="min-h-6 font-normal text-[#ffe99b]">{frame?.chainIndex ? `${frame.chainIndex}連鎖目` : frame?.phase === 'complete' ? `${preview.trace?.result.chainCount ?? 0}連鎖・全消し` : playing ? '再生中' : '再生待ち'}</p>
+         {preview.unavailableReason && <p role="alert">{preview.unavailableReason}</p>}
+         <button type="button" disabled={!preview.trace} onClick={replay} className="rounded-none bg-[#b5a8ff] px-5 py-2.5 text-sm font-normal text-[#0c0a14] hover:bg-[#b5a8ff] disabled:opacity-50">もう一度再生</button>
+@@ -124,11 +110,9 @@
+   return (
+     <section className="mx-auto max-w-6xl font-puyo">
+       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+-        <div><p className="text-xs font-normal tracking-widest text-[#b5a8ff]">GTR FORMATION GALLERY</p><h1 className="mt-1 text-2xl font-normal text-[#c4bfd3] sm:text-3xl">GTR完成形例</h1></div>
++        <h1 className="text-2xl font-normal text-[#c4bfd3] sm:text-3xl">GTR完成形例</h1>
+         <button type="button" onClick={onReturn} className="rounded-none border border-[#6f648d] bg-[#211d33] px-4 py-2 text-sm font-normal text-[#c4bfd3] hover:bg-[#211d33]">{returnLabel}</button>
+       </div>
+-      <p className="mb-5 max-w-3xl text-sm leading-6 text-[#c4bfd3]">3つの骨格から完成形を選べます。骨格を選び、完成形の図を選ぶと仮想発火の消去順を見られます。表示点数は最小土台の完成評価で、伸ばしやすさや現在の練習盤面から作れることを示すものではありません。列高と段差は後続の足場の目安です。</p>
+-      <p className="mb-3 text-xs leading-5 text-[#c4bfd3]">選択用の図は骨格の抜粋です。支えと後続のぷよを省略しています。</p>
+       <div className="mb-6 grid grid-cols-1 gap-2 sm:grid-cols-3" role="group" aria-label="完成形の骨格を選ぶ">
+         {GALLERY_SHAPES.map(item => (
+           <button key={item} type="button" aria-label={GALLERY_DISPLAY_LABELS[item]} aria-pressed={shape === item} onClick={() => setShape(item)} className={`flex min-w-0 items-center justify-center gap-3 rounded-none border-2 p-2 text-sm font-normal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ffe99b] sm:flex-col sm:gap-2 ${shape === item ? 'border-[#b5a8ff] bg-[#393052] text-white' : 'border-[#494257] bg-[#171426] text-[#c4bfd3] hover:border-[#6f648d]'}`}>
+@@ -137,13 +121,11 @@
+           </button>
+         ))}
+       </div>
+-      <div role="region" aria-label={`${GALLERY_DISPLAY_LABELS[shape]}の完成形`} className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
++      <div role="region" aria-label={`${GALLERY_DISPLAY_LABELS[shape]}の完成形`} className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-3">
+         {examples.map(example => (
+           <button key={example.id} type="button" onClick={event => { openerRef.current = event.currentTarget; setSelected(example) }} className="flex flex-col items-center gap-3 rounded-none border border-[#6f648d] bg-[#211d33] p-3 text-[#c4bfd3] shadow-pixel transition hover:-translate-y-0.5 hover:border-[#6f648d] hover:shadow-pixel focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-500 sm:p-4">
+-            <GalleryBoard grid={getGalleryGrid(example)} size={15} />
+-            <span className="flex w-full items-center justify-between text-left text-xs font-normal sm:text-sm"><span>{galleryExampleLabel(example)}</span><span className="text-[#b5a8ff]">見る →</span></span>
+-            <span className="w-full text-left text-xs font-normal text-[#c4bfd3]">土台評価 {example.score}点</span>
+-            <span className="w-full text-left text-xs text-[#c4bfd3]">列高 {describeFoundationSurface(getGalleryGrid(example)).heights.join(', ')} · 右側最大段差 {describeFoundationSurface(getGalleryGrid(example)).rightMaxStep}段</span>
++            <GalleryBoard grid={getGalleryGrid(example)} size={36} />
++            <span className="text-lg font-normal">{galleryExampleLabel(example)}</span>
+           </button>
+         ))}
+       </div>
+--- src/components/gallery/GalleryShapeDisplay.ts before
++++ src/components/gallery/GalleryShapeDisplay.ts after
+@@ -27,5 +27,5 @@
+ 
+ export function galleryExampleLabel(example: GalleryExample): string {
+   const index = GTR_COMPLETION_GALLERY.filter(item => item.shape === example.shape).findIndex(item => item.id === example.id)
+-  return `${GALLERY_DISPLAY_LABELS[example.shape]} ${index + 1}`
++  return `${GALLERY_SHAPES.indexOf(example.shape) + 1}-${index + 1}`
+ }
+--- src/components/gallery/GalleryShapeDisplay.test.tsx before
++++ src/components/gallery/GalleryShapeDisplay.test.tsx after
+@@ -21,7 +21,7 @@
+     expect(examples).toHaveLength(10)
+     examples.forEach((example, index) => {
+       expect(blueCells(grid)).toEqual(blueCells(getGalleryGrid(example)))
+-      expect(galleryExampleLabel(example)).toBe(`${GALLERY_DISPLAY_LABELS[shape]} ${index + 1}`)
++      expect(galleryExampleLabel(example)).toBe(`${GALLERY_SHAPES.indexOf(shape) + 1}-${index + 1}`)
+     })
+   })
+ 
+@@ -34,7 +34,7 @@
+       expect(within(group).getAllByRole('button').filter(item => item.getAttribute('aria-pressed') === 'true')).toEqual([button])
+       const cards = within(screen.getByRole('region', { name: `${GALLERY_DISPLAY_LABELS[shape]}の完成形` })).getAllByRole('button')
+       expect(cards).toHaveLength(10)
+-      cards.forEach((card, index) => expect(card.textContent).toContain(`${GALLERY_DISPLAY_LABELS[shape]} ${index + 1}`))
++      cards.forEach((card, index) => expect(card.textContent).toBe(`${GALLERY_SHAPES.indexOf(shape) + 1}-${index + 1}`))
+     }
+   })
+ })

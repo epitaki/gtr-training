@@ -1,0 +1,17 @@
+{
+  "round": 1,
+  "snapshot": "4e9b30a0d9482d492de70a071c201f5795e5c075cff3fa5be63a342a4fe206db",
+  "agent": "gpt-6-astra / key_ergonomics_design",
+  "accepted": true,
+  "requiredFixes": [],
+  "rejectedCandidates": [],
+  "evidence": "5 files and related callers/design/tests/three independent reviews read. Settings1/2 naming, removed button/helper, unchanged IDs/basic7/defaultA/U Space/E/storage, retained Space conflict coverage accepted. Source197 and generated/cache25 hashes all match.",
+  "validation": {
+    "tests": 1262,
+    "typeCheck": "pass",
+    "build": "pass7.20s;existing>500kBwarning",
+    "ui": "Parent verified names/removal/presets/conflict/cancel/reset; user's unsaved draft preserved by full label-array equality, not a stated item count."
+  },
+  "limitations": "Astra read-only; tests/build/UI not rerun. No new unverified behavior introduced; existing hardware limitations remain outside this label-only task.",
+  "completion": "Parent may complete added checklist; keep mouse and main task incomplete."
+}

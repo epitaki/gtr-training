@@ -1,0 +1,248 @@
+--- before/src/game/scenes/GuidedPracticeScene.ts
++++ after/src/game/scenes/GuidedPracticeScene.ts
+@@ -20,7 +20,7 @@
+ import { PuyoBoardRenderer } from '../rendering/PuyoBoardRenderer'
+ import { PuyoRenderer } from '../rendering/PuyoRenderer'
+ import { cellMask } from '../rendering/PuyoConnections'
+-import { FIELD_CONFIG, LAYOUT_GUIDED, TEXT_STYLES, ANIMATION_CONFIG } from '../rendering/VisualConfig'
++import { FIELD_CONFIG, LAYOUT_GUIDED, TEXT_STYLES, ANIMATION_CONFIG, NEXT_AREA_CONFIG } from '../rendering/VisualConfig'
+ import { createNextPairSprites, drawNextPreview, getNextPreviewLayout } from '../rendering/NextPreview'
+ import { PlacementAdvisor, PlacementAdvice, type GTRTrainingPlan } from '../advisor/PlacementAdvisor'
+ import { PhaserInputAdapter } from '../input/PhaserInputAdapter'
+@@ -249,6 +249,9 @@
+       ? code === 'Space' ? 'newGame' : code === 'Escape' ? 'exit' : undefined
+       : (this.isVisualStopped || this.gameState.gameOver) && code === 'Escape' ? 'exit' : undefined,
+     action => this.canAcceptAction(action))
++    const scrollArea = this.game.canvas.closest('.canvas-scroll')
++    const updatePointerBounds = () => this.scale.updateBounds()
++    scrollArea?.addEventListener('scroll', updatePointerBounds)
+     window.addEventListener('blur', this.handleWindowBlur)
+     window.addEventListener(GTR_REPORT_REQUEST_EVENT, this.handleReportRequest)
+     window.addEventListener(GTR_REPORT_CLOSE_EVENT, this.handleReportClose)
+@@ -259,6 +262,7 @@
+       this.cleanupResult()
+       this.cancelChain()
+       this.actionInput?.dispose()
++      scrollArea?.removeEventListener('scroll', updatePointerBounds)
+       stopInstructions()
+       window.removeEventListener(GTR_REPORT_REQUEST_EVENT, this.handleReportRequest)
+       window.removeEventListener(GTR_REPORT_CLOSE_EVENT, this.handleReportClose)
+@@ -280,21 +284,12 @@
+ 
+     const nextLayout = this.getNextAreaLayout()
+ 
+-    // NEXT欄の下に状態表示をまとめ、ぷよ表示とは重ねない。
+-    this.gravityStatusText = addUIText(this, nextLayout.baseX + 12, nextLayout.statusY + 11, this.isGravityEnabled ? '●  自由落下 ON' : '●  自由落下 OFF', {
+-      fontSize: '14px',
+-      color: this.isGravityEnabled ? '#66e0aa' : '#f47582',
+-      fontFamily: TEXT_STYLES.title.fontFamily,
+-    })
+-    this.gravityStatusText.setDepth(100)
+-
+-    // アドバイザー状態表示
+-    this.advisorStatusText = addUIText(this, nextLayout.baseX + 12, nextLayout.statusY + 37, this.isAdvisorEnabled ? '●  ガイド ON' : '●  ガイド OFF', {
+-      fontSize: '14px',
+-      color: this.isAdvisorEnabled ? '#b5a8ff' : '#f47582',
+-      fontFamily: TEXT_STYLES.title.fontFamily,
+-    })
+-    this.advisorStatusText.setDepth(100)
++    // Keep both toggle buttons below NEXT without covering the queue or guide.
++    const toggleX = nextLayout.baseX + NEXT_AREA_CONFIG.AREA_WIDTH / 2
++    this.gravityStatusText = this.createSettingToggle('gravity', toggleX, nextLayout.statusY,
++      this.isGravityEnabled ? '自由落下 ON' : '自由落下 OFF', this.isGravityEnabled ? '#66e0aa' : '#f47582')
++    this.advisorStatusText = this.createSettingToggle('guide', toggleX, nextLayout.statusY + 52,
++      this.isAdvisorEnabled ? 'ガイド ON' : 'ガイド OFF', this.isAdvisorEnabled ? '#b5a8ff' : '#f47582')
+ 
+     // ゲーム開始
+     this.startGame()
+@@ -883,7 +878,7 @@
+       container.add(replayButton)
+     }
+ 
+-    const scopeNote = addResultText(this, 0, canvasH - 176, '点数は評価範囲のみで評価', {
++    const scopeNote = addResultText(this, 0, canvasH - 176, '評価範囲内のぷよだけを採点します。', {
+       fontSize: '16px', color: '#c4bfd3', fontFamily: TEXT_STYLES.title.fontFamily,
+       wordWrap: { width: canvasW - 80, useAdvancedWrap: true }, align: 'center',
+     }).setOrigin(0.5, 0)
+@@ -1299,15 +1294,30 @@
+     this.clearNextSprites()
+   }
+ 
++  private createSettingToggle(action: 'gravity' | 'guide', x: number, top: number, label: string, color: string) {
++    const button = this.add.rectangle(x, top + 22, NEXT_AREA_CONFIG.AREA_WIDTH, 44, NEXT_AREA_CONFIG.BG_COLOR)
++      .setStrokeStyle(1, NEXT_AREA_CONFIG.BORDER_COLOR).setDepth(100)
++      .setInteractive({ useHandCursor: true })
++    button.on('pointerdown', () => {
++      if (!this.canAcceptAction(action) || this.actionInput?.isGated()) return
++      this.game.canvas.focus({ preventScroll: true })
++      const source = `pointer:setting:${action}`
++      this.pressAction(action, source)
++      this.releaseAction(source)
++    })
++    return addUIText(this, x, top + 22, label, { fontSize: '16px', color })
++      .setOrigin(0.5).setDepth(101)
++  }
++
+   private toggleGravity() {
+     this.isGravityEnabled = !this.isGravityEnabled
+ 
+     if (this.gravityStatusText) {
+       if (this.isGravityEnabled) {
+-        this.gravityStatusText.setText('●  自由落下 ON')
++        this.gravityStatusText.setText('自由落下 ON')
+         this.gravityStatusText.setColor('#66e0aa')
+       } else {
+-        this.gravityStatusText.setText('●  自由落下 OFF')
++        this.gravityStatusText.setText('自由落下 OFF')
+         this.gravityStatusText.setColor('#f47582')
+       }
+     }
+@@ -1342,10 +1352,10 @@
+ 
+     if (this.advisorStatusText) {
+       if (this.isAdvisorEnabled) {
+-        this.advisorStatusText.setText('●  ガイド ON')
++        this.advisorStatusText.setText('ガイド ON')
+         this.advisorStatusText.setColor('#b5a8ff')
+       } else {
+-        this.advisorStatusText.setText('●  ガイド OFF')
++        this.advisorStatusText.setText('ガイド OFF')
+         this.advisorStatusText.setColor('#f47582')
+       }
+     }
+--- before/src/game/scenes/GuidedPracticeScene.test.ts
++++ after/src/game/scenes/GuidedPracticeScene.test.ts
+@@ -578,6 +578,69 @@
+   })
+   afterEach(() => vi.unstubAllGlobals())
+ 
++  const settingHarness = () => {
++    type Label = { text: string; setOrigin: () => Label; setDepth: () => Label; setText: (text: string) => Label; setColor: () => Label }
++    const scene = createHarness() as SceneHarness & {
++      add: unknown; game: { canvas: { focus: ReturnType<typeof vi.fn> } }
++      createSettingToggle: (action: 'gravity' | 'guide', x: number, top: number, label: string, color: string) => Label
++      gravityStatusText: Label; advisorStatusText: Label
++      isGravityEnabled: boolean; isAdvisorEnabled: boolean
++      updateAdvice: ReturnType<typeof vi.fn>; updateGuide: ReturnType<typeof vi.fn>
++    }
++    const clicks: Array<() => void> = []
++    scene.add = {
++      rectangle: () => {
++        const button = { setStrokeStyle: () => button, setDepth: () => button, setInteractive: () => button,
++          on: (_event: string, click: () => void) => { clicks.push(click); return button } }
++        return button
++      },
++      text: (_x: number, _y: number, text: string) => {
++        const label: Label = { text, setOrigin: () => label, setDepth: () => label,
++          setText: value => { label.text = value; return label }, setColor: () => label }
++        return label
++      },
++    }
++    scene.game = { canvas: { focus: vi.fn() } }
++    scene.updateAdvice = vi.fn(); scene.updateGuide = vi.fn()
++    scene.gravityStatusText = scene.createSettingToggle('gravity', 416, 404, '自由落下 ON', '#66e0aa')
++    scene.advisorStatusText = scene.createSettingToggle('guide', 416, 456, 'ガイド ON', '#b5a8ff')
++    return { scene, clicks }
++  }
++
++  it.each(['gravity', 'guide'] as const)('shares %s state and labels between click and keyboard without changing the game', action => {
++    const { scene, clicks } = settingHarness()
++    const before = { state: structuredClone(scene.gameState), grid: structuredClone(scene.gameField.getField()), random: scene.pairRandom.getState() }
++    const index = action === 'gravity' ? 0 : 1
++    const enabled = () => action === 'gravity' ? scene.isGravityEnabled : scene.isAdvisorEnabled
++    const label = action === 'gravity' ? scene.gravityStatusText : scene.advisorStatusText
++    const name = action === 'gravity' ? '自由落下' : 'ガイド'
++    clicks[index]()
++    scene.update(1001, 0)
++    expect(enabled()).toBe(false)
++    expect(label.text).toBe(`${name} OFF`)
++    expect(scene.game.canvas.focus).toHaveBeenCalledWith({ preventScroll: true })
++    const code = action === 'gravity' ? 'KeyF' : 'KeyG'
++    scene.actionInput.pressPhysical(code); scene.actionInput.releasePhysical(code)
++    scene.update(1002, 0)
++    expect(enabled()).toBe(true)
++    expect(label.text).toBe(`${name} ON`)
++    expect(scene.gameState).toEqual(before.state)
++    expect(scene.gameField.getField()).toEqual(before.grid)
++    expect(scene.pairRandom.getState()).toBe(before.random)
++  })
++
++  it.each(['isPaused', 'isShowingResult', 'isReplayInspection', 'isReportPanelOpen', 'isDisposed', 'hidden', 'held-key gate'])('ignores setting clicks during %s', blocked => {
++    const { scene, clicks } = settingHarness()
++    if (blocked === 'hidden') testDocument.hidden = true
++    else if (blocked === 'held-key gate') { scene.actionInput.pressPhysical('ArrowDown'); scene.actionInput.suppressUntilRelease() }
++    else Object.assign(scene, { [blocked]: true })
++    clicks.forEach(click => click())
++    expect(scene.actionInput.frame(1001).size).toBe(0)
++    expect(scene.isGravityEnabled).toBe(true)
++    expect(scene.isAdvisorEnabled).toBe(true)
++    expect(scene.game.canvas.focus).not.toHaveBeenCalled()
++  })
++
+   it.each([3, 5, 7])('does not grade seven chains as a training target (observed chains: %i)', chainCount => {
+     const scene = createHarness() as SceneHarness & {
+       add: unknown
+@@ -596,7 +659,7 @@
+     const labels = text.mock.calls.map(call => call[2])
+     expect(labels).toContain('SCORE: 75点')
+     expect(labels).toContain('○ 基本形')
+-    expect(labels).toContain('点数は評価範囲のみで評価')
++    expect(labels).toContain('評価範囲内のぷよだけを採点します。')
+     expect(labels).toContain(`${chainCount >= 5 ? '○' : '×'} 5連鎖`)
+     expect(labels.some(label => /^[○×] 7連鎖$/.test(label))).toBe(false)
+     expect(result.chainCount).toBe(chainCount)
+@@ -663,7 +726,7 @@
+     scene.showDetailedResult(GTRDetector.detectGTR(grid))
+     const labels = text.mock.calls.map(call => call[2])
+     expect(labels).toContain('SCORE: 100点')
+-    expect(labels).toContain('点数は評価範囲のみで評価')
++    expect(labels).toContain('評価範囲内のぷよだけを採点します。')
+     expect(labels.some(label => label.includes('接続未確認') || label.includes('土台5連鎖'))).toBe(false)
+   })
+ 
+--- before/src/game/scenes/ChainAnimationScenes.test.ts
++++ after/src/game/scenes/ChainAnimationScenes.test.ts
+@@ -43,6 +43,7 @@
+ })
+ const display = () => ({
+   setOrigin() { return this }, setDepth() { return this }, setStrokeStyle() { return this },
++  setInteractive() { return this }, on: vi.fn(),
+   setAlpha() { return this }, setDisplaySize() { return this }, setText() { return this }, destroy: vi.fn(),
+ })
+ 
+@@ -222,6 +223,8 @@
+   it('removes DOM input and report listeners once across shutdown and destroy', () => {
+     const scene = new GuidedPracticeScene() as any
+     const handlers = new Map<string, () => void>()
++    const scrollArea = { addEventListener: vi.fn(), removeEventListener: vi.fn() }
++    scene.scale = { updateBounds: vi.fn() }
+     scene.add = { rectangle: vi.fn(display), circle: vi.fn(display), text: vi.fn(display) }
+     scene.drawField = vi.fn()
+     scene.createGuideDisplay = vi.fn()
+@@ -231,13 +234,16 @@
+     scene.updateGuide = vi.fn()
+     scene.getNextAreaLayout = () => ({ baseX: 0, statusY: 0 })
+     scene.input = { keyboard: { manager: { preventDefault: true }, enabled: true } }
+-    scene.game = { canvas: { setAttribute: vi.fn(), addEventListener: vi.fn(), removeEventListener: vi.fn(), focus: vi.fn() } }
++    scene.game = { canvas: { closest: vi.fn(() => scrollArea), setAttribute: vi.fn(), addEventListener: vi.fn(), removeEventListener: vi.fn(), focus: vi.fn() } }
+     scene.events = { once: vi.fn((name: string, handler: () => void) => handlers.set(name, handler)) }
+     const removeWindow = vi.fn(), removeDocument = vi.fn()
+     Object.assign(window, { addEventListener: vi.fn(), removeEventListener: removeWindow })
+     Object.assign(document, { addEventListener: vi.fn(), removeEventListener: removeDocument,
+       activeElement: scene.game.canvas })
+     scene.create()
++    const updatePointerBounds = scrollArea.addEventListener.mock.calls.find(call => call[0] === 'scroll')![1]
++    updatePointerBounds()
++    expect(scene.scale.updateBounds).toHaveBeenCalledOnce()
+     const cancel = vi.fn(), dispose = vi.fn()
+     scene.chainPlayback = { cancel }
+     scene.chainRenderer = { dispose }
+@@ -249,6 +255,8 @@
+     expect(removeWindow).toHaveBeenCalledWith('keyup', expect.any(Function), true)
+     expect(removeWindow).toHaveBeenCalledWith('blur', scene.handleWindowBlur)
+     expect(removeDocument).toHaveBeenCalledWith('visibilitychange', scene.handleVisibilityChange)
++    expect(scrollArea.removeEventListener).toHaveBeenCalledOnce()
++    expect(scrollArea.removeEventListener).toHaveBeenCalledWith('scroll', updatePointerBounds)
+   })
+ 
+   it('cancels reset and exit playbacks without accepting stale completion', () => {

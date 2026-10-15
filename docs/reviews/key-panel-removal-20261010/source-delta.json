@@ -1,0 +1,12 @@
+[
+  {
+    "path": "src/components/game/GuidedGame.tsx",
+    "before": "c49b500f5351b4e4f7968f3a4bea49e28a742d177b701678f455c60cd0f73e73",
+    "after": "55e0109407ad1c6448b42bc700c1c13f786b1bd9cf124cb60c50b4c2562ef0a4"
+  },
+  {
+    "path": "src/components/game/ScoreAttackGame.tsx",
+    "before": "8c96a31d5c5b22f3e5ce6e7b5ee258b870d7c15d9a2e344f1df9c0bba3c3db72",
+    "after": "df22df73df7a52d55ff321c9570f54c9e5fd0c81eb8db98742c79f812c534940"
+  }
+]

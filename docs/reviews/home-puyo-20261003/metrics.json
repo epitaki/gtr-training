@@ -1,0 +1,42 @@
+[
+  {
+    "allCellsInsideBoard": true,
+    "boardInsideHero": true,
+    "cells": 24,
+    "client": 305,
+    "loaded": true,
+    "puyos": 19,
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "allCellsInsideBoard": true,
+    "boardInsideHero": true,
+    "cells": 24,
+    "client": 375,
+    "loaded": true,
+    "puyos": 19,
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "allCellsInsideBoard": true,
+    "boardInsideHero": true,
+    "cells": 24,
+    "client": 753,
+    "loaded": true,
+    "puyos": 19,
+    "scroll": 753,
+    "width": 768
+  },
+  {
+    "boardHeight": 115.20000457763672,
+    "boardWidth": 163.1999969482422,
+    "cells": 24,
+    "client": 1265,
+    "height": 720,
+    "puyos": 19,
+    "scroll": 1265,
+    "width": 1280
+  }
+]

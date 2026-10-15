@@ -1,0 +1,12 @@
+braces@3.0.3
+  ├─ micromatch@4.0.8 (requires ^3.0.3)
+  │  ├─ fast-glob@3.3.3 (requires ^4.0.8)
+  │  │  └─ tailwindcss@3.4.19 (requires ^3.3.2)
+  │  │     └─ dev gtr-training (requires ^3.4.17)
+  │  └─ tailwindcss@3.4.19 (requires ^4.0.8)
+  │     └─ dev gtr-training (requires ^3.4.17)
+  │  
+  └─ chokidar@3.6.0 (requires ~3.0.2)
+     └─ tailwindcss@3.4.19 (requires ^3.6.0)
+        └─ dev gtr-training (requires ^3.4.17)
+

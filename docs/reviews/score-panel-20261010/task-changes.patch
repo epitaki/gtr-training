@@ -1,0 +1,630 @@
+--- src/components/game/ScoreAttackGame.test.tsx (before)
++++ src/components/game/ScoreAttackGame.test.tsx (after)
+@@ -14,8 +14,8 @@
+   constructor() { fixtures.managers.push(this) }
+ } }))
+ vi.mock('../../game/scoreAttack/ScoreAttackWorker', () => ({ ScoreAttackWorker: class {
+-  jobs: Array<{ snapshot: ScoreAttackSnapshot; resolve: (value: ScoreAttackEvaluation) => void }> = []
+-  evaluate = (snapshot: ScoreAttackSnapshot) => new Promise<ScoreAttackEvaluation>(resolve => this.jobs.push({ snapshot, resolve }))
++  jobs: Array<{ snapshot: ScoreAttackSnapshot; resolve: (value: ScoreAttackEvaluation) => void; reject: (error: unknown) => void }> = []
++  evaluate = (snapshot: ScoreAttackSnapshot) => new Promise<ScoreAttackEvaluation>((resolve, reject) => this.jobs.push({ snapshot, resolve, reject }))
+   dispose = vi.fn()
+   constructor() { fixtures.workers.push(this) }
+ } }))
+@@ -35,13 +35,13 @@
+   expect(manager.startScoreAttack).toHaveBeenCalledOnce()
+   const source = { grid: getGalleryGrid(GTR_COMPLETION_GALLERY[0]), currentPair: null }
+   act(() => manager.onScoreAttackRound(source))
+-  expect(screen.getByText('GTR 2 / 10')).toBeTruthy()
++  expect(screen.queryByText('GTR 2 / 10')).toBeNull()
+   expect(screen.queryByRole('region', { name: 'スコアアタックの結果' })).toBeNull()
+   view.rerender(<ScoreAttackGame suspended onExit={onExit} />)
+   expect(manager.setSuspended).toHaveBeenLastCalledWith(true)
+   view.rerender(<ScoreAttackGame suspended={false} onExit={onExit} />)
+   expect(fixtures.managers).toHaveLength(1)
+-  expect(screen.getByText('GTR 2 / 10')).toBeTruthy()
++  expect(screen.queryByText('GTR 2 / 10')).toBeNull()
+   act(() => { for (let i = 1; i < 10; i++) manager.onScoreAttackRound(source) })
+   expect(manager.setSuspended).toHaveBeenLastCalledWith(true)
+   const list = screen.getByLabelText('10回のGTRと点数一覧')
+@@ -53,7 +53,8 @@
+   fireEvent.click(screen.getByRole('button', { name: 'もう一度10回' }))
+   expect(worker.dispose).toHaveBeenCalledOnce()
+   expect(manager.destroy).toHaveBeenCalledOnce()
+-  expect(screen.getByText('GTR 1 / 10')).toBeTruthy()
++  expect(screen.queryByText('GTR 1 / 10')).toBeNull()
++  expect(fixtures.managers[1].getScoreAttackTotal()).toBe(0)
+   expect(screen.queryByText('1000点')).toBeNull()
+   act(() => vi.advanceTimersByTime(200))
+   expect(fixtures.managers[1].startScoreAttack).toHaveBeenCalledOnce()
+@@ -61,3 +62,29 @@
+   expect(fixtures.workers[1].dispose).toHaveBeenCalledOnce()
+   expect(fixtures.managers[1].destroy).toHaveBeenCalledOnce()
+ })
++
++it('reads the submitted GTR total after out-of-order grades without blocking play', async () => {
++  render(<ScoreAttackGame suspended={false} onExit={vi.fn()} />)
++  act(() => vi.advanceTimersByTime(200))
++  const manager = fixtures.managers[0], worker = fixtures.workers[0]
++  expect(manager.getScoreAttackTotal()).toBe(0)
++  const source = { grid: getGalleryGrid(GTR_COMPLETION_GALLERY[0]), currentPair: null }
++  act(() => { manager.onScoreAttackRound(source); manager.onScoreAttackRound(source) })
++  expect(manager.getScoreAttackTotal()).toBeNull()
++  expect(manager.setSuspended).not.toHaveBeenLastCalledWith(true)
++  await act(async () => worker.jobs[1].resolve(evaluateScoreAttack(worker.jobs[1].snapshot)))
++  expect(manager.getScoreAttackTotal()).toBeNull()
++  await act(async () => worker.jobs[0].resolve(evaluateScoreAttack(worker.jobs[0].snapshot)))
++  expect(manager.getScoreAttackTotal()).toBe(200)
++  expect(fixtures.managers).toHaveLength(1)
++  expect(screen.queryByText(/GTR \d+ \/ 10/)).toBeNull()
++})
++
++it('keeps an incomplete total unknown when a submitted grade fails', async () => {
++  render(<ScoreAttackGame suspended={false} onExit={vi.fn()} />)
++  act(() => vi.advanceTimersByTime(200))
++  const manager = fixtures.managers[0], worker = fixtures.workers[0]
++  act(() => manager.onScoreAttackRound({ grid: getGalleryGrid(GTR_COMPLETION_GALLERY[0]), currentPair: null }))
++  await act(async () => worker.jobs[0].reject(new Error('grade failed')))
++  expect(manager.getScoreAttackTotal()).toBeNull()
++})
+--- src/components/game/ScoreAttackGame.tsx (before)
++++ src/components/game/ScoreAttackGame.tsx (after)
+@@ -5,7 +5,6 @@
+ import ScoreAttackResults from './ScoreAttackResults'
+ import { ScoreAttackSession, emptyScoreAttackState } from '../../game/scoreAttack/ScoreAttackSession'
+ import { ScoreAttackWorker } from '../../game/scoreAttack/ScoreAttackWorker'
+-import { SCORE_ATTACK_ROUNDS } from '../../game/scoreAttack/types'
+ import { getSettingsNotice } from '../../game/input/settings'
+ import { focusGameCanvas, pressToolbarAction, restoreFocusOnResume } from './gameFocus'
+ import type { SavedScoreAttackGame } from '../../lib/scoreAttackHistory'
+@@ -51,6 +50,11 @@
+     setRun({ id: runId, ownerId: null })
+     const unsubscribe = session.subscribe(() => setProgress(session.getSnapshot()))
+     gameManagerRef.current = new GameManager()
++    gameManagerRef.current.getScoreAttackTotal = () => {
++      const rounds = session.getSnapshot().rounds
++      return rounds.some(round => !round.evaluation) ? null
++        : rounds.reduce((total, round) => total + round.evaluation!.analysis.score.totalScore, 0)
++    }
+     gameManagerRef.current.onScoreAttackRound = snapshot => {
+       if (!session.getSnapshot().rounds.length) setRun({ id: runId, ownerId: userIdRef.current ?? null })
+       session.submit(snapshot)
+@@ -78,7 +82,6 @@
+     <div className="min-h-[calc(100vh-8rem)] rounded-none bg-[#171426] p-3 shadow-pixel sm:p-4">
+       <div className={progress.finished ? 'hidden' : ''}>
+         <div className="mx-auto mb-3 flex min-h-[44px] max-w-[640px] flex-wrap items-center justify-end gap-1 text-sm sm:gap-2">
+-          <p className="mr-auto whitespace-nowrap text-[#ffe99b]">GTR {Math.min(progress.rounds.length + 1, SCORE_ATTACK_ROUNDS)} / {SCORE_ATTACK_ROUNDS}</p>
+           <button type="button" onClick={() => pressToolbarAction(gameManagerRef.current, 'pause', 'button:pause', focusGameSurface)} className="rounded-none bg-[#211d33] px-2 py-2 sm:px-3 text-white">停止／再開</button>
+           <button type="button" onClick={() => setSettingsOpen(true)} className="rounded-none bg-[#b5a8ff] px-2 py-2 sm:px-3 text-[#0c0a14]">キー設定</button>
+           <button type="button" onClick={() => { gameManagerRef.current?.pressAction('exit', 'button:exit'); gameManagerRef.current?.releaseAction('button:exit') }} className="rounded-none bg-rose-800 px-2 py-2 sm:px-3 text-white">終了</button>
+@@ -97,7 +100,7 @@
+       {progress.finished && <ScoreAttackResults state={progress} onExit={onExit}
+         onRetry={() => sessionRef.current?.retryFailed()}
+         onRestart={() => { setProgress(emptyScoreAttackState()); setRunRevision(old => old + 1) }} />}
+-      {settingsOpen && <KeySettings onClose={() => { setSettingsOpen(false); setSettingsNotice(getSettingsNotice()); focusGameSurface() }} />}
++      {settingsOpen && <KeySettings allowGravityToggle={false} onClose={() => { setSettingsOpen(false); setSettingsNotice(getSettingsNotice()); focusGameSurface() }} />}
+       {progress.finished && <div className="mx-auto mt-4 max-w-[800px] border border-[#6f648d] p-4 text-sm">
+         {!run.ownerId && <p>ログインしてから始めたゲームは、100ゲームまで保存できます。</p>}
+         {run.ownerId && run.ownerId !== userId && <p>ユーザーが変わったため、このゲームは自動保存していません。</p>}
+--- src/components/settings/KeySettings.test.tsx (before)
++++ src/components/settings/KeySettings.test.tsx (after)
+@@ -73,3 +73,17 @@
+   fireEvent.click(screen.getByRole('button', { name: 'クイックドロップからSpaceを削除' }))
+   expect((screen.getByRole('button', { name: '保存' }) as HTMLButtonElement).disabled).toBe(false)
+ })
++
++it('hides score-attack gravity controls while preserving the guide gravity binding on reset and save', () => {
++  const custom = defaultBindings()
++  custom.gravity = ['KeyT']
++  saveBindings(custom)
++  const view = render(<KeySettings allowGravityToggle={false} onClose={vi.fn()} />)
++  expect(screen.queryByText('自由落下切替')).toBeNull()
++  expect(screen.queryByRole('button', { name: /自由落下.*追加/ })).toBeNull()
++  fireEvent.click(screen.getByRole('button', { name: '初期設定に戻す' }))
++  fireEvent.click(screen.getByRole('button', { name: '保存' }))
++  expect(getBindings().gravity).toEqual(['KeyT'])
++  view.rerender(<KeySettings onClose={vi.fn()} />)
++  expect(screen.getByRole('button', { name: /自由落下.*追加/ })).toBeTruthy()
++})
+--- src/components/settings/KeySettings.tsx (before)
++++ src/components/settings/KeySettings.tsx (after)
+@@ -6,9 +6,9 @@
+ import { getBindings, getSettingsNotice, saveBindings } from '../../game/input/settings'
+ import { startKeyCapture } from './keyCapture'
+ 
+-interface Props { onClose: () => void }
++interface Props { onClose: () => void; allowGravityToggle?: boolean }
+ 
+-export default function KeySettings({ onClose }: Props) {
++export default function KeySettings({ onClose, allowGravityToggle = true }: Props) {
+   const [draft, setDraft] = useState<Bindings>(() => structuredClone(getBindings()))
+   const [capture, setCapture] = useState<BoundAction | null>(null)
+   const [message, setMessage] = useState(getSettingsNotice() ?? '')
+@@ -43,11 +43,11 @@
+       <p className="mb-4 text-sm text-[#c4bfd3]">ゲーム画面を選ぶと設定した操作でプレイに戻ります。Ctrl・Shiftは左右共通、NumキーはNumLockに関係なく同じ操作です。キー取得中のTab / Shift+Tabは取得だけを取り消し、フォーカスを移動します。</p>
+       <div className="mb-4 flex flex-wrap items-center gap-3">
+         <span className="text-[#ffe99b]">設定1</span>
+-        <button type="button" onClick={() => { setDraft(defaultBindings()); setMessage('設定1の初期値に戻しました。保存すると適用されます。') }} className="rounded-none border border-[#6f648d] px-3 py-2">初期設定に戻す</button>
++        <button type="button" onClick={() => { setDraft(old => ({ ...defaultBindings(), ...(!allowGravityToggle ? { gravity: old.gravity } : {}) })); setMessage('設定1の初期値に戻しました。保存すると適用されます。') }} className="rounded-none border border-[#6f648d] px-3 py-2">初期設定に戻す</button>
+       </div>
+       <p className="mb-4 text-sm text-[#c4bfd3]">初期設定は各操作1キーです。「追加」で同じ操作に使うキーを増やせます。</p>
+       <div className="grid gap-2">
+-        {ACTIONS.map(action => <div key={action} className="flex flex-wrap items-center gap-2 rounded-none bg-[#211d33] p-2">
++        {ACTIONS.filter(action => allowGravityToggle || action !== 'gravity').map(action => <div key={action} className="flex flex-wrap items-center gap-2 rounded-none bg-[#211d33] p-2">
+           <span className="w-32 font-normal">{ACTION_LABELS[action]}</span>
+           {draft[action].map(code => <button key={code} type="button" aria-label={`${ACTION_LABELS[action]}から${displayCode(code)}を削除`}
+             onClick={() => setDraft(old => ({ ...old, [action]: old[action].filter(item => item !== code) }))}
+--- src/game/GameManager.ts (before)
++++ src/game/GameManager.ts (after)
+@@ -15,6 +15,7 @@
+   private keyboardEnabledBeforeGallery: boolean | null = null
+   public onExit?: () => void
+   public onScoreAttackRound?: (snapshot: ScoreAttackSnapshot) => void
++  public getScoreAttackTotal?: () => number | null
+ 
+   constructor() {
+     this.config = {
+@@ -71,7 +72,7 @@
+     const scoreAttackConfig = {
+       ...this.config,
+       width: LAYOUT_SCORE_ATTACK.CANVAS_WIDTH,
+-      scene: [new PuyoGame(this.onScoreAttackRound)]
++      scene: [new PuyoGame(this.onScoreAttackRound, this.getScoreAttackTotal)]
+     }
+ 
+     this.attachGame(new Phaser.Game(scoreAttackConfig))
+--- src/game/scenes/ChainAnimationScenes.test.ts (before)
++++ src/game/scenes/ChainAnimationScenes.test.ts (after)
+@@ -72,6 +72,12 @@
+   scene.captureTurnStartPair?.()
+   scene.gameState.currentPair = pair(0, 11)
+   return scene
++}
++
++// Input-focused tests hold the clock for score attack, whose natural fall is always on.
++const setNaturalFall = (scene: any, enabled: boolean) => {
++  if (scene instanceof PuyoGame) Object.assign(scene, { FALL_SPEED: enabled ? 800 : Number.POSITIVE_INFINITY })
++  else scene.isGravityEnabled = enabled
+ }
+ 
+ beforeEach(() => {
+@@ -478,7 +484,7 @@
+ 
+   it('commits terminal history despite a guide display failure, then starts a clean game', () => {
+     const scene = prepare(new GuidedPracticeScene() as any)
+-    scene.isGravityEnabled = false
++    setNaturalFall(scene, false)
+     scene.clearGhostSprites = vi.fn()
+     scene.updateGuideState = vi.fn()
+     scene.updateAdvice = vi.fn()
+@@ -536,7 +542,7 @@
+   it.each([false, true])('resumes gravity from the unpause time after a long pause (grounded: %s)', grounded => {
+     const scene = prepare(new PuyoGame() as any)
+     scene.add.rectangle = vi.fn(display)
+-    scene.isGravityEnabled = true
++    setNaturalFall(scene, true)
+     scene.gameState.currentPair = pair(0, grounded ? 12 : 11)
+     const land = vi.spyOn(scene, 'landCurrentPair')
+     scene.time.now = 500
+@@ -593,17 +599,13 @@
+       return text
+     }
+     const count = label('GTR: 0回')
+-    const score = label('Score: 0')
+-    const quality = label('1回100点満点')
+     scene.gtrCountText = count
+-    scene.gtrScoreText = score
+-    scene.gtrQualityText = quality
+     scene.showGTREffect = vi.fn()
+-    return { scene, count, score, quality }
++    return { scene, count }
+   }
+ 
+   it('restores the round labels while committing the same GTR score after a popup fails once', () => {
+-    const { scene, count, score, quality } = prepareScoringGTR()
++    const { scene, count } = prepareScoringGTR()
+     const source = scene.gameField.getField().grid
+     const current = scene.gameState.currentPair
+     const landing = { mainPos: { x: 5, y: 5 }, subPos: { x: 5, y: 4 }, valid: true }
+@@ -628,8 +630,6 @@
+     expect(scene.gameState.gtrCount).toBe(1)
+     expect(scene.gameState.gtrScore).toBe(100)
+     expect(count.value).toBe('GTR: 1 / 10')
+-    expect(score.value).toBe('Spaceで次へ')
+-    expect(quality.value).toBe('1回100点満点')
+     expect(detect).toHaveBeenCalledTimes(1)
+     expect(supplier).toHaveBeenCalledTimes(1)
+     expect(scene.showGTREffect).not.toHaveBeenCalled()
+@@ -654,12 +654,11 @@
+     const committedScore = scene.gameState.score
+     const committedField = structuredClone(scene.gameField.getField())
+     const committedPair = structuredClone(scene.gameState.currentPair)
+-    const toggle = vi.spyOn(scene, 'toggleGravity')
++    expect(scene.canAcceptAction('gravity')).toBe(false)
+     const input = vi.spyOn(scene, 'handleInput')
+     scene.update(10000, 16) // clear the key-release gate
+     scene.actionInput.press('gravity', 'test:gravity')
+     scene.update(10100, 16)
+-    expect(toggle).not.toHaveBeenCalled()
+     expect(input).not.toHaveBeenCalled()
+     expect(scene.gameField.getField()).toEqual(committedField)
+     expect(scene.gameState.currentPair).toEqual(committedPair)
+@@ -752,24 +751,26 @@
+     }
+   })
+ 
+-  it('rejects F during playback, clears its notice, and allows F on the next turn', () => {
++  it.each(['KeyF', 'KeyT'])('ignores gravity toggle %s during and after playback while natural fall continues', code => {
+     const scene = prepare(new PuyoGame() as any, true)
+-    scene.fKey = { reset: vi.fn() }
+-    const toggle = vi.spyOn(scene, 'toggleGravity')
+-    scene.landCurrentPair()
+-    scene.actionInput.press('gravity', 'test:gravity')
++    const keys = defaultBindings()
++    keys.gravity = [code]
++    scene.actionInput.setBindings(keys)
++    expect(scene.canAcceptAction('gravity')).toBe(false)
++    scene.landCurrentPair()
++    scene.actionInput.pressPhysical(code)
+     scene.update(500, 16)
+-    expect(toggle).not.toHaveBeenCalled()
+-    const notice = scene.chainNotice
+-    expect(notice).toBeDefined()
+-    scene.actionInput.release('test:gravity')
++    expect(scene.chainNotice).toBeUndefined()
++    scene.actionInput.releasePhysical(code)
+     finish(scene)
+-    expect(notice.destroy).toHaveBeenCalled()
++    scene.update(501, 16)
++    const y = scene.gameState.currentPair.main.y
++    scene.pressAction('gravity', 'button:gravity')
++    scene.actionInput.pressPhysical(code)
++    scene.update(1300, 16)
++    expect(scene.gameState.currentPair.main.y).toBe(y + 1)
++    expect(scene.canAcceptAction('gravity')).toBe(false)
+     expect(scene.chainNotice).toBeUndefined()
+-    scene.update(10000, 16) // release gate
+-    scene.actionInput.press('gravity', 'test:gravity')
+-    scene.update(10100, 16)
+-    expect(toggle).toHaveBeenCalledTimes(1)
+   })
+ 
+   it('releases a stale key after blur and keeps chain playback moving through input suppression', () => {
+@@ -851,7 +852,7 @@
+ describe.each([GuidedPracticeScene, PuyoGame])('%s quick drop', Scene => {
+   it('waits for a held pointer to release before another source can confirm the next pair', () => {
+     const scene = prepare(new Scene() as any)
+-    scene.isGravityEnabled = false
++    setNaturalFall(scene, false)
+     const land = vi.spyOn(scene, 'landCurrentPair')
+     scene.pressAction('quickDrop', 'pointer:quickDrop:1')
+     scene.update(500, 16)
+@@ -880,7 +881,7 @@
+ 
+   it('does not carry a held physical quick drop into the next pair', () => {
+     const scene = prepare(new Scene() as any)
+-    scene.isGravityEnabled = false
++    setNaturalFall(scene, false)
+     const land = vi.spyOn(scene, 'landCurrentPair')
+     scene.actionInput.pressPhysical('ArrowUp')
+     scene.update(500, 16)
+@@ -931,7 +932,7 @@
+ describe.each([GuidedPracticeScene, PuyoGame])('%s result input separation', Scene => {
+   it('keeps Down scrolling suppressed through landing, commit release wait and result rejection', () => {
+     const scene = prepare(new Scene() as any)
+-    scene.isGravityEnabled = false
++    setNaturalFall(scene, false)
+     const listeners = new Map<string, (event: KeyboardEvent) => void>()
+     const canvas = { closest: () => null, addEventListener: vi.fn(), removeEventListener: vi.fn() } as unknown as HTMLCanvasElement
+     vi.stubGlobal('document', { hidden: false, activeElement: canvas, addEventListener: vi.fn(), removeEventListener: vi.fn() })
+@@ -1123,10 +1124,27 @@
+ })
+ 
+ describe('ten-round score attack submissions', () => {
++  it('displays submitted totals without changing the board or using chain scores', () => {
++    let total: number | null = 125
++    const scene = prepare(new PuyoGame(undefined, () => total) as any)
++    scene.gameState.score = 9000
++    const before = structuredClone(scene.gameState)
++    scene.totalScoreText = { setText: vi.fn() }
++    scene.updateTotalScoreDisplay()
++    expect(scene.totalScoreText.setText).toHaveBeenLastCalledWith('125')
++    total = null
++    scene.updateTotalScoreDisplay()
++    expect(scene.totalScoreText.setText).toHaveBeenLastCalledWith('—')
++    total = 200
++    scene.updateTotalScoreDisplay()
++    expect(scene.totalScoreText.setText).toHaveBeenLastCalledWith('200')
++    expect(scene.gameState).toEqual(before)
++  })
++
+   const makeScene = (onRound = vi.fn()) => {
+     const scene = prepare(new PuyoGame(onRound) as any)
+     scene.children = { getAll: () => [] }
+-    scene.isGravityEnabled = false
++    setNaturalFall(scene, false)
+     return { scene, onRound }
+   }
+ 
+--- src/game/scenes/PuyoGame.ts (before)
++++ src/game/scenes/PuyoGame.ts (after)
+@@ -23,13 +23,11 @@
+   // ゲーム状態
+   private gameField: GameFieldManager
+   private gameState: GameState
+-  private isGravityEnabled: boolean = true
+   private isShowingResult: boolean = false
+   private chainPlayback?: ChainPlayback
+   private chainRenderer?: PuyoBoardRenderer
+   private chainRun = 0
+   private turnStartPair?: PuyoPair
+-  private chainNotice?: Phaser.GameObjects.Text
+   private isVisualStopped = false
+   private isDisposed = false
+   private actionInput?: PhaserInputAdapter
+@@ -45,10 +43,10 @@
+   public releaseAction(source: string): void { this.actionInput?.release(source) }
+ 
+   private canAcceptAction(action: GameAction): boolean {
+-    if (this.isDisposed || (typeof document !== 'undefined' && document.hidden)) return false
++    if (action === 'gravity' || this.isDisposed || (typeof document !== 'undefined' && document.hidden)) return false
+     if (this.isShowingResult) return action === 'exit'
+     if (this.isPaused) return action === 'pause' || action === 'exit'
+-    if (this.chainPlayback) return action === 'pause' || action === 'gravity' || action === 'exit'
++    if (this.chainPlayback) return action === 'pause' || action === 'exit'
+     if (this.isVisualStopped) return action === 'exit'
+     if (this.gameState.gameOver) return action === 'exit' || action === 'evaluate'
+     return true
+@@ -60,11 +58,9 @@
+   private nextPairSprites: { main?: Phaser.GameObjects.Sprite; sub?: Phaser.GameObjects.Sprite } = {}
+   private nextNextPairSprites: { main?: Phaser.GameObjects.Sprite; sub?: Phaser.GameObjects.Sprite } = {}
+ 
+-  // GTR表示関連
+-  private gtrScoreText?: Phaser.GameObjects.Text
++  // 回数・合計点表示
+   private gtrCountText?: Phaser.GameObjects.Text
+-  private gtrQualityText?: Phaser.GameObjects.Text
+-  private gravityStatusText?: Phaser.GameObjects.Text
++  private totalScoreText?: Phaser.GameObjects.Text
+ 
+   // レイアウト設定（VisualConfigから）
+   private readonly CELL_SIZE = FIELD_CONFIG.CELL_SIZE
+@@ -78,7 +74,10 @@
+   private lastFallTime = 0
+   private placedMoves = ''
+ 
+-  constructor(private readonly onRound?: (snapshot: ScoreAttackSnapshot) => void) {
++  constructor(
++    private readonly onRound?: (snapshot: ScoreAttackSnapshot) => void,
++    private readonly getTotalScore?: () => number | null,
++  ) {
+     super({ key: 'PuyoGame' })
+     this.gameField = new GameFieldManager()
+     this.gameState = this.createInitialGameState()
+@@ -150,7 +149,7 @@
+ 
+     // タイトル
+     addUIText(this, this.FIELD_X, 24, 'SCORE ATTACK', { ...TEXT_STYLES.label, fontSize: '14px', color: '#b5a8ff' })
+-    addUIText(this, this.FIELD_X, 43, 'GTR Training', { ...TEXT_STYLES.title, fontSize: '24px' })
++    this.gtrCountText = addUIText(this, this.FIELD_X, 48, 'GTR: 1 / 10', { ...TEXT_STYLES.title, fontSize: '24px', color: '#ffe99b' })
+     addUIText(this, this.FIELD_X, this.FIELD_Y + fieldH + 18, 'BUILD  /  CONNECT  /  CHAIN', {
+       ...TEXT_STYLES.label, fontSize: '14px', color: '#c4bfd3', letterSpacing: 1
+     })
+@@ -159,45 +158,20 @@
+     const infoPanelX = this.FIELD_X + fieldW + 24
+     const infoPanelY = this.getNextAreaLayout().statusY + 14
+ 
+-    // 情報パネル背景
++    // TOTAL SCOREには、提出済み回のGTR評価合計だけを表示する。
+     this.add.rectangle(
+       infoPanelX + NEXT_AREA_CONFIG.AREA_WIDTH / 2,
+-      infoPanelY + 70,
++      infoPanelY + 22,
+       NEXT_AREA_CONFIG.AREA_WIDTH,
+-      160,
++      88,
+       NEXT_AREA_CONFIG.BG_COLOR
+     ).setStrokeStyle(1, NEXT_AREA_CONFIG.BORDER_COLOR)
+-
+-    addUIText(this, infoPanelX + 10, infoPanelY - 14, 'RESULT', {
+-      ...TEXT_STYLES.label, fontSize: '14px', color: '#8f86a8', letterSpacing: 1
++    addUIText(this, infoPanelX + 10, infoPanelY - 14, 'TOTAL SCORE', {
++      ...TEXT_STYLES.label, fontSize: '14px', color: '#f8f7ff',
+     })
+-
+-    this.gtrCountText = addUIText(this, infoPanelX + 10, infoPanelY + 10, 'GTR: 1 / 10', {
+-      fontSize: '18px',
+-      color: '#f3c94f',
+-      fontFamily: TEXT_STYLES.title.fontFamily,
+-    })
+-
+-    this.gtrScoreText = addUIText(this, infoPanelX + 10, infoPanelY + 38, `${actionKeys(getBindings(), 'evaluate')}で次へ`, {
+-      fontSize: '16px',
+-      color: '#66e0aa',
+-      fontFamily: TEXT_STYLES.title.fontFamily,
+-    })
+-
+-    this.gtrQualityText = addUIText(this, infoPanelX + 10, infoPanelY + 62, '1回100点満点', {
+-      fontSize: '14px',
+-      color: '#b5a8ff',
+-      fontFamily: TEXT_STYLES.title.fontFamily,
+-      strokeThickness: 1
+-    })
+-
+-    // 自由落下状態表示（情報パネル内）
+-    this.gravityStatusText = addUIText(this, infoPanelX + 10, infoPanelY + 90, '自由落下: ON', {
+-      fontSize: '14px',
+-      color: '#66e0aa',
+-      fontFamily: TEXT_STYLES.title.fontFamily,
+-    })
+-    this.gravityStatusText.setDepth(100)
++    this.totalScoreText = addUIText(this, infoPanelX + NEXT_AREA_CONFIG.AREA_WIDTH / 2, infoPanelY + 16, '0', {
++      ...TEXT_STYLES.score, fontSize: '28px', color: '#ffe99b',
++    }).setOrigin(0.5, 0)
+ 
+     // 操作説明（画面下部にコンパクト表示）
+     this.instructionText = addUIText(this, this.FIELD_X + FIELD_CONFIG.COLS * this.CELL_SIZE / 2, canvasH - 20,
+@@ -206,7 +180,6 @@
+     ).setOrigin(0.5, 1)
+     const stopInstructions = subscribeBindings(() => {
+       this.instructionText?.setText(this.instructionLabel())
+-      this.gtrScoreText?.setText(`${actionKeys(getBindings(), 'evaluate')}で次へ`)
+       if (this.isPaused) this.pauseText?.setText(this.pauseLabel())
+     })
+ 
+@@ -252,13 +225,13 @@
+   }
+ 
+   update(time: number, delta = 0) {
++    this.updateTotalScoreDisplay()
+     const actions = this.actionInput?.frame(time) ?? new Set<GameAction>()
+     if (actions.has('exit')) { this.exitToMenu(); return }
+     if (this.isShowingResult) return
+     if (actions.has('pause')) { this.togglePause(); return }
+     if (this.isPaused) return
+     if (this.chainPlayback) {
+-      if (actions.has('gravity')) this.showChainNotice()
+       try { this.chainPlayback.update(delta) }
+       catch (error) {
+         console.error('連鎖アニメーションを再生できませんでした', error)
+@@ -272,7 +245,6 @@
+       if (!document.hidden) this.evaluateAndReset()
+       return
+     }
+-    if (actions.has('gravity')) { this.toggleGravity(); return }
+     if (actions.has('evaluate')) { this.evaluateAndReset(); this.actionInput?.suppressUntilRelease(); return }
+     if (actions.has('quickDrop')) { this.quickDrop(); return }
+     this.handleInput(actions)
+@@ -325,7 +297,7 @@
+   private updateFalling(time: number, softDrop = false) {
+     if (!this.gameState.currentPair) return
+ 
+-    if (this.isGravityEnabled && time - this.lastFallTime >= this.FALL_SPEED) {
++    if (time - this.lastFallTime >= this.FALL_SPEED) {
+       this.lastFallTime = time
+       const pair = this.gameState.currentPair
+       if (PuyoPairManager.canMove(pair, 0, 1, (x, y) => this.gameField.isOccupied(x, y))) {
+@@ -394,8 +366,7 @@
+ 
+     // Visual failures cannot turn an already committed move into an undo.
+     try {
+-      this.dismissChainNotice()
+-      renderer?.dispose()
++        renderer?.dispose()
+       this.rebuildFieldSprites()
+       this.updateDisplay()
+       if (result.chainCount > 0) this.playScorePopup(
+@@ -424,19 +395,6 @@
+     }
+   }
+ 
+-  private showChainNotice() {
+-    if (this.chainNotice) return
+-    this.chainNotice = addUIText(this, this.FIELD_X, this.FIELD_Y - 22,
+-      '連鎖中は設定を変更できません。終了後に操作してください。', {
+-        fontSize: '14px', color: '#ffe99b', fontFamily: TEXT_STYLES.title.fontFamily,
+-      }).setDepth(200)
+-  }
+-
+-  private dismissChainNotice() {
+-    this.chainNotice?.destroy()
+-    this.chainNotice = undefined
+-  }
+-
+   private hideFieldForChain() {
+     this.currentPairSprites.main?.setVisible(false)
+     this.currentPairSprites.sub?.setVisible(false)
+@@ -455,7 +413,6 @@
+     this.chainPlayback = undefined
+     this.chainRenderer?.dispose()
+     this.chainRenderer = undefined
+-    this.dismissChainNotice()
+   }
+ 
+   private showChainError(message: string) {
+@@ -501,7 +458,6 @@
+ 
+   private updateGTRDisplay(_gtrResult: GTRScore) {
+     this.gtrCountText?.setText(`GTR: ${Math.min(this.submittedRounds + 1, SCORE_ATTACK_ROUNDS)} / ${SCORE_ATTACK_ROUNDS}`)
+-    this.gtrScoreText?.setText(`${actionKeys(getBindings(), 'evaluate')}で次へ`)
+   }
+ 
+   private showGTREffect() {
+@@ -687,13 +643,6 @@
+     if (this.gtrCountText) {
+       this.gtrCountText.setText(`GTR: ${this.submittedRounds + 1} / ${SCORE_ATTACK_ROUNDS}`)
+     }
+-    if (this.gtrScoreText) {
+-      this.gtrScoreText.setText(`${actionKeys(getBindings(), 'evaluate')}で次へ`)
+-    }
+-    if (this.gtrQualityText) {
+-      this.gtrQualityText.setText('1回100点満点')
+-    }
+-
+     this.lastFallTime = this.time.now
+   }
+ 
+@@ -754,22 +703,9 @@
+     this.clearNextSprites()
+   }
+ 
+-  private toggleGravity() {
+-    this.isGravityEnabled = !this.isGravityEnabled
+-
+-    if (this.gravityStatusText) {
+-      if (this.isGravityEnabled) {
+-        this.gravityStatusText.setText('●  自由落下 ON')
+-        this.gravityStatusText.setColor('#66e0aa')
+-      } else {
+-        this.gravityStatusText.setText('●  自由落下 OFF')
+-        this.gravityStatusText.setColor('#f47582')
+-      }
+-    }
+-
+-    if (this.isGravityEnabled) {
+-      this.lastFallTime = this.time.now
+-    }
++  private updateTotalScoreDisplay(): void {
++    const total = this.getTotalScore ? this.getTotalScore() : 0
++    this.totalScoreText?.setText(total === null ? '—' : String(total))
+   }
+ 
+   // スコアフロートアニメーション
+--- src/game/scenes/SoftDropLock.test.ts (before)
++++ src/game/scenes/SoftDropLock.test.ts (after)
+@@ -20,7 +20,7 @@
+   const scene = new Scene() as any
+   scene.gameField = new GameFieldManager()
+   scene.gameState.currentPair = pair(y)
+-  scene.isGravityEnabled = gravity
++  if (Scene === GuidedPracticeScene) scene.isGravityEnabled = gravity
+   scene.lastFallTime = 0
+   scene.actionInput = new InputController(defaultBindings())
+   scene.updateDisplay = vi.fn()
+@@ -31,8 +31,8 @@
+ beforeEach(() => vi.stubGlobal('document', { hidden: false }))
+ afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals() })
+ 
+-describe.each([['score', PuyoGame], ['guide', GuidedPracticeScene]] as const)('%s soft drop lock', (_name, Scene) => {
+-  it.each([true, false])('locks in the frame soft drop reaches the floor (gravity=%s)', gravity => {
++describe.each([['score', PuyoGame], ['guide', GuidedPracticeScene]] as const)('%s soft drop lock', (mode, Scene) => {
++  it.each(Scene === PuyoGame ? [true] : [true, false])('locks in the frame soft drop reaches the floor (gravity=%s)', gravity => {
+     const scene = prepare(Scene, 11, gravity)
+     scene.actionInput.pressPhysical('ArrowDown')
+     scene.update(100, 16)
+@@ -99,10 +99,13 @@
+     expect(scene.landCurrentPair).toHaveBeenCalledOnce()
+   })
+ 
+-  it('does not lock a supported pair without down while gravity is disabled', () => {
++  it(mode === 'score' ? 'always locks a supported pair at the natural fall tick' : 'does not lock a supported pair without down while guide gravity is disabled', () => {
+     const scene = prepare(Scene, 12, false)
+-    scene.update(2000, 16)
++    scene.update(799, 16)
+     expect(scene.landCurrentPair).not.toHaveBeenCalled()
++    scene.update(800, 16)
++    if (Scene === PuyoGame) expect(scene.landCurrentPair).toHaveBeenCalledOnce()
++    else expect(scene.landCurrentPair).not.toHaveBeenCalled()
+   })
+ 
+   it('moves only one cell when soft drop has not reached support', () => {

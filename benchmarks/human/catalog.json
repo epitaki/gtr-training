@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-24",
+  "purpose": "Reusable observations of human play, not optimal-move labels or training targets.",
+  "canonicalDataset": "gtr-openings-500-v1",
+  "datasets": [
+    {
+      "id": "gtr-openings-500-v1",
+      "path": "gtr-openings-500-v1.json",
+      "sha256": "bb645cc1ce03384e58bb1a1c7fc2a49e60fd40c323b5aaa9253eebfd6e4e851b",
+      "recordCount": 500,
+      "subsetOf": null,
+      "role": "fixed-regression-corpus",
+      "unusedHoldout": false,
+      "limitations": [
+        "Not 500 video-audited independent matches; match keys use a conservative deduplication proxy.",
+        "490 traces mainly from 2011-2012; 10 article transcriptions from 2021.",
+        "Original comparison covered at most the first 12 moves, before the first clear.",
+        "Opponent state, attacks and player intent are generally unknown.",
+        "The historical holdout results have already been inspected. Do not claim they are unseen validation after further tuning."
+      ]
+    },
+    {
+      "id": "gtr-openings-v1",
+      "path": "gtr-openings-v1.json",
+      "sha256": "57a2284c2a8d62db2c5cf3feca63ce7e1369bf845d4ae0376a2084fd3443b9ab",
+      "recordCount": 30,
+      "subsetOf": "gtr-openings-500-v1",
+      "role": "historical-pilot",
+      "unusedHoldout": false,
+      "limitations": ["All 30 records are included in the canonical 500. Do not add them to claim 530 records."]
+    },
+    {
+      "id": "piropuyo-tail-20260924-v1",
+      "path": "piropuyo-tail-20260924-v1.json",
+      "sha256": "c3cd6bf7a7caf022570c96e59bbefe9f3a7e22300d29c2b934939878eee724c5",
+      "recordCount": 4,
+      "subsetOf": null,
+      "role": "tutorial-reference",
+      "unusedHoldout": false,
+      "limitations": [
+        "Four tutorial examples, not four competitive matches or optimal-move labels.",
+        "Article link codes were decoded and replayed; no video or image-by-image audit.",
+        "The examples include longer chains and deliberate side clears; do not transfer these as the five-chain training objective."
+      ]
+    }
+  ],
+  "observationFiles": ["observations/momoken-2021-1.json"],
+  "caseTemplate": "case-template.json"
+}

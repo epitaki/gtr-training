@@ -8,7 +8,7 @@ GTRトレーニングツール - ぷよぷよの連鎖土台「GTR（グレー�
 
 **対象GTR**：標準GTRと折り返しGTR（**逆折りGTRは対象外**）
 
-詳細な要件は [REQUIREMENT.md](./REQUIREMENT.md) を参照してください。
+詳細な要件は [REQUIREMENT.md](docs/specs/REQUIREMENT.md) を参照してください。
 
 ## 開発環境セットアップ
 
@@ -60,62 +60,33 @@ bun run type-check
 
 ## プロジェクト構造
 
-```
-gtr-training/
-├── src/
-│   ├── components/
-│   │   ├── layout/
-│   │   │   ├── Header.tsx              # ヘッダー（ロゴ・アカウント）
-│   │   │   ├── SideMenu.tsx            # サイドメニュー（モード選択）
-│   │   │   └── MainLayout.tsx          # メインレイアウト統合
-│   │   ├── TopPage.tsx                 # TOPページ
-│   │   ├── TopMenu.tsx                 # TOPページメニュー（旧実装）
-│   │   ├── GuidedGame.tsx              # 初心者用ガイド付きGTR練習（900px）
-│   │   ├── ScoreAttackGame.tsx         # GTRスコアアタック（640px）
-│   │   ├── GameLayout.tsx              # ゲーム全体レイアウト（非使用）
-│   │   └── GameBoard.tsx               # Phaserゲーム表示コンテナ（非使用）
-│   ├── game/
-│   │   ├── GameManager.ts              # Phaserゲーム設定・管理
-│   │   ├── PuyoGame.ts                 # スコアアタック用シーン
-│   │   ├── GameField.ts                # フィールド管理・連鎖処理
-│   │   ├── PuyoPair.ts                 # ぷよペア管理・回転処理・2手制約
-│   │   ├── PuyoRenderer.ts             # ぷよテクスチャ生成（通常+ゴースト）
-│   │   ├── VisualConfig.ts             # 統一レイアウト・カラー定数
-│   │   ├── GTRPatterns.ts              # GTR検出・評価システム
-│   │   ├── GTRScoringConfig.ts         # 評価点数設定ファイル
-│   │   ├── PlacementAdvisor.ts         # 最適配置推薦アルゴリズム
-│   │   ├── PlacementAdvisorConfig.ts   # 推薦スコアリング定数
-│   │   ├── GuideManager.ts             # ガイド状態管理
-│   │   ├── GTRGuidePatterns.ts         # GTR完成形サンプル集
-│   │   ├── GameHistory.ts              # ゲーム履歴管理（巻き戻し用）
-│   │   ├── scenes/
-│   │   │   ├── MenuScene.ts            # メニューシーン（非使用）
-│   │   │   └── GuidedPracticeScene.ts  # ガイド付き練習シーン
-│   │   └── types.ts                    # 型定義
-│   ├── lib/
-│   │   ├── supabase.ts                 # Supabaseクライアント
-│   │   └── test-connection.ts          # 接続テスト機能
-│   ├── App.tsx                         # メインアプリケーション・SPA構成管理
-│   ├── main.tsx                        # エントリーポイント
-│   └── index.css                       # Tailwind CSS
-├── sql/
-│   └── initial-setup.sql               # データベース初期設定
-├── docs/
-│   ├── README.md                       # ドキュメント一覧
-│   ├── GAME-MODES.md                   # ゲームモード仕様書
-│   ├── GTR-PATTERNS.md                 # GTRパターン定義
-│   ├── GTR-SCORING-SYSTEM.md           # GTR評価システム設計
-│   ├── GTR-VISUAL-GUIDE.md             # GTR視覚的ガイド
-│   ├── PUYO-GENERATION.md              # 2手制約システム仕様書
-│   ├── layout-design.md                # レイアウト設計書
-│   └── progress-report.md              # 開発進捗レポート
-├── tasks/                              # アクティブな仕様書
-│   └── archive/                        # 完了仕様書アーカイブ
-├── public/                             # 静的ファイル
-└── tests/                              # テストコード（未実装）
-```
+**機能別モジュール＋レイヤード構成**。最新の構成と依存ルールは
+[docs/PROJECT-STRUCTURE.md](docs/PROJECT-STRUCTURE.md) を参照する。
 
-## UI構成（SPA設計）
+- `src/components/{layout,game,feedback}/`：React画面。
+- `src/game/{core,gtr,advisor,guide}/`：共通ルール・判定・推薦・教材。
+- `src/game/{scenes,rendering}/`：進行制御・入力・Phaser表示。
+- `src/game/feedback/`：共有用局面・再現URL・検証・保存。
+- `src/benchmark/`：ゲームと同じエンジンを使う測定処理。
+- `scripts/{benchmark,analysis,human,shared}/`：実験実行と分析。
+- `benchmarks/`：基準値、人間手順、測定データ。
+- `*.test.ts`：対象コードと同じ場所に置く。
+
+`core/gtr/advisor` から React や Phaser に依存させない。
+テストは `bun run test`、本体の型確認は `bun run type-check`、
+実験スクリプトの型確認は `bun run type-check:scripts`。
+削除済みの `tasks/` を再作成しない。
+
+### 人間の手順・動画を調査するとき
+
+最初に [ぷよ譜ライブラリ](benchmarks/human/README.md) と目録を確認し、保存済みの譜面を再利用する。
+新しい観測は元譜面のID、動画URL・時刻、確認範囲・確度、対戦状況とともに残す。
+人間の配置は唯一の正解ではない。観測・仮説・別案の検証・採否を分け、反例や判断保留も保存する。
+既存500記録を「500試合すべて映像確認済み」と呼ばない。30本の予備調査は500本の内数である。
+
+## UI構成（旧SPA設計の記録）
+
+この節は当時の画面構成を保存した記録です。現行画面では広い幅でサイドメニューを表示し、狭い幅ではヘッダーのボタンで開閉します。アカウント機能は準備中の表示です。現在のモードと画面は[ゲームモード仕様](docs/specs/GAME-MODES.md)を参照してください。
 
 本サイトは**ヘッダー + サイドメニュー + コンテンツエリア**の3領域で構成されるSPAです。
 
@@ -138,7 +109,7 @@ gtr-training/
 - 選択したモードに応じて表示が切り替わる
 - 各モードにそれぞれのTOP画面あり
 
-詳細は [note.md](./note.md) を参照してください。
+詳細は [note.md](docs/archive/note.md) を参照してください。
 
 ## 開発ガイドライン
 
@@ -156,7 +127,7 @@ gtr-training/
 - **ぷよぷよのルール**：4つ繋がりで消去、重力落下
 - **学習効果**：視覚的に分かりやすいフィードバック
 
-詳細な設計は [ARCHITECTURE.md](./ARCHITECTURE.md) を参照してください。
+詳細な設計は [ARCHITECTURE.md](docs/development/ARCHITECTURE.md) を参照してください。
 
 ## よく使うコマンド
 
@@ -177,7 +148,11 @@ bun run test
 bun run type-check
 ```
 
-## 現在の実装状況
+## 旧実装一覧と整理時の補注
+
+以下は旧一覧に2026-10-03の文書訂正が混在する保存記録です。章全体を現行の完了認定として扱わず、当時の「完了済み」「開発予定」やSupabase接続設定の記載もその時点の記録として読んでください。現行のSupabase接続成否はここでは確認していません。
+
+現行の入口：[進捗](docs/progress-report.md)、[ゲームモード](docs/specs/GAME-MODES.md)、[視覚ガイド](docs/specs/GTR-VISUAL-GUIDE.md)、[採点](docs/specs/GTR-SCORING-SYSTEM.md)、[配置推薦](docs/specs/PLACEMENT-ADVISOR.md)、[コード構成](docs/PROJECT-STRUCTURE.md)。現在のホームは `src/App.tsx` が使う `src/components/TopPage.tsx` で、旧一覧の `TopMenu.tsx` とそのSupabase接続状態表示は現行ホームの説明ではありません。現行サイドメニューにはフリープレイ項目がなく、狭幅では開閉式です。`PuyoRenderer` は独自ぷよアトラスを読み込み、フレームを登録します。
 
 ### ✅ 完了済み機能
 
@@ -195,9 +170,9 @@ bun run type-check
 - **ガイド表示システム**（GuideManager.ts）
   - 状態遷移：最初の2手 → 基本形作成 → 連鎖尾作成 → GTR完成形
   - 2手組み合わせパターン別のおすすめ配置表示
-  - Y字・L字・階段型連鎖尾のサンプル表示
-  - **ガイド表示仕様**：フィールド右側に配置（X座標380px）、フィールドと同じ高さで表示
-  - **ぷよアイコン表示**：実際のぷよスプライト表示（A→赤、B→緑、C→青、D→黄）
+  - Y字・座布団・L字の完成見本を表示。閲覧中の見本と配置推薦は区別する
+  - **ガイド表示仕様**：現行COACHは中心X=690px、幅380px、左辺X=500px。旧記載の「X座標380px」は現在の位置ではない
+  - **ぷよアイコン表示**：実際のぷよスプライトを表示。A/B/C/Dは折り返しでの色の役割に合わせて異なる4色へ割り当て、A→赤などの固定対応はしない
 - **学習支援機能**
   - ↑キー：巻き戻し機能（GameHistory.ts）- 連鎖処理後の状態も正しく復元
   - Pキー：ポーズ機能
@@ -217,7 +192,8 @@ bun run type-check
   - 自動落下（800ms間隔）
   - キーボード操作（←→移動、Z左回転、X右回転、↓高速落下）
   - 壁キック実装（壁際での回転補正）
-  - **2手目組み合わせ制約**：AAAA、AAAB、ABAB、ABAC、AABC型のみ生成
+  - **開始時の2手組み合わせ**：AAAB、ABAB（AABBを含む）、ABAC、AABCの4分類を各25%の選択幅で生成。AAAAは本ツールの練習目的で除外
+  - ガイドの3手目以降は独立抽選。スコアアタックは3手目が独立抽選、4手目以降は制約付き生成のpair1だけを供給し、任意の隣接2手に3色制約を保証しない
   - 4色固定（赤・緑・青・黄）
 
 #### **連鎖システム**
@@ -226,15 +202,14 @@ bun run type-check
 - 連鎖による再帰的な消去処理
 - スコア計算（消去したぷよ数×10点）
 
-#### **GTR評価システム（note.md仕様）**
+#### **GTR評価システム**
 - **パターン検出**
   - GTR必須折り返し形状の検出（1-3列目）
-  - 連鎖尾形状判定（Y字・L字・階段型）
+  - 現在の完成見本はY字・座布団・L字。連鎖尾の評価は実際の土台内連鎖と合わせて判定する
 - **詳細評価**
-  - 評価範囲：1-2列目（10-12行目）、3-6列目（9-12行目）
-  - 連鎖数評価（最大5連鎖、1連鎖10点）
-  - 9行目使用状況評価（右上の立ち具合）
-  - あまりぷよ評価（同色連結で高評価、複数色は0点）
+  - 評価範囲：1-2列目の下3段、3-6列目の下4段。行番号は上から1始まり、実装配列の座標は0始まりで区別する
+  - 範囲内の安定した最小19個、事前消去なし、基本形の先頭2連鎖を含む5連鎖全消しなどを100点条件とする
+  - 右端位置だけの加点は行わない。余り評価は「なし ＞ 1個 ＝ 同色連結」
 - **設定管理**
   - 設定ファイル分離（GTRScoringConfig.ts）でチューニング容易
   - 評価条件分岐にコメント付き
@@ -326,16 +301,16 @@ bun run type-check
 
 ## 参考資料
 
-- [REQUIREMENT.md](./REQUIREMENT.md) - 詳細な要件定義
-- [ARCHITECTURE.md](./ARCHITECTURE.md) - 技術設計書
-- [TECH_RECOMMENDATION.md](./TECH_RECOMMENDATION.md) - 技術選定の詳細と理由
+- [docs/specs/REQUIREMENT.md](docs/specs/REQUIREMENT.md) - 詳細な要件定義
+- [docs/development/ARCHITECTURE.md](docs/development/ARCHITECTURE.md) - 技術設計書
+- [docs/archive/TECH_RECOMMENDATION.md](docs/archive/TECH_RECOMMENDATION.md) - 技術選定の詳細と理由
 - [docs/README.md](./docs/README.md) - ドキュメント一覧
-- [docs/GAME-MODES.md](./docs/GAME-MODES.md) - ゲームモード仕様書
-- [docs/GTR-SCORING-SYSTEM.md](./docs/GTR-SCORING-SYSTEM.md) - GTR評価システム設計
-- [docs/PUYO-GENERATION.md](./docs/PUYO-GENERATION.md) - 2手制約システム仕様書
-- [note.md](./note.md) - UI設計とSPA構成
-- [src/game/GTRScoringConfig.ts](./src/game/GTRScoringConfig.ts) - 評価点数設定ファイル
-- [docs/PLACEMENT-ADVISOR.md](./docs/PLACEMENT-ADVISOR.md) - 配置推薦システム設計書
-- [src/game/PlacementAdvisorConfig.ts](./src/game/PlacementAdvisorConfig.ts) - 推薦スコアリング定数
-- [src/game/GTRGuidePatterns.ts](./src/game/GTRGuidePatterns.ts) - GTR完成形サンプル集
+- [docs/specs/GAME-MODES.md](docs/specs/GAME-MODES.md) - ゲームモード仕様書
+- [docs/specs/GTR-SCORING-SYSTEM.md](docs/specs/GTR-SCORING-SYSTEM.md) - GTR評価システム設計
+- [docs/specs/PUYO-GENERATION.md](docs/specs/PUYO-GENERATION.md) - 2手制約システム仕様書
+- [docs/archive/note.md](docs/archive/note.md) - UI設計とSPA構成
+- [src/game/gtr/GTRScoringConfig.ts](src/game/gtr/GTRScoringConfig.ts) - 評価点数設定ファイル
+- [docs/specs/PLACEMENT-ADVISOR.md](docs/specs/PLACEMENT-ADVISOR.md) - 配置推薦システム設計書
+- [src/game/advisor/PlacementAdvisorConfig.ts](src/game/advisor/PlacementAdvisorConfig.ts) - 推薦スコアリング定数
+- [src/game/guide/GTRGuidePatterns.ts](src/game/guide/GTRGuidePatterns.ts) - GTR完成形サンプル集
 - ぷよぷよ公式ルール

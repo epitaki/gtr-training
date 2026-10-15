@@ -1,0 +1,18 @@
+{
+  "migration": "20261015000000_pre_release_security",
+  "sha256": "d3a14945e77a9d04fa7733a58395bc1f15be87b8a5b3255bfe1fb42d4f45447f",
+  "recordCountsUnchanged": true,
+  "permissions": {
+    "public_legacy_scores": false,
+    "direct_legacy_score_writes": false,
+    "public_legacy_replays": false,
+    "direct_legacy_replay_writes": false,
+    "public_trigger_execute": false,
+    "public_quota_execute": false,
+    "authenticated_quota_execute": true,
+    "quota_policy_installed": true,
+    "migration_recorded": true
+  },
+  "testReportPassed": true,
+  "userDataDeleted": false
+}

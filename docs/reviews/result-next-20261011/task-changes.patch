@@ -1,0 +1,434 @@
+--- sql/score-attack-history.test.ts before
++++ sql/score-attack-history.test.ts after
+@@ -100,3 +100,15 @@
+     expect((await db.query<{ total_score: number }>('SELECT total_score FROM public.score_attack_games')).rows[0].total_score).toBe(0)
+   })
+ })
++
++it('preserves optional next pairs in the existing compact JSON without changing older games', async () => {
++  const db = await database()
++  const queued = { ...result, rounds: result.rounds.map(round => ({ ...round, next: 'hEC', nextNext: 'xGC' })) }
++  await asUser(db, userA, async () => {
++    const saved = await save(db, 1, userA, queued)
++    expect((saved.rows[0] as { result: unknown }).result).toEqual(queued)
++    expect((await save(db, 1, userA, queued)).rows).toEqual(saved.rows)
++    const old = await save(db, 2, userA)
++    expect((old.rows[0] as { result: unknown }).result).toEqual(result)
++  })
++})
+--- src/App.history.test.tsx before
++++ src/App.history.test.tsx after
+@@ -24,7 +24,7 @@
+ } }))
+ vi.mock('./components/game/ScoreAttackResults', () => ({ default: ({ state, onExit, onRestart }: any) => <section>
+   <p>保存結果 {state.rounds.length}回 {state.totalScore}点</p>
+-  <button onClick={onExit}>履歴に戻る</button><button onClick={onRestart}>もう一度10回</button>
++  <button onClick={onExit}>履歴に戻る</button><button onClick={onRestart}>もう一度</button>
+ </section> }))
+ 
+ const userA = '11111111-1111-4111-8111-111111111111'
+@@ -59,7 +59,7 @@
+   expect(screen.getByText('保存結果 10回 0点')).toBeTruthy()
+   fireEvent.click(menu('履歴に戻る'))
+   fireEvent.click(screen.getByRole('button', { name: /0点/ }))
+-  fireEvent.click(menu('もう一度10回'))
++  fireEvent.click(menu('もう一度'))
+   expect(menu('スコアアタック').getAttribute('aria-current')).toBe('page')
+   expect(screen.getByTestId('score').getAttribute('data-instance')).not.toBe(old)
+   expect(screen.getByTestId('score').getAttribute('data-suspended')).toBe('false')
+--- src/components/gallery/GalleryBoard.tsx before
++++ src/components/gallery/GalleryBoard.tsx after
+@@ -1,7 +1,7 @@
+ import atlasUrl from '../../assets/puyo/atlas.png?url'
+ import manifest from '../../assets/puyo/manifest.json'
+ import type { PuyoGrid } from '../../game/core/ChainSimulator'
+-import type { Position } from '../../game/core/types'
++import type { Position, PuyoPair } from '../../game/core/types'
+ import { cellMask } from '../../game/rendering/PuyoConnections'
+ 
+ interface GalleryBoardProps {
+@@ -11,16 +11,19 @@
+   fading?: readonly Position[]
+   alpha?: number
+   starter?: Position | null
++  pair?: PuyoPair | null
+ }
+ 
+ /** The atlas is shared with Phaser; the gallery only crops its existing idle frames. */
+-export default function GalleryBoard({ grid, size, fading = [], alpha = 1, starter, fromRow = 9 }: GalleryBoardProps) {
++export default function GalleryBoard({ grid, size, fading = [], alpha = 1, starter, pair, fromRow = 9 }: GalleryBoardProps) {
+   const visible = grid.slice(fromRow, 13)
+   return (
+     <div className="grid rounded-none border border-[#6f648d] bg-[#090a15] p-2 shadow-pixel" style={{ gridTemplateColumns: `repeat(6, ${size}px)`, width: 'max-content' }} aria-hidden="true">
+       {visible.flatMap((row, localY) => row.map((color, x) => {
+         const y = localY + fromRow
+-        const frame = color ? manifest.frames[`${color}/connect/${cellMask(grid, x, y)}` as keyof typeof manifest.frames] : null
++        const active = pair && [pair.main, pair.sub].find(puyo => puyo.x === x && puyo.y === y)
++        const frame = active ? manifest.frames[`${active.color}/idle` as keyof typeof manifest.frames]
++          : color ? manifest.frames[`${color}/connect/${cellMask(grid, x, y)}` as keyof typeof manifest.frames] : null
+         const isFading = fading.some(cell => cell.x === x && cell.y === y)
+         const isStarter = starter?.x === x && starter.y === y
+         return (
+--- src/components/game/PlacementHistoryPreview.tsx before
++++ src/components/game/PlacementHistoryPreview.tsx after
+@@ -1,6 +1,8 @@
+ import { useMemo, useState } from 'react'
+ import type { ScoreAttackSnapshot } from '../../game/scoreAttack/types'
+ import { encodeBoard, replayPlacements } from '../../game/scoreAttack/placementHistory'
++import { getPlacementPreviewPairs } from '../../game/scoreAttack/placementPreview'
++import NextPairPreview from './NextPairPreview'
+ import GalleryBoard from '../gallery/GalleryBoard'
+ 
+ function Steps({ snapshot }: { snapshot: ScoreAttackSnapshot }) {
+@@ -12,9 +14,13 @@
+     } catch { return false }
+   }, [moves, snapshot.grid])
+   const result = useMemo(() => valid ? replayPlacements(moves, step) : null, [valid, moves, step])
+-  if (!result) return <p role="alert">構築手順を再現できませんでした。</p>
++  const pairs = useMemo(() => valid ? getPlacementPreviewPairs(snapshot, step) : null, [valid, snapshot, step])
++  if (!result || !pairs) return <p role="alert">構築手順を再現できませんでした。</p>
+   return <div className="flex flex-col items-center gap-3">
+-    <GalleryBoard grid={result} size={18} fromRow={0} />
++    <div className="flex items-start justify-center gap-4" aria-label="手順の盤面と次の組">
++      <GalleryBoard grid={result} size={18} fromRow={0} pair={pairs.current} />
++      <NextPairPreview next={pairs.next} nextNext={pairs.nextNext} />
++    </div>
+     <p aria-live="polite">{step} / {count}手</p>
+     <div className="flex flex-wrap justify-center gap-2">
+       <button type="button" disabled={step === 0} onClick={() => setStep(old => old - 1)} className="border px-3 py-2 disabled:opacity-40">前の手</button>
+@@ -27,7 +33,7 @@
+   if (snapshot.moves === undefined) return null
+   return <div className="mt-5 border-t border-[#6f648d] pt-4">
+     <button type="button" aria-expanded={open} onClick={() => setOpen(old => !old)} className="border border-[#6f648d] px-3 py-2">
+-      {open ? '構築手順を閉じる' : '構築手順を見る'}
++      {open ? '手順を閉じる' : '手順を見る'}
+     </button>
+     {open && <div className="mt-4"><Steps snapshot={snapshot} /></div>}
+   </div>
+--- src/components/game/ScoreAttackGame.test.tsx before
++++ src/components/game/ScoreAttackGame.test.tsx after
+@@ -50,7 +50,7 @@
+   await act(async () => { for (const job of worker.jobs) job.resolve(evaluateScoreAttack(job.snapshot)) })
+   expect(screen.getByText('1000点')).toBeTruthy()
+   expect(within(list).getAllByRole('button').every(button => button.textContent === '100点')).toBe(true)
+-  fireEvent.click(screen.getByRole('button', { name: 'もう一度10回' }))
++  fireEvent.click(screen.getByRole('button', { name: 'もう一度' }))
+   expect(worker.dispose).toHaveBeenCalledOnce()
+   expect(manager.destroy).toHaveBeenCalledOnce()
+   expect(screen.queryByText('GTR 1 / 10')).toBeNull()
+--- src/components/game/ScoreAttackGame.tsx before
++++ src/components/game/ScoreAttackGame.tsx after
+@@ -105,7 +105,7 @@
+         {!run.ownerId && <p>ログインしてから始めたゲームは、100ゲームまで保存できます。</p>}
+         {run.ownerId && run.ownerId !== userId && <p>ユーザーが変わったため、このゲームは自動保存していません。</p>}
+         {saving.status === 'saving' && <p role="status">結果を保存中</p>}
+-        {saving.status === 'saved' && <p role="status">保存しました。お気に入りは自動で入れ替わりません。</p>}
++        {saving.status === 'saved' && <p role="status">保存しました。</p>}
+         {saving.error && <p role="alert" className="mt-2 text-[#ff9aa5]">{saving.error}</p>}
+         {saving.status === 'error' && <button type="button" onClick={saving.retry} className="mt-3 border px-3 py-2">保存をやり直す</button>}
+         {saving.saved && <button type="button" aria-pressed={saving.saved.favorite} disabled={saving.favoriteBusy}
+--- src/components/game/ScoreAttackResults.test.tsx before
++++ src/components/game/ScoreAttackResults.test.tsx after
+@@ -37,12 +37,12 @@
+   expect(buttons.map(button => button.textContent)).toEqual(Array.from({ length: 10 }, (_, index) => `${index * 10}点`))
+   expect(buttons.every(button => button.firstElementChild?.children.length === 24)).toBe(true)
+   expect(screen.getByText('450点')).toBeTruthy()
+-  expect(document.activeElement).toBe(screen.getByRole('heading', { name: '10回の合計' }))
++  expect(document.activeElement).toBe(screen.getByRole('heading', { name: 'TOTAL SCORE' }))
+   fireEvent.click(buttons[3])
+   const dialog = screen.getByRole('dialog', { name: '4回目の評価' })
+   expect(within(dialog).getAllByText('30点')).toHaveLength(2)
+   expect(within(dialog).getByLabelText('土台の消去アニメーション')).toBeTruthy()
+-  fireEvent.click(within(dialog).getByRole('button', { name: '一覧に戻る' }))
++  fireEvent.click(within(dialog).getByRole('button', { name: '戻る' }))
+   expect(screen.queryByRole('dialog')).toBeNull()
+   await waitFor(() => expect(document.activeElement).toBe(buttons[3]))
+   expect(screen.getByText('450点')).toBeTruthy()
+@@ -50,7 +50,7 @@
+   fireEvent(screen.getByRole('dialog'), new Event('cancel', { bubbles: true, cancelable: true }))
+   expect(screen.queryByRole('dialog')).toBeNull()
+   await waitFor(() => expect(document.activeElement).toBe(buttons[9]))
+-  fireEvent.click(screen.getByRole('button', { name: 'もう一度10回' }))
++  fireEvent.click(screen.getByRole('button', { name: 'もう一度' }))
+   fireEvent.click(screen.getByRole('button', { name: '終了' }))
+   expect(callbacks.onRestart).toHaveBeenCalledOnce()
+   expect(callbacks.onExit).toHaveBeenCalledOnce()
+--- src/components/game/ScoreAttackResults.tsx before
++++ src/components/game/ScoreAttackResults.tsx after
+@@ -24,7 +24,7 @@
+     className="w-[min(96vw,640px)] max-h-[94dvh] overflow-auto border border-[#6f648d] bg-[#171426] p-5 text-white shadow-pixel backdrop:bg-black/80">
+     <div className="flex flex-wrap items-center justify-between gap-3">
+       <h2 id="score-attack-detail-title" className="text-xl">{number}回目の評価</h2>
+-      <button ref={closeRef} type="button" onClick={onClose} className="border border-[#6f648d] px-3 py-2">一覧に戻る</button>
++      <button ref={closeRef} type="button" onClick={onClose} className="border border-[#6f648d] px-3 py-2">戻る</button>
+     </div>
+     <div className="mt-5 flex flex-wrap justify-center gap-6">
+       <FoundationChainPreview grid={round.snapshot.grid} />
+@@ -53,8 +53,8 @@
+     requestAnimationFrame(() => button?.focus({ preventScroll: true }))
+   }
+   return <section aria-label="スコアアタックの結果" className="mx-auto max-w-[800px] pixel-panel p-5 sm:p-8">
+-    <p className="text-sm text-[#b5a8ff]">SCORE ATTACK / 10 GTR</p>
+-    <h1 ref={headingRef} tabIndex={-1} className="mt-3 text-2xl outline-none">10回の合計</h1>
++    <p className="text-sm text-[#b5a8ff]">SCORE ATTACK</p>
++    <h1 ref={headingRef} tabIndex={-1} className="mt-3 text-2xl outline-none">TOTAL SCORE</h1>
+     <p aria-live="polite" className="mt-4 text-4xl text-[#ffe99b]">{state.totalScore === null ? '採点中' : `${state.totalScore}点`}</p>
+     <p className="mt-5 text-sm text-[#c4bfd3]">GTRの図を選ぶと、消える順番と評価を確認できます。</p>
+     <div aria-label="10回のGTRと点数一覧" className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-5">
+@@ -71,7 +71,7 @@
+       <button type="button" onClick={onRetry} className="mt-3 border border-[#6f648d] px-3 py-2 text-white">採点をやり直す</button>
+     </div>}
+     <div className="mt-8 flex flex-wrap gap-3">
+-      <button type="button" onClick={onRestart} className="bg-[#b5a8ff] px-4 py-3 text-[#0c0a14]">もう一度10回</button>
++      <button type="button" onClick={onRestart} className="bg-[#b5a8ff] px-4 py-3 text-[#0c0a14]">もう一度</button>
+       <button type="button" onClick={onExit} className="border border-[#6f648d] px-4 py-3">{exitLabel}</button>
+     </div>
+     {selected !== null && state.rounds[selected]?.evaluation && <EvaluationDialog
+--- src/game/scenes/ChainAnimationScenes.test.ts before
++++ src/game/scenes/ChainAnimationScenes.test.ts after
+@@ -1175,11 +1175,13 @@
+       board.grid[12][i % 6] = i % 2 ? PuyoColor.BLUE : PuyoColor.RED
+       scene.gameField.setField(board)
+       const submittedPair = structuredClone(scene.gameState.currentPair)
++      const queued = structuredClone([scene.gameState.nextPair, scene.gameState.nextNextPair])
+       scene.evaluateAndReset()
+       expect(onRound).toHaveBeenCalledTimes(i + 1)
+       const saved = onRound.mock.lastCall![0]
+       expect(saved.grid).toEqual(board.grid)
+       expect(saved.currentPair).toEqual(submittedPair)
++      expect([saved.nextPair, saved.nextNextPair]).toEqual(queued)
+       if (i < 9) {
+         expect(scene.gameField.getField().grid.flat().every((cell: unknown) => cell === null)).toBe(true)
+         expect(scene.isShowingResult).toBe(false)
+--- src/game/scenes/PuyoGame.ts before
++++ src/game/scenes/PuyoGame.ts after
+@@ -639,6 +639,7 @@
+     if (this.isDisposed || this.isShowingResult || this.isPaused || this.chainPlayback || this.isVisualStopped) return
+     const snapshot: ScoreAttackSnapshot = structuredClone({
+       grid: this.gameField.getField().grid, currentPair: this.gameState.currentPair, moves: this.placedMoves,
++      nextPair: this.gameState.nextPair, nextNextPair: this.gameState.nextNextPair,
+     })
+     this.submittedRounds++
+     this.actionInput?.suppressUntilRelease()
+--- src/game/scoreAttack/placementHistory.test.ts before
++++ src/game/scoreAttack/placementHistory.test.ts after
+@@ -43,3 +43,17 @@
+   expect(JSON.stringify(encoded).length).toBeLessThan(JSON.stringify(state).length / 3)
+   expect(JSON.stringify(encoded)).not.toContain('scoreExplanation')
+ })
++
++it('round-trips the optional queue without requiring it in existing v2 games', () => {
++  const snapshot = { grid: empty(), moves: '', currentPair: pair(PuyoColor.RED, 2, 1), nextPair: pair(PuyoColor.BLUE, 2, 1), nextNextPair: pair(PuyoColor.YELLOW, 2, 1) }
++  const state = { finished: true, totalScore: 0, rounds: Array.from({ length: 10 }, () => ({ snapshot, evaluation: evaluateScoreAttack(snapshot), error: null })) }
++  const encoded = encodeScoreAttackGame(state)
++  expect(encoded.rounds[0].next).toHaveLength(3)
++  expect(encoded.rounds[0].nextNext).toHaveLength(3)
++  expect(decodeScoreAttackGame(encoded).rounds[0].snapshot).toEqual(snapshot)
++  const old = structuredClone(encoded)
++  for (const round of old.rounds) { delete round.next; delete round.nextNext }
++  expect(decodeScoreAttackGame(old).rounds[0].snapshot.nextPair).toBeUndefined()
++  encoded.rounds[0].next = '___'
++  expect(() => decodeScoreAttackGame(encoded)).toThrow()
++})
+--- src/game/scoreAttack/storageCodec.ts before
++++ src/game/scoreAttack/storageCodec.ts after
+@@ -8,6 +8,8 @@
+   board: string
+   current: string | null
+   moves?: string
++  next?: string | null
++  nextNext?: string | null
+   score: number[]
+ }
+ export interface CompactScoreAttackGame { version: 2; scoringVersion: string; rounds: CompactScoreAttackRound[] }
+@@ -29,7 +31,9 @@
+ export function encodeScoreAttackGame(state: ScoreAttackState): CompactScoreAttackGame {
+   return { version: 2, scoringVersion: state.rounds[0].evaluation!.analysis.score.scoringVersion ?? GTR_SCORING_CONFIG.VERSION,
+     rounds: state.rounds.map(round => ({ board: encodeBoard(round.snapshot.grid), current: round.snapshot.currentPair ? encodePlacedPair(round.snapshot.currentPair) : null,
+-      ...(round.snapshot.moves !== undefined ? { moves: round.snapshot.moves } : {}), score: packScore(round.evaluation!.analysis.score) })) }
++      ...(round.snapshot.moves !== undefined ? { moves: round.snapshot.moves } : {}),
++      ...(round.snapshot.nextPair !== undefined ? { next: round.snapshot.nextPair ? encodePlacedPair(round.snapshot.nextPair) : null } : {}),
++      ...(round.snapshot.nextNextPair !== undefined ? { nextNext: round.snapshot.nextNextPair ? encodePlacedPair(round.snapshot.nextNextPair) : null } : {}), score: packScore(round.evaluation!.analysis.score) })) }
+ }
+ export function validateCompactScoreAttack(value: unknown): CompactScoreAttackGame {
+   const game = value as CompactScoreAttackGame
+@@ -40,6 +44,13 @@
+       round.score.some(value => typeof value !== 'number') || round.moves !== undefined && (typeof round.moves !== 'string' || !/^[A-Za-z0-9_-]*$/.test(round.moves) || round.moves.length % 3 || round.moves.length > 30000))
+       throw new Error('保存した結果が正しくありません')
+     decodeBoard(round.board); if (round.current !== null) decodePlacedPair(round.current)
++    for (const key of ['next', 'nextNext'] as const) {
++      const pair = round[key]
++      if (pair !== undefined && pair !== null) {
++        if (typeof pair !== 'string') throw new Error('保存した次の組が正しくありません')
++        decodePlacedPair(pair)
++      }
++    }
+     unpackScore(round.score, game.scoringVersion)
+   }
+   return game
+@@ -47,7 +58,9 @@
+ export function decodeScoreAttackGame(data: CompactScoreAttackGame): ScoreAttackState {
+   validateCompactScoreAttack(data)
+   const rounds = data.rounds.map(round => {
+-    const snapshot = { grid: decodeBoard(round.board), currentPair: round.current === null ? null : decodePlacedPair(round.current), moves: round.moves }
++    const snapshot = { grid: decodeBoard(round.board), currentPair: round.current === null ? null : decodePlacedPair(round.current), moves: round.moves,
++      ...(round.next !== undefined ? { nextPair: round.next === null ? null : decodePlacedPair(round.next) } : {}),
++      ...(round.nextNext !== undefined ? { nextNextPair: round.nextNext === null ? null : decodePlacedPair(round.nextNext) } : {}) }
+     const score = unpackScore(round.score, data.scoringVersion)
+     return { snapshot, evaluation: { analysis: analyzeGTR(snapshot.grid, snapshot.currentPair, score) }, error: null }
+   })
+--- src/game/scoreAttack/types.ts before
++++ src/game/scoreAttack/types.ts after
+@@ -3,7 +3,7 @@
+ import type { GTRAnalysis } from '../advisor/GTRAnalysis'
+ 
+ export const SCORE_ATTACK_ROUNDS = 10
+-export interface ScoreAttackSnapshot { grid: PuyoGrid; currentPair: PuyoPair | null; moves?: string }
++export interface ScoreAttackSnapshot { grid: PuyoGrid; currentPair: PuyoPair | null; moves?: string; nextPair?: PuyoPair | null; nextNextPair?: PuyoPair | null }
+ export interface ScoreAttackEvaluation { analysis: GTRAnalysis }
+ export interface ScoreAttackRound {
+   snapshot: ScoreAttackSnapshot
+--- /dev/null
++++ src/game/scoreAttack/placementPreview.ts
+@@ -0,0 +1,19 @@
++import { isSpawnBlocked } from '../core/ChainSimulator'
++import type { PuyoPair } from '../core/types'
++import { decodePlacedPair } from './placementHistory'
++import type { ScoreAttackSnapshot } from './types'
++
++/** Replay colours at spawn; placed coordinates/rotation belong to the completed turn. */
++function atSpawn(pair: PuyoPair | null | undefined): PuyoPair | null {
++  return pair ? { main: { color: pair.main.color, x: 2, y: 1 }, sub: { color: pair.sub.color, x: 2, y: 0 }, rotation: 0, falling: true } : null
++}
++export function getPlacementPreviewPairs(snapshot: ScoreAttackSnapshot, step: number) {
++  const moves = snapshot.moves ?? '', count = moves.length / 3
++  if (moves.length % 3 || !Number.isInteger(step) || step < 0 || step > count) throw new Error('手順が正しくありません')
++  const terminal = isSpawnBlocked(snapshot.grid)
++  const tail = terminal ? [snapshot.nextPair, snapshot.nextNextPair]
++    : [snapshot.currentPair, snapshot.nextPair, snapshot.nextNextPair]
++  const read = (index: number) => atSpawn(index < count ? decodePlacedPair(moves.slice(index * 3, index * 3 + 3)) : tail[index - count])
++  const stopped = terminal && step === count
++  return { current: stopped ? null : read(step), next: read(step + (stopped ? 0 : 1)), nextNext: read(step + (stopped ? 1 : 2)) }
++}
+--- /dev/null
++++ src/game/scoreAttack/placementPreview.test.ts
+@@ -0,0 +1,44 @@
++import { expect, it } from 'vitest'
++import { PuyoColor as C, type PuyoPair } from '../core/types'
++import { encodePlacedPair, replayPlacements } from './placementHistory'
++import { getPlacementPreviewPairs } from './placementPreview'
++const pair = (main: C, sub: C, x = 2, y = 1): PuyoPair => ({ main: { color: main, x, y }, sub: { color: sub, x, y: y - 1 }, rotation: 0, falling: true })
++const placed = [pair(C.RED, C.BLUE, 0, 12), pair(C.GREEN, C.YELLOW, 2, 12), pair(C.BLUE, C.RED, 4, 12)]
++const moves = placed.map(encodePlacedPair).join('')
++const snapshot = { moves, grid: replayPlacements(moves), currentPair: pair(C.YELLOW, C.GREEN), nextPair: pair(C.RED, C.YELLOW), nextNextPair: pair(C.GREEN, C.BLUE) }
++const colours = (p: PuyoPair | null) => p ? [p.main.color, p.sub.color] : null
++it('follows the committed sequence, then the saved current and both tail pairs', () => {
++  const original = structuredClone(snapshot)
++  const first = getPlacementPreviewPairs(snapshot, 0)
++  expect(colours(first.current)).toEqual(colours(placed[0]))
++  expect(first.current?.main).toMatchObject({ x: 2, y: 1 })
++  expect(colours(first.next)).toEqual(colours(placed[1]))
++  expect(colours(first.nextNext)).toEqual(colours(placed[2]))
++  const beforeLast = getPlacementPreviewPairs(snapshot, 2)
++  expect(colours(beforeLast.next)).toEqual(colours(snapshot.currentPair))
++  expect(colours(beforeLast.nextNext)).toEqual(colours(snapshot.nextPair))
++  const last = getPlacementPreviewPairs(snapshot, 3)
++  expect(colours(last.current)).toEqual(colours(snapshot.currentPair))
++  expect(colours(last.next)).toEqual(colours(snapshot.nextPair))
++  expect(colours(last.nextNext)).toEqual(colours(snapshot.nextNextPair))
++  expect(snapshot).toEqual(original)
++})
++it('keeps missing legacy tail slots unknown and validates step bounds', () => {
++  const { nextPair: _next, nextNextPair: _nextNext, ...legacy } = snapshot
++  expect(getPlacementPreviewPairs(legacy, 0).nextNext).not.toBeNull()
++  expect(getPlacementPreviewPairs(legacy, 3)).toMatchObject({ next: null, nextNext: null })
++  expect(() => getPlacementPreviewPairs(legacy, -1)).toThrow()
++  expect(() => getPlacementPreviewPairs(legacy, 4)).toThrow()
++})
++it('does not repeat a terminal placed pair as the current or shift the queue twice', () => {
++  const terminal = structuredClone(snapshot)
++  terminal.grid[0][2] = C.BLUE
++  const before = getPlacementPreviewPairs(terminal, 2)
++  expect(colours(before.current)).toEqual(colours(placed[2]))
++  expect(colours(before.next)).toEqual(colours(terminal.nextPair))
++  expect(colours(before.nextNext)).toEqual(colours(terminal.nextNextPair))
++  const final = getPlacementPreviewPairs(terminal, 3)
++  expect(final.current).toBeNull()
++  expect(colours(final.next)).toEqual(colours(terminal.nextPair))
++  expect(colours(final.nextNext)).toEqual(colours(terminal.nextNextPair))
++})
+--- /dev/null
++++ src/components/game/NextPairPreview.tsx
+@@ -0,0 +1,29 @@
++import atlasUrl from '../../assets/puyo/atlas.png?url'
++import manifest from '../../assets/puyo/manifest.json'
++import type { PuyoPair } from '../../game/core/types'
++
++function Pair({ pair }: { pair: PuyoPair | null }) {
++  if (!pair) return <span className="flex h-9 items-center justify-center text-[#c4bfd3]" aria-label="未記録">—</span>
++  return <div className="flex flex-col items-center">
++    {[pair.sub, pair.main].map((puyo, index) => {
++      const frame = manifest.frames[`${puyo.color}/idle` as keyof typeof manifest.frames]
++      return <span key={index} data-color={puyo.color} className="relative block h-[18px] w-[18px] overflow-hidden" aria-label={puyo.color}>
++        <img src={atlasUrl} alt="" draggable={false} className="absolute max-w-none" style={{ width: 448 * 18 / 24, height: 336 * 18 / 24,
++          left: -frame.rect[0] * 18 / 24, top: -frame.rect[1] * 18 / 24, imageRendering: 'pixelated' }} />
++      </span>
++    })}
++  </div>
++}
++export default function NextPairPreview({ next, nextNext }: { next: PuyoPair | null; nextNext: PuyoPair | null }) {
++  return <div className="relative h-36 w-[72px] shrink-0" aria-label="次の組">
++    <svg className="absolute inset-0" width="72" height="144" viewBox="0 0 72 144" aria-hidden="true">
++      <path d="M 0.5 0.5 H 59.5 V 72.5 H 71.5 V 143.5 H 12.5 V 71.5 H 0.5 Z" fill="#211d33" stroke="#4d4568" />
++    </svg>
++    <div className="absolute left-0 top-2 w-[60px] text-center" role="group" aria-label="NEXT">
++      <p className="mb-2 text-[10px] text-[#f6f2ff]">NEXT</p><Pair pair={next} />
++    </div>
++    <div className="absolute left-3 top-20 w-[60px] text-center" role="group" aria-label="NEXT2">
++      <p className="mb-2 text-[10px] text-[#f6f2ff]">NEXT2</p><Pair pair={nextNext} />
++    </div>
++  </div>
++}
+--- /dev/null
++++ src/components/game/PlacementHistoryPreview.test.tsx
+@@ -0,0 +1,40 @@
++// @vitest-environment jsdom
++import { afterEach, expect, it } from 'vitest'
++import { cleanup, fireEvent, render, screen } from '@testing-library/react'
++import { PuyoColor as C, type PuyoPair } from '../../game/core/types'
++import { encodePlacedPair, replayPlacements } from '../../game/scoreAttack/placementHistory'
++import PlacementHistoryPreview from './PlacementHistoryPreview'
++afterEach(cleanup)
++const pair = (main: C, sub: C, x = 2, y = 1): PuyoPair => ({ main: { color: main, x, y }, sub: { color: sub, x, y: y - 1 }, rotation: 0, falling: true })
++const moves = [pair(C.RED, C.BLUE, 0, 12), pair(C.GREEN, C.YELLOW, 2, 12), pair(C.BLUE, C.RED, 4, 12)].map(encodePlacedPair).join('')
++const snapshot = { moves, grid: replayPlacements(moves), currentPair: pair(C.YELLOW, C.GREEN), nextPair: pair(C.RED, C.YELLOW), nextNextPair: pair(C.GREEN, C.BLUE) }
++const queue = (label: string) => [...screen.getByRole('group', { name: label }).querySelectorAll('[data-color]')].map(el => el.getAttribute('data-color'))
++it('updates both previews when moving forward and backward, including the saved tail', () => {
++  render(<PlacementHistoryPreview snapshot={snapshot} />)
++  fireEvent.click(screen.getByRole('button', { name: '手順を見る' }))
++  expect(queue('NEXT')).toEqual(['yellow', 'green'])
++  expect(queue('NEXT2')).toEqual(['red', 'blue'])
++  const next = screen.getByRole('button', { name: '次の手' })
++  fireEvent.click(next)
++  expect(queue('NEXT')).toEqual(['red', 'blue'])
++  expect(queue('NEXT2')).toEqual(['green', 'yellow'])
++  fireEvent.click(screen.getByRole('button', { name: '前の手' }))
++  expect(queue('NEXT')).toEqual(['yellow', 'green'])
++  for (let i = 0; i < 3; i++) fireEvent.click(next)
++  expect(queue('NEXT')).toEqual(['yellow', 'red'])
++  expect(queue('NEXT2')).toEqual(['blue', 'green'])
++  expect((next as HTMLButtonElement).disabled).toBe(true)
++  fireEvent.click(screen.getByRole('button', { name: '手順を閉じる' }))
++  expect(screen.queryByRole('group', { name: 'NEXT' })).toBeNull()
++})
++it('shows unknown legacy tail pairs and keeps invalid histories out of playback', () => {
++  const legacy = { moves: '', grid: replayPlacements(''), currentPair: null }
++  const view = render(<PlacementHistoryPreview snapshot={legacy} />)
++  fireEvent.click(screen.getByRole('button', { name: '手順を見る' }))
++  expect(screen.getAllByLabelText('未記録')).toHaveLength(2)
++  view.unmount()
++  render(<PlacementHistoryPreview snapshot={{ ...legacy, moves: '!' }} />)
++  fireEvent.click(screen.getByRole('button', { name: '手順を見る' }))
++  expect(screen.getByRole('alert')).toBeTruthy()
++  expect(screen.queryByRole('group', { name: 'NEXT' })).toBeNull()
++})

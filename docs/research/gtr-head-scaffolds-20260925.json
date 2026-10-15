@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "date": "2026-09-25",
+  "purpose": "発火不能な仕込みと、GTR本体の早消しリスクを区別する学習用データ。ゲームの推薦正解ラベルではない。",
+  "format": "rowsは上から下、上部空行を省略、6列13行。R/G/B/Yは赤/緑/青/黄。columnは1始まり。singleDropsは列上端への単ぷよ仮置きで、実供給・成功率ではない。",
+  "scaffoldProvenance": "資料の原則と利用者の希望から本プロジェクトで作成した模式例。記事の画像転記ではない。baseRowsは既存の利用者参照土台（左の理想形）。",
+  "baseRows": [".....R", "RGYBBR", "RRGYYB", "GGYRRB"],
+  "scaffolds": [
+    {
+      "id": "horizontal-three",
+      "rows": ["BBB..R", "RGYBBR", "RRGYYB", "GGYRRB"],
+      "headCells": [[1, 4], [2, 4], [3, 4]],
+      "singleDrops": [{"column": 1, "color": "R"}, {"column": 2, "color": "B"}]
+    },
+    {
+      "id": "left-high-L",
+      "rows": ["B.....", "BB...R", "RGYBBR", "RRGYYB", "GGYRRB"],
+      "headCells": [[1, 4], [2, 4], [1, 5]],
+      "singleDrops": [{"column": 1, "color": "R"}, {"column": 2, "color": "B"}]
+    },
+    {
+      "id": "right-high-L",
+      "rows": [".B....", "BB...R", "RGYBBR", "RRGYYB", "GGYRRB"],
+      "headCells": [[1, 4], [2, 4], [2, 5]],
+      "singleDrops": [{"column": 1, "color": "R"}, {"column": 2, "color": "B"}]
+    }
+  ],
+  "expectedScaffolds": {
+    "stableChains": 0,
+    "noSingleDropChainAtLeast": 5,
+    "setupDropChains": 0,
+    "completedChains": 6,
+    "completedLeftovers": 0,
+    "clearColors": ["B", "R", "G", "Y", "B", "R"],
+    "originalFoundationOffset": 1
+  },
+  "feedback": {
+    "capturedAt": "2026-09-24T18:35:52.589Z",
+    "attachmentId": "2bc8fe74-4879-4c6e-b75e-bd8a8b0a9903",
+    "rows": [".R....", ".B....", ".G...R", ".B..GB", ".BGGBG", "YBGYRR", "YYBGGY", "BBGRRR"],
+    "recordedMoves": [
+      {"pair": "BB", "column": 2, "rotation": 3},
+      {"pair": "YG", "column": 2, "rotation": 1},
+      {"pair": "RG", "column": 4, "rotation": 0},
+      {"pair": "YB", "column": 1, "rotation": 1},
+      {"pair": "RR", "column": 6, "rotation": 3},
+      {"pair": "YR", "column": 6, "rotation": 0},
+      {"pair": "GG", "column": 6, "rotation": 3},
+      {"pair": "BB", "column": 3, "rotation": 3},
+      {"pair": "BY", "column": 2, "rotation": 3},
+      {"pair": "BR", "column": 6, "rotation": 0},
+      {"pair": "GB", "column": 2, "rotation": 0},
+      {"pair": "RG", "column": 2, "rotation": 1},
+      {"pair": "BR", "column": 5, "rotation": 2},
+      {"pair": "GY", "column": 3, "rotation": 1},
+      {"pair": "GG", "column": 5, "rotation": 3}
+    ],
+    "visiblePairs": ["GG", "BR", "RG"],
+    "hazardProbe": {
+      "note": "CURRENTへの推薦ではない。記録されたNEXTの青赤を今の左端へ置く反実仮想で、接触リスクを確かめる。",
+      "pair": "BR", "column": 1, "rotation": 0,
+      "chains": 2, "firstClearColor": "B",
+      "firstClearedOriginalCells": [[2, 3], [2, 4], [2, 5]]
+    }
+  },
+  "limitations": [
+    "単ぷよの接続確認は、実際の2個組の相方・ツモ順・操作到達性の証明ではない。",
+    "1個では発火できないことを調べるのは全6列×4色。任意の長さの仕込みを網羅しない。",
+    "青3連結は即時消去ではない。追加ぷよによる消去順の変化をリスクとして扱い、縦3一般は禁止しない。",
+    "全24色置換で形の成立を確認するが、独立した実ゲーム24件とは数えない。"
+  ]
+}

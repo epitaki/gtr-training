@@ -1,0 +1,9 @@
+{
+  "source": "User feedback captured 2026-09-25T00:37:24.552Z; placements are observations, not universal correct labels.",
+  "pairs": ["RG", "RG", "GR", "YY", "GB", "BB", "BB", "YY", "RG", "GB", "GB", "RG", "YB", "YY"],
+  "placements": [[0,0], [1,0], [0,1], [4,3], [4,0], [5,0], [1,0], [5,0], [2,2], [3,0], [2,3]],
+  "recordedRows": [".B....", ".B....", ".B...Y", "GRGBBY", "GGRGGB", "RRGYYB"],
+  "horizontalRows": ["BBB..Y", "GRGBBY", "GGRGGB", "RRGYYB"],
+  "beforeSeventhRows": ["GR..B.", "GG..GB", "RR.YYB"],
+  "beforeEleventhHorizontalRows": ["BB...Y", "GR.BBY", "GGRGGB", "RRGYYB"]
+}

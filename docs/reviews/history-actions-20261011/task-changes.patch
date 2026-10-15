@@ -1,0 +1,175 @@
+--- before/src/App.tsx
++++ after/src/App.tsx
+@@ -31,7 +31,6 @@
+   const [replayRevision, setReplayRevision] = useState(0)
+   const [galleryOpen, setGalleryOpen] = useState(false)
+   const [historyOpen, setHistoryOpen] = useState(false)
+-  const [scoreAttackRevision, setScoreAttackRevision] = useState(0)
+   const replaySession = useRef(initialReplay.current.status === 'valid')
+ 
+   useEffect(() => {
+@@ -120,7 +119,7 @@
+       case 'guided':
+         return <GuidedGame key={replayRevision} onExit={handleExitGame} suspended={galleryOpen || historyOpen || accountOpen} />
+       case 'score-attack':
+-        return <ScoreAttackGame key={scoreAttackRevision} onExit={handleExitGame} suspended={galleryOpen || historyOpen || accountOpen} userId={account.profile?.id} savedGameUpdate={historyUpdate?.identity === accountIdentity ? historyUpdate.game : undefined} />
++        return <ScoreAttackGame onExit={handleExitGame} suspended={galleryOpen || historyOpen || accountOpen} userId={account.profile?.id} savedGameUpdate={historyUpdate?.identity === accountIdentity ? historyUpdate.game : undefined} />
+       case 'battle':
+         return (
+           <div className="text-center py-12 font-puyo">
+@@ -163,7 +162,7 @@
+         userId={account.profile?.id} checking={account.status === 'loading' && !account.profile}
+         onChanged={game => setHistoryUpdate({ identity: accountIdentity, game })}
+         onLogin={openAccount} onReturn={() => setHistoryOpen(false)} returnLabel={currentMode === 'top' ? 'ホームに戻る' : '練習に戻る'}
+-        onRestart={() => { handleSelectMode('score-attack'); setScoreAttackRevision(old => old + 1) }} /></div>}
++        /></div>}
+       {accountOpen && <AccountDialog account={account} onClose={closeAccount} />}
+     </MainLayout>
+   )
+--- before/src/App.history.test.tsx
++++ after/src/App.history.test.tsx
+@@ -24,7 +24,7 @@
+ } }))
+ vi.mock('./components/game/ScoreAttackResults', () => ({ default: ({ state, onExit, onRestart }: any) => <section>
+   <p>保存結果 {state.rounds.length}回 {state.totalScore}点</p>
+-  <button onClick={onExit}>履歴に戻る</button><button onClick={onRestart}>もう一度</button>
++  <button onClick={onExit}>履歴に戻る</button>{onRestart && <button onClick={onRestart}>もう一度</button>}
+ </section> }))
+ 
+ const userA = '11111111-1111-4111-8111-111111111111'
+@@ -48,7 +48,7 @@
+   fireEvent.click(menu('ログイン'))
+   expect(screen.getByRole('dialog', { name: 'アカウント' })).toBeTruthy()
+ })
+-it('opens a saved game from the list and starts a fresh score game from its results', async () => {
++it('opens a saved game without restart and resumes the same score game from the left menu', async () => {
+   fake.profile = profile(); fake.list.mockResolvedValue([game()])
+   render(<App />)
+   fireEvent.click(menu('スコアアタック'))
+@@ -57,11 +57,13 @@
+   expect(screen.getByTestId('score').getAttribute('data-suspended')).toBe('true')
+   fireEvent.click(await screen.findByRole('button', { name: /0点/ }))
+   expect(screen.getByText('保存結果 10回 0点')).toBeTruthy()
++  expect(screen.queryByRole('button', { name: '練習に戻る' })).toBeNull()
++  expect(screen.queryByRole('button', { name: 'もう一度' })).toBeNull()
+   fireEvent.click(menu('履歴に戻る'))
+   fireEvent.click(screen.getByRole('button', { name: /0点/ }))
+-  fireEvent.click(menu('もう一度'))
++  fireEvent.click(menu('スコアアタック'))
+   expect(menu('スコアアタック').getAttribute('aria-current')).toBe('page')
+-  expect(screen.getByTestId('score').getAttribute('data-instance')).not.toBe(old)
++  expect(screen.getByTestId('score').getAttribute('data-instance')).toBe(old)
+   expect(screen.getByTestId('score').getAttribute('data-suspended')).toBe('false')
+ })
+ it('pauses the same practice instance during history and resumes it on return', async () => {
+@@ -72,7 +74,7 @@
+   fireEvent.click(menu('履歴'))
+   await screen.findByText('保存したゲームはまだありません。')
+   expect(screen.getByTestId('guided').getAttribute('data-suspended')).toBe('true')
+-  fireEvent.click(menu('練習に戻る'))
++  fireEvent.click(menu('ガイド練習'))
+   expect(screen.getByTestId('guided').getAttribute('data-instance')).toBe(instance)
+   expect(screen.getByTestId('guided').getAttribute('data-suspended')).toBe('false')
+ })
+@@ -106,7 +108,7 @@
+   Object.defineProperty(HTMLDialogElement.prototype, 'showModal', { configurable: true, value: showModal })
+   Object.defineProperty(HTMLDialogElement.prototype, 'close', { configurable: true, value: vi.fn() })
+   const onClose = vi.fn()
+-  render(<ScoreAttackHistory userId={userA} onClose={onClose} onRestart={vi.fn()} />)
++  render(<ScoreAttackHistory userId={userA} onClose={onClose} />)
+   await screen.findByText('保存したゲームはまだありません。')
+   expect(showModal).toHaveBeenCalledOnce()
+   fireEvent.click(menu('閉じる'))
+@@ -120,7 +122,7 @@
+   fireEvent.click(menu('履歴'))
+   fireEvent.click(await screen.findByRole('button', { name: '☆ お気に入り' }))
+   await screen.findByRole('button', { name: '★ お気に入り' })
+-  fireEvent.click(menu('練習に戻る'))
++  fireEvent.click(menu('スコアアタック'))
+   expect(screen.getByTestId('score').getAttribute('data-favorite')).toBe('true')
+   fake.profile = profile(userB); view.rerender(<App />)
+   expect(screen.getByTestId('score').getAttribute('data-favorite')).toBe('undefined')
+--- before/src/components/game/ScoreAttackHistory.tsx
++++ after/src/components/game/ScoreAttackHistory.tsx
+@@ -3,12 +3,13 @@
+ import { listScoreAttackGames, setScoreAttackFavorite, type SavedScoreAttackGame } from '../../lib/scoreAttackHistory'
+ import ScoreAttackResults from './ScoreAttackResults'
+ 
+-export default function ScoreAttackHistory({ userId, onClose, onRestart, onChanged = () => {}, presentation = 'dialog', returnLabel = '閉じる' }: {
+-  userId: string; onClose: () => void; onRestart: () => void; onChanged?: (game: SavedScoreAttackGame) => void
++export default function ScoreAttackHistory({ userId, onClose, onChanged = () => {}, presentation = 'dialog', returnLabel = '閉じる' }: {
++  userId: string; onClose: () => void; onChanged?: (game: SavedScoreAttackGame) => void
+   presentation?: 'dialog' | 'page'; returnLabel?: string
+ }) {
+   const dialogRef = useRef<HTMLDialogElement>(null)
+   const closeRef = useRef<HTMLButtonElement>(null)
++  const headingRef = useRef<HTMLHeadingElement>(null)
+   const [games, setGames] = useState<SavedScoreAttackGame[]>([])
+   const [selected, setSelected] = useState<string | null>(null)
+   const [error, setError] = useState<string | null>(null)
+@@ -21,7 +22,8 @@
+   useEffect(() => {
+     const dialog = dialogRef.current
+     if (presentation === 'dialog') dialog?.showModal()
+-    closeRef.current?.focus()
++    if (presentation === 'dialog') closeRef.current?.focus()
++    else headingRef.current?.focus()
+     return () => { dialog?.close(); generation.current++ }
+   }, [presentation])
+   useEffect(() => {
+@@ -44,8 +46,8 @@
+   }
+   const content = <>
+     <div className="mb-5 flex items-center justify-between gap-3">
+-      <h2 id="score-history-title" className="text-xl">{presentation === 'page' ? '履歴' : '保存したゲーム'} {loading ? '' : `(${games.length}/100)`}</h2>
+-      <button ref={closeRef} type="button" onClick={onClose} className="border border-[#6f648d] px-3 py-2">{returnLabel}</button>
++      <h2 ref={headingRef} tabIndex={-1} id="score-history-title" className="text-xl">{presentation === 'page' ? '履歴' : '保存したゲーム'} {loading ? '' : `(${games.length}/100)`}</h2>
++      {presentation === 'dialog' && <button ref={closeRef} type="button" onClick={onClose} className="border border-[#6f648d] px-3 py-2">{returnLabel}</button>}
+     </div>
+     {presentation === 'page' && <p className="mb-4 text-sm text-[#c4bfd3]">保存したスコアアタックのゲームを選ぶと、結果と手順を確認できます。</p>}
+     {loading && <p role="status">履歴を読み込み中</p>}
+@@ -65,7 +67,7 @@
+       </ul>
+     </>}
+     {selectedGame && selectedState && <ScoreAttackResults key={selectedGame.id} state={selectedState}
+-      onExit={() => setSelected(null)} exitLabel="履歴に戻る" onRetry={() => {}} onRestart={onRestart} />}
++      onExit={() => setSelected(null)} exitLabel="履歴に戻る" onRetry={() => {}} />}
+   </>
+   return presentation === 'page' ? <section aria-labelledby="score-history-title" className="mx-auto max-w-5xl border border-[#6f648d] bg-[#171426] p-4 text-white sm:p-6">{content}</section> :
+     <dialog ref={dialogRef} aria-labelledby="score-history-title"
+--- before/src/components/game/SavedGamesPage.tsx
++++ after/src/components/game/SavedGamesPage.tsx
+@@ -1,10 +1,10 @@
+ import type { SavedScoreAttackGame } from '../../lib/scoreAttackHistory'
+ import ScoreAttackHistory from './ScoreAttackHistory'
+ 
+-export default function SavedGamesPage({ userId, checking, onLogin, onReturn, onRestart, returnLabel, onChanged }: {
+-  userId?: string; checking: boolean; onLogin: () => void; onReturn: () => void; onRestart: () => void; returnLabel: string; onChanged: (game: SavedScoreAttackGame) => void
++export default function SavedGamesPage({ userId, checking, onLogin, onReturn, returnLabel, onChanged }: {
++  userId?: string; checking: boolean; onLogin: () => void; onReturn: () => void; returnLabel: string; onChanged: (game: SavedScoreAttackGame) => void
+ }) {
+-  if (userId) return <ScoreAttackHistory userId={userId} onClose={onReturn} onRestart={onRestart} onChanged={onChanged} presentation="page" returnLabel={returnLabel} />
++  if (userId) return <ScoreAttackHistory userId={userId} onClose={onReturn} onChanged={onChanged} presentation="page" returnLabel={returnLabel} />
+   return <section aria-labelledby="saved-games-title" className="mx-auto max-w-5xl border border-[#6f648d] bg-[#171426] p-4 text-white sm:p-6">
+     <h2 id="saved-games-title" className="text-xl">履歴</h2>
+     {checking ? <p role="status" className="mt-4">ログインを確認中...</p> : <>
+--- before/src/components/game/ScoreAttackResults.tsx
++++ after/src/components/game/ScoreAttackResults.tsx
+@@ -40,7 +40,7 @@
+ }
+ 
+ export default function ScoreAttackResults({ state, onRestart, onExit, onRetry, exitLabel = '終了' }: {
+-  state: ScoreAttackState; onRestart: () => void; onExit: () => void; onRetry: () => void; exitLabel?: string
++  state: ScoreAttackState; onRestart?: () => void; onExit: () => void; onRetry: () => void; exitLabel?: string
+ }) {
+   const [selected, setSelected] = useState<number | null>(null)
+   const headingRef = useRef<HTMLHeadingElement>(null)
+@@ -71,7 +71,7 @@
+       <button type="button" onClick={onRetry} className="mt-3 border border-[#6f648d] px-3 py-2 text-white">採点をやり直す</button>
+     </div>}
+     <div className="mt-8 flex flex-wrap gap-3">
+-      <button type="button" onClick={onRestart} className="bg-[#b5a8ff] px-4 py-3 text-[#0c0a14]">もう一度</button>
++      {onRestart && <button type="button" onClick={onRestart} className="bg-[#b5a8ff] px-4 py-3 text-[#0c0a14]">もう一度</button>}
+       <button type="button" onClick={onExit} className="border border-[#6f648d] px-4 py-3">{exitLabel}</button>
+     </div>
+     {selected !== null && state.rounds[selected]?.evaluation && <EvaluationDialog

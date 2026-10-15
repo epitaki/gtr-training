@@ -1,0 +1,167 @@
+{
+  "mode": "guide",
+  "grid": [
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      "red"
+    ],
+    [
+      "red",
+      "green",
+      "yellow",
+      "blue",
+      "blue",
+      "red"
+    ],
+    [
+      "red",
+      "red",
+      "green",
+      "yellow",
+      "yellow",
+      "blue"
+    ],
+    [
+      "green",
+      "green",
+      "yellow",
+      "red",
+      "red",
+      "blue"
+    ]
+  ],
+  "current": {
+    "main": {
+      "color": "red",
+      "x": 0,
+      "y": 9
+    },
+    "sub": {
+      "color": "blue",
+      "x": 0,
+      "y": 8
+    },
+    "rotation": 0,
+    "falling": true
+  },
+  "next": {
+    "main": {
+      "color": "yellow",
+      "x": 2,
+      "y": 1
+    },
+    "sub": {
+      "color": "blue",
+      "x": 2,
+      "y": 0
+    },
+    "rotation": 0,
+    "falling": true
+  },
+  "nextNext": {
+    "main": {
+      "color": "green",
+      "x": 2,
+      "y": 1
+    },
+    "sub": {
+      "color": "red",
+      "x": 2,
+      "y": 0
+    },
+    "rotation": 0,
+    "falling": true
+  },
+  "score": 0,
+  "gtrCount": 0,
+  "gtrScore": 0,
+  "playing": true,
+  "paused": true,
+  "rendererPresent": true,
+  "display": {
+    "total": 81,
+    "chainObjects": 21
+  },
+  "visibility": "visible",
+  "historyLength": 1,
+  "turns": 0,
+  "randomState": 123456,
+  "advisorEnabled": false,
+  "evaluationTexts": []
+}

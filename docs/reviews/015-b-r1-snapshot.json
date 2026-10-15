@@ -1,0 +1,76 @@
+{
+  "id": "015-b-r1",
+  "date": "2026-09-26",
+  "root": "C:\\Users\\sunpe\\CascadeProjects\\gtr-training",
+  "baseline": "C:/Users/sunpe/AppData/Local/Temp/gtr-pixel-b-baseline-9801c98499794e30a6da9ae7ec4711ac",
+  "files": [
+    {
+      "path": "scripts/assets/build_puyo.py",
+      "sha256": "5687257a257ddbd0633879011a0cfb298af6a17c53e5d65855060ad735308dc5"
+    },
+    {
+      "path": "scripts/assets/test_puyo_assets.py",
+      "sha256": "f3967e12270e079252c65e68321a1c5d905aa3c4856db44c57bc47421d838adc"
+    },
+    {
+      "path": "src/assets/puyo/atlas.png",
+      "sha256": "eeb01076434aa80fda9f0db84e6af2d10470b79e9c666657c7b2df788d609609"
+    },
+    {
+      "path": "src/assets/puyo/manifest.json",
+      "sha256": "81dcf69d162644d208c45ecb41ae1327b78aa2043255b99db2eac7c605d80a3e"
+    },
+    {
+      "path": "src/assets/puyo/README.md",
+      "sha256": "305c89e898b5d18856f3382f70364ca0e48b078e6627673cc6f964eec9402584"
+    },
+    {
+      "path": "assets/puyo/source/production-v1/motion-master.png",
+      "sha256": "df91f41efb0aa2a1a9b42c902253d5407e071612bcded48b9598c459767176a5"
+    },
+    {
+      "path": "assets/puyo/source/production-v1/parts-master.png",
+      "sha256": "2e0a7dd230ef6ebcb7dc14c4c03157c495597b47cc4b4d5dbcbd389a5343d63f"
+    },
+    {
+      "path": "assets/puyo/source/production-v1/PROMPTS.md",
+      "sha256": "b32e4dbda59218f76324275dc6145711db0840eeafa2b70171ca2127c4ca507e"
+    },
+    {
+      "path": "assets/puyo/source/production-v1/pixels.json",
+      "sha256": "f1033f6cdbb126862080170b1e2fb85679666c36599d3235df31260b2ae6edc0"
+    },
+    {
+      "path": "assets/puyo/source/production-v1/qa-preview.png",
+      "sha256": "646faa2a784eb76d53c2fcd9644c08ca7c90992ab7dd2401b178625a83806494"
+    },
+    {
+      "path": "assets/puyo/source/production-v1/qa-preview.html",
+      "sha256": "4b1bbd502b7dba5146cea14d312a0d60353c1bddbc5fe724991ce6dae30ddc0d"
+    },
+    {
+      "path": "assets/puyo/source/puyo-8bit-concept-v1.png",
+      "sha256": "4b97cb13ea07aa6feed65edf69cd10c9e89c51d32cc8c4a47b4977b00d3ff36a"
+    },
+    {
+      "path": "assets/puyo/source/CONCEPT-PROMPTS.md",
+      "sha256": "18866684d5e36be0d0a162345ab1d176604188defa79a67e4784002a6a678b5f"
+    },
+    {
+      "path": "assets/puyo/source/README.md",
+      "sha256": "3a1f14d736d214338d3a1f39789515d5c13f248032127512e45cac28914a4383"
+    },
+    {
+      "path": "docs/PUYO-PIXEL-PRODUCTION.md",
+      "sha256": "7365d3ab99f59f76e4a7c5c51b1bc93188f7e1467a9fee2bd3863c78ab77e977"
+    },
+    {
+      "path": "docs/PUYO-PIXEL-ART-DESIGN.md",
+      "sha256": "5f068094e26462bbe8775563a9444627efb0a3f45380c23ad52d1a56535d26c9"
+    },
+    {
+      "path": "docs/CHAIN-ANIMATION-DESIGN.md",
+      "sha256": "5f3d87d28a763278d3dc6ec28b109dbdedb47e333fe756b8526c3c329f9b2c73"
+    }
+  ]
+}

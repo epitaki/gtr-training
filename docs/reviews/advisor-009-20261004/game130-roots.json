@@ -1,0 +1,299 @@
+{
+  "gameIndex": 130,
+  "turn": 20,
+  "visiblePairs": [
+    {
+      "main": "blue",
+      "sub": "red"
+    },
+    {
+      "main": "red",
+      "sub": "red"
+    },
+    {
+      "main": "blue",
+      "sub": "blue"
+    }
+  ],
+  "rows": [
+    "......",
+    "......",
+    "......",
+    "......",
+    "......",
+    "...RG.",
+    "..BGR.",
+    "R.RGR.",
+    "GYRBY.",
+    "YYRBRR",
+    "GBYRBB",
+    "GGBYYY",
+    "BBRRRB"
+  ],
+  "roots": [
+    {
+      "placement": {
+        "column": 0,
+        "rotation": 0
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 1,
+        "rotation": 0
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 2,
+        "rotation": 0
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 3,
+        "rotation": 0
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 4,
+        "rotation": 0
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 5,
+        "rotation": 0
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 0,
+        "rotation": 1
+      },
+      "clears": 1,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 1,
+        "rotation": 1
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 2,
+        "rotation": 1
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 3,
+        "rotation": 1
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 4,
+        "rotation": 1
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 0,
+        "rotation": 2
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 1,
+        "rotation": 2
+      },
+      "clears": 1,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 2,
+        "rotation": 2
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 3,
+        "rotation": 2
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 4,
+        "rotation": 2
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 5,
+        "rotation": 2
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 1,
+        "rotation": 3
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 2,
+        "rotation": 3
+      },
+      "clears": 2,
+      "spawnBlocked": false,
+      "foundationChains": 4,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 3,
+        "rotation": 3
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 4,
+        "rotation": 3
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    },
+    {
+      "placement": {
+        "column": 5,
+        "rotation": 3
+      },
+      "clears": 0,
+      "spawnBlocked": false,
+      "foundationChains": 5,
+      "connection": null,
+      "scaffold": null,
+      "extendedSameColorProbe": []
+    }
+  ]
+}

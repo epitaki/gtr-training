@@ -1,0 +1,21 @@
+{
+  "initialPuyoCount": 20,
+  "autoPlayback": {
+    "completed": true,
+    "restored": true,
+    "staysInitial": true,
+    "puyoCount": 20
+  },
+  "manualReplay": {
+    "animates": true,
+    "completed": true,
+    "restoredAgain": true
+  },
+  "mobile": {
+    "puyoCount": 20,
+    "allOpaque": true,
+    "starterRestored": true,
+    "noOverflow": true
+  },
+  "exceptionCount": 0
+}

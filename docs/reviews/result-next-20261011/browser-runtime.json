@@ -1,0 +1,27 @@
+{
+  "guest": true,
+  "totalHeading": true,
+  "scoreHeading": true,
+  "restartShort": true,
+  "tailRecorded": true,
+  "replay": {
+    "backShort": true,
+    "firstNext": true,
+    "firstNext2": true,
+    "advanced": true,
+    "rewound": true,
+    "tailNext": true,
+    "tailNext2": true,
+    "allSameSize": true,
+    "insideFrame": true,
+    "noUnknownNewTail": true
+  },
+  "mobile": {
+    "noPageOverflow": true,
+    "previewFitsDialog": true,
+    "allFour18px": true
+  },
+  "returnWorks": true,
+  "saveWrites": 0,
+  "exceptionCount": 0
+}

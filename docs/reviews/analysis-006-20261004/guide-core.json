@@ -1,0 +1,441 @@
+{
+  "snapshot": {
+    "kind": "gtr-issue-snapshot",
+    "version": 1,
+    "appVersion": "1.0.0",
+    "capturedAt": "2026-10-04T07:09:36.420Z",
+    "mode": "guided",
+    "page": "http://127.0.0.1:5175/",
+    "turnNumber": 1,
+    "field": {
+      "grid": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          "red",
+          "green",
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          "red",
+          "red",
+          "green",
+          null,
+          null,
+          null
+        ],
+        [
+          "green",
+          "green",
+          "yellow",
+          null,
+          null,
+          null
+        ]
+      ],
+      "width": 6,
+      "height": 13
+    },
+    "currentPair": {
+      "main": {
+        "color": "blue",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "yellow",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "nextPair": {
+      "main": {
+        "color": "green",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "nextNextPair": {
+      "main": {
+        "color": "blue",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "yellow",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "openingPairs": {
+      "pair1": {
+        "main": {
+          "color": "red",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "red",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      },
+      "pair2": {
+        "main": {
+          "color": "green",
+          "x": 2,
+          "y": 1
+        },
+        "sub": {
+          "color": "red",
+          "x": 2,
+          "y": 0
+        },
+        "rotation": 0,
+        "falling": true
+      }
+    },
+    "score": 0,
+    "gtrCount": 0,
+    "gtrScore": 0,
+    "gameOver": false,
+    "pairRandomState": 123456,
+    "trainingPlan": {
+      "colorA": "red",
+      "colorB": "green",
+      "colorC": "red",
+      "colorD": "green"
+    },
+    "settings": {
+      "gravityEnabled": false,
+      "advisorEnabled": false,
+      "paused": true,
+      "showingResult": true
+    },
+    "gtrEvaluation": {
+      "scoringVersion": "masked-foundation-minimal-v2",
+      "minimalFoundationComplete": false,
+      "isGTR": false,
+      "quality": 100,
+      "chainTailScore": 38,
+      "totalScore": 72,
+      "chainCount": 2,
+      "leftoverPuyos": 1,
+      "message": "GTR形状確認。連鎖数: 2",
+      "hasBasicPattern": true,
+      "row10Usage": "minimal",
+      "rightEdgeRaised": false,
+      "leftoverConnected": false
+    },
+    "tailPlans": [
+      {
+        "shape": "zabuton",
+        "color": "red",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 10
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 5,
+            "y": 11
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          },
+          {
+            "x": 5,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 0,
+        "filledSupportCells": 1,
+        "matchedCells": 1,
+        "totalCells": 8,
+        "continuationCount": 4,
+        "templateFilled": false
+      },
+      {
+        "shape": "zabuton",
+        "color": "blue",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 10
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 5,
+            "y": 11
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          },
+          {
+            "x": 5,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 0,
+        "filledSupportCells": 1,
+        "matchedCells": 1,
+        "totalCells": 8,
+        "continuationCount": 4,
+        "templateFilled": false
+      },
+      {
+        "shape": "zabuton",
+        "color": "yellow",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 10
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 5,
+            "y": 11
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          },
+          {
+            "x": 5,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 0,
+        "filledSupportCells": 1,
+        "matchedCells": 1,
+        "totalCells": 8,
+        "continuationCount": 4,
+        "templateFilled": false
+      },
+      {
+        "shape": "Y",
+        "color": "yellow",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 4,
+            "y": 11
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "supportCells": [
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 4,
+            "y": 12
+          }
+        ],
+        "matchedChainCells": 1,
+        "filledSupportCells": 0,
+        "matchedCells": 1,
+        "totalCells": 6,
+        "continuationCount": 3,
+        "templateFilled": false
+      },
+      {
+        "shape": "L",
+        "color": "yellow",
+        "chainCells": [
+          {
+            "x": 2,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 12
+          },
+          {
+            "x": 3,
+            "y": 11
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "supportCells": [],
+        "matchedChainCells": 1,
+        "filledSupportCells": 0,
+        "matchedCells": 1,
+        "totalCells": 4,
+        "continuationCount": 2,
+        "templateFilled": false
+      }
+    ],
+    "advice": null,
+    "recentTurns": [],
+    "previousState": null
+  },
+  "feedback": {
+    "comment": "",
+    "expectedColumn": null,
+    "expectedRotation": null
+  },
+  "replayUrl": "http://127.0.0.1:5175/#gtr-replay=eyJraW5kIjoiZ3RyLXJlcGxheSIsInZlcnNpb24iOjEsInNvdXJjZUNhcHR1cmVkQXQiOiIyMDI2LTEwLTA0VDA3OjA5OjM2LjQyMFoiLCJmaWVsZCI6eyJncmlkIjpbW251bGwsbnVsbCxudWxsLG51bGwsbnVsbCxudWxsXSxbbnVsbCxudWxsLG51bGwsbnVsbCxudWxsLG51bGxdLFtudWxsLG51bGwsbnVsbCxudWxsLG51bGwsbnVsbF0sW251bGwsbnVsbCxudWxsLG51bGwsbnVsbCxudWxsXSxbbnVsbCxudWxsLG51bGwsbnVsbCxudWxsLG51bGxdLFtudWxsLG51bGwsbnVsbCxudWxsLG51bGwsbnVsbF0sW251bGwsbnVsbCxudWxsLG51bGwsbnVsbCxudWxsXSxbbnVsbCxudWxsLG51bGwsbnVsbCxudWxsLG51bGxdLFtudWxsLG51bGwsbnVsbCxudWxsLG51bGwsbnVsbF0sW251bGwsbnVsbCxudWxsLG51bGwsbnVsbCxudWxsXSxbInJlZCIsImdyZWVuIixudWxsLG51bGwsbnVsbCxudWxsXSxbInJlZCIsInJlZCIsImdyZWVuIixudWxsLG51bGwsbnVsbF0sWyJncmVlbiIsImdyZWVuIiwieWVsbG93IixudWxsLG51bGwsbnVsbF1dLCJ3aWR0aCI6NiwiaGVpZ2h0IjoxM30sImN1cnJlbnRQYWlyIjp7Im1haW4iOnsiY29sb3IiOiJibHVlIiwieCI6MiwieSI6MX0sInN1YiI6eyJjb2xvciI6InllbGxvdyIsIngiOjIsInkiOjB9LCJyb3RhdGlvbiI6MCwiZmFsbGluZyI6dHJ1ZX0sIm5leHRQYWlyIjp7Im1haW4iOnsiY29sb3IiOiJncmVlbiIsIngiOjIsInkiOjF9LCJzdWIiOnsiY29sb3IiOiJyZWQiLCJ4IjoyLCJ5IjowfSwicm90YXRpb24iOjAsImZhbGxpbmciOnRydWV9LCJuZXh0TmV4dFBhaXIiOnsibWFpbiI6eyJjb2xvciI6ImJsdWUiLCJ4IjoyLCJ5IjoxfSwic3ViIjp7ImNvbG9yIjoieWVsbG93IiwieCI6MiwieSI6MH0sInJvdGF0aW9uIjowLCJmYWxsaW5nIjp0cnVlfSwib3BlbmluZ1BhaXJzIjp7InBhaXIxIjp7Im1haW4iOnsiY29sb3IiOiJyZWQiLCJ4IjoyLCJ5IjoxfSwic3ViIjp7ImNvbG9yIjoicmVkIiwieCI6MiwieSI6MH0sInJvdGF0aW9uIjowLCJmYWxsaW5nIjp0cnVlfSwicGFpcjIiOnsibWFpbiI6eyJjb2xvciI6ImdyZWVuIiwieCI6MiwieSI6MX0sInN1YiI6eyJjb2xvciI6InJlZCIsIngiOjIsInkiOjB9LCJyb3RhdGlvbiI6MCwiZmFsbGluZyI6dHJ1ZX19LCJzY29yZSI6MCwiZ3RyQ291bnQiOjAsImd0clNjb3JlIjowLCJnYW1lT3ZlciI6ZmFsc2UsInBhaXJSYW5kb21TdGF0ZSI6MTIzNDU2LCJ0cmFpbmluZ1BsYW4iOnsiY29sb3JBIjoicmVkIiwiY29sb3JCIjoiZ3JlZW4iLCJjb2xvckMiOiJyZWQiLCJjb2xvckQiOiJncmVlbiJ9LCJzb3VyY2VTZXR0aW5ncyI6eyJncmF2aXR5RW5hYmxlZCI6ZmFsc2UsImFkdmlzb3JFbmFibGVkIjpmYWxzZSwicGF1c2VkIjp0cnVlLCJzaG93aW5nUmVzdWx0Ijp0cnVlfSwicmVjZW50VHVybnMiOltdLCJwcmV2aW91c1N0YXRlIjpudWxsLCJzb3VyY2VBbmFseXNpcyI6eyJhcHBWZXJzaW9uIjoiMS4wLjAiLCJndHJFdmFsdWF0aW9uIjp7InNjb3JpbmdWZXJzaW9uIjoibWFza2VkLWZvdW5kYXRpb24tbWluaW1hbC12MiIsIm1pbmltYWxGb3VuZGF0aW9uQ29tcGxldGUiOmZhbHNlLCJpc0dUUiI6ZmFsc2UsInF1YWxpdHkiOjEwMCwiY2hhaW5UYWlsU2NvcmUiOjM4LCJ0b3RhbFNjb3JlIjo3MiwiY2hhaW5Db3VudCI6MiwibGVmdG92ZXJQdXlvcyI6MSwibWVzc2FnZSI6IkdUUuW9oueKtueiuuiqjeOAgumAo-mOluaVsDogMiIsImhhc0Jhc2ljUGF0dGVybiI6dHJ1ZSwicm93MTBVc2FnZSI6Im1pbmltYWwiLCJyaWdodEVkZ2VSYWlzZWQiOmZhbHNlLCJsZWZ0b3ZlckNvbm5lY3RlZCI6ZmFsc2V9LCJ0YWlsUGxhbnMiOlt7InNoYXBlIjoiemFidXRvbiIsImNvbG9yIjoicmVkIiwiY2hhaW5DZWxscyI6W3sieCI6MiwieSI6MTB9LHsieCI6MywieSI6MTF9LHsieCI6NCwieSI6MTF9LHsieCI6NSwieSI6MTF9XSwic3VwcG9ydENlbGxzIjpbeyJ4IjoyLCJ5IjoxMn0seyJ4IjozLCJ5IjoxMn0seyJ4Ijo0LCJ5IjoxMn0seyJ4Ijo1LCJ5IjoxMn1dLCJtYXRjaGVkQ2hhaW5DZWxscyI6MCwiZmlsbGVkU3VwcG9ydENlbGxzIjoxLCJtYXRjaGVkQ2VsbHMiOjEsInRvdGFsQ2VsbHMiOjgsImNvbnRpbnVhdGlvbkNvdW50Ijo0LCJ0ZW1wbGF0ZUZpbGxlZCI6ZmFsc2V9LHsic2hhcGUiOiJ6YWJ1dG9uIiwiY29sb3IiOiJibHVlIiwiY2hhaW5DZWxscyI6W3sieCI6MiwieSI6MTB9LHsieCI6MywieSI6MTF9LHsieCI6NCwieSI6MTF9LHsieCI6NSwieSI6MTF9XSwic3VwcG9ydENlbGxzIjpbeyJ4IjoyLCJ5IjoxMn0seyJ4IjozLCJ5IjoxMn0seyJ4Ijo0LCJ5IjoxMn0seyJ4Ijo1LCJ5IjoxMn1dLCJtYXRjaGVkQ2hhaW5DZWxscyI6MCwiZmlsbGVkU3VwcG9ydENlbGxzIjoxLCJtYXRjaGVkQ2VsbHMiOjEsInRvdGFsQ2VsbHMiOjgsImNvbnRpbnVhdGlvbkNvdW50Ijo0LCJ0ZW1wbGF0ZUZpbGxlZCI6ZmFsc2V9LHsic2hhcGUiOiJ6YWJ1dG9uIiwiY29sb3IiOiJ5ZWxsb3ciLCJjaGFpbkNlbGxzIjpbeyJ4IjoyLCJ5IjoxMH0seyJ4IjozLCJ5IjoxMX0seyJ4Ijo0LCJ5IjoxMX0seyJ4Ijo1LCJ5IjoxMX1dLCJzdXBwb3J0Q2VsbHMiOlt7IngiOjIsInkiOjEyfSx7IngiOjMsInkiOjEyfSx7IngiOjQsInkiOjEyfSx7IngiOjUsInkiOjEyfV0sIm1hdGNoZWRDaGFpbkNlbGxzIjowLCJmaWxsZWRTdXBwb3J0Q2VsbHMiOjEsIm1hdGNoZWRDZWxscyI6MSwidG90YWxDZWxscyI6OCwiY29udGludWF0aW9uQ291bnQiOjQsInRlbXBsYXRlRmlsbGVkIjpmYWxzZX0seyJzaGFwZSI6IlkiLCJjb2xvciI6InllbGxvdyIsImNoYWluQ2VsbHMiOlt7IngiOjIsInkiOjEyfSx7IngiOjMsInkiOjExfSx7IngiOjQsInkiOjExfSx7IngiOjIsInkiOjEwfV0sInN1cHBvcnRDZWxscyI6W3sieCI6MywieSI6MTJ9LHsieCI6NCwieSI6MTJ9XSwibWF0Y2hlZENoYWluQ2VsbHMiOjEsImZpbGxlZFN1cHBvcnRDZWxscyI6MCwibWF0Y2hlZENlbGxzIjoxLCJ0b3RhbENlbGxzIjo2LCJjb250aW51YXRpb25Db3VudCI6MywidGVtcGxhdGVGaWxsZWQiOmZhbHNlfSx7InNoYXBlIjoiTCIsImNvbG9yIjoieWVsbG93IiwiY2hhaW5DZWxscyI6W3sieCI6MiwieSI6MTJ9LHsieCI6MywieSI6MTJ9LHsieCI6MywieSI6MTF9LHsieCI6MiwieSI6MTB9XSwic3VwcG9ydENlbGxzIjpbXSwibWF0Y2hlZENoYWluQ2VsbHMiOjEsImZpbGxlZFN1cHBvcnRDZWxscyI6MCwibWF0Y2hlZENlbGxzIjoxLCJ0b3RhbENlbGxzIjo0LCJjb250aW51YXRpb25Db3VudCI6MiwidGVtcGxhdGVGaWxsZWQiOmZhbHNlfV0sImFkdmljZSI6bnVsbH19"
+}

@@ -1,0 +1,292 @@
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\docs\\GAME-MODES.md" b/docs/GAME-MODES.md
+index 9c33a42..83d77c7 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\docs\\GAME-MODES.md"
++++ b/docs/GAME-MODES.md
+@@ -3,7 +3,7 @@
+ ## 概要
+ 
+ GTRトレーニングツールには、プレイヤーのスキルレベルに応じた複数のゲームモードが用意されています。
+-更新日：2026-09-27。完成見本と非発火ガイドの説明を現行実装へ合わせています。
++更新日：2026-09-28。評価と巻戻しの初期キー配置を更新しています。
+ 
+ ## 実装済みモード
+ 
+@@ -59,12 +59,12 @@ GTRトレーニングツールには、プレイヤーのスキルレベルに
+ 完成図と操作例は [GTR視覚的ガイド](GTR-VISUAL-GUIDE.md) を参照。
+ 
+ #### 学習支援機能
+-- 初期「おすすめ」設定：Uで1手巻戻し、EでGTR評価、Gでガイド、Fで自由落下、Rで共有
++- 初期「おすすめ」設定：A / Uで1手巻戻し、Space / EでGTR評価、Gでガイド、Fで自由落下、Rで共有
+ - Esc / F1でポーズ・再開。終了は画面の明示ボタン。P互換割当はない
+-- 結果画面だけSpaceで新ゲーム、Escで終了。プレイ用割当とは別に処理する
++- 結果画面では新しく押したSpaceで新ゲーム、Escで終了。評価Spaceを押し続けたまま結果画面に移っても再開せず、一度離す必要がある
+ - 基本操作は左右が←/Num4・→/Num6、回転がZ・X、高速落下が↓/V/Ctrl、クイックドロップが↑/Shift/C。左右Ctrl/Shiftは同じ設定を使う
+-- 「オフィシャル」は右回転X/↑、左回転Z/Ctrl、高速落下↓/V、クイックドロップSpace。切替は基本7操作だけを置換する
+-- キー設定画面で個別の複数キー割当、保存、取消、すべて初期化ができる。重複や未許可キーは保存できない
++- 「オフィシャル」は右回転X/↑、左回転Z/Ctrl、高速落下↓/V、クイックドロップSpace。切替は基本7操作だけを置換する。評価もSpaceの場合は重複を表示して保存不可となるため、どちらかを手動で変更する
++- キー設定画面で個別の複数キー割当、保存、取消、すべて初期化ができる。「評価・巻戻しを手元へ」は下書きの2操作だけをSpace / EとA / Uに変える。重複や未許可キーは保存できない
+ 
+ #### 評価システム
+ 詳細なチェック形式の評価結果（成功✓/失敗✗の両方を表示）：
+@@ -109,12 +109,13 @@ GTRトレーニングツールには、プレイヤーのスキルレベルに
+ - 壁キック機能
+ 
+ #### 操作
+-- ガイドと同じおすすめ初期設定を使う。Fで自由落下、EでGTR評価、Esc/F1でポーズ
+-- 結果画面だけSpaceで続行、Escで終了。終了は画面の明示ボタンからも可能
++- ガイドと同じおすすめ初期設定を使う。Fで自由落下、Space / EでGTR評価、Esc/F1でポーズ
++- 結果画面では新しく押したSpaceで続行、Escで終了。終了は画面の明示ボタンからも可能
+ - クイックドロップは現在の組を支持位置まで下げ、通常の着地経路で確定する。自然落下OFFでも実行可能
+ - スコア、連鎖数、メッセージ表示
+ 
+ キー設定は両モードで共通の専用保存領域を使う。読取りに失敗した場合はおすすめ設定をその回に使い、元の保存データは保持して通知する。書込みに失敗した場合は今回だけ適用したことを通知する。画像にあるマウス割当は後段の残件。
++正常な保存済みversion 1の割当はそのまま復元し、新しい初期キーを自動で追加しない。新初期値は未保存・読取失敗・明示的な「すべて初期化」に適用する。
+ 
+ ## 完成形一覧（閲覧機能）
+ 
+@@ -144,7 +145,7 @@ Y字・座布団・L字を各10例収録する。カードを選ぶと拡大モ
+ ### 基本操作
+ - 初期「おすすめ」設定では、**← / Num4・→ / Num6**で左右移動、**↓ / V / Ctrl**で高速落下、**Z・X**で左右回転、**↑ / Shift / C**でクイックドロップ
+ - **Esc / F1**はプレイ中・連鎖中のポーズ／再開。終了は画面の明示ボタンから行う
+-- 結果画面だけ**Space**で新ゲーム／続行、**Esc**で退出。ゲームオーバー・表示障害時のEsc退出も維持する
++- 結果画面では新しく押した**Space**で新ゲーム／続行、**Esc**で退出。ゲームオーバー・表示障害時のEsc退出も維持する
+ - 設定画面でキーを変更した場合、実際の操作は保存した割当に従う。画面内の操作案内もそれに追随する
+ - **Tab / Shift+Tab** は設定・終了などの画面ボタンへ移動するために予約し、ゲーム操作には割り当てない
+ 
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\src\\components\\settings\\KeySettings.tsx" b/src/components/settings/KeySettings.tsx
+index cd5bbc4..3387d46 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\src\\components\\settings\\KeySettings.tsx"
++++ b/src/components/settings/KeySettings.tsx
+@@ -1,7 +1,7 @@
+ import { useEffect, useState } from 'react'
+ import {
+   ACTIONS, ACTION_LABELS, BASIC_ACTIONS, PRESETS,
+-  bindingConflict, defaultBindings, displayCode, type Bindings, type BoundAction,
++  bindingConflict, defaultBindings, displayCode, withErgonomicActions, type Bindings, type BoundAction,
+ } from '../../game/input/bindings'
+ import { getBindings, getSettingsNotice, saveBindings } from '../../game/input/settings'
+ import { startKeyCapture } from './keyCapture'
+@@ -52,8 +52,10 @@ export default function KeySettings({ onClose }: Props) {
+       <div className="mb-4 flex flex-wrap gap-2">
+         <button type="button" onClick={() => preset('official')} className="rounded bg-violet-600 px-3 py-2">オフィシャル</button>
+         <button type="button" onClick={() => preset('recommended')} className="rounded bg-violet-600 px-3 py-2">おすすめ</button>
++        <button type="button" onClick={() => { setDraft(withErgonomicActions); setMessage('評価と巻戻しの割当を変更しました。保存すると適用されます。') }} className="rounded bg-violet-600 px-3 py-2">評価・巻戻しを手元へ</button>
+         <button type="button" onClick={() => { setDraft(defaultBindings()); setMessage('すべておすすめ初期値に戻しました。') }} className="rounded bg-slate-600 px-3 py-2">すべて初期化</button>
+       </div>
++      <p className="mb-4 text-sm text-white/70">オフィシャルのクイックドロップはSpaceです。評価にもSpaceを割り当てている場合は重複するため、保存前にどちらかの割当を変更してください。</p>
+       <div className="grid gap-2">
+         {ACTIONS.map(action => <div key={action} className="flex flex-wrap items-center gap-2 rounded bg-white/5 p-2">
+           <span className="w-32 font-bold">{ACTION_LABELS[action]}</span>
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\src\\game\\input\\bindings.ts" b/src/game/input/bindings.ts
+index 1378735..cb98454 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\src\\game\\input\\bindings.ts"
++++ b/src/game/input/bindings.ts
+@@ -28,7 +28,12 @@ export const PRESETS = {
+ 
+ export function defaultBindings(): Bindings {
+   return { ...Object.fromEntries(BASIC_ACTIONS.map(action => [action, [...PRESETS.recommended[action]]])),
+-    rewind: ['KeyU'], evaluate: ['KeyE'], guide: ['KeyG'], gravity: ['KeyF'], share: ['KeyR'] } as Bindings
++    rewind: ['KeyA', 'KeyU'], evaluate: ['Space', 'KeyE'], guide: ['KeyG'], gravity: ['KeyF'], share: ['KeyR'] } as Bindings
++}
++
++/** Apply the optional ergonomic layout to a draft, leaving every other action intact. */
++export function withErgonomicActions(bindings: Bindings): Bindings {
++  return { ...bindings, rewind: ['KeyA', 'KeyU'], evaluate: ['Space', 'KeyE'] }
+ }
+ 
+ export const ALLOWED_CODES = new Set([
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\src\\game\\input\\InputController.test.ts" b/src/game/input/InputController.test.ts
+index 10a24b0..d9c098d 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\src\\game\\input\\InputController.test.ts"
++++ b/src/game/input/InputController.test.ts
+@@ -1,12 +1,14 @@
+ import { describe, expect, it } from 'vitest'
+ import { InputController } from './InputController'
+-import { PRESETS, bindingConflict, defaultBindings, validateBindings } from './bindings'
++import { PRESETS, bindingConflict, defaultBindings, validateBindings, withErgonomicActions } from './bindings'
+ 
+ describe('keyboard bindings', () => {
+   it('keeps the two approved presets and rejects ambiguous or invalid saved bindings', () => {
+     expect(PRESETS.official.quickDrop).toEqual(['Space'])
+     expect(PRESETS.recommended.quickDrop).toEqual(['ArrowUp', 'Shift', 'KeyC'])
+     const bindings = defaultBindings()
++    expect(bindings.rewind).toEqual(['KeyA', 'KeyU'])
++    expect(bindings.evaluate).toEqual(['Space', 'KeyE'])
+     expect(validateBindings(bindings)).toBe(true)
+     bindings.evaluate = ['KeyU']
+     expect(bindingConflict(bindings)).toContain('巻戻しと評価')
+@@ -18,6 +20,38 @@ describe('keyboard bindings', () => {
+     expect(bindingConflict(bindings)).toContain('Tabは割り当てできません')
+   })
+ 
++  it('changes only the two requested draft actions and exposes the official Space conflict', () => {
++    const custom = defaultBindings()
++    custom.left = ['KeyQ']
++    custom.rewind = ['KeyT']
++    custom.evaluate = ['KeyW']
++    const before = structuredClone(custom)
++    const next = withErgonomicActions(custom)
++    expect(next).toEqual({ ...before, rewind: ['KeyA', 'KeyU'], evaluate: ['Space', 'KeyE'] })
++    expect(custom).toEqual(before)
++    for (const action of Object.keys(PRESETS.official) as Array<keyof typeof PRESETS.official>) {
++      next[action] = [...PRESETS.official[action]]
++    }
++    expect(bindingConflict(next)).toContain('Spaceはクイックドロップと評価で重複')
++    expect(validateBindings(next)).toBe(false)
++  })
++
++  it.each([['KeyA', 'KeyU', 'rewind'], ['Space', 'KeyE', 'evaluate']] as const)(
++    'handles %s and %s as one %s action until both are released', (first, second, action) => {
++      const input = new InputController(defaultBindings())
++      input.pressPhysical(first)
++      expect(input.frame(0)).toEqual(new Set([action]))
++      input.pressPhysical(second)
++      expect(input.frame(1)).toEqual(new Set())
++      input.releasePhysical(first)
++      expect(input.frame(2)).toEqual(new Set())
++      input.releasePhysical(second)
++      input.pressPhysical(second)
++      expect(input.frame(3)).toEqual(new Set([action]))
++      input.releasePhysical(second)
++    },
++  )
++
+   it('preserves short press edges, repeats movement at 150ms, and leaves single actions one shot', () => {
+     const input = new InputController(defaultBindings())
+     input.pressPhysical('KeyX')
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\src\\game\\input\\PhaserInputAdapter.test.ts" b/src/game/input/PhaserInputAdapter.test.ts
+index f81e9fc..0d7df0c 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\src\\game\\input\\PhaserInputAdapter.test.ts"
++++ b/src/game/input/PhaserInputAdapter.test.ts
+@@ -58,6 +58,7 @@ it.each(['official', 'recommended'] as const)('resolves %s DOM keys regardless o
+   const adapter = new PhaserInputAdapter(canvas)
+   const bindings = defaultBindings()
+   for (const action of BASIC_ACTIONS) bindings[action] = [...PRESETS[preset][action]]
++  if (preset === 'official') bindings.evaluate = ['KeyE']
+   adapter.setBindings(bindings)
+   const down = (code: string, options: Record<string, unknown> = {}) => {
+     const event = { code, target: canvas, keyCode: 0, repeat: false, isComposing: false,
+@@ -85,8 +86,9 @@ it.each(['official', 'recommended'] as const)('resolves %s DOM keys regardless o
+   expect(down('ArrowLeft', { ctrlKey: true }).preventDefault).toHaveBeenCalledOnce()
+   expect(adapter.frame(3)).toContain('left')
+   up('ArrowLeft')
+-  expect(down('Space', { ctrlKey: true }).preventDefault).toHaveBeenCalledTimes(preset === 'official' ? 1 : 0)
++  expect(down('Space', { ctrlKey: true }).preventDefault).toHaveBeenCalledOnce()
+   expect(adapter.frame(4).has('quickDrop')).toBe(preset === 'official')
++  if (preset === 'recommended') expect(adapter.actionForCode('Space')).toBe('evaluate')
+   up('Space')
+   expect(down('ShiftLeft', { ctrlKey: true, shiftKey: true }).preventDefault).toHaveBeenCalledTimes(preset === 'recommended' ? 1 : 0)
+   expect(adapter.frame(5).has('quickDrop')).toBe(preset === 'recommended')
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\src\\game\\input\\settings.test.ts" b/src/game/input/settings.test.ts
+index 902676c..a319bf3 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\src\\game\\input\\settings.test.ts"
++++ b/src/game/input/settings.test.ts
+@@ -20,6 +20,25 @@ it('restores a valid versioned binding and leaves corrupt storage untouched', as
+   expect(setItem).not.toHaveBeenCalled()
+ })
+ 
++it.each([
++  { rewind: ['KeyU'], evaluate: ['KeyE'] },
++  { rewind: ['KeyT', 'KeyU'], evaluate: ['KeyQ', 'KeyE'] },
++])('restores version 1 actions exactly without adding new defaults or writing storage: %j', async actions => {
++  const bindings = defaultBindings()
++  bindings.rewind = actions.rewind
++  bindings.evaluate = actions.evaluate
++  const source = JSON.stringify({ version: 1, bindings })
++  const getItem = vi.fn(() => source)
++  const setItem = vi.fn()
++  vi.stubGlobal('localStorage', { getItem, setItem })
++  vi.resetModules()
++  const settings = await import('./settings')
++  expect(settings.getBindings()).toEqual(bindings)
++  expect(settings.getBindings().rewind).toEqual(actions.rewind)
++  expect(settings.getBindings().evaluate).toEqual(actions.evaluate)
++  expect(setItem).not.toHaveBeenCalled()
++})
++
+ it('applies valid changes for this run when storage write fails', async () => {
+   vi.stubGlobal('localStorage', {
+     getItem: () => null,
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\src\\game\\scenes\\ChainAnimationScenes.test.ts" b/src/game/scenes/ChainAnimationScenes.test.ts
+index 3f54028..1e7770e 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\src\\game\\scenes\\ChainAnimationScenes.test.ts"
++++ b/src/game/scenes/ChainAnimationScenes.test.ts
+@@ -900,6 +900,45 @@ describe.each([GuidedPracticeScene, PuyoGame])('%s quick drop', Scene => {
+ })
+ 
+ describe.each([GuidedPracticeScene, PuyoGame])('%s result input separation', Scene => {
++  it('requires a fresh Space press after Space evaluation enters the result', () => {
++    const scene = prepare(new Scene() as any)
++    const listeners = new Map<string, (event: KeyboardEvent) => void>()
++    const canvas = { closest: () => null, addEventListener: vi.fn(), removeEventListener: vi.fn() } as unknown as HTMLCanvasElement
++    vi.stubGlobal('document', { hidden: false, activeElement: canvas,
++      addEventListener: vi.fn(), removeEventListener: vi.fn() })
++    vi.stubGlobal('window', { addEventListener: vi.fn((name: string, handler: (event: KeyboardEvent) => void) => listeners.set(name, handler)),
++      removeEventListener: vi.fn(), dispatchEvent: vi.fn() })
++    scene.actionInput = new PhaserInputAdapter(canvas,
++      code => scene.isShowingResult ? code === 'Space' ? 'newGame' : code === 'Escape' ? 'exit' : undefined : undefined,
++      action => scene.canAcceptAction(action))
++    const retry = vi.fn()
++    const harness = scene as any
++    if (scene instanceof GuidedPracticeScene) {
++      harness.evaluateGTR = vi.fn(() => { harness.isShowingResult = true; harness.actionInput.suppressUntilRelease() })
++      harness.restartFromResult = retry
++    } else {
++      harness.evaluateAndReset = vi.fn(() => { harness.isShowingResult = true; harness.actionInput.suppressUntilRelease() })
++      harness.resultAction = retry
++    }
++    const down = (repeat = false) => listeners.get('keydown')!({ code: 'Space', target: canvas, keyCode: 0,
++      repeat, isComposing: false, ctrlKey: false, metaKey: false, altKey: false,
++      preventDefault: vi.fn() } as unknown as KeyboardEvent)
++    const up = () => listeners.get('keyup')!({ code: 'Space' } as KeyboardEvent)
++    down()
++    scene.update(500, 16)
++    expect(scene.isShowingResult).toBe(true)
++    down(true)
++    scene.update(501, 16)
++    expect(retry).not.toHaveBeenCalled()
++    up()
++    scene.update(502, 16)
++    expect(retry).not.toHaveBeenCalled()
++    down()
++    scene.update(503, 16)
++    expect(retry).toHaveBeenCalledOnce()
++    scene.actionInput.dispose()
++  })
++
+   it('ignores DOM evaluate bindings and retries once on result Space', () => {
+     const scene = prepare(new Scene() as any)
+     const listeners = new Map<string, (event: KeyboardEvent) => void>()
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\src\\game\\scenes\\GuidedPracticeScene.test.ts" b/src/game/scenes/GuidedPracticeScene.test.ts
+index ba27ece..d8eaf2a 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-key-ergonomics-before-87091272155345e8b06642b1515cf5d3\\src\\game\\scenes\\GuidedPracticeScene.test.ts"
++++ b/src/game/scenes/GuidedPracticeScene.test.ts
+@@ -590,12 +590,12 @@ describe('GuidedPracticeScene inspection controls', () => {
+     scene.add = { rectangle: () => graphic, container: () => graphic, text: () => graphic }
+     scene.displayGTRField = vi.fn()
+     scene.resetGame = vi.fn()
+-    scene.actionInput.pressPhysical('KeyE')
++    scene.actionInput.pressPhysical('Space')
+     scene.showDetailedResult(GTRDetector.detectGTR(Array.from({ length: 13 }, () => Array(6).fill(null))), false)
+     expect(scene.actionInput.isGated()).toBe(true)
+     scene.actionInput.press('newGame', 'key:Space')
+     expect(scene.actionInput.frame(501)).toEqual(new Set())
+-    scene.actionInput.releasePhysical('KeyE')
++    scene.actionInput.releasePhysical('Space')
+     scene.actionInput.press('newGame', 'key:Space')
+     expect(scene.actionInput.frame(502)).toEqual(new Set(['newGame']))
+   })
+@@ -944,11 +944,11 @@ describe('GuidedPracticeScene inspection controls', () => {
+ 
+   it('keeps result actions gated until held keys are released', () => {
+     const scene = createHarness()
+-    scene.actionInput.pressPhysical('KeyE')
++    scene.actionInput.pressPhysical('Space')
+     scene.actionInput.suppressUntilRelease()
+     scene.actionInput.press('newGame', 'key:Space')
+     expect(scene.actionInput.frame(501)).toEqual(new Set())
+-    scene.actionInput.releasePhysical('KeyE')
++    scene.actionInput.releasePhysical('Space')
+     scene.actionInput.press('newGame', 'key:Space')
+     expect(scene.actionInput.frame(502)).toEqual(new Set(['newGame']))
+   })

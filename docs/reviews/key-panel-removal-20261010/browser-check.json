@@ -1,0 +1,24 @@
+{
+  "modes": [
+    {
+      "mode": "ガイド練習",
+      "panelAbsent": true,
+      "settingsOpen": true,
+      "settingsStopsGame": true,
+      "settingsClosed": true,
+      "resumed": true,
+      "sameCanvas": true,
+      "leftKeyMovesPair": true
+    },
+    {
+      "mode": "スコアアタック",
+      "panelAbsent": true,
+      "settingsOpen": true,
+      "settingsStopsGame": true,
+      "settingsClosed": true,
+      "resumed": true,
+      "sameCanvas": true,
+      "leftKeyMovesPair": true
+    }
+  ]
+}

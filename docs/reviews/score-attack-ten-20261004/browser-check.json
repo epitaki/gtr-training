@@ -1,0 +1,94 @@
+{
+  "at": "2026-10-04",
+  "submissions": 10,
+  "progress": [
+    {
+      "submission": 1,
+      "value": "GTR 2 / 10"
+    },
+    {
+      "submission": 2,
+      "value": "GTR 3 / 10"
+    },
+    {
+      "submission": 3,
+      "value": "GTR  4  / 10"
+    },
+    {
+      "submission": 4,
+      "value": "GTR  5  / 10"
+    },
+    {
+      "submission": 5,
+      "value": "GTR  6  / 10"
+    },
+    {
+      "submission": 6,
+      "value": "GTR  7  / 10"
+    },
+    {
+      "submission": 7,
+      "value": "GTR  8  / 10"
+    },
+    {
+      "submission": 8,
+      "value": "GTR  9  / 10"
+    },
+    {
+      "submission": 9,
+      "value": "GTR  10  / 10"
+    },
+    {
+      "submission": 10,
+      "value": "finished"
+    }
+  ],
+  "cards": [
+    "0点",
+    "0点",
+    "0点",
+    "0点",
+    "0点",
+    "0点",
+    "0点",
+    "0点",
+    "0点",
+    "0点"
+  ],
+  "galleryPreservedRound": 2,
+  "firstBoard": {
+    "cells": 78,
+    "occupied": [
+      68,
+      74
+    ]
+  },
+  "secondBoard": {
+    "cells": 78,
+    "occupied": [
+      67,
+      73
+    ]
+  },
+  "finalHeadingFocused": true,
+  "escapeReturnsFocus": "1回目の評価を開く、0点",
+  "restart": "GTR 1 / 10",
+  "consoleErrors": [],
+  "production": {
+    "cards": [
+      "0点",
+      "0点",
+      "0点",
+      "0点",
+      "0点",
+      "0点",
+      "0点",
+      "0点",
+      "0点",
+      "0点"
+    ],
+    "errors": [],
+    "total": "SCORE ATTACK / 10 GTR\n\n10回の合計\n\n0点\n\n点数を選ぶと、そのGTRの評価を確認できます。\n\n0点\n0点\n0点\n0点\n0点\n0点\n0点\n0点\n0点\n0点\nもう一度10回\n終了"
+  },
+  "guideIndividualEvaluationObserved": true
+}

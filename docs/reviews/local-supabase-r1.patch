@@ -1,0 +1,2561 @@
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\ARCHITECTURE.md" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\ARCHITECTURE.md"
+index 8393ae0..0a70172 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\ARCHITECTURE.md"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\ARCHITECTURE.md"
+@@ -51,7 +51,7 @@ GTRトレーニングツールの技術設計書
+ 
+ 実装状況:
+ ✅ Supabaseクライアント設定
+-✅ データベース設計（sql/initial-setup.sql）
++✅ データベース設計（supabase/migrations/20260930000000_initial.sql）
+ ✅ 接続テスト機能
+ ⏳ ユーザー認証（未実装）
+ ⏳ スコア保存機能（未実装）
+
+New file: CLAUDE.md
++# CLAUDE.md
++
++このファイルは、このリポジトリでコードを扱う際のClaude Code (claude.ai/code) へのガイダンスを提供します。
++
++## プロジェクト概要
++
++GTRトレーニングツール - ぷよぷよの連鎖土台「GTR（グレート田中連鎖）」を楽しく学べるゲーム
++
++**対象GTR**：標準GTRと折り返しGTR（**逆折りGTRは対象外**）
++
++詳細な要件は [REQUIREMENT.md](./REQUIREMENT.md) を参照してください。
++
++## 開発環境セットアップ
++
++### 必要なツール
++- Node.js v18以上（推奨: v20 LTS）
++- VS Code（推奨エディタ）
++- Git
++
++### 推奨VS Code拡張機能
++- ESLint
++- Prettier
++- Tailwind CSS IntelliSense
++- TypeScript Vue Plugin (Volar)
++
++### クイックスタート
++```bash
++# プロジェクト作成
++bun create vite . --template react-ts
++
++# 依存関係インストール
++bun add phaser@^3.70.0 zustand@^4.5.0
++bun add -d tailwindcss@^3.4.0 postcss autoprefixer
++bun add -d @types/node vitest @testing-library/react
++
++# Tailwind CSS初期化
++bunx tailwindcss init -p
++
++# 開発サーバー起動
++bun run dev
++```
++
++### ビルドコマンド
++```bash
++# 開発サーバー起動（http://localhost:5173）
++bun run dev
++
++# プロダクションビルド
++bun run build
++
++# ビルドプレビュー
++bun run preview
++
++# テスト実行
++bun run test
++
++# 型チェック
++bun run type-check
++```
++
++## プロジェクト構造
++
++**機能別モジュール＋レイヤード構成**。最新の構成と依存ルールは
++[docs/PROJECT-STRUCTURE.md](./docs/PROJECT-STRUCTURE.md) を参照する。
++
++- `src/components/{layout,game,feedback}/`：React画面。
++- `src/game/{core,gtr,advisor,guide}/`：共通ルール・判定・推薦・教材。
++- `src/game/{scenes,rendering}/`：進行制御・入力・Phaser表示。
++- `src/game/feedback/`：共有用局面・再現URL・検証・保存。
++- `src/benchmark/`：ゲームと同じエンジンを使う測定処理。
++- `scripts/{benchmark,analysis,human,shared}/`：実験実行と分析。
++- `benchmarks/`：基準値、人間手順、測定データ。
++- `*.test.ts`：対象コードと同じ場所に置く。
++
++`core/gtr/advisor` から React や Phaser に依存させない。
++テストは `bun run test`、本体の型確認は `bun run type-check`、
++実験スクリプトの型確認は `bun run type-check:scripts`。
++削除済みの `tasks/` を再作成しない。
++
++### 人間の手順・動画を調査するとき
++
++最初に [ぷよ譜ライブラリ](./benchmarks/human/README.md) と目録を確認し、保存済みの譜面を再利用する。
++新しい観測は元譜面のID、動画URL・時刻、確認範囲・確度、対戦状況とともに残す。
++人間の配置は唯一の正解ではない。観測・仮説・別案の検証・採否を分け、反例や判断保留も保存する。
++既存500記録を「500試合すべて映像確認済み」と呼ばない。30本の予備調査は500本の内数である。
++
++## UI構成（SPA設計）
++
++本サイトは**ヘッダー + サイドメニュー + コンテンツエリア**の3領域で構成されるSPAです。
++
++### ヘッダー
++- 画面上部の帯状領域
++- 左上：サイトロゴ「GTR-training」（クリックでTOP画面に戻る）
++- 右上：アカウントアイコン（クリックでAccountMenu展開）
++
++### サイドメニュー
++- 画面左側の領域、常に表示
++- ゲームモード選択UI
++- メニュー項目：
++  - GTR training（スコアアタック）
++  - 初心者用ガイド付きGTR練習
++  - GTR training対戦モード
++  - 統計情報
++
++### コンテンツエリア
++- サイドメニュー右側の大きな領域
++- 選択したモードに応じて表示が切り替わる
++- 各モードにそれぞれのTOP画面あり
++
++詳細は [note.md](./note.md) を参照してください。
++
++## 開発ガイドライン
++
++### 言語
++- **応答は必ず日本語で行うこと**
++- 日本語でのコメントを推奨（プロジェクトが日本語中心のため）
++
++### コード規約
++- 関数名・変数名は英語（一般的な命名規則に従う）
++- GTR関連の専門用語は統一した表記を使用
++- TypeScriptの使用を推奨（型安全性のため）
++
++### 重要な実装ポイント
++- **GTRの形**：2列目と3列目を中心とした特徴的な形状
++- **ぷよぷよのルール**：4つ繋がりで消去、重力落下
++- **学習効果**：視覚的に分かりやすいフィードバック
++
++詳細な設計は [ARCHITECTURE.md](./ARCHITECTURE.md) を参照してください。
++
++## よく使うコマンド
++
++```bash
++# 開発サーバー起動（http://localhost:5173）
++bun run dev
++
++# プロダクションビルド
++bun run build
++
++# ビルドプレビュー
++bun run preview
++
++# テスト実行
++bun run test
++
++# 型チェック
++bun run type-check
++```
++
++## 現在の実装状況
++
++### ✅ 完了済み機能
++
++#### **ゲームモード管理**
++- **ReactベースのTOPページ**（TopMenu.tsx）
++  - モード選択UI（初心者用ガイド付き、GTRスコアアタック）
++  - Supabase接続状態表示
++  - GTRの説明
++- **独立したゲームモード起動**
++  - 初心者用ガイド付きGTR練習
++  - GTRスコアアタック
++  - ESCキーでいつでもTOPページに戻る機能
++
++#### **初心者用ガイド付きGTR練習**
++- **ガイド表示システム**（GuideManager.ts）
++  - 状態遷移：最初の2手 → 基本形作成 → 連鎖尾作成 → GTR完成形
++  - 2手組み合わせパターン別のおすすめ配置表示
++  - Y字・L字・階段型連鎖尾のサンプル表示
++  - **ガイド表示仕様**：フィールド右側に配置（X座標380px）、フィールドと同じ高さで表示
++  - **ぷよアイコン表示**：実際のぷよスプライト表示（A→赤、B→緑、C→青、D→黄）
++- **学習支援機能**
++  - ↑キー：巻き戻し機能（GameHistory.ts）- 連鎖処理後の状態も正しく復元
++  - Pキー：ポーズ機能
++  - Fキー：自由落下ON/OFF切り替え（2024年12月更新）
++  - リアルタイムガイド更新
++  - 詳細評価結果表示（折り返し、連鎖尾、連鎖数、あまりぷよ評価）
++
++#### **GTRスコアアタック**
++- **従来の5GTRモード**（PuyoGame.ts）
++  - 高速ゲームプレイ
++  - GTR評価機能
++  - Fキー：自由落下ON/OFF切り替え（2024年12月更新）
++  - インタラクティブな評価画面（Space/Escキー操作）
++
++#### **基本ゲームシステム**
++- **ぷよペアシステム**
++  - 自動落下（800ms間隔）
++  - キーボード操作（←→移動、Z左回転、X右回転、↓高速落下）
++  - 壁キック実装（壁際での回転補正）
++  - **2手目組み合わせ制約**：AAAA、AAAB、ABAB、ABAC、AABC型のみ生成
++  - 4色固定（赤・緑・青・黄）
++
++#### **連鎖システム**
++- 重力による自然落下
++- 4つ以上繋がったぷよの自動消去
++- 連鎖による再帰的な消去処理
++- スコア計算（消去したぷよ数×10点）
++
++#### **GTR評価システム（note.md仕様）**
++- **パターン検出**
++  - GTR必須折り返し形状の検出（1-3列目）
++  - 連鎖尾形状判定（Y字・L字・階段型）
++- **詳細評価**
++  - 評価範囲：1-2列目（10-12行目）、3-6列目（9-12行目）
++  - 連鎖数評価（最大5連鎖、1連鎖10点）
++  - 9行目使用状況評価（右上の立ち具合）
++  - あまりぷよ評価（同色連結で高評価、複数色は0点）
++- **設定管理**
++  - 設定ファイル分離（GTRScoringConfig.ts）でチューニング容易
++  - 評価条件分岐にコメント付き
++
++#### **配置アドバイザー**（PlacementAdvisor）
++- フィールド状態+現在のぷよペアから最適配置を推薦
++- 3フェーズ自動検出（折り返し構築→連鎖尾→完成）
++- 5要素スコアリング（折り返し進捗、連鎖尾、連結、高さ、連鎖シミュ）
++- ゴースト表示（半透明ぷよ+パルスアニメーション）
++- Gキーで ON/OFF 切替
++- 設定ファイル分離（PlacementAdvisorConfig.ts）
++
++#### **UI/UX**
++- **レスポンシブデザイン**
++  - ガイド付きモード：900×800px（ガイド表示エリア+ゴースト付き）
++  - スコアアタック：640×800px
++- **ビジュアルシステム**
++  - PuyoRenderer: 目付きぷよテクスチャ（3段グラデーション+光沢+ゴースト）
++  - VisualConfig: 統一レイアウト定数（48pxセル、カラーパレット）
++  - アニメーション：着地バウンス、連鎖消滅+パーティクル、スコアフロート
++- **操作フィードバック**
++  - インタラクティブな評価画面（Space/Escキー選択）
++  - ポーズ画面表示
++  - 詳細な操作説明
++
++#### **バックエンド準備**
++- Supabase接続・設定完了
++- データベース設計（supabase/migrations/20260930000000_initial.sql）
++- 接続テスト機能
++
++### 📝 最近の更新（2024年12月）
++- **自由落下ON/OFF機能追加**
++  - Fキーで自由落下の有効/無効を切り替え可能
++  - 画面上部に現在の状態を表示（ON：緑色、OFF：赤色）
++  - 両ゲームモード（初心者用ガイド付き、スコアアタック）で利用可能
++- **巻き戻し機能の修正**
++  - 連鎖処理後の巻き戻しが正しく動作するよう修正
++  - 履歴保存のタイミングを連鎖処理完了後に変更
++
++### 🚧 開発予定機能
++- **フリープレイモード**（メニューに表示済み、未実装）
++- **ランキングシステム**
++  - スコアシステムとSupabaseとの連携
++  - グローバルランキング
++  - パーソナルレコード
++- **ソーシャル機能**
++  - ユーザー認証
++  - リプレイ共有機能
++  - フレンドシステム
++- **学習機能強化**
++  - GTRガイドの視覚的改善
++  - 段階的難易度調整
++  - 統計機能（成功率、平均時間等）
++
++## 操作方法
++
++### 共通操作
++- **← →** : 左右移動
++- **↓** : 高速落下  
++- **Z** : 左回転
++- **X** : 右回転
++- **Space** : GTR評価
++- **Esc** : TOPページに戻る
++
++### 初心者用ガイド付きGTR練習
++- **↑** : 巻き戻し（1手戻る）
++- **P** : ポーズ/再開
++- **F** : 自由落下ON/OFF（画面左上に状態表示）
++- **G** : 配置アドバイザーON/OFF（推薦位置ゴースト表示）
++- **Space** : GTR評価（詳細結果表示）
++- **評価画面**：Space（続ける）/ Esc（TOPへ戻る）
++
++### GTRスコアアタック
++- **F** : 自由落下ON/OFF（画面右上に状態表示）
++- **Space** : GTR評価（インタラクティブ結果画面）
++- **評価画面**：Space（ゲーム続行）/ Esc（TOPへ戻る）
++
++## トラブルシューティング
++
++### ゲームが表示されない場合
++1. ブラウザを強制リフレッシュ（Ctrl + F5）
++2. F12でConsoleを開き、エラーを確認
++3. 開発サーバーが起動しているか確認（bun run dev）
++
++### Supabase接続エラー
++1. .env ファイルの環境変数を確認
++2. SupabaseプロジェクトのURL/APIキーが正しいか確認
++3. supabase/migrations/20260930000000_initial.sql をSupabaseで実行済みか確認
++
++## 参考資料
++
++- [REQUIREMENT.md](./REQUIREMENT.md) - 詳細な要件定義
++- [ARCHITECTURE.md](./ARCHITECTURE.md) - 技術設計書
++- [TECH_RECOMMENDATION.md](./TECH_RECOMMENDATION.md) - 技術選定の詳細と理由
++- [docs/README.md](./docs/README.md) - ドキュメント一覧
++- [docs/GAME-MODES.md](./docs/GAME-MODES.md) - ゲームモード仕様書
++- [docs/GTR-SCORING-SYSTEM.md](./docs/GTR-SCORING-SYSTEM.md) - GTR評価システム設計
++- [docs/PUYO-GENERATION.md](./docs/PUYO-GENERATION.md) - 2手制約システム仕様書
++- [note.md](./note.md) - UI設計とSPA構成
++- [src/game/gtr/GTRScoringConfig.ts](./src/game/gtr/GTRScoringConfig.ts) - 評価点数設定ファイル
++- [docs/PLACEMENT-ADVISOR.md](./docs/PLACEMENT-ADVISOR.md) - 配置推薦システム設計書
++- [src/game/advisor/PlacementAdvisorConfig.ts](./src/game/advisor/PlacementAdvisorConfig.ts) - 推薦スコアリング定数
++- [src/game/guide/GTRGuidePatterns.ts](./src/game/guide/GTRGuidePatterns.ts) - GTR完成形サンプル集
++- ぷよぷよ公式ルール
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\bun.lock" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\bun.lock"
+index 4cf1cf5..5f09993 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\bun.lock"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\bun.lock"
+@@ -25,6 +25,7 @@
+         "autoprefixer": "^10.4.21",
+         "jsdom": "^30.1.1",
+         "postcss": "^8.5.6",
++        "supabase": "2.118.0",
+         "tailwindcss": "^3.4.17",
+         "vitest": "^3.2.4",
+       },
+@@ -91,6 +92,8 @@
+ 
+     "@csstools/css-tokenizer": ["@csstools/css-tokenizer@4.0.2", "", {}, "sha512-OoKoR0f76dCY666JlcbhmVTs2drYj1GUXZTYTcbUgJjh9Nv41aFfZ21bPQTERm5+L5cBDo466NltB2lplS5GBw=="],
+ 
++    "@ecies/ciphers": ["@ecies/ciphers@0.2.6", "", { "peerDependencies": { "@noble/ciphers": "^1.0.0" } }, "sha512-patgsRPKGkhhoBjETV4XxD0En4ui5fbX0hzayqI3M8tvNMGUoUvmyYAIWwlxBc1KX5cturfqByYdj5bYGRpN9g=="],
++
+     "@electric-sql/pglite": ["@electric-sql/pglite@0.5.8", "", {}, "sha512-n9tsbUOhwx2epK1V0ZG9Ar4SHWUju04dhmzZXiSBXwBoleOvIfals33NAaWgagQVAL4Rbvx/Ptsu3P+pA09f6Q=="],
+ 
+     "@esbuild/aix-ppc64": ["@esbuild/aix-ppc64@0.28.2", "", { "os": "aix", "cpu": "ppc64" }, "sha512-XExcO+dvLKvVtNTibSTBej1NCAbaGhWn9Ww1ZPx80qsahhPFe/8jgWP0IchNe0F3HwkU7n8ejhH8bjonqht8mQ=="],
+@@ -159,6 +162,12 @@
+ 
+     "@napi-rs/lzma-linux-x64-gnu": ["@napi-rs/lzma-linux-x64-gnu@1.5.1", "", { "os": "linux", "cpu": "x64" }, "sha512-oTXEIha4SsuXdTA4Iyskj0kpdx2yVXdhd75c2v3xGrHFfVMsbhTPZU/nMPL4sWKo4pBHm3aucLaqGlF696dTyQ=="],
+ 
++    "@noble/ciphers": ["@noble/ciphers@1.3.0", "", {}, "sha512-2I0gnIVPtfnMw9ee9h1dJG7tp81+8Ob3OJb3Mv37rx5L40/b0i7djjCVvGOVqc9AEIQyvyu1i6ypKdFw8R8gQw=="],
++
++    "@noble/curves": ["@noble/curves@1.9.7", "", { "dependencies": { "@noble/hashes": "1.8.0" } }, "sha512-gbKGcRUYIjA3/zCCNaWDciTMFI0dCkvou3TL8Zmy5Nc7sJ47a0jtOeZoTaMxkuqRo9cRhjOdZJXegxYE5FN/xw=="],
++
++    "@noble/hashes": ["@noble/hashes@1.8.0", "", {}, "sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A=="],
++
+     "@nodelib/fs.scandir": ["@nodelib/fs.scandir@2.1.5", "", { "dependencies": { "@nodelib/fs.stat": "2.0.5", "run-parallel": "^1.1.9" } }, "sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g=="],
+ 
+     "@nodelib/fs.stat": ["@nodelib/fs.stat@2.0.5", "", {}, "sha512-RkhPPp2zrqDAQA/2jNhnztcPAlv64XdhIp7a7454A5ovI7Bukxgt7MX7udwAu3zg1DcpPU0rz3VV1SeaqvY4+A=="],
+@@ -219,6 +228,22 @@
+ 
+     "@supabase/auth-js": ["@supabase/auth-js@2.114.0", "", { "dependencies": { "tslib": "2.8.1" } }, "sha512-7pdAE31YHynM1b2rbrbVtQc4ug5LcUvATe9u3EazlCZMY6jar7Z5JHJlj7/qcO5Z6KAYT26sTr5mvVHePeuC/g=="],
+ 
++    "@supabase/cli-darwin-arm64": ["@supabase/cli-darwin-arm64@2.118.0", "", { "os": "darwin", "cpu": "arm64" }, "sha512-48W7wkHIVNgwSz4zr+xsC94la1PytCpudOw5w9qJWAISyBWRXMFBCEMb9aVIEG8S9OcLb4X1KZy4PPA/T+f7NQ=="],
++
++    "@supabase/cli-darwin-x64": ["@supabase/cli-darwin-x64@2.118.0", "", { "os": "darwin", "cpu": "x64" }, "sha512-r6z41S0ycJiy2cO6sbJA7kPCodpAus6b3Km+qyn2zYlnTLN0nbscYnKxrZf/rJNR+S+sdpOZXgdQjGc/z5jvXw=="],
++
++    "@supabase/cli-linux-arm64": ["@supabase/cli-linux-arm64@2.118.0", "", { "os": "linux", "cpu": "arm64" }, "sha512-gYjOTnsYgwC68suoFALaXo87KvluXMjdWuo26a7hyD8vLeRJrmX+dpdxgegckQ7wxz8V1iotSBQU6Hd44FEDqw=="],
++
++    "@supabase/cli-linux-arm64-musl": ["@supabase/cli-linux-arm64-musl@2.118.0", "", { "os": "linux", "cpu": "arm64" }, "sha512-8yXIa+9g3FVVlnUAZ9wB1NEP6kvO0tpqQkDs3wqmb6btLD1MYosD/2/ZazSkpEHiKOwKUSymvUg0OgqI7a1gpw=="],
++
++    "@supabase/cli-linux-x64": ["@supabase/cli-linux-x64@2.118.0", "", { "os": "linux", "cpu": "x64" }, "sha512-nHm27uv15iu4xIQZRC++CS4uKYU9HuFn9HiOf407620OQ3cCp70fLT59grFlYQ+bqM7Zrv/GmEZHdgR8UO65RA=="],
++
++    "@supabase/cli-linux-x64-musl": ["@supabase/cli-linux-x64-musl@2.118.0", "", { "os": "linux", "cpu": "x64" }, "sha512-baHVTKJ8OehCXIt6pjHFRXofoUqQzve+43lRKKeVlcgDmgHHTTaF/wTpNvQ86IhoDRkiQTuHQkDG8I5GtHdvEA=="],
++
++    "@supabase/cli-windows-arm64": ["@supabase/cli-windows-arm64@2.118.0", "", { "os": "win32", "cpu": "arm64" }, "sha512-wd592HmQQ7DsGjnwDHILJfFlsRBQ8Q6wwjX5AXRmqznsj3NOPfFzZm2GtV8hJIj1Ttsf7B8N1DqW/0ta7kU4oQ=="],
++
++    "@supabase/cli-windows-x64": ["@supabase/cli-windows-x64@2.118.0", "", { "os": "win32", "cpu": "x64" }, "sha512-qVAJL532b5pB8uJAPA/+3+wtwM/DX1GxwVLCSDmiT6wfUBD6OJcCYRXCEaUx0YjupyaDoPeuP4BF7IfkQTajww=="],
++
+     "@supabase/functions-js": ["@supabase/functions-js@2.114.0", "", { "dependencies": { "tslib": "2.8.1" } }, "sha512-N3hzlq2xr6IYkkgj0tC4j0U3LWVshr5U/DAvmD5Bu8bW1ne2XOwxOx3ps6Y3NbptBAlzDrezmeJevlZR4AqsLA=="],
+ 
+     "@supabase/phoenix": ["@supabase/phoenix@0.4.5", "", {}, "sha512-aAn9H9ovVyeApKy11OWOrrOGq8DV68yWeH4ud2lN9fzn4aO8Zb5GLL9m1pUg9nLqIcT+ZDfAcsZe0E/nqdv2lw=="],
+@@ -341,6 +366,8 @@
+ 
+     "dom-accessibility-api": ["dom-accessibility-api@0.5.16", "", {}, "sha512-X7BJ2yElsnOJ30pZF4uIIDfBEVgF4XEBxL9Bxhy6dnrm5hkzqmsWHGTiHqRiITNhMyFLyAiWndIJP7Z1NTteDg=="],
+ 
++    "eciesjs": ["eciesjs@0.5.0", "", { "dependencies": { "@ecies/ciphers": "^0.2.6", "@noble/ciphers": "^1.3.0", "@noble/curves": "^1.9.7", "@noble/hashes": "^1.8.0" } }, "sha512-s0J9SEVYAEPg7J63GFMApLYzPH9VNIQIyC6s15JpnqVc0TqcKWdbgFlnAweEBRyMmko2dcs2sfC83Hj4J43tuA=="],
++
+     "electron-to-chromium": ["electron-to-chromium@1.5.420", "", {}, "sha512-2yD6XreGusOfNV+dUcvipJEXc3n/n7fgr7996aszTG+YY5E4mqM4tOq/3uhP129cazL9YHbVWSpc79ePotWtPA=="],
+ 
+     "entities": ["entities@8.1.0", "", {}, "sha512-kxL7msIffSuh9aaFAMD7rxAIuTRMAHMeBtgHW2yUdWw732ZNh4MehkF2gdjvtdmikkaIP9bFDDJOPlsvm7avrA=="],
+@@ -399,6 +426,8 @@
+ 
+     "jiti": ["jiti@1.21.7", "", { "bin": { "jiti": "bin/jiti.js" } }, "sha512-/imKNG4EbWNrVjoNC/1H5/9GFy+tqjGBHCaSsN+P2RnPqjsLmv6UD3Ej+Kj8nBWaRAwyk7kK5ZUc+OEatnTR3A=="],
+ 
++    "jose": ["jose@6.2.12", "", {}, "sha512-9NiFmJEex0sy2Dk58j2UGBSHgUs2ypF9eZSu4L6vjOX3Dp96Sw1F3uL+H+D1sx02jZZdzUT0HgvCy59CuvXcWw=="],
++
+     "js-tokens": ["js-tokens@4.0.0", "", {}, "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ=="],
+ 
+     "jsdom": ["jsdom@30.1.1", "", { "dependencies": { "@asamuzakjp/css-color": "^7.0.0", "@asamuzakjp/dom-selector": "^9.2.1", "@bramus/specificity": "^2.4.2", "@csstools/css-syntax-patches-for-csstree": "^1.1.13", "@exodus/bytes": "^1.15.1", "css-tree": "^3.2.1", "data-urls": "^7.0.0", "decimal.js": "^10.6.0", "html-encoding-sniffer": "^7.0.0", "is-potential-custom-element-name": "^1.0.1", "lru-cache": "^11.5.2", "parse5": "^8.0.1", "saxes": "^6.0.0", "tough-cookie": "^6.0.2", "undici": "^8.10.2", "w3c-xmlserializer": "^6.0.0", "webidl-conversions": "^8.0.1", "whatwg-mimetype": "^5.0.0", "whatwg-url": "^17.1.1", "xml-name-validator": "^5.0.0" }, "peerDependencies": { "canvas": "^3.2.3" }, "optionalPeers": ["canvas"] }, "sha512-FahmoPK5vbPc+jxV1iErMHmAZypCZ942NHF4+qqaWAuvaKKTBZxawnmAtrbGWLU7MtlxfqIP0qw6aSI+aWGtLg=="],
+@@ -515,6 +544,8 @@
+ 
+     "sucrase": ["sucrase@3.35.1", "", { "dependencies": { "@jridgewell/gen-mapping": "^0.3.2", "commander": "^4.0.0", "lines-and-columns": "^1.1.6", "mz": "^2.7.0", "pirates": "^4.0.1", "tinyglobby": "^0.2.11", "ts-interface-checker": "^0.1.9" }, "bin": { "sucrase": "bin/sucrase", "sucrase-node": "bin/sucrase-node" } }, "sha512-DhuTmvZWux4H1UOnWMB3sk0sbaCVOoQZjv8u1rDoTV0HTdGem9hkAZtl4JZy8P2z4Bg0nT+YMeOFyVr4zcG5Tw=="],
+ 
++    "supabase": ["supabase@2.118.0", "", { "dependencies": { "eciesjs": "^0.5.0", "jose": "^6.2.10" }, "optionalDependencies": { "@supabase/cli-darwin-arm64": "2.118.0", "@supabase/cli-darwin-x64": "2.118.0", "@supabase/cli-linux-arm64": "2.118.0", "@supabase/cli-linux-arm64-musl": "2.118.0", "@supabase/cli-linux-x64": "2.118.0", "@supabase/cli-linux-x64-musl": "2.118.0", "@supabase/cli-windows-arm64": "2.118.0", "@supabase/cli-windows-x64": "2.118.0" }, "bin": { "supabase": "dist/supabase.js" } }, "sha512-0aPIlzBSBLwbJZCMZKD1QAwlc4xNnNvvk07QuSuuKBKzGLSeV3GovgTLlMKFTJ4JWfJubWF0URPLuPUr0kZr5g=="],
++
+     "supports-preserve-symlinks-flag": ["supports-preserve-symlinks-flag@1.0.0", "", {}, "sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w=="],
+ 
+     "tailwindcss": ["tailwindcss@3.4.19", "", { "dependencies": { "@alloc/quick-lru": "^5.2.0", "arg": "^5.0.2", "chokidar": "^3.6.0", "didyoumean": "^1.2.2", "dlv": "^1.1.3", "fast-glob": "^3.3.2", "glob-parent": "^6.0.2", "is-glob": "^4.0.3", "jiti": "^1.21.7", "lilconfig": "^3.1.3", "micromatch": "^4.0.8", "normalize-path": "^3.0.0", "object-hash": "^3.0.0", "picocolors": "^1.1.1", "postcss": "^8.4.47", "postcss-import": "^15.1.0", "postcss-js": "^4.0.1", "postcss-load-config": "^4.0.2 || ^5.0 || ^6.0", "postcss-nested": "^6.2.0", "postcss-selector-parser": "^6.1.2", "resolve": "^1.22.8", "sucrase": "^3.35.0" }, "bin": { "tailwind": "lib/cli.js", "tailwindcss": "lib/cli.js" } }, "sha512-3ofp+LL8E+pK/JuPLPggVAIaEuhvIz4qNcf3nA1Xn2o/7fb7s/TYpHhwGDv1ZU3PkBluUVaF8PyCHcm48cKLWQ=="],
+
+New file: bunfig.toml
++# Vite selects its environment directory by mode. Bun must not pre-load root .env.local.
++env = false
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\docs\\AUTH-DB-DESIGN-20260930.md" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\docs\\AUTH-DB-DESIGN-20260930.md"
+index 8250b90..24bdf27 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\docs\\AUTH-DB-DESIGN-20260930.md"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\docs\\AUTH-DB-DESIGN-20260930.md"
+@@ -3,7 +3,7 @@
+ 日付: 2026-09-30 / 状態: R5ローカル実装受入済み・外部Supabase/OAuth検証待ち。全体は未完了。
+ Habitica: `8503d097-3ae1-4d72-9bf9-aad9eaff9233`（本体未完了）。関連する未完了todoを検索し該当なしのため登録。
+ 
+-後続方針: 利用者の指定により、ローカルもSupabase/PostgreSQLへ統一する[移行計画](LOCAL-SUPABASE-DEVELOPMENT-20260930.md)を別タスク`65f80be6-edc5-4f4e-a6ed-e43393bb3989`へ登録。今回はタスク・文書更新までで、以下のSQLiteを使うR5実装はまだ変更していない。外部OAuthの設定/実ログインは本タスクの未完了事項として維持する。
++後続実装: [ローカルSupabase移行](LOCAL-SUPABASE-DEVELOPMENT-20260930.md)を別タスク`65f80be6-edc5-4f4e-a6ed-e43393bb3989`として実装中。以下のSQLite/cookie関連仕様はR5時点の履歴で、移行後はローカルSupabase Auth/PostgreSQLと標準セッションに統一する。現在の起動方法は[セットアップ](AUTH-SETUP.md)、移行の受入状況は[検証記録](LOCAL-SUPABASE-VALIDATION-20260930.md)を参照。外部OAuthの設定/実ログインは本タスクの未完了事項として維持する。
+ 
+ ## 依頼と受入範囲
+ 
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\docs\\AUTH-SETUP.md" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\docs\\AUTH-SETUP.md"
+index a8029a7..8cba9c4 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\docs\\AUTH-SETUP.md"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\docs\\AUTH-SETUP.md"
+@@ -1,8 +1,23 @@
+ # 認証・ユーザーDBのセットアップ
+ 
+-現在の状態: R5ローカル実装受入済み。外部Supabaseへの適用・実OAuthは未確認で全体未完了。設計は [認証・DB設計](AUTH-DB-DESIGN-20260930.md)、受入は [R5判定](reviews/auth-db-r5-review.md)。
++現在の状態: ローカルSupabase移行を実装・検証中。受入は[移行検証](LOCAL-SUPABASE-VALIDATION-20260930.md)に記録する。外部SupabaseのDB適用・実OAuthは別の残件。旧SQLite版の[R5受入](reviews/auth-db-r5-review.md)とは区別する。
+ 
+-次の開発方針: [ローカルSupabase移行計画](LOCAL-SUPABASE-DEVELOPMENT-20260930.md)を登録済み。開発はDocker/WSL2上のローカルSupabaseへ寄せる予定だが、現在はSQLite実装と既存クラウド接続設定のまま。今回の作業はタスク・文書更新までで、以下のクラウドSQL適用や環境切替を実行済みとは扱わない。
++## ローカル開発の起動
++
++コード・Git・Bun・ViteはWindowsで動かし、PostgreSQL/AuthなどのSupabaseサービスはDocker DesktopのWSL2基盤で動かす。ローカルDBとクラウドDBのデータは同期しない。
++
++1. Docker Desktopを起動する。WSL2バックエンドを使い、SettingsのNetworkでPort binding behaviorを「Localhost by default」にする。このPCではDocker Desktop 4.93.0をその設定に変更した。
++2. `bun install`で固定版Supabase CLIを含む依存を用意する。
++3. `bun run supabase:start`でこのPC専用のSupabaseを起動する。初回はコンテナ取得に時間がかかる。
++4. `bun run supabase:migrate`で未適用の共通migrationをローカルDBへ適用する。
++5. `bun run supabase:admin-init`でパスワードなしの固定ローカル管理者を初期化する。繰り返しても表示名を上書きしない。
++6. `bun run dev --host 127.0.0.1 --port 5175`でアプリを起動し、アカウント画面からローカル管理者でログインする。
++
++`bun run supabase:stop`はデータを保持して停止する。`bun run supabase:status`は接続設定を再生成する。起動処理にDB resetは含めない。APIは`http://127.0.0.1:54321`、PostgreSQLは`127.0.0.1:54322`を使う。Docker公開ポートはloopback専用ネットワークとDocker Desktopのlocalhost既定設定で限定する。コマンドは起動後の実ポートを確認し、127.0.0.1/::1以外を検出すると停止・失敗する。設定が戻った場合はこの検査を外さずDockerの設定を確認する。
++
++ローカル設定はCLI statusから`.local/supabase/.env`へ生成する。公開URL/anon keyと、開発サーバー専用の`LOCAL_SUPABASE_SERVICE_ROLE_KEY`を含むため共有・Git登録しない。キーの値をコマンド出力へ表示しない。ローカルモードはこのディレクトリだけを設定元にし、root `.env.local`にあるクラウド設定を保全する。bunfig.tomlのenv=falseでBunによるroot envの自動読込を止め、Viteが環境別に読む。明示した環境変数とローカル設定が異なる場合は起動を拒否する。
++
++クラウドへ接続して開発する場合だけ`bun run dev:cloud --host 127.0.0.1 --port 5175`を使う。通常の`dev`はlocaldevモード、`dev:cloud`はcloudモード。認証の保存領域を接続環境ごとに分ける。localdevモードの本番buildは拒否し、通常の`bun run build`にはローカル管理者APIを含めない。
+ 
+ ## 使用するサービス
+ 
+@@ -12,13 +27,13 @@
+ 
+ 2026-09-30に利用者が新規作成: [Supabaseダッシュボード](https://supabase.com/dashboard/project/fqzvthxzupjjkhpuwvst)。標準API URLは`https://fqzvthxzupjjkhpuwvst.supabase.co`。受領した公開キーをgit対象外の.env.localへ設定し、Auth healthのHTTP 200と開発サーバーへの設定反映を確認済み。DB/OAuth設定は未完了。
+ 
+-実サービスの公開設定はGoogle=false、GitHub=false、Email=true。プロフィール表の存在確認（匿名・0行指定）は404/PGRST205で、APIのschema cacheにprofilesが見つからない。初期SQL適用は未確認のため、まずSQL Editorで下記initial-setup.sqlを実行する。管理画面の認証済みセッションは利用できず、公開キーではSQLやprovider管理設定を変更できない。
++実サービスの公開設定はGoogle=false、GitHub=false、Email=true。プロフィール表の存在確認（匿名・0行指定）は404/PGRST205で、APIのschema cacheにprofilesが見つからない。初期SQL適用は未確認のため、クラウド適用は未実施のまま残す。共通DB定義は下記migrationを正本とする。管理画面の認証済みセッションは利用できず、公開キーではSQLやprovider管理設定を変更できない。
+ 
+ ## 新しいSupabaseプロジェクト
+ 
+ 1. Supabaseダッシュボードで新規プロジェクトを作成する。DB管理用パスワードは利用者が設定・保管する。これはゲーム利用者のパスワードではなく、アプリの環境変数にも保存しない。
+ 2. プロジェクトのURLと公開用のPublishable key（旧形式ならanon key）を取得する。secret key、service_role key、DBパスワードをブラウザ用設定に入れない。
+-3. 新規DBでは [sql/initial-setup.sql](../sql/initial-setup.sql) をSQL Editorで実行する。今回の新プロジェクトはこちらを使用する。過去の旧初期SQLが適用済みのDBだけ [sql/migrate-legacy-profiles.sql](../sql/migrate-legacy-profiles.sql) を使用する。両方を続けて実行しない。実Supabaseへの適用結果は未確認。
++3. 新規DBでは [共通初期migration](../supabase/migrations/20260930000000_initial.sql) をSQL Editorで実行する。新プロジェクトはこちらを使用するが、今回のローカル移行作業でクラウドへ適用はしない。過去の旧初期SQLが適用済みのDBだけ [sql/migrate-legacy-profiles.sql](../sql/migrate-legacy-profiles.sql) を使用する。両方を続けて実行しない。実Supabaseへの適用結果は未確認。
+ 4. ローカルの`.env.local`へURLと公開キーを設定する。`VITE_SUPABASE_URL`にURL、`VITE_SUPABASE_ANON_KEY`にPublishable keyまたは従来のanon keyを入れる。`.env.local`はコミットしない。
+ 
+ 初期SQLはプロフィールに加え、既存設計のスコア/リプレイ用テーブルも用意する。今回の画面にスコア同期・クラウドリプレイ保存を追加するものではない。プロフィールは本人だけが閲覧・表示名変更でき、旧メール入りusernameを公開する構成には戻さない。
+@@ -46,17 +61,19 @@ Google認証は埋め込みブラウザで拒否されることがある。Codex
+ 
+ ## ローカル管理者の扱い
+ 
+-ローカル管理者は開発サーバーだけのアカウントで、クラウドのユーザーや管理者権限とは別。プロフィールはローカルSQLiteに保存する。パスワードは持たない。サーバーを再起動するとログインセッションは失効し、プロフィールは残る。
++ローカル管理者は、このPC内のSupabase AuthとPostgreSQLに保存する開発専用アカウント。固定UUIDは`00000000-0000-4000-8000-000000000001`、メールは`systemadmin@gtr.local`、初期表示名は「システム管理者」。クラウドのユーザーや管理者権限とは別で、共通migrationには作成・昇格処理を含めない。
++
++初期化コマンドはAdmin APIで本人識別を確認し、パスワードなしでユーザーを用意する。開発用ログインAPIが一時的なmagic linkを検証し、通常のSupabaseセッションをブラウザへ渡す。取得・表示名保存・ログアウトは通常ユーザーと同じSupabase経路を使う。Vite再起動だけではセッションを失効させず、Supabase標準の期限と更新に従う。
+ 
+-Node 22.18.0でnode:sqliteの動作を確認済み。このNode版ではExperimentalWarningが出る。公開/LAN向けbind・本番build・previewではローカル管理者APIを利用できない。
++APIはlocaldevの開発サーバーだけに登録し、実listen・接続元・Host・Origin・使い捨てnonceを確認する。公開/LAN bind・cloudモード・本番build・previewでは利用できない。上流は固定ローカルAuth URLだけに限定し、redirectを追わない。
+ 
+-`bun run dev`で起動し、ヘッダー右のアカウントから「ローカル管理者でログイン」を選ぶ。プロフィールは`.local/auth.sqlite`に保存される。`.local/`はgitとViteのファイル配信から除外する。`bun --bun run dev`による実行ランタイム変更は検証していない。
++旧`.local/auth.sqlite`は削除・自動移行しない。新しいコードでは使用しない。`.local/`とSupabase CLIが生成する`supabase/.temp/`・`.branches/`はGitとVite配信から除外する。CLIが作るdocker.envにも秘密値が入るため、生成物を共有しない。ローカルDBが停止していてもゲストで遊べるが、プロフィール保存はできない。クラウドやSQLiteへ自動切替はしない。
+ 
+ 検証コマンドは `bun run type-check`、`bun run type-check:server`、`bun run type-check:scripts`、`bun run test --maxWorkers=2`、`bun run build`。PGliteによるSQLテストとjsdomによる画面テストは開発依存で、本番DBやGoogle/GitHubの代替ではない。
+ 
+ ## 動作確認の区別
+ 
+-- ローカル自動テスト: SQLiteの永続化、接続元やセッションの検証、実PostgreSQL実行系での権限検証。
++- ローカル自動テスト: 接続設定分離、開発APIの接続元/nonce検証、認証とプロフィールの競合回帰、PGliteによるSQL権限検証。実Dockerでの初期化・ログイン・データ保持は別途確認する。
+ - ローカル画面: ゲスト、ローカル管理者ログイン、表示名変更、ログアウト、ゲーム中の画面操作。
+ - 外部接続: 実SupabaseへSQLを適用し、GoogleとGitHubの両方でログイン/再ログイン/プロフィール変更/ログアウトを確認する。この工程はサービス設定後に実施し、ローカルテスト成功だけで完了扱いにしない。
+ 
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\docs\\LOCAL-SUPABASE-DEVELOPMENT-20260930.md" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\docs\\LOCAL-SUPABASE-DEVELOPMENT-20260930.md"
+index cf32d2d..49134e4 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\docs\\LOCAL-SUPABASE-DEVELOPMENT-20260930.md"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\docs\\LOCAL-SUPABASE-DEVELOPMENT-20260930.md"
+@@ -1,19 +1,21 @@
+ # ローカル開発環境をSupabaseへ統一する
+ 
+ 日付: 2026-09-30
+-状態: タスク登録・Astra設計整理済み。実装・インストール・接続先切替は未着手。
++状態: Astra具体設計・Sol実装・実スタック/画面確認済み。自動テストと独立レビュー受入は進行中。
+ Habitica: `65f80be6-edc5-4f4e-a6ed-e43393bb3989`（優先度: 高、本体未完了）。
+ 関連: 認証・ユーザーDBタスク `8503d097-3ae1-4d72-9bf9-aad9eaff9233`、[既存認証設計](AUTH-DB-DESIGN-20260930.md)、[セットアップ](AUTH-SETUP.md)。
+ 
+-## 依頼と今回の到達点
++## 依頼と実装範囲
+ 
+-利用者はローカル開発でもPostgreSQLを使い、開発環境をSupabaseへ寄せる方針を指定。その後「まずタスクきってドキュメント更新して」と指定したため、今回はタスクと設計・進捗の記録までとする。
++利用者はローカル開発でもPostgreSQLを使い、開発環境をSupabaseへ寄せる方針を指定。先にタスクと設計文書を登録し、その後の実装開始指示に従って移行する。
+ 
+-Astra `/root/local_supabase_design`（gpt-6-astra）が既存実装と設計を読み取り確認した。Sol実装・独立3人レビュー・Astra最終受入はまだ行っていない。既存認証のR5受入を、この移行の受入として流用しない。
++追記: その記録完了後、利用者が「deploy設定は別タスクとして切っておいてローカル開発の実装に取り掛かって」と指示。以降は本タスクを実装する。[デプロイ設定](DEPLOYMENT-PLAN-20260930.md)は別タスク`8ced9e6b-9aa8-46f3-b3d6-3e949b0278da`へ登録済み。
+ 
+-## 現状と目標
++Astra `/root/local_supabase_design`（gpt-6-astra）が既存実装と設計を読み取り確認し、Solが実装中。独立3人レビュー・Astra最終受入はまだ行っていない。既存認証のR5受入を、この移行の受入として流用しない。
+ 
+-| 対象 | 現在 | 移行後の方針 |
++## 開始時点と移行先
++
++| 対象 | 開始時点 | 移行後の方針 |
+ |---|---|---|
+ | コード・Git・Bun・Vite | Windows | Windowsを維持 |
+ | 開発DB | 管理者はSQLite、通常ユーザー用接続先はクラウドSupabase | Docker DesktopのWSL2基盤でローカルSupabase/PostgreSQL |
+@@ -22,7 +24,7 @@ Astra `/root/local_supabase_design`（gpt-6-astra）が既存実装と設計を
+ | DB構造の正本 | sql/initial-setup.sql | supabase/migrations/の共通migration |
+ | データ | PCとクラウドに分離 | 分離を維持し、自動同期しない |
+ 
+-現状調査ではdocker/supabaseコマンドがPATHになく、標準パスのDocker Desktop実行ファイルも存在しない。wsl.exeは存在するが、WSL2の導入状態・仮想化・Dockerの実起動は未確認。別の場所への導入有無は断定しない。
++開始時点ではDockerが未導入だったため、署名を確認した公式Docker Desktop 4.93.0をユーザー別に導入。WSL2 2.7.14.0、Engine 29.8.1/linuxの応答成功を確認。詳細は[検証記録](LOCAL-SUPABASE-VALIDATION-20260930.md)。
+ 
+ 新規クラウドprojectは`fqzvthxzupjjkhpuwvst`。公開キー設定とAuth疎通は確認済み。直近の公開API確認ではGoogle/GitHub未有効、profilesは404/PGRST205。クラウド初期SQL・provider設定・実OAuthの残件は関連する認証タスクに保持する。
+ 
+@@ -37,7 +39,7 @@ Astra `/root/local_supabase_design`（gpt-6-astra）が既存実装と設計を
+ 7. ローカルDBが停止していてもゲストプレイを維持する。クラウドまたはSQLiteへの自動fallbackは行わない。
+ 8. 既存SQLiteファイルとデータを削除・自動移行しない。起動時のDB resetや、クラウドへの自動migration適用も行わない。接続先切替前に既存設定を保全する。
+ 
+-## 実装前に確定する詳細
++## 設計時の確認事項（具体契約は後述）
+ 
+ - Supabase CLIの固定版、Bun経由のWindows実行方法、Docker Desktop/WSL2の実動条件。インストール・OS設定変更・再起動が必要なら具体的な範囲を確認する。
+ - ローカルAuthユーザーの冪等初期化とパスワードなしログイン。候補はサーバーAdmin APIによるユーザー準備、generateLink、OTP検証、通常Authセッション確立。固定ユーザーのUUID/識別、既存ユーザー照合、Email設定、ログアウト/期限/再起動時の扱いを実スタックで検証して確定する。
+@@ -58,11 +60,27 @@ Astra `/root/local_supabase_design`（gpt-6-astra）が既存実装と設計を
+ 
+ Docker未導入や実起動不可の場合は、設定ファイルだけで環境移行完了とせず、未検証範囲と必要な操作を残す。
+ 
++## 実装開始時の具体契約
++
++Astra `/root/local_supabase_design` が実装開始指示後に読取確認し、以下を確定した。
++
++- `dev`は`vite --mode localdev`、envDirは`.local/supabase/`。`dev:cloud`のみ従来root envを使う。既存root `.env.local`を変更しない。localdev buildは拒否。
++- `.local/supabase/.env`はCLI statusから値非出力で生成。公開値とサーバー専用LOCAL_SUPABASE_SERVICE_ROLE_KEYを取り違えず、resolved公開値とローカル設定の不一致を起動時に拒否する。HTTP許可はDEV/localdevの固定`http://127.0.0.1:54321`のみ。AuthとOAuthの保存キーは接続環境/URLで分離する。
++- 固定Auth UUID `00000000-0000-4000-8000-000000000001`、メールsystemadmin@gtr.local、初期表示名システム管理者。getUserByIdの明確なnot foundのみ作成し、既存UUID/メール/app metadata識別を照合。初期化は明示コマンドのみ、再実行で表示名を変えない。JWT roleはauthenticated、profiles.roleだけadmin。共通migrationには管理者を含めない。
++- DEV APIはGET bootstrapとPOST loginへ縮小。既存loopback/Host/Origin/CSRF/nonce期限・上限・使い捨てを保持。preview/cloudには登録しない。上流fetchは固定宛先・redirect拒否。generateLink→別公開clientのverifyOtp→固定user確認後、通常access/refresh tokenのみno-storeで返しブラウザsetSessionへ渡す。上流の生エラー/OTP/secretは返さない。
++- SQLite/独自cookie/backendSelectionを実行経路から外し、取得/保存/logoutを単一Supabase経路へ統一。既存の世代・読取/保存revision・draft保護を維持。ローカル管理者表示は接続先だけでなく固定identity/識別で確認。Vite再起動による強制失効は廃止しSupabase標準のセッション期限・更新へ合わせる。
++- ローカルAuthは必要なEmail機能を用い、公開signupを無効にする。アプリにメール/パスワード画面を追加せずクラウドのEmail設定は変更しない。
++- 共通migrationを正本としsql/initial-setup.sqlの重複実装を撤去、参照/テストを更新。旧DB移行は保管。start/stop/status/非破壊migration適用/admin初期化を分離し、remote link/push/resetを追加しない。
++- CLI候補はnpm公式レジストリで確認した安定版2.118.0を固定する。WSL2 2.7.14.0、Ubuntu version2稼働を確認。Windows/UbuntuでdockerはPATHになし。Docker Desktopのユーザー別導入パスも確認してから環境準備する。
++- 開始snapshot: docs/reviews/local-supabase-baseline-20260930.json、ID cfb1c78be47aa121eba9d6d3beeafd9d162c604341bcfd6cbfab1b0d9ed733cb、286ファイルcopy。accepted R5のアプリ対象281ファイルとの差0。型3種/105files1332tests/buildの既存成功結果を開始baselineとして再利用する。
++
++固定UUID作成、signup無効時のmagic-link検証、profile昇格/本人列権限、CLI設定互換は実Supabaseで確認済み。起動スクリプトは実公開ポートも検査する。Docker DesktopはLocalhost by default設定が必要だったため環境へ反映。不要なanalytics/vectorは無効化。詳細は[検証記録](LOCAL-SUPABASE-VALIDATION-20260930.md)。
++
+ ## 保護対象と範囲外
+ 
+ ゲーム物理・採点・推薦・乱数・ツモ・キー操作、既存未コミット変更、旧SQLite、クラウドデータを保護する。ゲーム同期、マウス対応、全ユーザー管理画面、WSLへのリポジトリ移動、公開/コミット/pushは含めない。削除済みtasks/は再作成しない。
+ 
+-## 今回の記録
++## 計画登録時点の記録（実装開始前）
+ 
+ - 関連Habitica todoを検索し同内容なし。新規移行タスクを作成し、本文一致と本体未完了をGETで確認。
+ - 優先度・対象・受入条件・設計参照・8チェック項目を登録。既存認証タスクとは相互参照を付け、外部OAuthの残件を移さない。
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\docs\\PROJECT-STRUCTURE.md" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\docs\\PROJECT-STRUCTURE.md"
+index a3098c4..6c74828 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\docs\\PROJECT-STRUCTURE.md"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\docs\\PROJECT-STRUCTURE.md"
+@@ -45,8 +45,9 @@ scripts/
+ assets/puyo/source/    編集可能な画素データ・原画・来歴・素材QA
+ benchmarks/            基準値・人間手順データ・測定出力
+ docs/                  品質方針・研究・実装仕様・検証記録
+-server/localAuth/       Vite開発環境だけの管理者API・SQLite・接続元とセッション検証
+-sql/                   Supabaseプロフィール初期設定・旧プロフィール移行・実SQLテスト
++server/localAuth/       Vite localdevだけの管理者ログインAPI・接続元とnonce検証
++supabase/              CLI設定・共通migration（profiles/scores/replays/RLS）
++sql/                   旧プロフィール移行・実SQLテスト
+ ```
+ 
+ テストは対象コードと同じディレクトリの `*.test.ts` に置く。
+@@ -81,9 +82,9 @@ sql/                   Supabaseプロフィール初期設定・旧プロフィ
+ `benchmark` は core・gtr・advisor を利用する利用側であり、ゲーム本体から測定処理を呼び出さない。
+ 
+ `auth`は外部認証・本人プロフィールの状態を所有し、`lib/supabase`と開発専用HTTP APIを利用する。ゲーム計算や入力層へ依存を持ち込まない。アカウント画面による停止はAppから既存の`suspended`契約を使う。
+-`server/localAuth`は開発サーバーだけに接続し、ブラウザの`src`からimportしない。SQLiteの管理者とSupabaseの認証ユーザーは別のidentityとして扱う。本番静的配信/previewにローカル管理者機能を設けない。詳細は [認証・DB設計](AUTH-DB-DESIGN-20260930.md)。
++`server/localAuth`は開発サーバーだけに接続し、ブラウザの`src`からimportしない。管理者もSupabase Authの通常セッションを使い、ローカルとクラウドは接続先で分離する。本番静的配信/previewにローカル管理者機能を設けない。詳細は [認証・DB設計](AUTH-DB-DESIGN-20260930.md)。
+ 
+-計画中の変更: [ローカルSupabase移行](LOCAL-SUPABASE-DEVELOPMENT-20260930.md)では、ローカル管理者もSupabase Auth/PostgreSQLへ統一し、共通DB定義をsupabase/migrations/で管理する。Windowsのコードとゲーム層の依存方向は維持する。現時点ではタスク・設計記録のみで、上記ディレクトリ/実装の置換は未実施。
++ローカルSupabase移行は[設計](LOCAL-SUPABASE-DEVELOPMENT-20260930.md)に従って実装中。共通DB定義は`supabase/migrations/`、ローカル専用初期化は`scripts/local-supabase.ts`に分離し、ブラウザから管理キーを参照させない。Windowsのコードとゲーム層の依存方向を維持する。受入状況は[検証記録](LOCAL-SUPABASE-VALIDATION-20260930.md)を参照。
+ 
+ 依存の一部は `src/architecture.test.ts` で、通常の import/export と Phaser 型の混入を検査する。
+ 動的読み込みや実行時の全依存まで保証する検査ではない。
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\docs\\README.md" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\docs\\README.md"
+index a78bd32..b826015 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\docs\\README.md"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\docs\\README.md"
+@@ -11,7 +11,8 @@ GTRトレーニングツールのドキュメントです。整理日：2026-09-
+ | 知りたいこと | 参照先 | 文書の役割 |
+ |---|---|---|
+ | 今どこまで完了し、何が残っているか | [最新の進捗](progress-report.md) | 採点・推薦・集計の修正、測定結果、検証範囲、残件 |
+-| ローカル開発もSupabase/PostgreSQLへそろえるには | [ローカルSupabase移行計画](LOCAL-SUPABASE-DEVELOPMENT-20260930.md) | Windows開発の維持、Docker/WSL2、共通DB定義、ローカル管理者、実装前の確認事項 |
++| ローカル開発もSupabase/PostgreSQLへそろえるには | [ローカルSupabase移行計画](LOCAL-SUPABASE-DEVELOPMENT-20260930.md)／[検証記録](LOCAL-SUPABASE-VALIDATION-20260930.md) | Windows開発の維持、Docker/WSL2、共通DB定義、ローカル管理者、進捗と確認結果 |
++| mainマージ後の本番公開を自動化するには | [デプロイ設定計画](DEPLOYMENT-PLAN-20260930.md) | ローカル開発とは別タスク。CI成功、DB→アプリの順序、公開先等の未決事項 |
+ | ログインとユーザーDBをどう作るか | [認証・DB設計](AUTH-DB-DESIGN-20260930.md) | Google/GitHub、本人プロフィール、ローカル専用管理者、外部設定の残件 |
+ | 新しいSupabaseと認証を設定するには | [認証セットアップ](AUTH-SETUP.md)／[検証記録](AUTH-VALIDATION-20260930.md) | 公開キー・SQL・OAuth設定、ローカル管理者、確認済み範囲と残件 |
+ | 次に操作設定と8bitテーマをどう改善するか | [次期改善の開始準備](INPUT-PIXEL-THEME-PLAN-20260927.md) | ぷよスポ風キーコンフィグ、全画面の文字・テーマ統一、多重学習の後順位タスク |
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\package.json" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\package.json"
+index c11ff8c..97374f5 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\package.json"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\package.json"
+@@ -5,7 +5,13 @@
+   "description": "",
+   "main": "index.js",
+   "scripts": {
+-    "dev": "vite",
++    "dev": "vite --mode localdev",
++    "dev:cloud": "vite --mode cloud",
++    "supabase:start": "bun scripts/local-supabase.ts start",
++    "supabase:stop": "bun scripts/local-supabase.ts stop",
++    "supabase:status": "bun scripts/local-supabase.ts status",
++    "supabase:migrate": "bun scripts/local-supabase.ts migrate",
++    "supabase:admin-init": "bun scripts/local-supabase.ts admin-init",
+     "build": "bun run type-check:server && tsc && vite build",
+     "preview": "vite preview",
+     "test": "vitest run --passWithNoTests",
+@@ -51,6 +57,7 @@
+     "autoprefixer": "^10.4.21",
+     "jsdom": "^30.1.1",
+     "postcss": "^8.5.6",
++    "supabase": "2.118.0",
+     "tailwindcss": "^3.4.17",
+     "vitest": "^3.2.4"
+   }
+
+New file: scripts/local-supabase.ts
++import { spawnSync } from 'node:child_process'
++import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
++import { resolve, join, dirname } from 'node:path'
++import { fileURLToPath } from 'node:url'
++import { LOCAL_ADMIN_EMAIL, LOCAL_ADMIN_ID, LOCAL_SUPABASE_URL, publicSupabaseKey, serviceRoleSupabaseKey } from '../src/lib/supabaseConfig'
++
++const command = process.argv[2]
++const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
++const cli = resolve(root, 'node_modules/.bin/supabase.exe')
++const localDocker = process.env.LOCALAPPDATA ? join(process.env.LOCALAPPDATA, 'Programs/DockerDesktop/resources/bin/docker.exe') : ''
++const docker = process.env.DOCKER_EXE || (localDocker && existsSync(localDocker) ? localDocker : 'docker')
++const network = 'gtr-training-loopback'
++const envPath = resolve(root, '.local/supabase/.env')
++
++function run(binary: string, args: string[]): string {
++  const result = spawnSync(binary, args, { cwd: root, encoding: 'utf8', maxBuffer: 4 * 1024 * 1024,
++    env: { ...process.env, PATH: `${dirname(docker)};${process.env.PATH || ''}` } })
++  if (result.status !== 0) throw new Error(`${args[0]} failed; inspect the local tool without sharing secret output`)
++  return result.stdout
++}
++
++function status(): { anon: string; serviceRole: string } {
++  checkPortBindings()
++  const output = run(cli, ['status', '-o', 'env'])
++  const values = Object.fromEntries([...output.matchAll(/^([A-Z_]+)=(.*)$/gm)].map(match => [match[1], match[2].trim().replace(/^"|"$/g, '')]))
++  if (values.API_URL !== LOCAL_SUPABASE_URL || !publicSupabaseKey(values.ANON_KEY) || !serviceRoleSupabaseKey(values.SERVICE_ROLE_KEY)) {
++    throw new Error('Local Supabase status does not match the fixed environment')
++  }
++  mkdirSync(resolve(root, '.local/supabase'), { recursive: true })
++  writeFileSync(envPath, `VITE_SUPABASE_URL=${LOCAL_SUPABASE_URL}\nVITE_SUPABASE_ANON_KEY=${values.ANON_KEY}\nLOCAL_SUPABASE_SERVICE_ROLE_KEY=${values.SERVICE_ROLE_KEY}\n`, { mode: 0o600 })
++  return { anon: values.ANON_KEY, serviceRole: values.SERVICE_ROLE_KEY }
++}
++
++function checkPortBindings(): void {
++  const networkInfo = JSON.parse(run(docker, ['network', 'inspect', network])) as { Containers?: Record<string, { Name: string }> }[]
++  const names = Object.values(networkInfo[0]?.Containers || {}).map(container => container.Name)
++  if (names.length === 0) throw new Error('Local Supabase containers are missing from the loopback network')
++  const inspected = JSON.parse(run(docker, ['inspect', ...names])) as { NetworkSettings?: { Ports?: Record<string, { HostIp: string }[] | null> } }[]
++  for (const container of inspected) {
++    for (const bindings of Object.values(container.NetworkSettings?.Ports || {})) {
++      for (const binding of bindings || []) {
++        if (binding.HostIp !== '127.0.0.1' && binding.HostIp !== '::1') {
++          throw new Error('Local Supabase published a non-loopback port')
++        }
++      }
++    }
++  }
++}
++
++async function adminInit(): Promise<void> {
++  const { serviceRole } = status()
++  const headers = { apikey: serviceRole, Authorization: `Bearer ${serviceRole}`, 'Content-Type': 'application/json' }
++  async function request(path: string, init: RequestInit = {}): Promise<Response> {
++    const url = new URL(path, LOCAL_SUPABASE_URL)
++    if (url.origin !== LOCAL_SUPABASE_URL || (!url.pathname.startsWith('/auth/v1/admin/users') && url.pathname !== '/rest/v1/profiles')) throw new Error('Invalid local target')
++    const response = await fetch(url, { ...init, headers: { ...headers, ...init.headers }, redirect: 'manual' })
++    if (response.status >= 300 && response.status < 400) throw new Error('Local upstream redirect rejected')
++    return response
++  }
++  const found = await request(`/auth/v1/admin/users/${LOCAL_ADMIN_ID}`)
++  if (found.status === 404) {
++    let page = 1
++    while (page <= 100) {
++      const listed = await request(`/auth/v1/admin/users?page=${page}&per_page=100`)
++      if (!listed.ok) throw new Error('Unable to inspect local users')
++      const data = await listed.json() as { users?: { email?: string }[] }
++      if (data.users?.some(user => user.email?.toLowerCase() === LOCAL_ADMIN_EMAIL)) throw new Error('Local admin email belongs to another identity')
++      if (!data.users || data.users.length < 100) break
++      page++
++    }
++    if (page > 100) throw new Error('Unable to complete local identity collision check')
++    const created = await request('/auth/v1/admin/users', { method: 'POST', body: JSON.stringify({
++      id: LOCAL_ADMIN_ID, email: LOCAL_ADMIN_EMAIL, email_confirm: true,
++      app_metadata: { gtr_local_admin: true }, user_metadata: { full_name: 'システム管理者' },
++    }) })
++    if (!created.ok) throw new Error('Unable to create fixed local admin')
++    const user = await created.json() as { id?: string; email?: string; app_metadata?: { gtr_local_admin?: boolean } }
++    if (user.id !== LOCAL_ADMIN_ID || user.email !== LOCAL_ADMIN_EMAIL || user.app_metadata?.gtr_local_admin !== true) throw new Error('Created local identity does not match')
++  } else {
++    if (!found.ok) throw new Error('Unable to inspect fixed local admin')
++    const user = await found.json() as { id?: string; email?: string; app_metadata?: { gtr_local_admin?: boolean } }
++    if (user.id !== LOCAL_ADMIN_ID || user.email !== LOCAL_ADMIN_EMAIL || user.app_metadata?.gtr_local_admin !== true) throw new Error('Fixed local admin identity collision')
++  }
++  const promoted = await request(`/rest/v1/profiles?id=eq.${LOCAL_ADMIN_ID}`, { method: 'PATCH',
++    headers: { ...headers, Prefer: 'return=representation' }, body: JSON.stringify({ role: 'admin' }) })
++  if (!promoted.ok) throw new Error('Unable to promote local admin profile')
++  const profiles = await promoted.json() as { id: string; role: string }[]
++  if (profiles.length !== 1 || profiles[0].id !== LOCAL_ADMIN_ID || profiles[0].role !== 'admin') throw new Error('Local admin profile missing')
++}
++
++try {
++  if (command === 'start') {
++    const inspect = spawnSync(docker, ['network', 'inspect', network], { encoding: 'utf8' })
++    if (inspect.status !== 0) run(docker, ['network', 'create', '-o', 'com.docker.network.bridge.host_binding_ipv4=127.0.0.1', network])
++    else {
++      const details = JSON.parse(inspect.stdout) as { Options?: Record<string, string> }[]
++      if (details.length !== 1 || details[0].Options?.['com.docker.network.bridge.host_binding_ipv4'] !== '127.0.0.1') {
++        throw new Error('Docker network is not loopback bound')
++      }
++    }
++    try {
++      run(cli, ['start', '--network-id', network, '--exclude', 'vector,logflare'])
++      status()
++    } catch (error) {
++      try { run(cli, ['stop']) } catch { /* Report original start or binding failure. */ }
++      throw error
++    }
++    console.log('Local Supabase started; private environment refreshed')
++  } else if (command === 'stop') { run(cli, ['stop']); console.log('Local Supabase stopped; data retained') }
++  else if (command === 'status') { status(); console.log('Local Supabase ready; private environment refreshed') }
++  else if (command === 'migrate') { status(); run(cli, ['migration', 'up', '--local']); console.log('Pending local migrations applied') }
++  else if (command === 'admin-init') { await adminInit(); console.log('Fixed local admin verified') }
++  else throw new Error('Use start, stop, status, migrate, or admin-init')
++} catch (error) {
++  console.error(error instanceof Error ? error.message : 'Local Supabase command failed')
++  process.exitCode = 1
++}
+
+New file: server/localAuth/environment.test.ts
++import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
++import { resolve, join } from 'node:path'
++import { afterEach, expect, it, vi } from 'vitest'
++import { loadEnv } from 'vite'
++import { assertResolvedLocalEnvironment, LOCAL_ENV_NAMES, parseGeneratedLocalEnvironment } from './environment'
++
++const service = `header.${Buffer.from(JSON.stringify({ role: 'service_role' })).toString('base64url')}.signature`
++const anon = `header.${Buffer.from(JSON.stringify({ role: 'anon' })).toString('base64url')}.signature`
++const generated = `VITE_SUPABASE_URL=http://127.0.0.1:54321\nVITE_SUPABASE_ANON_KEY=${anon}\nLOCAL_SUPABASE_SERVICE_ROLE_KEY=${service}\n`
++let temp: string | null = null
++afterEach(() => { vi.unstubAllEnvs(); if (temp) { rmSync(temp, { recursive: true, force: true }); temp = null } })
++
++it('rejects local env-file overrides of public URL, public key and service role', () => {
++  const inherited = Object.fromEntries(LOCAL_ENV_NAMES.map(name => [name, process.env[name]]))
++  for (const name of LOCAL_ENV_NAMES) delete process.env[name]
++  try {
++  temp = mkdtempSync(resolve('.local', 'env-check-'))
++  writeFileSync(join(temp, '.env'), generated)
++  const expected = parseGeneratedLocalEnvironment(generated)
++  assertResolvedLocalEnvironment(expected, loadEnv('localdev', temp, ''))
++  for (const override of [
++    'VITE_SUPABASE_URL=https://remote.example',
++    'VITE_SUPABASE_ANON_KEY=sb_publishable_other',
++    'LOCAL_SUPABASE_SERVICE_ROLE_KEY=sb_secret_other',
++  ]) {
++    writeFileSync(join(temp, '.env.localdev'), `${override}\n`)
++    expect(() => assertResolvedLocalEnvironment(expected, loadEnv('localdev', temp!, ''))).toThrow('does not match')
++  }
++  } finally {
++    for (const name of LOCAL_ENV_NAMES) {
++      if (inherited[name] === undefined) delete process.env[name]
++      else process.env[name] = inherited[name]
++    }
++  }
++})
++
++it('rejects a reversed public and service-role key without disclosing values', () => {
++  expect(() => parseGeneratedLocalEnvironment(`VITE_SUPABASE_URL=http://127.0.0.1:54321\nVITE_SUPABASE_ANON_KEY=${service}\nLOCAL_SUPABASE_SERVICE_ROLE_KEY=${anon}\n`))
++    .toThrow('private environment is invalid')
++})
+
+New file: server/localAuth/environment.ts
++import { LOCAL_SUPABASE_URL, publicSupabaseKey, serviceRoleSupabaseKey } from '../../src/lib/supabaseConfig'
++
++export type LocalEnvironment = Record<'VITE_SUPABASE_URL' | 'VITE_SUPABASE_ANON_KEY' | 'LOCAL_SUPABASE_SERVICE_ROLE_KEY', string>
++export const LOCAL_ENV_NAMES = ['VITE_SUPABASE_URL', 'VITE_SUPABASE_ANON_KEY', 'LOCAL_SUPABASE_SERVICE_ROLE_KEY'] as const
++
++export function parseGeneratedLocalEnvironment(content: string): LocalEnvironment {
++  const entries = Object.fromEntries(Array.from(content.matchAll(/^([A-Z_]+)=(.*)$/gm)).map(match => [match[1], match[2]]))
++  if (entries.VITE_SUPABASE_URL !== LOCAL_SUPABASE_URL || !publicSupabaseKey(entries.VITE_SUPABASE_ANON_KEY) ||
++      !serviceRoleSupabaseKey(entries.LOCAL_SUPABASE_SERVICE_ROLE_KEY)) {
++    throw new Error('Local Supabase private environment is invalid')
++  }
++  return entries as LocalEnvironment
++}
++
++export function assertResolvedLocalEnvironment(expected: LocalEnvironment, resolved: Record<string, string | undefined>): void {
++  for (const name of LOCAL_ENV_NAMES) {
++    if (resolved[name] !== expected[name]) throw new Error('Resolved local Supabase environment does not match generated status')
++  }
++}
+
+New file: server/localAuth/nonce.test.ts
++import { afterEach, expect, it, vi } from 'vitest'
++import { LoginNonces } from './nonce'
++
++afterEach(() => vi.useRealTimers())
++
++it('expires, consumes once and bounds pending login nonces', () => {
++  vi.useFakeTimers()
++  const nonces = new LoginNonces()
++  const first = nonces.issue()
++  expect(nonces.consume(first)).toBe(true)
++  expect(nonces.consume(first)).toBe(false)
++  const oldest = nonces.issue()
++  for (let index = 0; index < 256; index++) nonces.issue()
++  expect(nonces.consume(oldest)).toBe(false)
++  const expired = nonces.issue()
++  vi.advanceTimersByTime(5 * 60_000 + 1)
++  expect(nonces.consume(expired)).toBe(false)
++})
+
+New file: server/localAuth/nonce.ts
++import { randomBytes } from 'node:crypto'
++
++export class LoginNonces {
++  private values = new Map<string, number>()
++  issue(): string {
++    const now = Date.now()
++    this.values.forEach((expires, key) => { if (expires <= now) this.values.delete(key) })
++    while (this.values.size >= 256) this.values.delete(this.values.keys().next().value!)
++    const key = randomBytes(32).toString('base64url')
++    this.values.set(key, now + 5 * 60_000)
++    return key
++  }
++  consume(value: string | string[] | undefined): boolean {
++    if (typeof value !== 'string') return false
++    const expires = this.values.get(value)
++    this.values.delete(value)
++    return !!expires && expires > Date.now()
++  }
++}
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\server\\localAuth\\plugin.test.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\server\\localAuth\\plugin.test.ts"
+index ed18927..0607bd0 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\server\\localAuth\\plugin.test.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\server\\localAuth\\plugin.test.ts"
+@@ -1,9 +1,13 @@
+ import { mkdtempSync, rmSync, writeFileSync, mkdirSync } from 'node:fs'
+ import { resolve, join } from 'node:path'
+-import { afterEach, expect, it } from 'vitest'
++import { afterEach, expect, it, vi } from 'vitest'
+ import { createServer, preview, type ViteDevServer, type PreviewServer } from 'vite'
+-import { localAuthPlugin } from './plugin'
++import { fixedFetch, localAuthPlugin } from './plugin'
+ 
++const admin = vi.hoisted(() => ({ getUserById: vi.fn(), generateLink: vi.fn(), verifyOtp: vi.fn() }))
++const serviceKey = `header.${Buffer.from(JSON.stringify({ role: 'service_role' })).toString('base64url')}.signature`
++vi.mock('@supabase/supabase-js', () => ({ createClient: (_url: string, key: string) => ({ auth: key === 'sb_publishable_test' ?
++  { verifyOtp: admin.verifyOtp } : { admin: { getUserById: admin.getUserById, generateLink: admin.generateLink } } }) }))
+ let server: ViteDevServer | null = null
+ let previewServer: PreviewServer | null = null
+ let root: string | null = null
+@@ -11,76 +15,80 @@ afterEach(async () => {
+   if (server) { await server.close(); server = null }
+   if (previewServer) { await new Promise<void>(resolve => previewServer!.httpServer.close(() => resolve())); previewServer = null }
+   if (root) { rmSync(root, { recursive: true, force: true }); root = null }
++  vi.resetAllMocks()
+ })
+ 
+-it('does not expose the API on a public bind or production preview', async () => {
++async function start(host: string) {
+   const testBase = resolve('.local', 'tests')
+   mkdirSync(testBase, { recursive: true })
+   root = mkdtempSync(join(testBase, 'bindings-'))
+-  writeFileSync(join(root, 'index.html'), '<html><body>test</body></html>')
+-  server = await createServer({ root, configFile: false, plugins: [localAuthPlugin()], server: { host: '0.0.0.0', port: 0 } })
++  writeFileSync(join(root, 'index.html'), '<html></html>')
++  server = await createServer({ root, configFile: false, plugins: [localAuthPlugin({ anon: 'sb_publishable_test', serviceRole: serviceKey })], server: { host, port: 0 } })
+   await server.listen()
+   const address = server.httpServer!.address()
+-  if (!address || typeof address === 'string') throw new Error('No HTTP address')
+-  const publicResponse = await fetch(`http://127.0.0.1:${address.port}/api/local-auth/session`)
+-  expect(publicResponse.status).toBe(403)
+-  await server.close(); server = null
+-  mkdirSync(join(root, 'dist'))
+-  writeFileSync(join(root, 'dist', 'index.html'), '<html><body>preview</body></html>')
+-  previewServer = await preview({ root, configFile: false, plugins: [localAuthPlugin()], preview: { host: '127.0.0.1', port: 0 } })
+-  const previewAddress = previewServer.httpServer.address()
+-  if (!previewAddress || typeof previewAddress === 'string') throw new Error('No preview address')
+-  const previewResponse = await fetch(`http://127.0.0.1:${previewAddress.port}/api/local-auth/session`)
+-  expect(previewResponse.headers.get('content-type')).not.toContain('application/json')
++  if (!address || typeof address === 'string') throw new Error('No address')
++  return `http://127.0.0.1:${address.port}`
++}
++
++it('rejects public bind and does not install in preview', async () => {
++  const publicBase = await start('0.0.0.0')
++  expect((await fetch(`${publicBase}/api/local-auth/bootstrap`)).status).toBe(403)
++  await server!.close(); server = null
++  mkdirSync(join(root!, 'dist'))
++  writeFileSync(join(root!, 'dist', 'index.html'), '<html></html>')
++  previewServer = await preview({ root: root!, configFile: false, plugins: [localAuthPlugin({ anon: 'sb_publishable_test', serviceRole: serviceKey })], preview: { host: '127.0.0.1', port: 0 } })
++  const address = previewServer.httpServer.address()
++  if (!address || typeof address === 'string') throw new Error('No address')
++  const response = await fetch(`http://127.0.0.1:${address.port}/api/local-auth/bootstrap`)
++  expect(response.headers.get('content-type')).not.toContain('application/json')
+ })
+ 
+-it('serves the admin API only with loopback, csrf, session and hidden database', async () => {
+-  const testBase = resolve('.local', 'tests')
+-  mkdirSync(testBase, { recursive: true })
+-  root = mkdtempSync(join(testBase, 'http-'))
+-  writeFileSync(join(root, 'index.html'), '<html><body>test</body></html>')
+-  server = await createServer({ root, configFile: false, plugins: [localAuthPlugin()], server: {
+-    host: '127.0.0.1', port: 0, fs: { deny: ['.env', '.env.*', '*.{crt,pem}', '**/.git/**', '.local', '.local/**', '**/.local/**'] },
+-  } })
+-  await server.listen()
+-  const address = server.httpServer!.address()
+-  if (!address || typeof address === 'string') throw new Error('No HTTP address')
+-  const base = `http://127.0.0.1:${address.port}`
+-  const get = (path: string, headers: Record<string, string> = {}) => fetch(`${base}${path}`, { headers })
+-  const post = (path: string, body: object, headers: Record<string, string> = {}) => fetch(`${base}${path}`, {
+-    method: 'POST', headers: { Origin: base, 'Content-Type': 'application/json', 'X-GTR-Local-Auth': '1', ...headers }, body: JSON.stringify(body),
++it('uses one nonce, fixed identity and returns only normal session tokens', async () => {
++  const base = await start('127.0.0.1')
++  const get = (headers: Record<string, string> = {}) => fetch(`${base}/api/local-auth/bootstrap`, { headers })
++  const post = (nonce?: string, headers: Record<string, string> = {}, body = '{}') => fetch(`${base}/api/local-auth/login`, {
++    method: 'POST', headers: { Origin: base, 'Content-Type': 'application/json', 'X-GTR-Local-Auth': '1', ...(nonce ? { 'X-GTR-CSRF': nonce } : {}), ...headers }, body,
+   })
+-  const bootstrap = await get('/api/local-auth/session')
+-  expect(bootstrap.status).toBe(200)
+-  const state = await bootstrap.json() as { available: boolean; csrf: string; profile: null }
+-  expect(state).toMatchObject({ available: true, profile: null })
+-  expect(await post('/api/local-auth/login', {})).toHaveProperty('status', 403)
+-  expect(await post('/api/local-auth/login', { role: 'admin' }, { 'X-GTR-CSRF': state.csrf })).toHaveProperty('status', 400)
+-  const login = await post('/api/local-auth/login', {}, { 'X-GTR-CSRF': state.csrf })
++  expect((await get({ 'X-Forwarded-For': '127.0.0.1' })).status).toBe(403)
++  const bootstrap = await get()
++  const { csrf } = await bootstrap.json() as { csrf: string }
++  expect((await post()).status).toBe(403)
++  expect((await post(csrf, { Origin: 'http://evil.example' })).status).toBe(403)
++  expect((await post(csrf, {}, '{"role":"admin"}')).status).toBe(400)
++  const user = { id: '00000000-0000-4000-8000-000000000001', email: 'systemadmin@gtr.local', role: 'authenticated', app_metadata: { gtr_local_admin: true } }
++  admin.getUserById.mockResolvedValue({ data: { user }, error: null })
++  admin.generateLink.mockResolvedValue({ data: { properties: { hashed_token: 'hidden' } }, error: null })
++  admin.verifyOtp.mockResolvedValue({ data: { user, session: { access_token: 'access', refresh_token: 'refresh' } }, error: null })
++  const login = await post(csrf)
+   expect(login.status).toBe(200)
+-  const cookie = login.headers.get('set-cookie')!
+-  expect(cookie).toContain('HttpOnly')
+-  expect(cookie).toContain('SameSite=Strict')
+-  expect(cookie).toContain('Path=/api/local-auth')
+-  const credentials = await login.json() as { csrf: string; profile: { id: string; role: string } }
+-  expect(credentials.profile).toMatchObject({ id: 'system_admin', role: 'admin' })
+-  const wrongCsrf = await post('/api/local-auth/profile', { display_name: 'Admin' }, { Cookie: cookie })
+-  expect(wrongCsrf.status).toBe(403)
+-  expect((await wrongCsrf.json()).code).toBe('CSRF_MISMATCH')
+-  expect(await post('/api/local-auth/profile', { display_name: 'Admin', role: 'user' }, { Cookie: cookie, 'X-GTR-CSRF': credentials.csrf })).toHaveProperty('status', 400)
+-  const edited = await post('/api/local-auth/profile', { display_name: 'Admin' }, { Cookie: cookie, 'X-GTR-CSRF': credentials.csrf })
+-  expect(edited.status).toBe(200)
+-  expect((await edited.json()).profile.display_name).toBe('Admin')
+-  expect(await post('/api/local-auth/logout', {}, { Cookie: cookie, 'X-GTR-CSRF': credentials.csrf, Origin: 'http://evil.example' })).toHaveProperty('status', 403)
+-  expect(await get('/api/local-auth/session', { Host: `localhost:${address.port}`, 'X-Forwarded-For': '127.0.0.1' })).toHaveProperty('status', 403)
+-  const secret = await get('/.local/auth.sqlite')
+-  expect(await secret.text()).not.toContain('SQLite format 3')
+-  const filesystemSecret = await get(`/@fs/${join(root, '.local', 'auth.sqlite').replace(/\\/g, '/')}`)
+-  expect(await filesystemSecret.text()).not.toContain('SQLite format 3')
+-  expect(await post('/api/local-auth/logout', {}, { Cookie: cookie, 'X-GTR-CSRF': credentials.csrf })).toHaveProperty('status', 200)
+-  const staleCookie = await post('/api/local-auth/profile', { display_name: 'No' }, { Cookie: cookie, 'X-GTR-CSRF': credentials.csrf })
+-  expect(staleCookie.status).toBe(403)
+-  expect((await staleCookie.json()).code).toBe('SESSION_INVALID')
+-  const after = await get('/api/local-auth/session', { Cookie: cookie })
+-  expect((await after.json()).profile).toBeNull()
++  expect(login.headers.get('cache-control')).toBe('no-store')
++  expect(await login.json()).toEqual({ access_token: 'access', refresh_token: 'refresh' })
++  expect((await post(csrf)).status).toBe(403)
++  expect(admin.generateLink).toHaveBeenCalledOnce()
++  expect(admin.verifyOtp).toHaveBeenCalledWith({ token_hash: 'hidden', type: 'magiclink' })
++})
++
++it('never follows an upstream redirect or contacts another origin', async () => {
++  const original = globalThis.fetch
++  const upstream = vi.fn(async (_input: RequestInfo | URL, _init?: RequestInit) => ({ status: 302, headers: { get: () => 'https://evil.example/' } }))
++  globalThis.fetch = upstream as unknown as typeof fetch
++  try {
++    expect(() => fixedFetch('https://evil.example/auth/v1/verify')).toThrow('不正')
++    await expect(fixedFetch('http://127.0.0.1:54321/auth/v1/verify')).rejects.toThrow('転送')
++    expect(upstream).toHaveBeenCalledOnce()
++    expect(upstream.mock.calls[0][1]).toMatchObject({ redirect: 'manual' })
++  } finally { globalThis.fetch = original }
++})
++
++it('rejects a fixed UUID collision before generating a login link', async () => {
++  const base = await start('127.0.0.1')
++  const bootstrap = await fetch(`${base}/api/local-auth/bootstrap`)
++  const { csrf } = await bootstrap.json() as { csrf: string }
++  admin.getUserById.mockResolvedValue({ data: { user: { id: '00000000-0000-4000-8000-000000000001', email: 'other@example.test' } }, error: null })
++  const response = await fetch(`${base}/api/local-auth/login`, { method: 'POST', headers: {
++    Origin: base, 'Content-Type': 'application/json', 'X-GTR-Local-Auth': '1', 'X-GTR-CSRF': csrf,
++  }, body: '{}' })
++  expect(response.status).toBe(503)
++  expect(admin.generateLink).not.toHaveBeenCalled()
++  expect(JSON.stringify(await response.json())).not.toContain('other@example.test')
+ })
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\server\\localAuth\\plugin.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\server\\localAuth\\plugin.ts"
+index 995e4f5..1b4b407 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\server\\localAuth\\plugin.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\server\\localAuth\\plugin.ts"
+@@ -1,19 +1,18 @@
+ import type { Plugin } from 'vite'
+-import { resolve } from 'node:path'
+ import type { IncomingMessage, ServerResponse } from 'node:http'
+-import { LocalAuthStore } from './store'
+-import { cookieSession, mutationAllowed, requestAllowed } from './security'
++import { createClient } from '@supabase/supabase-js'
++import { LOCAL_ADMIN_EMAIL, LOCAL_ADMIN_ID, LOCAL_SUPABASE_URL, publicSupabaseKey, serviceRoleSupabaseKey } from '../../src/lib/supabaseConfig'
++import { mutationAllowed, requestAllowed } from './security'
++import { LoginNonces } from './nonce'
+ 
+ const API = '/api/local-auth'
+-const COOKIE = 'gtr_local_session'
+ const MAX_BODY = 2048
+ 
+-function json(response: ServerResponse, status: number, body: unknown, cookie?: string): void {
++function json(response: ServerResponse, status: number, body: unknown): void {
+   response.statusCode = status
+   response.setHeader('Content-Type', 'application/json; charset=utf-8')
+   response.setHeader('Cache-Control', 'no-store')
+   response.setHeader('X-Content-Type-Options', 'nosniff')
+-  if (cookie) response.setHeader('Set-Cookie', cookie)
+   response.end(JSON.stringify(body))
+ }
+ 
+@@ -28,55 +27,66 @@ async function readBody(request: IncomingMessage): Promise<Record<string, unknow
+   return result as Record<string, unknown>
+ }
+ 
+-export function localAuthPlugin(): Plugin {
++export function fixedFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
++  const url = new URL(input instanceof Request ? input.url : String(input))
++  if (url.origin !== LOCAL_SUPABASE_URL || !url.pathname.startsWith('/auth/v1/')) {
++    throw new Error('ローカル認証先が不正です')
++  }
++  return fetch(input, { ...init, redirect: 'manual' }).then(response => {
++    if (response.status >= 300 && response.status < 400) throw new Error('ローカル認証先の転送を拒否しました')
++    return response
++  })
++}
++
++export function localAuthPlugin(keys?: { anon: string; serviceRole: string }): Plugin {
++  const nonces = new LoginNonces()
+   return {
+     name: 'local-auth-dev-only',
+     apply: 'serve',
+     configureServer(server) {
+-      const store = new LocalAuthStore(resolve(server.config.root, '.local', 'auth.sqlite'))
+-      server.httpServer?.once('close', () => store.close())
+       server.middlewares.use(async (request, response, next) => {
+         const path = request.url?.split('?')[0]
+         if (!path?.startsWith(API)) { next(); return }
+-        const socketAddress = server.httpServer?.address()
+-        const listen = socketAddress && typeof socketAddress !== 'string' ? socketAddress : null
++        const address = server.httpServer?.address()
++        const listen = address && typeof address !== 'string' ? address : null
+         if (!requestAllowed(request, listen)) { json(response, 403, { error: 'ローカル専用です' }); return }
+-        if (path !== API && !path.startsWith(`${API}/`)) { json(response, 404, { error: '見つかりません' }); return }
+-        const sessionId = cookieSession(request.headers.cookie)
+-        const session = store.session(sessionId)
+-        if (request.method === 'GET' && path === `${API}/session`) {
+-          json(response, 200, { available: true, profile: session?.profile ?? null, csrf: session?.csrf ?? store.issueLoginNonce() })
+-          return
++        if (path !== `${API}/bootstrap` && path !== `${API}/login`) { json(response, 404, { error: '見つかりません' }); return }
++        if (!keys || !publicSupabaseKey(keys.anon) || !serviceRoleSupabaseKey(keys.serviceRole)) {
++          json(response, 503, { error: 'ローカル認証設定が不足しています' }); return
+         }
+-        if (request.method !== 'POST' || !mutationAllowed(request, request.headers.host!)) {
++        if (request.method === 'GET' && path === `${API}/bootstrap`) {
++          json(response, 200, { available: true, csrf: nonces.issue() }); return
++        }
++        if (request.method !== 'POST' || path !== `${API}/login` || !mutationAllowed(request, request.headers.host!)) {
+           json(response, 403, { error: '許可されていません' }); return
+         }
+         try {
+           const body = await readBody(request)
+-          if (path === `${API}/login`) {
+-            if (Object.keys(body).length !== 0) throw new Error('不正な入力です')
+-            if (!store.consumeLoginNonce(request.headers['x-gtr-csrf'])) { json(response, 403, { error: 'CSRF確認に失敗しました' }); return }
+-            store.logout(sessionId)
+-            const login = store.login()
+-            json(response, 200, { profile: login.profile, csrf: login.csrf }, `${COOKIE}=${login.id}; HttpOnly; SameSite=Strict; Path=${API}; Max-Age=28800`)
+-            return
+-          }
+-          if (!session) { json(response, 403, { code: 'SESSION_INVALID', error: 'セッションが無効です' }); return }
+-          if (request.headers['x-gtr-csrf'] !== session.csrf) { json(response, 403, { code: 'CSRF_MISMATCH', error: 'セッション確認に失敗しました' }); return }
+-          if (path === `${API}/logout`) {
+-            if (Object.keys(body).length !== 0) throw new Error('不正な入力です')
+-            store.logout(sessionId)
+-            json(response, 200, { profile: null }, `${COOKIE}=; HttpOnly; SameSite=Strict; Path=${API}; Max-Age=0`)
+-            return
+-          }
+-          if (path === `${API}/profile`) {
+-            if (Object.keys(body).length !== 1 || typeof body.display_name !== 'string') throw new Error('不正な入力です')
+-            json(response, 200, { profile: store.updateDisplayName(body.display_name) })
+-            return
++          if (Object.keys(body).length !== 0) { json(response, 400, { error: '不正な入力です' }); return }
++          if (!nonces.consume(request.headers['x-gtr-csrf'])) { json(response, 403, { error: 'CSRF確認に失敗しました' }); return }
++          const admin = createClient(LOCAL_SUPABASE_URL, keys.serviceRole, {
++            auth: { persistSession: false, autoRefreshToken: false }, global: { fetch: fixedFetch },
++          })
++          const publicClient = createClient(LOCAL_SUPABASE_URL, keys.anon, {
++            auth: { persistSession: false, autoRefreshToken: false }, global: { fetch: fixedFetch },
++          })
++          const identity = await admin.auth.admin.getUserById(LOCAL_ADMIN_ID)
++          const user = identity.data.user
++          if (identity.error || !user || user.email !== LOCAL_ADMIN_EMAIL || user.app_metadata?.gtr_local_admin !== true) {
++            json(response, 503, { error: 'ローカル管理者を初期化してください' }); return
+           }
+-          json(response, 404, { error: '見つかりません' })
+-        } catch (error) {
+-          json(response, 400, { error: error instanceof Error ? error.message : '不正な入力です' })
++          const link = await admin.auth.admin.generateLink({ type: 'magiclink', email: LOCAL_ADMIN_EMAIL })
++          const tokenHash = link.data.properties?.hashed_token
++          if (link.error || !tokenHash) throw new Error('link failed')
++          const verified = await publicClient.auth.verifyOtp({ token_hash: tokenHash, type: 'magiclink' })
++          const session = verified.data.session
++          const signedIn = verified.data.user
++          if (verified.error || !session || !signedIn || signedIn.id !== LOCAL_ADMIN_ID ||
++              signedIn.email !== LOCAL_ADMIN_EMAIL || signedIn.app_metadata?.gtr_local_admin !== true ||
++              signedIn.role !== 'authenticated') throw new Error('identity mismatch')
++          json(response, 200, { access_token: session.access_token, refresh_token: session.refresh_token })
++        } catch {
++          json(response, 503, { error: 'ローカル管理者ログインに失敗しました' })
+         }
+       })
+     },
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\server\\localAuth\\security.test.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\server\\localAuth\\security.test.ts"
+index cd7a4e6..4da1f27 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\server\\localAuth\\security.test.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\server\\localAuth\\security.test.ts"
+@@ -1,6 +1,6 @@
+ import { expect, it } from 'vitest'
+ import type { IncomingMessage } from 'node:http'
+-import { cookieSession, isLoopback, mutationAllowed, requestAllowed } from './security'
++import { isLoopback, mutationAllowed, requestAllowed } from './security'
+ 
+ function request(host = '127.0.0.1:5173', peer = '127.0.0.1', headers: Record<string, string> = {}): IncomingMessage {
+   return { headers: { host, ...headers }, socket: { remoteAddress: peer } } as unknown as IncomingMessage
+@@ -24,5 +24,4 @@ it('requires an exact same origin and dedicated header for mutations', () => {
+   const valid = request('127.0.0.1:5173', '127.0.0.1', { origin: 'http://127.0.0.1:5173', 'content-type': 'application/json', 'x-gtr-local-auth': '1' })
+   expect(mutationAllowed(valid, '127.0.0.1:5173')).toBe(true)
+   expect(mutationAllowed(request(), '127.0.0.1:5173')).toBe(false)
+-  expect(cookieSession('a=1; gtr_local_session=abc; b=2')).toBe('abc')
+ })
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\server\\localAuth\\security.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\server\\localAuth\\security.ts"
+index 06db66a..f59307c 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\server\\localAuth\\security.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\server\\localAuth\\security.ts"
+@@ -24,7 +24,3 @@ export function mutationAllowed(request: IncomingMessage, host: string): boolean
+     request.headers['content-type']?.split(';')[0].trim().toLowerCase() === 'application/json' &&
+     request.headers['x-gtr-local-auth'] === '1'
+ }
+-
+-export function cookieSession(header: string | undefined): string | undefined {
+-  return header?.split(';').map(part => part.trim()).find(part => part.startsWith('gtr_local_session='))?.slice('gtr_local_session='.length)
+-}
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\server\\publicEnvGuard.test.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\server\\publicEnvGuard.test.ts"
+index 85a4b6c..7615ab1 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\server\\publicEnvGuard.test.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\server\\publicEnvGuard.test.ts"
+@@ -1,4 +1,4 @@
+-import { existsSync, rmSync } from 'node:fs'
++import { existsSync, rmSync, mkdirSync, writeFileSync } from 'node:fs'
+ import { resolve, join } from 'node:path'
+ import { afterEach, expect, it, vi } from 'vitest'
+ import { build, createServer } from 'vite'
+@@ -69,3 +69,28 @@ it('allows publishable, anon, and unset configuration in dev and build', async (
+   await builds('unset')
+   expect(existsSync(join(outputRoot, 'unset', 'index.html'))).toBe(true)
+ }, 120_000)
++
++it('refuses to build the local development mode before producing output', async () => {
++  const error = await build({ configFile, mode: 'localdev', build: { outDir: join(outputRoot, 'localdev') } }).catch(caught => caught as Error)
++  expect(error).toBeInstanceOf(Error)
++  expect(String(error)).toContain('localdev mode cannot be built')
++  expect(existsSync(join(outputRoot, 'localdev', 'index.html'))).toBe(false)
++})
++
++it('does not serve CLI-generated private files by path or filesystem URL', async () => {
++  const tempDir = resolve('supabase/.temp')
++  const canary = join(tempDir, 'gtr-private-canary.env')
++  mkdirSync(tempDir, { recursive: true })
++  writeFileSync(canary, 'PRIVATE_GTR_CANARY_SHOULD_NOT_BE_SERVED')
++  const server = await createServer({ configFile, mode: 'cloud', server: { host: '127.0.0.1', port: 0 } })
++  try {
++    await server.listen()
++    const address = server.httpServer!.address()
++    if (!address || typeof address === 'string') throw new Error('No address')
++    const base = `http://127.0.0.1:${address.port}`
++    for (const path of ['/supabase/.temp/gtr-private-canary.env', `/@fs/${canary.replace(/\\/g, '/')}`]) {
++      const response = await fetch(`${base}${path}`)
++      expect(await response.text()).not.toContain('PRIVATE_GTR_CANARY_SHOULD_NOT_BE_SERVED')
++    }
++  } finally { await server.close(); rmSync(canary, { force: true }) }
++})
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\sql\\profiles.test.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\sql\\profiles.test.ts"
+index afd1f7d..f082401 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\sql\\profiles.test.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\sql\\profiles.test.ts"
+@@ -33,7 +33,7 @@ afterEach(async () => { await Promise.all(open.splice(0).map(db => db.close()))
+ describe('profile SQL', () => {
+   it('preserves game record tables, constraints, indexes and owner-only inserts', async () => {
+     const db = await database()
+-    await db.exec(readFileSync(resolve('sql/initial-setup.sql'), 'utf8'))
++    await db.exec(readFileSync(resolve('supabase/migrations/20260930000000_initial.sql'), 'utf8'))
+     await db.exec(`INSERT INTO auth.users (id,email) VALUES ('${userA}','a@example.test'),('${userB}','b@example.test')`)
+     const columns = await db.query<{ table_name: string; column_name: string }>("SELECT table_name,column_name FROM information_schema.columns WHERE table_schema='public' AND table_name IN ('scores','replays')")
+     expect(columns.rows.filter(row => row.table_name === 'scores').map(row => row.column_name)).toEqual(expect.arrayContaining(['id', 'user_id', 'mode', 'time_ms', 'score', 'gtr_count', 'replay_data', 'created_at']))
+@@ -66,7 +66,7 @@ describe('profile SQL', () => {
+   it('creates fixed user roles and isolates profile reads/columns', async () => {
+     const db = await database()
+     await db.exec(`INSERT INTO auth.users (id,email,raw_user_meta_data) VALUES ('${userB}', 'b@example.test', '{"full_name":"Bob"}')`)
+-    await db.exec(readFileSync(resolve('sql/initial-setup.sql'), 'utf8'))
++    await db.exec(readFileSync(resolve('supabase/migrations/20260930000000_initial.sql'), 'utf8'))
+     await db.exec(`INSERT INTO auth.users (id,email,raw_user_meta_data) VALUES
+       ('${userA}', 'a@example.test', '{"full_name":"Alice","role":"admin"}')`)
+     const rows = await db.query<{ id: string; role: string; display_name: string }>('SELECT id,role,display_name FROM public.profiles ORDER BY id')
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\auth\\account.test.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\auth\\account.test.ts"
+index 4fcc1ae..8cfebdf 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\auth\\account.test.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\auth\\account.test.ts"
+@@ -1,69 +1,34 @@
++// @vitest-environment jsdom
+ import { afterEach, expect, it, vi } from 'vitest'
+-import { localLogin, localLogout, retireLocalSessionForCloud } from './account'
+ 
+-vi.mock('../lib/supabase', () => ({ supabase: null }))
+-afterEach(() => { vi.unstubAllGlobals(); vi.resetModules() })
++const fake = vi.hoisted(() => ({ setSession: vi.fn(), signOut: vi.fn(), getUser: vi.fn() }))
++vi.mock('../lib/supabase', () => ({ localSupabase: true, supabase: { auth: fake } }))
++afterEach(() => { vi.unstubAllGlobals(); vi.resetAllMocks() })
+ 
+-it('obtains a fresh CSRF nonce for each login after logout', async () => {
+-  const calls: { url: string; csrf: string | null }[] = []
+-  let bootstrap = 0
+-  vi.stubGlobal('fetch', vi.fn(async (url: string, init: RequestInit) => {
+-    const csrf = new Headers(init.headers).get('X-GTR-CSRF')
+-    calls.push({ url, csrf })
+-    const body = url.endsWith('/session')
+-      ? { available: true, profile: null, csrf: `nonce-${++bootstrap}` }
+-      : url.endsWith('/login')
+-        ? { profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' }, csrf: `session-${bootstrap}` }
+-        : { profile: null }
+-    return { ok: true, headers: { get: () => 'application/json' }, json: async () => body } as unknown as Response
++it('uses bootstrap nonce and places only verified tokens into the normal Supabase client', async () => {
++  const calls: { path: string; init?: RequestInit }[] = []
++  vi.stubGlobal('fetch', vi.fn(async (path: string, init?: RequestInit) => {
++    calls.push({ path, init })
++    return { ok: true, headers: { get: () => 'application/json' }, json: async () =>
++      path.endsWith('bootstrap') ? { csrf: 'nonce' } : { access_token: 'access', refresh_token: 'refresh' } } as unknown as Response
+   }))
++  fake.setSession.mockResolvedValue({ error: null, data: { user: {
++    id: '00000000-0000-4000-8000-000000000001', email: 'systemadmin@gtr.local', role: 'authenticated',
++    app_metadata: { gtr_local_admin: true },
++  } } })
++  const { localLogin } = await import('./account')
+   await localLogin()
+-  await localLogout()
+-  await localLogin()
+-  expect(calls.map(call => call.url.split('/').pop())).toEqual(['session', 'login', 'logout', 'session', 'login'])
+-  expect(calls[1].csrf).toBe('nonce-1')
+-  expect(calls[2].csrf).toBe('session-1')
+-  expect(calls[4].csrf).toBe('nonce-2')
++  expect(calls.map(call => call.path)).toEqual(['/api/local-auth/bootstrap', '/api/local-auth/login'])
++  expect(calls[1].init?.headers).toMatchObject({ 'X-GTR-CSRF': 'nonce' })
++  expect(fake.setSession).toHaveBeenCalledWith({ access_token: 'access', refresh_token: 'refresh' })
+ })
+ 
+-it('uses an existing shared-cookie session in a second tab without posting login', async () => {
+-  const calls: { path: string; csrf: string | null }[] = []
+-  let loggedIn = false
+-  vi.stubGlobal('fetch', vi.fn(async (url: string, init: RequestInit) => {
+-    const path = url.split('/').pop()!
+-    const csrf = new Headers(init.headers).get('X-GTR-CSRF')
+-    calls.push({ path, csrf })
+-    const profile = { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' }
+-    let data: unknown
+-    if (path === 'session') data = { available: true, profile: loggedIn ? profile : null, csrf: loggedIn ? 'session-csrf' : 'login-nonce' }
+-    else if (path === 'login') { loggedIn = true; data = { profile, csrf: 'session-csrf' } }
+-    else if (path === 'profile') data = { profile: { ...profile, display_name: 'Updated' } }
+-    else { loggedIn = false; data = { profile: null } }
+-    return { ok: true, headers: { get: () => 'application/json' }, json: async () => data } as unknown as Response
+-  }))
+-  vi.resetModules()
+-  const tabA = await import('./account')
+-  await tabA.localLogin()
+-  vi.resetModules()
+-  const tabB = await import('./account')
+-  expect((await tabB.localLogin()).display_name).toBe('管理者')
+-  expect(calls.map(call => call.path)).toEqual(['session', 'login', 'session'])
+-  expect((await tabB.localUpdate('Updated')).display_name).toBe('Updated')
+-  await tabB.localLogout()
+-  expect(calls.filter(call => call.path === 'profile' || call.path === 'logout').map(call => call.csrf)).toEqual(['session-csrf', 'session-csrf'])
+-})
+-
+-it('ends a competing local cookie after cloud callback for reload consistency', async () => {
+-  let local = true
+-  const calls: string[] = []
+-  vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+-    calls.push(url)
+-    const data = url.endsWith('/session')
+-      ? { available: true, profile: local ? { backend: 'local', id: 'system_admin', role: 'admin', display_name: 'Local' } : null, csrf: 'current' }
+-      : (local = false, { profile: null })
+-    return { ok: true, headers: { get: () => 'application/json' }, json: async () => data } as unknown as Response
+-  }))
+-  await retireLocalSessionForCloud()
+-  expect(calls.map(url => url.split('/').pop())).toEqual(['session', 'logout'])
+-  expect(local).toBe(false)
++it('rejects a mismatched identity and removes its session', async () => {
++  vi.stubGlobal('fetch', vi.fn(async (path: string) => ({ ok: true, headers: { get: () => 'application/json' },
++    json: async () => path.endsWith('bootstrap') ? { csrf: 'nonce' } : { access_token: 'access', refresh_token: 'refresh' } })))
++  fake.setSession.mockResolvedValue({ error: null, data: { user: { id: 'wrong', email: 'systemadmin@gtr.local', app_metadata: { gtr_local_admin: true } } } })
++  fake.signOut.mockResolvedValue({ error: null })
++  const { localLogin } = await import('./account')
++  await expect(localLogin()).rejects.toThrow('本人確認')
++  expect(fake.signOut).toHaveBeenCalledWith({ scope: 'local' })
+ })
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\auth\\account.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\auth\\account.ts"
+index 6e9cd5a..b411226 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\auth\\account.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\auth\\account.ts"
+@@ -1,25 +1,33 @@
+ import type { User } from '@supabase/supabase-js'
+-import { supabase } from '../lib/supabase'
++import { supabase, localSupabase } from '../lib/supabase'
++import { LOCAL_ADMIN_EMAIL, LOCAL_ADMIN_ID } from '../lib/supabaseConfig'
+ import { preserveReplayHash } from './oauthCallback'
+ 
+ export interface AccountProfile {
+-  backend: 'cloud' | 'local'
+   id: string
+   display_name: string
+   role: 'user' | 'admin'
+   avatar_url?: string | null
+   provider?: string
++  environment: string
+ }
+ 
+ export function providerOf(user: User): string | undefined {
+   return user.app_metadata?.provider || user.identities?.[0]?.provider
+ }
+ 
+-export async function cloudProfile(user: User): Promise<AccountProfile> {
++export function isLocalAdmin(user: User, profile: Pick<AccountProfile, 'role'>): boolean {
++  return localSupabase && user.id === LOCAL_ADMIN_ID && user.email === LOCAL_ADMIN_EMAIL &&
++    user.app_metadata?.gtr_local_admin === true && profile.role === 'admin'
++}
++
++export async function readProfile(user: User): Promise<AccountProfile> {
+   if (!supabase) throw new Error('Supabaseが設定されていません')
+   const { data, error } = await supabase.from('profiles').select('id,display_name,avatar_url,role').eq('id', user.id).single()
+   if (error) throw error
+-  return { backend: 'cloud', id: data.id, display_name: data.display_name, avatar_url: data.avatar_url, role: data.role, provider: providerOf(user) }
++  return { id: data.id, display_name: data.display_name, avatar_url: data.avatar_url,
++    role: data.role, provider: isLocalAdmin(user, data) ? 'ローカル管理者' : providerOf(user),
++    environment: `${import.meta.env.MODE}:${new URL(import.meta.env.VITE_SUPABASE_URL?.trim() || 'https://unconfigured.invalid').origin}` }
+ }
+ 
+ export async function startOAuth(provider: 'google' | 'github'): Promise<void> {
+@@ -30,60 +38,35 @@ export async function startOAuth(provider: 'google' | 'github'): Promise<void> {
+   if (result.error) throw result.error
+ }
+ 
+-export async function clearCloudSessionForLocal(): Promise<void> {
+-  if (!supabase) return
+-  await supabase.auth.signOut({ scope: 'local' })
+-  const current = await supabase.auth.getSession()
+-  if (current.error || current.data.session) throw new Error('以前のクラウドログインを終了できませんでした')
++export async function localAvailable(): Promise<boolean> {
++  if (!localSupabase || !supabase) return false
++  try {
++    const response = await fetch('/api/local-auth/bootstrap', { cache: 'no-store' })
++    return response.ok && response.headers.get('content-type')?.includes('application/json') === true
++  } catch { return false }
+ }
+ 
+-interface LocalResponse { available?: boolean; profile: AccountProfile | null; csrf?: string | null; error?: string; code?: string }
+-export class LocalAuthError extends Error {
+-  constructor(message: string, readonly code?: string) { super(message); this.name = 'LocalAuthError' }
+-}
+-let localCsrf: string | null = null
+-
+-async function localRequest(path: string, body?: Record<string, unknown>): Promise<LocalResponse> {
+-  const response = await fetch(`/api/local-auth/${path}`, {
+-    method: body ? 'POST' : 'GET', credentials: 'same-origin',
+-    headers: body ? { 'Content-Type': 'application/json', 'X-GTR-Local-Auth': '1', ...(localCsrf ? { 'X-GTR-CSRF': localCsrf } : {}) } : {},
+-    body: body ? JSON.stringify(body) : undefined, cache: 'no-store',
++export async function localLogin(): Promise<void> {
++  if (!localSupabase || !supabase) throw new Error('ローカル管理者は利用できません')
++  const bootstrap = await fetch('/api/local-auth/bootstrap', { cache: 'no-store' })
++  if (!bootstrap.ok || !bootstrap.headers.get('content-type')?.includes('application/json')) throw new Error('ローカル管理者は利用できません')
++  const state = await bootstrap.json() as { csrf?: string }
++  if (!state.csrf) throw new Error('ローカル管理者は利用できません')
++  const response = await fetch('/api/local-auth/login', {
++    method: 'POST', headers: { 'Content-Type': 'application/json', 'X-GTR-Local-Auth': '1', 'X-GTR-CSRF': state.csrf },
++    body: '{}', cache: 'no-store',
+   })
+-  if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('ローカル管理者は利用できません')
+-  const data = await response.json() as LocalResponse
+-  if (!response.ok) throw new LocalAuthError(data.error || 'ローカル管理者の処理に失敗しました', data.code)
+-  if (data.csrf !== undefined) localCsrf = data.csrf
+-  return data
+-}
+-
+-export async function readLocalSession(): Promise<LocalResponse> { return localRequest('session') }
+-export async function localSession(): Promise<LocalResponse> {
+-  try { return await readLocalSession() }
+-  catch { return { available: false, profile: null } }
+-}
+-export async function localLogin(): Promise<AccountProfile> {
+-  const bootstrap = await localSession()
+-  if (bootstrap.profile) return bootstrap.profile
+-  if (!bootstrap.available || !bootstrap.csrf) throw new Error('ローカル管理者は利用できません')
+-  return (await localRequest('login', {})).profile!
+-}
+-export async function localUpdate(name: string): Promise<AccountProfile> { return (await localRequest('profile', { display_name: name })).profile! }
+-export async function localLogout(): Promise<void> { await localRequest('logout', {}); localCsrf = null }
+-
+-export async function retireLocalSessionForCloud(): Promise<void> {
+-  if (!import.meta.env.DEV) return
+-  for (let attempt = 0; attempt < 3; attempt++) {
+-    const current = await readLocalSession()
+-    if (!current.profile) return
+-    try { await localLogout(); return }
+-    catch (error) {
+-      if (!(error instanceof LocalAuthError) || (error.code !== 'SESSION_INVALID' && error.code !== 'CSRF_MISMATCH')) throw error
+-    }
++  if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) throw new Error('ローカル管理者ログインに失敗しました')
++  const tokens = await response.json() as { access_token?: string; refresh_token?: string }
++  if (!tokens.access_token || !tokens.refresh_token) throw new Error('ローカル管理者ログインに失敗しました')
++  const result = await supabase.auth.setSession({ access_token: tokens.access_token, refresh_token: tokens.refresh_token })
++  if (result.error || !result.data.user || result.data.user.role !== 'authenticated' || !isLocalAdmin(result.data.user, { role: 'admin' })) {
++    await supabase.auth.signOut({ scope: 'local' })
++    throw new Error('ローカル管理者の本人確認に失敗しました')
+   }
+-  throw new Error('ローカルセッションを終了できませんでした')
+ }
+ 
+-export async function cloudUpdate(name: string, id: string): Promise<void> {
++export async function updateName(name: string, id: string): Promise<void> {
+   if (!supabase) throw new Error('Supabaseが設定されていません')
+   const { error } = await supabase.from('profiles').update({ display_name: name.trim() }).eq('id', id).select('id').single()
+   if (error) throw error
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\auth\\oauthCallback.test.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\auth\\oauthCallback.test.ts"
+index 9675fae..850d41b 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\auth\\oauthCallback.test.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\auth\\oauthCallback.test.ts"
+@@ -1,7 +1,19 @@
+ import { afterEach, expect, it, vi } from 'vitest'
+ import { preserveReplayHash, restoreReplayHashBeforeApp } from './oauthCallback'
+ 
+-afterEach(() => vi.unstubAllGlobals())
++afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs(); vi.resetModules() })
++
++it('loads the callback used by main even when the Supabase URL is invalid', async () => {
++  vi.stubEnv('VITE_SUPABASE_URL', 'not-a-url')
++  vi.stubEnv('VITE_SUPABASE_ANON_KEY', 'sb_publishable_test')
++  vi.resetModules()
++  const callback = await import('./oauthCallback')
++  const connection = await import('../lib/supabase')
++  expect(connection.supabase).toBeNull()
++  vi.stubGlobal('location', { hash: '', search: '', pathname: '/' })
++  expect(() => callback.restoreReplayHashBeforeApp()).not.toThrow()
++  expect(await callback.processOAuthCallback()).toBe('absent')
++})
+ 
+ it('keeps a replay hash through an OAuth callback before the app parses it', () => {
+   const storage = new Map<string, string>()
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\auth\\oauthCallback.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\auth\\oauthCallback.ts"
+index 62a043e..05574a2 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\auth\\oauthCallback.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\auth\\oauthCallback.ts"
+@@ -1,6 +1,7 @@
+ import { supabase } from '../lib/supabase'
++import { oauthHashStorageKey } from '../lib/supabaseConfig'
+ 
+-const HASH_KEY = 'gtr.oauth.replayHash'
++const HASH_KEY = oauthHashStorageKey(import.meta.env.VITE_SUPABASE_URL?.trim() || 'https://unconfigured.invalid', import.meta.env.MODE)
+ export type CallbackResult = 'absent' | 'success'
+ let pending: Promise<CallbackResult> | null = null
+ 
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\auth\\useAccount.test.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\auth\\useAccount.test.tsx"
+index 2f3fde9..8c57bab 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\auth\\useAccount.test.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\auth\\useAccount.test.tsx"
+@@ -1,386 +1,64 @@
+ // @vitest-environment jsdom
+-import { act, fireEvent, render, renderHook, screen, waitFor, within } from '@testing-library/react'
++import { act, renderHook, waitFor } from '@testing-library/react'
+ import { afterEach, expect, it, vi } from 'vitest'
+ import { useAccount } from './useAccount'
+-import { selectBackend } from './backendSelection'
+-import AccountDialog from '../components/account/AccountDialog'
+ 
+-const fake = vi.hoisted(() => ({
+-  callback: null as null | ((event: string, session: unknown) => void),
+-  process: vi.fn(), localSession: vi.fn(), getUser: vi.fn(), cloudProfile: vi.fn(),
+-  clearCloud: vi.fn(),
+-  localLogout: vi.fn(),
+-  localLogin: vi.fn(),
+-  localUpdate: vi.fn(),
+-  readLocalSession: vi.fn(),
+-  cloudUpdate: vi.fn(),
+-  signOut: vi.fn(),
+-  retireLocal: vi.fn(),
+-}))
++const fake = vi.hoisted(() => ({ callback: null as null | ((event: string, session: any) => void),
++  process: vi.fn(), available: vi.fn(), login: vi.fn(), profile: vi.fn(), update: vi.fn(),
++  getUser: vi.fn(), signOut: vi.fn(), }))
+ vi.mock('./oauthCallback', () => ({ processOAuthCallback: fake.process }))
+-vi.mock('./account', () => {
+-  class LocalAuthError extends Error {
+-    constructor(message: string, readonly code?: string) { super(message) }
+-  }
+-  return {
+-    LocalAuthError, readLocalSession: fake.readLocalSession,
+-    clearCloudSessionForLocal: fake.clearCloud, cloudProfile: fake.cloudProfile, cloudUpdate: fake.cloudUpdate, localLogin: fake.localLogin, localLogout: fake.localLogout, localSession: fake.localSession, localUpdate: fake.localUpdate, retireLocalSessionForCloud: fake.retireLocal, startOAuth: vi.fn(),
+-  }
+-})
+-vi.mock('../lib/supabase', () => ({ supabase: { auth: {
+-  getUser: fake.getUser,
+-  signOut: fake.signOut,
+-  onAuthStateChange: (callback: (event: string, session: unknown) => void) => {
++vi.mock('./account', () => ({ localAvailable: fake.available, localLogin: fake.login,
++  readProfile: fake.profile, updateName: fake.update, startOAuth: vi.fn() }))
++vi.mock('../lib/supabase', () => ({ localSupabase: false, supabase: { auth: {
++  getUser: fake.getUser, signOut: fake.signOut,
++  onAuthStateChange: (callback: (event: string, session: any) => void) => {
+     fake.callback = callback
+     callback('INITIAL_SESSION', null)
+     return { data: { subscription: { unsubscribe() {} } } }
+   },
+ } } }))
+ 
+-afterEach(() => { vi.restoreAllMocks(); vi.resetAllMocks(); fake.callback = null; sessionStorage.clear() })
+-
+-it('keeps the local administrator after the initial empty cloud event', async () => {
+-  fake.process.mockResolvedValue(undefined)
+-  fake.localSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' }, csrf: 'x' })
+-  fake.getUser.mockResolvedValue({ data: { user: null }, error: null })
+-  const { result } = renderHook(() => useAccount())
+-  await waitFor(() => expect(result.current.status).toBe('ready'))
+-  expect(result.current.profile?.backend).toBe('local')
+-  expect(result.current.availableLocal).toBe(true)
+-  act(() => fake.callback?.('SIGNED_OUT', null))
+-  expect(result.current.profile?.backend).toBe('local')
+-  act(() => fake.callback?.('TOKEN_REFRESHED', { user: { id: 'cloud' } }))
+-  expect(result.current.profile?.backend).toBe('local')
+-})
+-
+-it('clears the prior cloud session before local logout', async () => {
+-  fake.process.mockResolvedValue(undefined)
+-  fake.localSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' } })
+-  fake.clearCloud.mockResolvedValue(undefined)
+-  fake.localLogout.mockResolvedValue(undefined)
+-  const { result } = renderHook(() => useAccount())
+-  await waitFor(() => expect(result.current.status).toBe('ready'))
+-  await act(async () => result.current.logout())
+-  expect(fake.clearCloud).toHaveBeenCalledOnce()
+-  expect(fake.localLogout).toHaveBeenCalledOnce()
+-  expect(fake.clearCloud.mock.invocationCallOrder[0]).toBeLessThan(fake.localLogout.mock.invocationCallOrder[0])
+-  expect(result.current.profile).toBeNull()
+-})
+-
+-it('does not leave user A editable while user B profile fails', async () => {
+-  fake.process.mockResolvedValue(undefined)
+-  fake.localSession.mockResolvedValue({ available: true, profile: null })
+-  fake.getUser.mockResolvedValue({ data: { user: { id: 'a' } }, error: null })
+-  fake.cloudProfile.mockImplementation((user: { id: string }) => user.id === 'a'
+-    ? Promise.resolve({ backend: 'cloud', id: 'a', role: 'user', display_name: 'Alice' })
+-    : Promise.reject(new Error('B profile unavailable')))
+-  const { result } = renderHook(() => useAccount())
+-  await waitFor(() => expect(result.current.profile?.id).toBe('a'))
+-  act(() => fake.callback?.('SIGNED_IN', { user: { id: 'b' } }))
+-  expect(result.current.profile).toBeNull()
+-  await waitFor(() => expect(result.current.status).toBe('error'))
+-  expect(result.current.profile).toBeNull()
+-})
+-
+-it('discards a stale cloud profile after sign-out', async () => {
+-  fake.process.mockResolvedValue(undefined)
+-  fake.localSession.mockResolvedValue({ available: true, profile: null, csrf: 'x' })
+-  fake.getUser.mockResolvedValue({ data: { user: { id: 'user-a' } }, error: null })
+-  let resolveProfile!: (value: unknown) => void
+-  fake.cloudProfile.mockImplementation(() => new Promise(resolve => { resolveProfile = resolve }))
+-  const { result } = renderHook(() => useAccount())
+-  await waitFor(() => expect(fake.cloudProfile).toHaveBeenCalled())
+-  act(() => fake.callback?.('SIGNED_OUT', null))
+-  await waitFor(() => expect(result.current.status).toBe('guest'))
+-  await act(async () => resolveProfile({ backend: 'cloud', id: 'user-a', display_name: 'late', role: 'user' }))
+-  expect(result.current.profile).toBeNull()
+-})
+-
+-it('still offers local login when the cloud callback fails', async () => {
+-  fake.process.mockRejectedValue(new Error('OAuth denied'))
+-  fake.localSession.mockResolvedValue({ available: true, profile: null, csrf: 'x' })
+-  fake.getUser.mockResolvedValue({ data: { user: null }, error: null })
+-  const { result } = renderHook(() => useAccount())
+-  await waitFor(() => expect(result.current.status).toBe('error'))
+-  expect(result.current.availableLocal).toBe(true)
+-  expect(result.current.error).toContain('OAuth denied')
+-})
+-
+-it('does not replace a newer local login with an older empty cloud response', async () => {
+-  fake.process.mockResolvedValue(undefined)
+-  fake.localSession.mockResolvedValue({ available: true, profile: null })
+-  let resolveUser!: (value: unknown) => void
+-  fake.getUser.mockImplementation(() => new Promise(resolve => { resolveUser = resolve }))
+-  fake.clearCloud.mockResolvedValue(undefined)
+-  fake.localLogin.mockResolvedValue({ backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' })
+-  const { result } = renderHook(() => useAccount())
+-  await waitFor(() => expect(fake.getUser).toHaveBeenCalled())
+-  await act(async () => result.current.loginLocal())
+-  expect(result.current.profile?.backend).toBe('local')
+-  await act(async () => resolveUser({ data: { user: null }, error: null }))
+-  expect(result.current.profile?.backend).toBe('local')
+-})
+-
+-it('returns to guest after local session expiry and permits login without reload', async () => {
+-  const { LocalAuthError } = await import('./account')
+-  fake.process.mockResolvedValue(undefined)
+-  fake.localSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' } })
+-  fake.localUpdate.mockRejectedValue(new LocalAuthError('expired', 'SESSION_INVALID'))
+-  fake.readLocalSession.mockResolvedValue({ available: true, profile: null, csrf: 'new-nonce' })
+-  fake.clearCloud.mockResolvedValue(undefined)
+-  fake.localLogin.mockResolvedValue({ backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' })
+-  const { result } = renderHook(() => useAccount())
+-  await waitFor(() => expect(result.current.status).toBe('ready'))
+-  await act(async () => result.current.saveName('Changed'))
+-  expect(result.current.status).toBe('guest')
+-  expect(result.current.profile).toBeNull()
+-  await act(async () => result.current.loginLocal())
+-  expect(result.current.status).toBe('ready')
+-  expect(result.current.profile?.backend).toBe('local')
+-})
+-
+-it('resynchronizes an active session after a CSRF mismatch while keeping validation errors local', async () => {
+-  const { LocalAuthError } = await import('./account')
+-  fake.process.mockResolvedValue(undefined)
+-  fake.localSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' } })
+-  fake.localUpdate.mockRejectedValueOnce(new LocalAuthError('csrf', 'CSRF_MISMATCH')).mockResolvedValueOnce({ backend: 'local', id: 'system_admin', role: 'admin', display_name: 'Changed' })
+-  fake.readLocalSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' }, csrf: 'current' })
+-  const { result } = renderHook(() => useAccount())
+-  await waitFor(() => expect(result.current.status).toBe('ready'))
+-  await act(async () => result.current.saveName('Changed'))
+-  expect(result.current.status).toBe('ready')
+-  expect(result.current.profile?.display_name).toBe('管理者')
+-  expect(fake.readLocalSession).toHaveBeenCalledOnce()
+-  await act(async () => result.current.saveName('  '))
+-  expect(result.current.profile?.display_name).toBe('管理者')
+-  expect(fake.readLocalSession).toHaveBeenCalledOnce()
+-  await act(async () => result.current.saveName('Changed'))
+-  expect(result.current.profile?.display_name).toBe('Changed')
+-})
+-
+-it('discards a delayed session recheck after a newer logout', async () => {
+-  const { LocalAuthError } = await import('./account')
+-  fake.process.mockResolvedValue(undefined)
+-  fake.localSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' } })
+-  fake.localUpdate.mockRejectedValue(new LocalAuthError('csrf', 'CSRF_MISMATCH'))
+-  let resolveRecheck!: (value: unknown) => void
+-  fake.readLocalSession.mockImplementation(() => new Promise(resolve => { resolveRecheck = resolve }))
+-  fake.clearCloud.mockResolvedValue(undefined)
+-  fake.localLogout.mockResolvedValue(undefined)
+-  const { result } = renderHook(() => useAccount())
+-  await waitFor(() => expect(result.current.status).toBe('ready'))
+-  let save!: Promise<void>
+-  act(() => { save = result.current.saveName('Changed') })
+-  await waitFor(() => expect(fake.readLocalSession).toHaveBeenCalledOnce())
+-  await act(async () => result.current.logout())
+-  expect(result.current.status).toBe('guest')
+-  await act(async () => { resolveRecheck({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: 'stale' } }); await save })
+-  expect(result.current.profile).toBeNull()
+-})
+-
+-it('does not submit user A draft for user B after a batched hook identity change', async () => {
++afterEach(() => { vi.resetAllMocks(); fake.callback = null })
++function setup() {
+   fake.process.mockResolvedValue('absent')
+-  fake.localSession.mockResolvedValue({ available: true, profile: null })
++  fake.available.mockResolvedValue(true)
+   fake.getUser.mockResolvedValue({ data: { user: { id: 'a' } }, error: null })
+-  fake.cloudProfile.mockImplementation(async (user: { id: string }) => ({ backend: 'cloud', id: user.id, role: 'user', display_name: 'Same', provider: user.id }))
+-  fake.cloudUpdate.mockResolvedValue(undefined)
+-  function Harness() { return <AccountDialog account={useAccount()} onClose={vi.fn()} /> }
+-  const dialog = render(<Harness />)
+-  await waitFor(() => expect(screen.getByText('(a)')).toBeTruthy())
+-  fireEvent.change(screen.getByLabelText('表示名'), { target: { value: 'A unsaved' } })
+-  await act(async () => { fake.callback?.('SIGNED_IN', { user: { id: 'b' } }); await Promise.resolve() })
+-  await waitFor(() => expect(screen.getByText('(b)')).toBeTruthy())
+-  expect((screen.getByLabelText('表示名') as HTMLInputElement).value).toBe('Same')
+-  fireEvent.click(screen.getByRole('button', { name: '保存' }))
+-  await waitFor(() => expect(fake.cloudUpdate).toHaveBeenCalledWith('Same', 'b'))
+-  dialog.unmount()
+-})
+-
+-it('chooses cloud after a successful callback even when a local cookie existed before it', async () => {
+-  fake.process.mockResolvedValue('success')
+-  fake.localSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: 'Local' } })
+-  fake.getUser.mockResolvedValue({ data: { user: { id: 'cloud-a' } }, error: null })
+-  fake.cloudProfile.mockResolvedValue({ backend: 'cloud', id: 'cloud-a', role: 'user', display_name: 'Cloud' })
+-  fake.cloudUpdate.mockResolvedValue(undefined)
++  fake.profile.mockImplementation(async (user: { id: string }) => ({ id: user.id, display_name: 'Old', role: 'user', environment: 'local' }))
+   fake.signOut.mockResolvedValue({ error: null })
+-  const first = renderHook(() => useAccount())
+-  await waitFor(() => expect(first.result.current.profile?.backend).toBe('cloud'))
+-  expect(sessionStorage.getItem('gtr.auth.selectedBackend')).toBe('cloud')
+-  expect(fake.retireLocal).toHaveBeenCalledOnce()
+-  await act(async () => first.result.current.saveName('Renamed'))
+-  expect(fake.cloudUpdate).toHaveBeenCalledWith('Renamed', 'cloud-a')
+-  first.unmount()
+-  fake.process.mockResolvedValue('absent')
+-  const reloaded = renderHook(() => useAccount())
+-  await waitFor(() => expect(reloaded.result.current.profile?.backend).toBe('cloud'))
+-  await act(async () => reloaded.result.current.logout())
+-  expect(fake.signOut).toHaveBeenCalledOnce()
+-  expect(reloaded.result.current.profile).toBeNull()
+-  reloaded.unmount()
+-  fake.getUser.mockResolvedValue({ data: { user: null }, error: null })
+-  const afterLogout = renderHook(() => useAccount())
+-  await waitFor(() => expect(afterLogout.result.current.status).toBe('guest'))
+-  expect(afterLogout.result.current.profile).toBeNull()
+-})
++  fake.update.mockResolvedValue(undefined)
++}
+ 
+-it('chooses cloud when another tab logs into local during callback exchange', async () => {
+-  let completeCallback!: (value: 'success') => void
+-  fake.process.mockImplementation(() => new Promise(resolve => { completeCallback = resolve }))
+-  let otherTabLoggedIn = false
+-  fake.localSession.mockImplementation(async () => ({ available: true, profile: otherTabLoggedIn ? { backend: 'local', id: 'system_admin', role: 'admin', display_name: 'Local' } : null }))
+-  fake.getUser.mockResolvedValue({ data: { user: { id: 'cloud-a' } }, error: null })
+-  fake.cloudProfile.mockResolvedValue({ backend: 'cloud', id: 'cloud-a', role: 'user', display_name: 'Cloud' })
++it('discards an old read after a different identity arrives', async () => {
++  setup()
+   const { result } = renderHook(() => useAccount())
+-  expect(result.current.status).toBe('loading')
+-  otherTabLoggedIn = true
+-  await act(async () => completeCallback('success'))
+-  await waitFor(() => expect(result.current.profile?.backend).toBe('cloud'))
++  await waitFor(() => expect(result.current.profile?.id).toBe('a'))
++  let resolveOld!: (value: any) => void
++  fake.profile.mockImplementationOnce(() => new Promise(resolve => { resolveOld = resolve }))
++    .mockImplementationOnce(async () => ({ id: 'b', display_name: 'Bob', role: 'user', environment: 'local' }))
++  act(() => fake.callback?.('TOKEN_REFRESHED', { user: { id: 'a' } }))
++  act(() => fake.callback?.('SIGNED_IN', { user: { id: 'b' } }))
++  await waitFor(() => expect(result.current.profile?.id).toBe('b'))
++  await act(async () => resolveOld({ id: 'a', display_name: 'Late', role: 'user', environment: 'local' }))
++  expect(result.current.profile?.id).toBe('b')
+ })
+ 
+-it('does not automatically adopt local after a failed callback', async () => {
+-  fake.process.mockRejectedValue(new Error('OAuth denied'))
+-  fake.localSession.mockResolvedValue({ available: true, profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: 'Local' } })
+-  fake.localLogin.mockResolvedValue({ backend: 'local', id: 'system_admin', role: 'admin', display_name: 'Local' })
+-  fake.clearCloud.mockResolvedValue(undefined)
++it('keeps a saved name when a preceding refresh read finishes later', async () => {
++  setup()
+   const { result } = renderHook(() => useAccount())
+-  await waitFor(() => expect(result.current.status).toBe('error'))
+-  expect(result.current.profile).toBeNull()
+-  expect(result.current.availableLocal).toBe(true)
+-  await act(async () => result.current.loginLocal())
+-  expect(result.current.profile?.backend).toBe('local')
++  await waitFor(() => expect(result.current.profile?.id).toBe('a'))
++  let resolveOld!: (value: any) => void
++  fake.profile.mockImplementationOnce(() => new Promise(resolve => { resolveOld = resolve }))
++  act(() => fake.callback?.('TOKEN_REFRESHED', { user: { id: 'a' } }))
++  await act(async () => result.current.saveName('Saved'))
++  await act(async () => resolveOld({ id: 'a', display_name: 'Old', role: 'user', environment: 'local' }))
++  expect(result.current.profile?.display_name).toBe('Saved')
+ })
+ 
+-it('retains cloud on the callback page when storage write fails and retires the local cookie', async () => {
+-  sessionStorage.setItem('gtr.auth.selectedBackend', 'local')
+-  const setItem = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('quota') })
+-  fake.process.mockResolvedValue('success')
+-  let localCookie = true
+-  fake.retireLocal.mockImplementation(async () => { localCookie = false })
+-  fake.localSession.mockImplementation(async () => ({ available: true, profile: localCookie ? { backend: 'local', id: 'system_admin', role: 'admin', display_name: 'Local' } : null }))
+-  fake.getUser.mockResolvedValue({ data: { user: { id: 'cloud-a' } }, error: null })
+-  fake.cloudProfile.mockResolvedValue({ backend: 'cloud', id: 'cloud-a', role: 'user', display_name: 'Cloud' })
++it('logs out through Supabase and discards the profile', async () => {
++  setup()
+   const { result } = renderHook(() => useAccount())
+-  await waitFor(() => expect(result.current.profile?.backend).toBe('cloud'))
+-  expect(fake.retireLocal).toHaveBeenCalledOnce()
+-  expect(localCookie).toBe(false)
+-  expect(setItem).toHaveBeenCalled()
+-})
+-
+-it('keeps persisted cloud selection when local cleanup is refused, including reload and account actions', async () => {
+-  fake.process.mockResolvedValueOnce('success').mockResolvedValue('absent')
+-  fake.retireLocal.mockRejectedValue(new Error('local API unavailable'))
+-  fake.localSession.mockResolvedValue({ available: false, profile: null })
+-  fake.getUser.mockResolvedValue({ data: { user: { id: 'cloud-a' } }, error: null })
+-  fake.cloudProfile.mockResolvedValue({ backend: 'cloud', id: 'cloud-a', role: 'user', display_name: 'Cloud' })
+-  fake.cloudUpdate.mockResolvedValue(undefined)
+-  fake.signOut.mockResolvedValue({ error: null })
+-  const first = renderHook(() => useAccount())
+-  await waitFor(() => expect(first.result.current.profile?.backend).toBe('cloud'))
+-  expect(sessionStorage.getItem('gtr.auth.selectedBackend')).toBe('cloud')
+-  expect(fake.retireLocal).toHaveBeenCalledOnce()
+-  first.unmount()
+-  const reloaded = renderHook(() => useAccount())
+-  await waitFor(() => expect(reloaded.result.current.profile?.backend).toBe('cloud'))
+-  await act(async () => reloaded.result.current.saveName('Renamed'))
+-  expect(reloaded.result.current.profile?.display_name).toBe('Renamed')
+-  await act(async () => reloaded.result.current.logout())
++  await waitFor(() => expect(result.current.profile?.id).toBe('a'))
++  await act(async () => result.current.logout())
+   expect(fake.signOut).toHaveBeenCalledOnce()
+-  expect(reloaded.result.current.profile).toBeNull()
+-})
+-
+-it('reports callback error without exposing a profile when storage and local cleanup both fail', async () => {
+-  sessionStorage.setItem('gtr.auth.selectedBackend', 'local')
+-  vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('quota') })
+-  fake.process.mockResolvedValue('success')
+-  fake.retireLocal.mockRejectedValue(new Error('local API unavailable'))
+-  fake.localSession.mockResolvedValue({ available: false, profile: null })
+-  const { result } = renderHook(() => useAccount())
+-  await waitFor(() => expect(result.current.status).toBe('error'))
+   expect(result.current.profile).toBeNull()
+-  expect(result.current.error).toContain('local API unavailable')
+-})
+-
+-it.each(['TOKEN_REFRESHED', 'SIGNED_IN'])('preserves a pending cloud save across same-user %s and stale reads on either side of save completion', async event => {
+-  for (const oldReadFirst of [true, false]) {
+-    fake.process.mockResolvedValue('absent')
+-    fake.localSession.mockResolvedValue({ available: true, profile: null })
+-    fake.getUser.mockResolvedValue({ data: { user: { id: 'a' } }, error: null })
+-    const staleReads: Array<(value: unknown) => void> = []
+-    fake.cloudProfile.mockImplementationOnce(async () => ({ backend: 'cloud', id: 'a', role: 'user', display_name: 'Old' }))
+-    fake.cloudProfile.mockImplementation(() => new Promise(resolve => staleReads.push(resolve)))
+-    let finishSave!: () => void
+-    fake.cloudUpdate.mockImplementation(() => new Promise<void>(resolve => { finishSave = resolve }))
+-    const hook = renderHook(() => useAccount())
+-    await waitFor(() => expect(hook.result.current.profile?.display_name).toBe('Old'))
+-    act(() => fake.callback?.(event, { user: { id: 'a' } }))
+-    await waitFor(() => expect(staleReads).toHaveLength(1))
+-    let save!: Promise<void>
+-    act(() => { save = hook.result.current.saveName('New') })
+-    act(() => fake.callback?.(event, { user: { id: 'a' } }))
+-    await waitFor(() => expect(staleReads).toHaveLength(2))
+-    const resolveOld = async () => {
+-      await act(async () => {
+-        for (const resolve of staleReads) resolve({ backend: 'cloud', id: 'a', role: 'user', display_name: 'Old' })
+-        await Promise.resolve()
+-      })
+-    }
+-    const completeSave = async () => { await act(async () => { finishSave(); await save }) }
+-    if (oldReadFirst) { await resolveOld(); await completeSave() }
+-    else { await completeSave(); await resolveOld() }
+-    expect(hook.result.current.profile?.display_name).toBe('New')
+-    expect(hook.result.current.status).toBe('ready')
+-    hook.unmount()
+-    vi.clearAllMocks()
+-  }
+-})
+-
+-it('keeps an unsaved dialog draft through same-user token refresh', async () => {
+-  fake.process.mockResolvedValue('absent')
+-  fake.localSession.mockResolvedValue({ available: true, profile: null })
+-  fake.getUser.mockResolvedValue({ data: { user: { id: 'a' } }, error: null })
+-  fake.cloudProfile.mockResolvedValueOnce({ backend: 'cloud', id: 'a', role: 'user', display_name: 'Old' })
+-    .mockResolvedValue({ backend: 'cloud', id: 'a', role: 'user', display_name: 'Remote change' })
+-  function Harness() { return <AccountDialog account={useAccount()} onClose={vi.fn()} /> }
+-  const dialog = render(<Harness />)
+-  await waitFor(() => expect((screen.getByLabelText('表示名') as HTMLInputElement).value).toBe('Old'))
+-  fireEvent.change(screen.getByLabelText('表示名'), { target: { value: 'Unsent draft' } })
+-  await act(async () => { fake.callback?.('TOKEN_REFRESHED', { user: { id: 'a' } }); await Promise.resolve() })
+-  expect((screen.getByLabelText('表示名') as HTMLInputElement).value).toBe('Unsent draft')
+-  expect(screen.getByText('Old', { exact: false })).toBeTruthy()
+-  dialog.unmount()
+-})
+-
+-it.each(['cloud', 'local'] as const)('locks %s name editing during save and restores the input after success or failure', async backend => {
+-  if (backend === 'local') selectBackend('local')
+-  const starting = { backend, id: backend === 'cloud' ? 'cloud-a' : 'system_admin', role: backend === 'cloud' ? 'user' : 'admin', display_name: 'Old' }
+-  fake.process.mockResolvedValue('absent')
+-  fake.localSession.mockResolvedValue({ available: true, profile: backend === 'local' ? starting : null })
+-  fake.getUser.mockResolvedValue({ data: { user: backend === 'cloud' ? { id: 'cloud-a' } : null }, error: null })
+-  fake.cloudProfile.mockResolvedValue(starting)
+-  const pending: Array<{ resolve: (value: unknown) => void; reject: (error: Error) => void }> = []
+-  const deferredUpdate = () => new Promise((resolve, reject) => { pending.push({ resolve, reject }) })
+-  if (backend === 'cloud') fake.cloudUpdate.mockImplementation(deferredUpdate)
+-  else fake.localUpdate.mockImplementation(deferredUpdate)
+-  function Harness() { return <AccountDialog account={useAccount()} onClose={vi.fn()} /> }
+-  const dialog = render(<Harness />)
+-  const input = () => within(dialog.container).getByLabelText('表示名') as HTMLInputElement
+-  const save = () => within(dialog.container).getByRole('button', { name: '保存' }) as HTMLButtonElement
+-  await waitFor(() => expect(input().value).toBe('Old'))
+-  fireEvent.change(input(), { target: { value: 'Saved' } })
+-  fireEvent.click(save())
+-  await waitFor(() => expect(pending).toHaveLength(1))
+-  expect(input().disabled).toBe(true)
+-  expect(save().disabled).toBe(true)
+-  await act(async () => { pending[0].resolve(backend === 'local' ? { ...starting, display_name: 'Saved' } : undefined); await Promise.resolve() })
+-  await waitFor(() => expect(input().value).toBe('Saved'))
+-  expect(input().disabled).toBe(false)
+-  fireEvent.change(input(), { target: { value: 'Retry draft' } })
+-  fireEvent.click(save())
+-  await waitFor(() => expect(pending).toHaveLength(2))
+-  expect(input().disabled).toBe(true)
+-  await act(async () => { pending[1].reject(new Error('Save failed')); await Promise.resolve() })
+-  await waitFor(() => expect(input().disabled).toBe(false))
+-  expect(input().value).toBe('Retry draft')
+-  expect(within(dialog.container).getByRole('alert').textContent).toContain('Save failed')
+-  dialog.unmount()
+ })
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\auth\\useAccount.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\auth\\useAccount.ts"
+index b879b18..88313ce 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\auth\\useAccount.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\auth\\useAccount.ts"
+@@ -1,8 +1,7 @@
+ import { useCallback, useEffect, useRef, useState } from 'react'
+-import { supabase } from '../lib/supabase'
+-import { clearCloudSessionForLocal, cloudProfile, cloudUpdate, LocalAuthError, localLogin, localLogout, localSession, localUpdate, readLocalSession, retireLocalSessionForCloud, startOAuth, type AccountProfile } from './account'
++import { supabase, localSupabase } from '../lib/supabase'
++import { localAvailable, localLogin, readProfile, startOAuth, updateName, type AccountProfile } from './account'
+ import { processOAuthCallback } from './oauthCallback'
+-import { selectBackend, selectedBackend } from './backendSelection'
+ 
+ export function useAccount() {
+   const [profile, setProfile] = useState<AccountProfile | null>(null)
+@@ -14,8 +13,6 @@ export function useAccount() {
+   const readRevision = useRef(0)
+   const saveRevision = useRef(0)
+   const pendingSaves = useRef(0)
+-  const localActive = useRef(false)
+-  const localChecked = useRef(false)
+   const publishProfile = useCallback((next: AccountProfile | null) => {
+     profileRef.current = next
+     setProfile(next)
+@@ -25,74 +22,59 @@ export function useAccount() {
+     let active = true
+     const version = ++generation.current
+     const refresh = async () => {
+-      let callbackError: string | null = null
+       try {
+-        try {
+-          const callbackResult = await processOAuthCallback()
+-          if (callbackResult === 'success') {
+-            const persisted = selectBackend('cloud')
+-            try { await retireLocalSessionForCloud() }
+-            catch (error) { if (!persisted) throw error }
+-          }
+-        }
+-        catch (caught) { callbackError = caught instanceof Error ? caught.message : 'ログインを完了できませんでした' }
+-        const local = await localSession()
+-        localChecked.current = true
+-        if (active) setAvailableLocal(!!local.available)
++        await processOAuthCallback()
++        const local = await localAvailable()
++        if (active) setAvailableLocal(local)
+         if (!active || version !== generation.current) return
+-        if (callbackError) { publishProfile(null); setStatus('error'); setError(callbackError); return }
+-        if (local.profile && selectedBackend() !== 'cloud') { localActive.current = true; publishProfile(local.profile); setStatus('ready'); setError(null); return }
+         if (supabase) {
+           const result = await supabase.auth.getUser()
+           if (!active || version !== generation.current) return
+           if (result.error && result.error.name !== 'AuthSessionMissingError') throw result.error
+           if (result.data.user) {
+-            const cloud = await cloudProfile(result.data.user)
++            const next = await readProfile(result.data.user)
+             if (!active || version !== generation.current) return
+-            publishProfile(cloud); setStatus('ready'); setError(callbackError); return
++            publishProfile(next); setStatus('ready'); setError(null); return
+           }
+         }
+-        publishProfile(null); setStatus(callbackError ? 'error' : 'guest'); setError(callbackError)
++        publishProfile(null); setStatus('guest'); setError(null)
+       } catch (caught) {
+         if (!active || version !== generation.current) return
++        publishProfile(null)
+         setError(caught instanceof Error ? caught.message : 'ログインを確認できませんでした')
+         setStatus('error')
+       }
+     }
+     void refresh()
+     const subscription = supabase?.auth.onAuthStateChange((event, session) => {
+-      if (event === 'INITIAL_SESSION' || !localChecked.current || localActive.current) return
+-      const currentProfile = profileRef.current
+-      if (session?.user && currentProfile?.backend === 'cloud' && currentProfile.id === session.user.id) {
++      if (event === 'INITIAL_SESSION') return
++      const existing = profileRef.current
++      const identity = session?.user.id
++      if (identity && existing?.id === identity) {
+         const current = generation.current
+         const read = ++readRevision.current
+         const save = saveRevision.current
+-        void cloudProfile(session.user).then(cloud => {
+-          const existing = profileRef.current
+-          if (active && current === generation.current && read === readRevision.current && save === saveRevision.current && pendingSaves.current === 0 && existing?.backend === 'cloud' && existing.id === session.user.id) {
+-            // Token refresh must not replace the name being edited in the dialog.
+-            publishProfile({ ...cloud, display_name: existing.display_name })
++        void readProfile(session.user).then(next => {
++          if (active && current === generation.current && read === readRevision.current && save === saveRevision.current && pendingSaves.current === 0 && profileRef.current?.id === identity) {
++            publishProfile({ ...next, display_name: profileRef.current.display_name })
+           }
+-        }).catch(() => { /* Keep the verified profile when a background refresh fails. */ })
++        }).catch(() => { /* A verified profile remains usable during background refresh failure. */ })
+         return
+       }
+       const current = ++generation.current
+       ++readRevision.current
+       publishProfile(null)
+       setError(null)
+-      setStatus(session?.user ? 'loading' : 'guest')
+-      void (async () => {
+-        if (!session?.user) {
+-          if (active && current === generation.current) { publishProfile(null); setStatus('guest') }
+-          return
+-        }
+-        try {
+-          const cloud = await cloudProfile(session.user)
+-          if (active && current === generation.current) { publishProfile(cloud); setStatus('ready') }
+-        } catch (caught) {
+-          if (active && current === generation.current) { setError(caught instanceof Error ? caught.message : 'プロフィールを読めませんでした'); setStatus('error') }
++      setStatus(identity ? 'loading' : 'guest')
++      if (!session?.user) return
++      void readProfile(session.user).then(next => {
++        if (active && current === generation.current) { publishProfile(next); setStatus('ready') }
++      }).catch(caught => {
++        if (active && current === generation.current) {
++          setError(caught instanceof Error ? caught.message : 'プロフィールを読めませんでした')
++          setStatus('error')
+         }
+-      })()
++      })
+     }).data.subscription
+     return () => { active = false; generation.current++; subscription?.unsubscribe() }
+   }, [publishProfile])
+@@ -104,57 +86,36 @@ export function useAccount() {
+     setStatus('loading'); setError(null)
+     try {
+       const next = await operation()
+-      if (version === generation.current) {
+-        localActive.current = next?.backend === 'local'
+-        if (next?.backend === 'local') selectBackend('local')
+-        publishProfile(next); setStatus(next ? 'ready' : 'guest')
+-      }
++      if (version === generation.current) { publishProfile(next); setStatus(next ? 'ready' : 'guest') }
+     } catch (caught) {
+-      if (version !== generation.current) return
+-      if (caught instanceof LocalAuthError && (caught.code === 'SESSION_INVALID' || caught.code === 'CSRF_MISMATCH')) {
+-        try {
+-          const latest = await readLocalSession()
+-          if (version !== generation.current) return
+-          setAvailableLocal(!!latest.available)
+-          localActive.current = latest.profile?.backend === 'local'
+-          publishProfile(latest.profile)
+-          setStatus(latest.profile ? 'ready' : 'guest')
+-          setError(latest.profile ? 'セッションを更新しました。もう一度お試しください。' : 'ログイン期限が切れました。もう一度ログインしてください。')
+-        } catch (recheckError) {
+-          if (version !== generation.current) return
+-          localActive.current = false
+-          publishProfile(null)
+-          setStatus('error')
+-          setError(recheckError instanceof Error ? recheckError.message : 'セッションを確認できませんでした')
+-        }
+-        return
++      if (version === generation.current) {
++        setError(caught instanceof Error ? caught.message : '処理に失敗しました')
++        setStatus(profileRef.current ? 'ready' : 'error')
+       }
+-      setError(caught instanceof Error ? caught.message : '処理に失敗しました')
+-      setStatus(profile ? 'ready' : 'error')
+     } finally {
+       if (saving) { --pendingSaves.current; ++saveRevision.current }
+     }
+-  }, [profile, publishProfile])
++  }, [publishProfile])
+ 
+   return {
+-    profile, availableLocal, configuredCloud: !!supabase, status, error,
++    profile, availableLocal, configuredCloud: !!supabase && !localSupabase, status, error,
+     loginCloud: startOAuth,
+     loginLocal: () => act(async () => {
+-      localActive.current = true
+-      try { await clearCloudSessionForLocal(); return await localLogin() }
+-      catch (caught) { localActive.current = false; throw caught }
++      await localLogin()
++      const result = await supabase!.auth.getUser()
++      if (result.error || !result.data.user) throw new Error('ローカル管理者の本人確認に失敗しました')
++      return readProfile(result.data.user)
+     }),
+     saveName: (name: string) => act(async () => {
+       const clean = name.trim()
+       if (clean.length < 1 || clean.length > 50) throw new Error('表示名は1〜50文字で入力してください')
+-      if (!profile) throw new Error('ログインしてください')
+-      if (profile.backend === 'local') return localUpdate(clean)
+-      await cloudUpdate(clean, profile.id)
+-      return { ...profile, display_name: clean }
++      const current = profileRef.current
++      if (!current) throw new Error('ログインしてください')
++      await updateName(clean, current.id)
++      return { ...current, display_name: clean }
+     }, true),
+     logout: () => act(async () => {
+-      if (profile?.backend === 'local') { await clearCloudSessionForLocal(); await localLogout() }
+-      else if (supabase) { const result = await supabase.auth.signOut(); if (result.error) throw result.error }
++      if (supabase) { const result = await supabase.auth.signOut(); if (result.error) throw result.error }
+       return null
+     }),
+   }
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\components\\account\\AccountDialog.test.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\account\\AccountDialog.test.tsx"
+index 2d7d4e6..66233c7 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\components\\account\\AccountDialog.test.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\account\\AccountDialog.test.tsx"
+@@ -17,11 +17,11 @@ it('offers guest login, edits a profile, logs out, and restores scroll state', (
+   }
+   const previous = document.body.style.overflow
+   const view = render(<AccountDialog account={{ ...base, profile: null } as Account} onClose={onClose} />)
+-  expect(screen.getByText('クラウドログインは設定されていません。')).toBeTruthy()
++  expect(screen.getByText('Google/GitHubログインは利用できません。')).toBeTruthy()
+   fireEvent.click(screen.getByRole('button', { name: 'ローカル管理者でログイン' }))
+   expect(loginLocal).toHaveBeenCalledOnce()
+   expect(document.body.style.overflow).toBe('hidden')
+-  view.rerender(<AccountDialog account={{ ...base, status: 'ready', profile: { backend: 'local', id: 'system_admin', role: 'admin', display_name: '管理者' } } as Account} onClose={onClose} />)
++  view.rerender(<AccountDialog account={{ ...base, status: 'ready', profile: { environment: 'http://127.0.0.1:54321', provider: 'ローカル管理者', id: '00000000-0000-4000-8000-000000000001', role: 'admin', display_name: '管理者' } } as Account} onClose={onClose} />)
+   fireEvent.change(screen.getByLabelText('表示名'), { target: { value: '新しい名前' } })
+   fireEvent.click(screen.getByRole('button', { name: '保存' }))
+   expect(saveName).toHaveBeenCalledWith('新しい名前')
+@@ -33,13 +33,13 @@ it('offers guest login, edits a profile, logs out, and restores scroll state', (
+   expect(document.body.style.overflow).toBe(previous)
+ })
+ 
+-it('keeps an unsaved draft only for the same backend and id', () => {
++it('keeps an unsaved draft only for the same environment and id', () => {
+   const saveName = vi.fn()
+   const base = {
+     availableLocal: true, configuredCloud: true, status: 'ready', error: null,
+     loginCloud: vi.fn(), loginLocal: vi.fn(), saveName, logout: vi.fn(),
+   }
+-  const profile = (backend: 'cloud' | 'local', id: string) => ({ backend, id, role: 'user', display_name: 'Same' })
++  const profile = (environment: string, id: string) => ({ environment, id, role: 'user', display_name: 'Same' })
+   const view = render(<AccountDialog account={{ ...base, profile: profile('cloud', 'user-a') } as Account} onClose={vi.fn()} />)
+   fireEvent.change(screen.getByLabelText('表示名'), { target: { value: 'unsaved A' } })
+   view.rerender(<AccountDialog account={{ ...base, profile: profile('cloud', 'user-a') } as Account} onClose={vi.fn()} />)
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\components\\account\\AccountDialog.tsx" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\account\\AccountDialog.tsx"
+index 7fc8905..b2b5333 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\components\\account\\AccountDialog.tsx"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\components\\account\\AccountDialog.tsx"
+@@ -5,7 +5,7 @@ type Account = ReturnType<typeof useAccount>
+ 
+ export default function AccountDialog({ account, onClose }: { account: Account; onClose: () => void }) {
+   const panel = useRef<HTMLDivElement>(null)
+-  const identity = account.profile ? `${account.profile.backend}:${account.profile.id}` : null
++  const identity = account.profile ? `${account.profile.environment}:${account.profile.id}` : null
+   const [draft, setDraft] = useState({ identity, name: account.profile?.display_name ?? '' })
+   const name = draft.identity === identity ? draft.name : account.profile?.display_name ?? ''
+   const [error, setError] = useState<string | null>(null)
+@@ -44,7 +44,7 @@ export default function AccountDialog({ account, onClose }: { account: Account;
+       {account.status === 'loading' && <p role="status" className="mt-4">確認中...</p>}
+       {(error || account.error) && <p role="alert" className="mt-4 text-[#ff9aa5]">{error || account.error}</p>}
+       {account.profile ? <div className="mt-5 space-y-4">
+-        <p>{account.profile.display_name} <span className="text-sm text-[#c4bfd3]">({account.profile.backend === 'local' ? 'ローカル管理者' : account.profile.provider || 'ログイン中'})</span></p>
++        <p>{account.profile.display_name} <span className="text-sm text-[#c4bfd3]">({account.profile.provider || 'ログイン中'})</span></p>
+         <form onSubmit={event => { event.preventDefault(); void account.saveName(name) }} className="space-y-2">
+           <label htmlFor="account-name" className="block text-sm">表示名</label>
+           <input id="account-name" value={name} maxLength={50} disabled={account.status === 'loading'} onChange={event => setDraft({ identity, name: event.target.value })} className="min-h-11 w-full border border-[#8f80b5] bg-[#171426] px-3 text-[#f2ecff] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#f0d675]" />
+@@ -52,8 +52,8 @@ export default function AccountDialog({ account, onClose }: { account: Account;
+         </form>
+         <button type="button" disabled={account.status === 'loading'} onClick={() => void account.logout()} className={button}>ログアウト</button>
+       </div> : <div className="mt-5 space-y-4">
+-        <p className="text-sm text-[#c4bfd3]">ゲストとしてこのまま遊べます。Google/GitHubでログインするとページを離れるため、プレイ途中の状態は失われます。</p>
+-        {account.configuredCloud ? <div className="flex flex-wrap gap-3"><button type="button" onClick={() => void oauth('google')} className={button}>Googleでログイン</button><button type="button" onClick={() => void oauth('github')} className={button}>GitHubでログイン</button></div> : <p className="text-sm text-[#c4bfd3]">クラウドログインは設定されていません。</p>}
++        <p className="text-sm text-[#c4bfd3]">ゲストとしてこのまま遊べます。{account.configuredCloud && 'Google/GitHubでログインするとページを離れるため、プレイ途中の状態は失われます。'}</p>
++        {account.configuredCloud ? <div className="flex flex-wrap gap-3"><button type="button" onClick={() => void oauth('google')} className={button}>Googleでログイン</button><button type="button" onClick={() => void oauth('github')} className={button}>GitHubでログイン</button></div> : <p className="text-sm text-[#c4bfd3]">Google/GitHubログインは利用できません。</p>}
+         {account.availableLocal && <button type="button" onClick={() => void account.loginLocal()} className={button}>ローカル管理者でログイン</button>}
+       </div>}
+     </div>
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\lib\\supabase.test.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\lib\\supabase.test.ts"
+index f006795..5b2e395 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\lib\\supabase.test.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\lib\\supabase.test.ts"
+@@ -1,7 +1,19 @@
+ import { afterEach, expect, it, vi } from 'vitest'
++import { authStorageKey, oauthHashStorageKey, validSupabaseUrl } from './supabaseConfig'
+ 
+ afterEach(() => { vi.unstubAllEnvs(); vi.resetModules() })
+ 
++it('permits only the fixed development HTTP endpoint and splits auth storage by URL', () => {
++  expect(validSupabaseUrl('http://127.0.0.1:54321', true)).toBe(true)
++  expect(validSupabaseUrl('http://127.0.0.1:54321')).toBe(false)
++  expect(validSupabaseUrl('http://localhost:54321', true)).toBe(false)
++  expect(validSupabaseUrl('http://127.0.0.1:54322', true)).toBe(false)
++  expect(validSupabaseUrl('https://project.example/other')).toBe(false)
++  expect(authStorageKey('https://project.example/', 'cloud')).toBe(authStorageKey('https://project.example', 'cloud'))
++  expect(authStorageKey('https://project.example', 'cloud')).not.toBe(authStorageKey('http://127.0.0.1:54321', 'localdev'))
++  expect(oauthHashStorageKey('https://project.example', 'cloud')).not.toBe(oauthHashStorageKey('http://127.0.0.1:54321', 'localdev'))
++})
++
+ it.each(['', 'not-a-url', 'https://', 'http://project.example', 'https://user:pass@project.example'])('keeps guest mode for an invalid Supabase URL: %s', async url => {
+   vi.stubEnv('VITE_SUPABASE_URL', url)
+   vi.stubEnv('VITE_SUPABASE_ANON_KEY', 'sb_publishable_test')
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\lib\\supabase.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\lib\\supabase.ts"
+index fcaae4c..cd2943f 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\lib\\supabase.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\lib\\supabase.ts"
+@@ -1,9 +1,10 @@
+ import { createClient } from '@supabase/supabase-js'
+-import { publicSupabaseKey, validSupabaseUrl } from './supabaseConfig'
++import { authStorageKey, publicSupabaseKey, validSupabaseUrl } from './supabaseConfig'
+ 
+ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim()
+ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim()
+ 
+-export const supabase = validSupabaseUrl(supabaseUrl) && publicSupabaseKey(supabaseAnonKey)
+-  ? createClient(supabaseUrl, supabaseAnonKey, { auth: { flowType: 'pkce', detectSessionInUrl: false } })
++export const localSupabase = import.meta.env.DEV && import.meta.env.MODE === 'localdev'
++export const supabase = validSupabaseUrl(supabaseUrl, localSupabase) && publicSupabaseKey(supabaseAnonKey)
++  ? createClient(supabaseUrl, supabaseAnonKey, { auth: { flowType: 'pkce', detectSessionInUrl: false, storageKey: authStorageKey(supabaseUrl, import.meta.env.MODE) } })
+   : null
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\lib\\supabaseConfig.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\lib\\supabaseConfig.ts"
+index d335977..f9c198d 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\lib\\supabaseConfig.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\lib\\supabaseConfig.ts"
+@@ -1,11 +1,29 @@
+-export function validSupabaseUrl(value: string | undefined): value is string {
++export const LOCAL_SUPABASE_URL = 'http://127.0.0.1:54321'
++export const LOCAL_ADMIN_ID = '00000000-0000-4000-8000-000000000001'
++export const LOCAL_ADMIN_EMAIL = 'systemadmin@gtr.local'
++
++export function validSupabaseUrl(value: string | undefined, localdev = false): value is string {
+   if (!value) return false
+   try {
+     const url = new URL(value)
+-    return url.protocol === 'https:' && !!url.hostname && !url.username && !url.password && !url.search && !url.hash
++    return (url.protocol === 'https:' || (localdev && value === LOCAL_SUPABASE_URL)) &&
++      !!url.hostname && !url.username && !url.password && !url.search && !url.hash && url.pathname === '/'
+   } catch { return false }
+ }
+ 
++export function supabaseEnvironmentKey(url: string, mode: string): string {
++  if (!validSupabaseUrl(url, mode === 'localdev')) return `${mode}.unconfigured`
++  return `${mode}.${encodeURIComponent(new URL(url).origin)}`
++}
++
++export function authStorageKey(url: string, mode: string): string {
++  return `gtr.supabase.auth.${supabaseEnvironmentKey(url, mode)}`
++}
++
++export function oauthHashStorageKey(url: string, mode: string): string {
++  return `gtr.oauth.replayHash.${supabaseEnvironmentKey(url, mode)}`
++}
++
+ export function publicSupabaseKey(value: string | undefined): value is string {
+   if (!value) return false
+   if (value.startsWith('sb_publishable_')) return value.length > 'sb_publishable_'.length
+@@ -17,3 +35,14 @@ export function publicSupabaseKey(value: string | undefined): value is string {
+     return payload.role === 'anon'
+   } catch { return false }
+ }
++
++export function serviceRoleSupabaseKey(value: string | undefined): value is string {
++  if (!value) return false
++  if (value.startsWith('sb_secret_')) return value.length > 'sb_secret_'.length
++  const parts = value.split('.')
++  if (parts.length !== 3) return false
++  try {
++    const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/'))) as { role?: string }
++    return payload.role === 'service_role'
++  } catch { return false }
++}
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\lib\\test-connection.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\lib\\test-connection.ts"
+index c5f6637..686b33e 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\src\\lib\\test-connection.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\src\\lib\\test-connection.ts"
+@@ -11,10 +11,11 @@ export interface ConnectionResult {
+ export function checkEnvironmentVariables() {
+   const url = import.meta.env.VITE_SUPABASE_URL?.trim()
+   const key = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim()
++  const localdev = import.meta.env.DEV && import.meta.env.MODE === 'localdev'
+   return {
+     hasUrl: !!url,
+     hasKey: !!key,
+-    urlFormat: validSupabaseUrl(url),
++    urlFormat: validSupabaseUrl(url, localdev),
+     keyFormat: publicSupabaseKey(key),
+   }
+ }
+@@ -22,7 +23,7 @@ export function checkEnvironmentVariables() {
+ export async function testSupabaseConnection(): Promise<ConnectionResult> {
+   const url = import.meta.env.VITE_SUPABASE_URL?.trim()
+   const key = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim()
+-  if (!validSupabaseUrl(url) || !publicSupabaseKey(key) || !supabase) {
++  if (!validSupabaseUrl(url, import.meta.env.DEV && import.meta.env.MODE === 'localdev') || !publicSupabaseKey(key) || !supabase) {
+     return { connected: false, kind: 'configuration', error: 'Supabaseの公開設定が不足または不正です' }
+   }
+   try {
+
+New file: supabase/.gitignore
++/.temp/
++/.branches/
+
+New file: supabase/config.toml
++project_id = "gtr-training-local"
++
++[api]
++enabled = true
++port = 54321
++schemas = ["public", "storage", "graphql_public"]
++
++[db]
++port = 54322
++shadow_port = 54320
++major_version = 17
++
++[db.seed]
++enabled = false
++
++[studio]
++enabled = false
++
++[inbucket]
++enabled = false
++
++[analytics]
++enabled = false
++
++[auth]
++enabled = true
++site_url = "http://127.0.0.1:5175"
++additional_redirect_urls = ["http://127.0.0.1:5175/?auth_callback=1"]
++enable_signup = false
++enable_anonymous_sign_ins = false
++
++[auth.email]
++enable_signup = false
++enable_confirmations = false
+
+New file: supabase/migrations/20260930000000_initial.sql
++-- Run in a NEW Supabase project. Existing projects use migrate-legacy-profiles.sql.
++CREATE TABLE public.profiles (
++  id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
++  display_name text NOT NULL CHECK (display_name = btrim(display_name) AND char_length(display_name) BETWEEN 1 AND 50),
++  avatar_url text,
++  role text NOT NULL DEFAULT 'user' CHECK (role IN ('user', 'admin')),
++  created_at timestamptz NOT NULL DEFAULT now(),
++  updated_at timestamptz NOT NULL DEFAULT now()
++);
++ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON public.profiles FROM PUBLIC, anon, authenticated;
++GRANT SELECT ON public.profiles TO authenticated;
++GRANT UPDATE (display_name) ON public.profiles TO authenticated;
++CREATE POLICY profiles_select_self ON public.profiles FOR SELECT TO authenticated
++  USING ((SELECT auth.uid()) = id);
++CREATE POLICY profiles_update_self ON public.profiles FOR UPDATE TO authenticated
++  USING ((SELECT auth.uid()) = id) WITH CHECK ((SELECT auth.uid()) = id);
++
++CREATE FUNCTION public.touch_profile_updated_at() RETURNS trigger
++LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
++BEGIN
++  NEW.created_at := OLD.created_at;
++  NEW.updated_at := now();
++  RETURN NEW;
++END;
++$$;
++CREATE TRIGGER profiles_touch_updated_at BEFORE UPDATE ON public.profiles
++  FOR EACH ROW EXECUTE FUNCTION public.touch_profile_updated_at();
++
++CREATE FUNCTION public.handle_new_user() RETURNS trigger
++LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
++DECLARE raw_name text;
++BEGIN
++  raw_name := btrim(COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'name', ''));
++  IF char_length(raw_name) < 1 OR char_length(raw_name) > 50 THEN raw_name := 'プレイヤー'; END IF;
++  INSERT INTO public.profiles (id, display_name, role) VALUES (NEW.id, raw_name, 'user');
++  RETURN NEW;
++END;
++$$;
++CREATE TRIGGER on_auth_user_created AFTER INSERT ON auth.users
++  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
++
++-- Covers users created before this SQL was installed.
++INSERT INTO public.profiles (id, display_name, role)
++SELECT id, CASE
++  WHEN char_length(btrim(COALESCE(raw_user_meta_data->>'full_name', raw_user_meta_data->>'name', ''))) BETWEEN 1 AND 50
++  THEN btrim(COALESCE(raw_user_meta_data->>'full_name', raw_user_meta_data->>'name', ''))
++  ELSE 'プレイヤー' END, 'user'
++FROM auth.users ON CONFLICT (id) DO NOTHING;
++
++-- Preserve the existing game-record schema without exposing profile names.
++CREATE TABLE public.scores (
++  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
++  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE,
++  mode text NOT NULL CHECK (mode IN ('5GTR', '10GTR', '20GTR')),
++  time_ms integer NOT NULL,
++  score integer NOT NULL,
++  gtr_count integer NOT NULL,
++  replay_data jsonb,
++  created_at timestamp DEFAULT now()
++);
++CREATE TABLE public.replays (
++  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
++  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE,
++  score_id uuid REFERENCES public.scores(id) ON DELETE CASCADE,
++  data jsonb NOT NULL,
++  size integer NOT NULL,
++  created_at timestamp DEFAULT now()
++);
++CREATE INDEX idx_scores_mode_time ON public.scores(mode, time_ms);
++CREATE INDEX idx_scores_created_at ON public.scores(created_at DESC);
++CREATE INDEX idx_scores_user_mode ON public.scores(user_id, mode);
++ALTER TABLE public.scores ENABLE ROW LEVEL SECURITY;
++ALTER TABLE public.replays ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON public.scores, public.replays FROM PUBLIC, anon, authenticated;
++GRANT SELECT ON public.scores, public.replays TO anon, authenticated;
++GRANT INSERT ON public.scores, public.replays TO authenticated;
++CREATE POLICY scores_select_public ON public.scores FOR SELECT TO anon, authenticated USING (true);
++CREATE POLICY scores_insert_self ON public.scores FOR INSERT TO authenticated
++  WITH CHECK ((SELECT auth.uid()) = user_id);
++CREATE POLICY replays_select_public ON public.replays FOR SELECT TO anon, authenticated USING (true);
++CREATE POLICY replays_insert_self ON public.replays FOR INSERT TO authenticated
++  WITH CHECK ((SELECT auth.uid()) = user_id);
+
+diff --git "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\vite.config.ts" "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\vite.config.ts"
+index 3c43691..808a087 100644
+--- "a/C:\\Users\\sunpe\\AppData\\Local\\Temp\\gtr-local-supabase-before-26dykyrw\\vite.config.ts"
++++ "b/C:\\Users\\sunpe\\.codex\\worktrees\\9028\\gtr-training\\vite.config.ts"
+@@ -1,7 +1,10 @@
+-import { defineConfig } from 'vite'
++import { defineConfig, loadEnv } from 'vite'
+ import react from '@vitejs/plugin-react'
+ import { localAuthPlugin } from './server/localAuth/plugin'
+-import { publicSupabaseKey } from './src/lib/supabaseConfig'
++import { LOCAL_SUPABASE_URL, publicSupabaseKey } from './src/lib/supabaseConfig'
++import { resolve } from 'node:path'
++import { readFileSync } from 'node:fs'
++import { assertResolvedLocalEnvironment, LOCAL_ENV_NAMES, parseGeneratedLocalEnvironment, type LocalEnvironment } from './server/localAuth/environment'
+ 
+ function knownSupabaseSecret(value: string): boolean {
+   const trimmed = value.trim()
+@@ -14,7 +17,7 @@ function knownSupabaseSecret(value: string): boolean {
+   } catch { return false }
+ }
+ 
+-const publicEnvGuard = () => ({
++const publicEnvGuard = (localdev: boolean, expectedPublicKey?: string) => ({
+   name: 'public-supabase-key-guard',
+   configResolved(config: { env: Record<string, unknown> }) {
+     if (Object.values(config.env).some(value => typeof value === 'string' && knownSupabaseSecret(value))) {
+@@ -24,16 +27,43 @@ const publicEnvGuard = () => ({
+     if (key && !publicSupabaseKey(key)) {
+       throw new Error('VITE_SUPABASE_ANON_KEY must contain a public publishable or anon key')
+     }
++    if (localdev && (config.env.VITE_SUPABASE_URL !== LOCAL_SUPABASE_URL || key !== expectedPublicKey)) {
++      throw new Error('Local Supabase public configuration is missing or mismatched')
++    }
+   },
+ })
+ 
+ // https://vitejs.dev/config/
+-export default defineConfig({
+-  plugins: [publicEnvGuard(), react(), localAuthPlugin()],
+-  server: { fs: { deny: ['.env', '.env.*', '*.{crt,pem}', '**/.git/**', '.local', '.local/**', '**/.local/**'] } },
++export default defineConfig(({ command, mode }) => {
++  const localdev = mode === 'localdev'
++  if (localdev && command === 'build') throw new Error('localdev mode cannot be built for production')
++  const envDir = localdev ? resolve('.local/supabase') : process.cwd()
++  let generated: LocalEnvironment | null = null
++  if (localdev) {
++    let privateEnv: string
++    try { privateEnv = readFileSync(resolve(envDir, '.env'), 'utf8') }
++    catch { throw new Error('Run the local Supabase status command before starting dev') }
++    generated = parseGeneratedLocalEnvironment(privateEnv)
++    // bunfig disables root auto-loading. Explicit process values must agree with this file.
++    for (const name of LOCAL_ENV_NAMES) {
++      const inherited = process.env[name]
++      if (inherited && inherited !== generated[name]) {
++        throw new Error('Injected local Supabase environment does not match the resolved configuration')
++      }
++    }
++  }
++  const env = loadEnv(mode, envDir, '')
++  if (generated) assertResolvedLocalEnvironment(generated, env)
++  return {
++  envDir,
++  plugins: [publicEnvGuard(localdev, generated?.VITE_SUPABASE_ANON_KEY), react(), ...(localdev && command === 'serve' ? [localAuthPlugin({ anon: env.VITE_SUPABASE_ANON_KEY || '', serviceRole: env.LOCAL_SUPABASE_SERVICE_ROLE_KEY || '' })] : [])],
++  server: { host: '127.0.0.1', port: 5175, strictPort: true,
++    fs: { deny: ['.env', '.env.*', '*.{crt,pem}', '**/.git/**', '.local', '.local/**', '**/.local/**',
++      'supabase/.temp', 'supabase/.temp/**', '**/supabase/.temp/**', 'supabase/.branches/**', '**/supabase/.branches/**', '**/docker.env'] } },
+   resolve: {
+     alias: {
+       '@': '/src',
+     },
+   },
++  }
+ })
+
+Deleted file: server/localAuth/store.test.ts
+
+Deleted file: server/localAuth/store.ts
+
+Deleted file: sql/initial-setup.sql
+
+Deleted file: src/auth/backendSelection.test.ts
+
+Deleted file: src/auth/backendSelection.ts

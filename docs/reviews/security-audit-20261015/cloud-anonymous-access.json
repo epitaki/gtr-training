@@ -1,0 +1,36 @@
+{
+  "authSettings": {
+    "httpStatus": 200
+  },
+  "profiles": {
+    "httpStatus": 401,
+    "errorCode": "42501",
+    "permissionDenied": true,
+    "invalidApiKey": false
+  },
+  "score_attack_games": {
+    "httpStatus": 401,
+    "errorCode": "42501",
+    "permissionDenied": true,
+    "invalidApiKey": false
+  },
+  "scores": {
+    "httpStatus": 401,
+    "errorCode": "42501",
+    "permissionDenied": true,
+    "invalidApiKey": false
+  },
+  "replays": {
+    "httpStatus": 401,
+    "errorCode": "42501",
+    "permissionDenied": true,
+    "invalidApiKey": false
+  },
+  "storageSchema": {
+    "httpStatus": 406,
+    "errorCode": "PGRST106",
+    "permissionDenied": false,
+    "invalidApiKey": false,
+    "exposed": false
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "roles": [
+    {
+      "name": "authenticated",
+      "superuser": false,
+      "bypassRls": false
+    },
+    {
+      "name": "anon",
+      "superuser": false,
+      "bypassRls": false
+    }
+  ],
+  "maximumExistingAvatars": 0
+}

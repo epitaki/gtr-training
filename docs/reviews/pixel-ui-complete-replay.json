@@ -1,0 +1,205 @@
+{
+  "kind": "gtr-replay",
+  "version": 1,
+  "sourceCapturedAt": "2026-09-28T00:23:12.426Z",
+  "field": {
+    "width": 6,
+    "height": 13,
+    "grid": [
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        "red"
+      ],
+      [
+        "red",
+        "blue",
+        "green",
+        "yellow",
+        "yellow",
+        "red"
+      ],
+      [
+        "red",
+        "red",
+        "blue",
+        "green",
+        "green",
+        "yellow"
+      ],
+      [
+        "blue",
+        "blue",
+        "green",
+        "red",
+        "red",
+        "yellow"
+      ]
+    ]
+  },
+  "currentPair": {
+    "main": {
+      "color": "red",
+      "x": 2,
+      "y": 1
+    },
+    "sub": {
+      "color": "red",
+      "x": 2,
+      "y": 0
+    },
+    "rotation": 0,
+    "falling": true
+  },
+  "nextPair": {
+    "main": {
+      "color": "green",
+      "x": 2,
+      "y": 1
+    },
+    "sub": {
+      "color": "blue",
+      "x": 2,
+      "y": 0
+    },
+    "rotation": 0,
+    "falling": true
+  },
+  "nextNextPair": {
+    "main": {
+      "color": "yellow",
+      "x": 2,
+      "y": 1
+    },
+    "sub": {
+      "color": "green",
+      "x": 2,
+      "y": 0
+    },
+    "rotation": 0,
+    "falling": true
+  },
+  "openingPairs": {
+    "pair1": {
+      "main": {
+        "color": "blue",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "red",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    },
+    "pair2": {
+      "main": {
+        "color": "blue",
+        "x": 2,
+        "y": 1
+      },
+      "sub": {
+        "color": "yellow",
+        "x": 2,
+        "y": 0
+      },
+      "rotation": 0,
+      "falling": true
+    }
+  },
+  "score": 0,
+  "gtrCount": 0,
+  "gtrScore": 0,
+  "gameOver": false,
+  "pairRandomState": 2035149345,
+  "trainingPlan": {
+    "colorA": "red",
+    "colorB": "blue",
+    "colorC": "green",
+    "colorD": "yellow"
+  },
+  "sourceSettings": {
+    "gravityEnabled": false,
+    "advisorEnabled": true,
+    "paused": true,
+    "showingResult": true
+  },
+  "recentTurns": []
+}

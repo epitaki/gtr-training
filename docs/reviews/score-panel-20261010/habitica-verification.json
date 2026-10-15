@@ -1,0 +1,16 @@
+{
+  "scorePanel": {
+    "id": "fe20afb0-8fe6-4eb6-93c6-b930a92ab080",
+    "completed": true,
+    "checksCompleted": 5,
+    "checkCount": 5,
+    "notesMatch": true
+  },
+  "uiCleanup": {
+    "id": "55278ef5-e28b-4dc3-bfb4-41ecc71c8259",
+    "completed": false,
+    "checksCompleted": 0,
+    "checkCount": 11,
+    "notesMatch": true
+  }
+}

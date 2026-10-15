@@ -5,13 +5,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "vite --mode localdev",
+    "dev:cloud": "vite --mode cloud",
+    "supabase:start": "bun scripts/local-supabase.ts start",
+    "supabase:stop": "bun scripts/local-supabase.ts stop",
+    "supabase:status": "bun scripts/local-supabase.ts status",
+    "supabase:migrate": "bun scripts/local-supabase.ts migrate",
+    "supabase:admin-init": "bun scripts/local-supabase.ts admin-init",
+    "build": "bun run type-check:server && tsc && vite build",
     "preview": "vite preview",
     "test": "vitest run --passWithNoTests",
+    "test:quick": "vitest run --exclude src/game/advisor/PairUseRegression.test.ts --exclude server/publicEnvGuard.test.ts",
+    "test:slow": "vitest run src/game/advisor/PairUseRegression.test.ts server/publicEnvGuard.test.ts",
     "test:watch": "vitest",
     "type-check": "tsc --noEmit",
-    "measure:guided": "bun scripts/measure-guided-advisor.ts"
+    "type-check:server": "tsc --project tsconfig.node.json --noEmit",
+    "type-check:scripts": "tsc --project tsconfig.scripts.json",
+    "type-check:benchmark": "tsc --project tsconfig.scripts.json",
+    "benchmark:advisor": "bun scripts/benchmark/benchmark-advisor.ts run",
+    "benchmark:advisor:ci": "bun scripts/benchmark/benchmark-advisor.ts run --games 6 --turns 8 --no-output",
+    "benchmark:advisor:compare": "bun scripts/benchmark/benchmark-advisor.ts run --baseline benchmarks/baseline/advisor-v3.json",
+    "benchmark:advisor:replay": "bun scripts/benchmark/benchmark-advisor.ts replay"
   },
   "repository": {
     "type": "git",
@@ -29,7 +43,6 @@
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",
-    "hono": "^4.9.0",
     "phaser": "^3.90.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
@@ -38,11 +51,19 @@
     "zustand": "^4.5.7"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
     "@testing-library/react": "^16.3.0",
+    "@types/jsdom": "^30.0.0",
     "@types/node": "^24.2.0",
     "autoprefixer": "^10.4.21",
+    "jsdom": "^30.1.1",
     "postcss": "^8.5.6",
+    "supabase": "2.118.0",
     "tailwindcss": "^3.4.17",
-    "vitest": "^3.2.4"
+    "vitest": "^4.1.11"
+  },
+  "overrides": {
+    "postcss-selector-parser": "^7.1.6",
+    "source-map-js": "^1.2.2"
   }
 }

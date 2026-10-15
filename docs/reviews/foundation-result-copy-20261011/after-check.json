@@ -1,0 +1,97 @@
+{
+  "guest": true,
+  "expectedScore": 100,
+  "texts": [
+    {
+      "text": "SCORE: 100点",
+      "fontSize": "32px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "GTR評価範囲",
+      "fontSize": "16px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "○ 基本形",
+      "fontSize": "16px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "○ 3連鎖",
+      "fontSize": "16px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "○ 4連鎖",
+      "fontSize": "16px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "○ 5連鎖",
+      "fontSize": "16px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "○ 最小土台が完成",
+      "fontSize": "16px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "○ 余りなし・1個・同色連結",
+      "fontSize": "16px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "仮想発火：再生待ち",
+      "fontSize": "16px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "もう一度",
+      "fontSize": "16px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "点数は評価範囲のみで評価",
+      "fontSize": "16px",
+      "resolution": 4,
+      "filter": 1
+    },
+    {
+      "text": "Spaceキーで新しいゲームを開始\nEscキーでメニューに戻る",
+      "fontSize": "16px",
+      "resolution": 4,
+      "filter": 1
+    }
+  ],
+  "scoreAlpha": {
+    "partial": 6141,
+    "solid": 17792
+  },
+  "fontLoaded": true,
+  "replay": {
+    "replayExists": true,
+    "gridUnchanged": true,
+    "randomUnchanged": true,
+    "resultOpen": true,
+    "playbackActive": true
+  },
+  "mobile": {
+    "scorePresent": true,
+    "noPageOverflow": true,
+    "horizontalCanvasScroll": true
+  },
+  "exceptionCount": 0,
+  "saveRequests": 0
+}

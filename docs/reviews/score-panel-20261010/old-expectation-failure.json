@@ -1,0 +1,7 @@
+{
+  "passed": 1741,
+  "failed": [
+    "score soft drop lock does not lock a supported pair without down while gravity is disabled"
+  ],
+  "resolution": "旧スコア自由落下OFF前提を削除し、スコアは常時ONで800ms着地、ガイドはOFF時非着地を検証する。"
+}

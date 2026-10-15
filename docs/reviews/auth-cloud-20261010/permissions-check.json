@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "checks": [
+    "profile trigger",
+    "default user role",
+    "owner-only read",
+    "own name save",
+    "other-user update blocked",
+    "role escalation blocked",
+    "created_at update blocked",
+    "anonymous read blocked",
+    "synthetic users rolled back"
+  ],
+  "syntheticUsersRemaining": 0
+}

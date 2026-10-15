@@ -19,7 +19,7 @@ export default {
         }
       },
       fontFamily: {
-        puyo: ['"M PLUS Rounded 1c"', 'sans-serif'],
+        puyo: ['"DotGothic16"', '"Yu Gothic"', '"Hiragino Kaku Gothic ProN"', '"Meiryo"', 'sans-serif'],
       },
     },
   },

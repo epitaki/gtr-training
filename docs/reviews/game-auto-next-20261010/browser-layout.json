@@ -1,0 +1,17 @@
+{
+  "desktop": {
+    "guideTop": 168,
+    "scoreTop": 168,
+    "aligned": true,
+    "countOnToolbar": true,
+    "countCentered": true,
+    "explanationRemoved": true,
+    "width": 2048
+  },
+  "mobile": {
+    "width": 360,
+    "noHorizontalOverflow": true,
+    "countCentered": true,
+    "toolbarHeight": 44
+  }
+}

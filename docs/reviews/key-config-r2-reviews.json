@@ -1,0 +1,70 @@
+{
+  "round": 2,
+  "snapshot": "17c9299da48420cd8f8c20035f96b3c2bdced03ed948920e37b377d84aaf598b",
+  "reviewers": [
+    {
+      "reviewer": "key_config_r2_review_1",
+      "model": "gpt-6-sol",
+      "snapshot": "17c9299da48420cd8f8c20035f96b3c2bdced03ed948920e37b377d84aaf598b",
+      "scope": "全25変更ファイル+App/連鎖再生/開始基準。195hash不一致0。読取りのみ。",
+      "findings": [
+        {
+          "severity": "P2",
+          "file": "src/game/scenes/PuyoGame.ts",
+          "line": 297,
+          "condition": "自由落下ONでuser pauseを800ms以上続け再開。togglePauseはlastFallTimeを更新しない。",
+          "impact": "次フレームupdateFallingが休止期間を含め判定し1マス即落下、接地時は意図せず着地・連鎖。",
+          "fix": "再開時lastFallTime=this.time.now、回帰テスト。ガイドの同様挙動は基準に存在。"
+        }
+      ]
+    },
+    {
+      "reviewer": "key_config_r2_review_2",
+      "model": "gpt-6-sol",
+      "snapshot": "17c9299da48420cd8f8c20035f96b3c2bdced03ed948920e37b377d84aaf598b",
+      "scope": "全25ファイルの実コード・sha256・差分、呼出元・状態・テスト・docsを確認。読取りのみ。",
+      "findings": [],
+      "conclusion": "指摘なし。実機NumLock/OS IME/実タッチ未確認。"
+    },
+    {
+      "reviewer": "key_config_r2_review_3",
+      "model": "gpt-6-sol",
+      "snapshot": "17c9299da48420cd8f8c20035f96b3c2bdced03ed948920e37b377d84aaf598b",
+      "scope": "全25ファイル+呼出元/型/着地供給/開始基準、195hash一致。読取りのみ。",
+      "findings": [
+        {
+          "severity": "P2",
+          "file": "src/game/input/InputController.ts",
+          "line": 93,
+          "condition": "左回転を保持、右回転を押し次更新前に離す。pending右回転とheld左回転が混在。",
+          "impact": "相殺条件は両resultまたは両heldだけなので右回転が実行される。",
+          "fix": "移動と同じくpending一方/held反対の混在も相殺しテスト。"
+        },
+        {
+          "severity": "P2",
+          "file": "src/game/input/bindings.ts",
+          "line": 40,
+          "related": "src/game/input/PhaserInputAdapter.ts:33",
+          "condition": "Tabを割当保存しcanvasにfocusする。",
+          "impact": "Tab/Shift+TabともpreventDefaultでゲーム面からキーボードで設定/終了ボタンへ移動不能。",
+          "fix": "Tabをallowedから除外し保存/取得とも拒否。"
+        }
+      ],
+      "excluded": "GameControls keyboard起動なしは開始時にも存在するため今回指摘から除外。",
+      "validation": "保存済1224成功確認。実機未確認。"
+    }
+  ],
+  "rootCandidates": [
+    {
+      "id": "root-gate-sources",
+      "severity": "P2",
+      "file": "src/game/input/InputController.ts",
+      "line": 64,
+      "condition": "意味入力のpointer quickDropを保持したまま着地/次ツモ生成を通り、別pointerまたは同義物理キーを押す。suppressUntilReleaseはphysicalしかblockedへ移さずheldを消すため、旧pointer保持が解除待ちに含まれない。",
+      "impact": "新ツモ生成後は旧保持入力の解除後に新規押下を要求する設計に対し、旧pointer保持中も新入力で次ツモを確定できる。複数入力元の解除待ちがphysicalとsemanticで不一致。",
+      "evidence": "InputController.pressはheldへsource登録、suppressUntilReleaseはphysicalのみblocked化してheld.clear。releaseGate=blocked.size>0。GameControlInputは別pointer sourceを許可。Scene quickDrop→suppressUntilRelease→landCurrentPair、新pairでも同様。",
+      "status": "親の静的候補。Astraで採否判定。今回の新入力基盤に由来。共有worktreeを変える実行はしていない。"
+    }
+  ],
+  "status": "3独立レビュー終了、hash不変。Astra採否待ち。"
+}

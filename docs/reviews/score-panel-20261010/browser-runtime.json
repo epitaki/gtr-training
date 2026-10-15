@@ -1,0 +1,13 @@
+{
+  "guest": true,
+  "naturalAfterGravityKey": true,
+  "gravitySettingAbsent": true,
+  "pendingUnknown": true,
+  "firstRoundTotal100": true,
+  "countAdvances": true,
+  "chainScoreIgnored": true,
+  "zeroAddsNothing": true,
+  "guideGravitySettingPresent": true,
+  "guideGravityToggleWorks": true,
+  "guideGravityRestored": true
+}

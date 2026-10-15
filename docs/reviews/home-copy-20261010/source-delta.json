@@ -1,0 +1,22 @@
+[
+  {
+    "path": "src/App.history.test.tsx",
+    "before": "f9cc62e0d681171dc78f7141e0037aaed92c120f1d61399b350973be0d3a854b",
+    "after": "628da9c6d4694bba345c72b68e337dc09aabcacf8ccd7311a9046b7cabba1e7a"
+  },
+  {
+    "path": "src/components/gallery/CompletionGallery.tsx",
+    "before": "97f1c3373015ac9b10c92d6cf1822fdb81f795398268e5067bcf086dd10ebe84",
+    "after": "d8666d7325c5a31f2fca4f67662492c156b61c857596a17687f362e2823900e0"
+  },
+  {
+    "path": "src/components/layout/Header.tsx",
+    "before": "7e35d8dc3d67ee438c28ac25465f32f14889742a3986cc47a8091d6b80232274",
+    "after": "092fd30552c8f69536c2ef357676c1b96ca10c9eaa441d740c2abccc4fed46bb"
+  },
+  {
+    "path": "src/components/layout/SideMenu.tsx",
+    "before": "7f7bd8767e9f191001c29be201bcf1b7946c3a4930af79e050c406348ce24f05",
+    "after": "df01b92ee6f4ce5776d667dcd8b8ddcaa7581221d864ce86d668ef533b0f8590"
+  }
+]

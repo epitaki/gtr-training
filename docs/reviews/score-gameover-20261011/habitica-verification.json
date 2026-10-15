@@ -1,0 +1,14 @@
+{
+  "gameOverTask": {
+    "completed": true,
+    "notesMatch": true,
+    "checklistCompleted": 4,
+    "checklistTotal": 4
+  },
+  "uiParent": {
+    "completed": false,
+    "notesMatch": true,
+    "checklistCompleted": 0,
+    "checklistTotal": 11
+  }
+}

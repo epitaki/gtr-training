@@ -1,0 +1,196 @@
+--- src/game/scenes/PuyoGame.ts before
++++ src/game/scenes/PuyoGame.ts after
+@@ -34,6 +34,8 @@
+   private isPaused = false
+   private pauseOverlay?: Phaser.GameObjects.Rectangle
+   private pauseText?: Phaser.GameObjects.Text
++  private gameOverOverlay?: Phaser.GameObjects.Rectangle
++  private gameOverText?: Phaser.GameObjects.Text
+   private submittedRounds = 0
+   private instructionText?: Phaser.GameObjects.Text
+ 
+@@ -239,7 +241,8 @@
+     }
+     if (this.isVisualStopped) return
+     if (this.gameState.gameOver) {
+-      if (!document.hidden) this.evaluateAndReset()
++      this.showGameOver()
++      if (actions.has('evaluate')) this.evaluateAndReset()
+       return
+     }
+     if (actions.has('evaluate')) { this.evaluateAndReset(); this.actionInput?.suppressUntilRelease(); return }
+@@ -515,6 +518,25 @@
+     this.captureTurnStartPair()
+   }
+ 
++  private showGameOver(): void {
++    if (this.isDisposed || !this.gameState.gameOver || this.gameOverText) return
++    const width = FIELD_CONFIG.COLS * this.CELL_SIZE
++    const height = FIELD_CONFIG.ROWS * this.CELL_SIZE
++    const x = this.FIELD_X + width / 2
++    const y = this.FIELD_Y + height / 2
++    this.gameOverOverlay = this.add.rectangle(x, y, width, height, 0x0c0a14, 0.72).setDepth(500)
++    this.gameOverText = addUIText(this, x, y, 'GameOver', {
++      ...TEXT_STYLES.title, fontSize: '32px', color: '#ff9aa5', align: 'center',
++    }).setOrigin(0.5).setDepth(501)
++  }
++
++  private clearGameOver(): void {
++    this.gameOverOverlay?.destroy()
++    this.gameOverText?.destroy()
++    this.gameOverOverlay = undefined
++    this.gameOverText = undefined
++  }
++
+   private startGame() {
+     this.lastFallTime = this.time.now
+   }
+@@ -528,6 +550,7 @@
+     this.updateFieldSprites()
+     this.updateCurrentPairSprites()
+     this.updateNextPairSprites()
++    if (this.gameState.gameOver) this.showGameOver()
+   }
+ 
+   private updateFieldSprites() {
+@@ -623,12 +646,14 @@
+       this.resetGame()
+       this.updateDisplay()
+     } else {
++      this.clearGameOver()
+       this.isShowingResult = true
+     }
+     this.onRound?.(snapshot)
+   }
+ 
+   private resetGame() {
++    this.clearGameOver()
+     this.cancelChain()
+     this.isVisualStopped = false
+     this.gameField.clear()
+--- src/game/scenes/ChainAnimationScenes.test.ts before
++++ src/game/scenes/ChainAnimationScenes.test.ts after
+@@ -1217,35 +1217,51 @@
+     expect(scene.gameState.gameOver).toBe(false)
+   })
+ 
+-  it('automatically submits the committed terminal board and steps after animation, suppressing held input', () => {
++  it('holds the committed terminal board while idle and submits only after a fresh evaluation press', () => {
+     const { scene, onRound } = makeScene()
+     for (let y = 0; y < 13; y++) scene.gameField.getField().grid[y][2] = y % 2 ? PuyoColor.RED : PuyoColor.BLUE
+-    scene.landCurrentPair()
+-    expect(onRound).not.toHaveBeenCalled()
++    const supplier = vi.spyOn(PuyoPairManager, 'createValidTwoHandCombination')
++    scene.landCurrentPair()
++    // A key held during the final animation cannot dismiss GameOver.
++    scene.actionInput.pressPhysical('Space')
+     finish(scene)
+     expect(onRound).not.toHaveBeenCalled()
+     expect(scene.gameState.gameOver).toBe(true)
+-    expect(scene.showGameOver).not.toHaveBeenCalled()
+     const board = structuredClone(scene.gameField.getField().grid)
+     const moves = scene.placedMoves
+     expect(moves).toHaveLength(3)
+-    scene.actionInput.pressPhysical('ArrowLeft')
+-    scene.update(10000, 16)
++    const nextPair = structuredClone(scene.gameState.currentPair)
++    for (let i = 0; i < 100; i++) scene.update(10000 + i * 60000, 60000)
++    expect(scene.showGameOver).toHaveBeenCalled()
++    expect(onRound).not.toHaveBeenCalled()
++    expect(supplier).not.toHaveBeenCalled()
++    expect(scene.submittedRounds).toBe(0)
++    expect(scene.isShowingResult).toBe(false)
++    expect(scene.gameState.gameOver).toBe(true)
++    expect(scene.gameField.getField().grid).toEqual(board)
++    expect(scene.placedMoves).toBe(moves)
++    expect(scene.gameState.currentPair).toEqual(nextPair)
++    expect(scene.actionInput.isGated()).toBe(true)
++    scene.actionInput.pressPhysical('Space', true)
++    scene.update(7000000, 16)
++    expect(onRound).not.toHaveBeenCalled()
++    scene.actionInput.releasePhysical('Space')
++    scene.pressAction('left', 'button:left')
++    scene.update(7000001, 16)
++    expect(scene.gameState.currentPair).toEqual(nextPair)
++    scene.actionInput.pressPhysical('Space')
++    scene.update(7000002, 16)
+     expect(onRound).toHaveBeenCalledOnce()
+     expect(onRound.mock.lastCall![0]).toMatchObject({ grid: board, moves })
+     expect(scene.gameState.gameOver).toBe(false)
+     expect(scene.placedMoves).toBe('')
++    expect(supplier).toHaveBeenCalledOnce()
+     expect(scene.gameField.getField().grid.flat().every((cell: unknown) => cell === null)).toBe(true)
+-    expect(scene.actionInput.isGated()).toBe(true)
+-    const nextPair = structuredClone(scene.gameState.currentPair)
+-    scene.update(10001, 16)
+-    expect(scene.gameState.currentPair).toEqual(nextPair)
++    scene.update(7000003, 16)
+     expect(onRound).toHaveBeenCalledOnce()
+-    scene.actionInput.releasePhysical('ArrowLeft')
+-    expect(scene.actionInput.isGated()).toBe(false)
+-  })
+-
+-  it('automatically submits ten terminal rounds and shows results without starting an eleventh', () => {
++  })
++
++  it('requires explicit evaluation for each terminal round, including the tenth before results', () => {
+     const { scene, onRound } = makeScene()
+     const supplier = vi.spyOn(PuyoPairManager, 'createValidTwoHandCombination')
+     for (let i = 0; i < 10; i++) {
+@@ -1254,17 +1270,43 @@
+       scene.gameField.setField(board)
+       scene.spawnNextPair()
+       scene.update(500 + i, 16)
++      expect(onRound).toHaveBeenCalledTimes(i)
++      expect(scene.isShowingResult).toBe(false)
++      expect(scene.gameState.gameOver).toBe(true)
++      scene.pressAction('evaluate', 'button:evaluate')
++      scene.releaseAction('button:evaluate')
++      scene.update(1000 + i, 16)
+       expect(onRound).toHaveBeenCalledTimes(i + 1)
+       expect(onRound.mock.lastCall![0].grid[0][2]).toBe(PuyoColor.BLUE)
+     }
+     expect(scene.isShowingResult).toBe(true)
+     expect(supplier).toHaveBeenCalledTimes(9)
+-    scene.update(1000, 16)
++    scene.update(2000, 16)
+     expect(onRound).toHaveBeenCalledTimes(10)
+     expect(supplier).toHaveBeenCalledTimes(9)
+   })
+ 
+-  it.each(['isPaused', 'isDisposed', 'isVisualStopped', 'hidden'])('does not auto-submit the terminal board while %s', state => {
++  it('creates GameOver once and destroys its overlay before the next round', () => {
++    const { scene } = makeScene()
++    scene.add.rectangle = vi.fn(display)
++    scene.showGameOver.mockImplementation(() => Object.getPrototypeOf(scene).showGameOver.call(scene))
++    scene.gameState.gameOver = true
++    scene.update(501, 16)
++    const text = scene.gameOverText, overlay = scene.gameOverOverlay
++    expect(text).toBeDefined()
++    expect(overlay).toBeDefined()
++    scene.update(502, 16)
++    expect(scene.add.rectangle).toHaveBeenCalledOnce()
++    expect(scene.add.text).toHaveBeenCalledOnce()
++    scene.pressAction('evaluate', 'button:evaluate')
++    scene.update(503, 16)
++    expect(text.destroy).toHaveBeenCalledOnce()
++    expect(overlay.destroy).toHaveBeenCalledOnce()
++    expect(scene.gameOverText).toBeUndefined()
++    expect(scene.gameOverOverlay).toBeUndefined()
++  })
++
++  it.each(['isPaused', 'isDisposed', 'isVisualStopped', 'hidden'])('holds the terminal board while %s', state => {
+     const { scene, onRound } = makeScene()
+     scene.gameState.gameOver = true
+     if (state === 'hidden') (document as unknown as { hidden: boolean }).hidden = true
+--- src/components/game/useScoreAttackSave.test.tsx before
++++ src/components/game/useScoreAttackSave.test.tsx after
+@@ -19,6 +19,8 @@
+ it('waits for all ten grades and saves only the matching owner', async () => {
+   const view = renderHook(({ value, owner, user }) => useScoreAttackSave(value, 'run-1', owner, user),
+     { initialProps: { value: emptyScoreAttackState(), owner: 'A' as string | null, user: 'A' as string | undefined } })
++  expect(api.save).not.toHaveBeenCalled()
++  view.rerender({ value: { ...state, rounds: state.rounds.slice(0, 9), finished: false, totalScore: null }, owner: 'A', user: 'A' })
+   expect(api.save).not.toHaveBeenCalled()
+   view.rerender({ value: state, owner: null, user: undefined }); expect(api.save).not.toHaveBeenCalled()
+   view.rerender({ value: state, owner: 'A', user: 'B' }); expect(api.save).not.toHaveBeenCalled()
